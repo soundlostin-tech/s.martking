@@ -1,123 +1,266 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
-import { IndianRupee, Trophy, Swords, ChevronRight, Calendar, ArrowRight, Star } from "lucide-react";
+import { 
+  IndianRupee, Trophy, Swords, ChevronRight, Calendar, 
+  ArrowRight, Star, Users, Play, Target, Zap 
+} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export default function Home() {
   const { user, loading: authLoading } = useAuth(false);
-  const [profile, setProfile] = useState<any>(null);
+  const [profiles, setProfiles] = useState<any[]>([]);
+  const [featuredMatches, setFeaturedMatches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user) {
-      const fetchData = async () => {
-        try {
-          const { data: profileData } = await supabase
-            .from("profiles")
-            .select("*")
-            .eq("id", user.id)
-            .single();
-          setProfile(profileData);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchData();
-    } else {
-      setLoading(false);
-    }
-  }, [user]);
+    const fetchData = async () => {
+      try {
+        // Fetch profiles for "Stories"
+        const { data: profileData } = await supabase
+          .from("profiles")
+          .select("*")
+          .limit(10);
+        setProfiles(profileData || []);
+
+        // Fetch matches for "Tournament Cards"
+        const { data: matchData } = await supabase
+          .from("matches")
+          .select(`
+            *,
+            tournament:tournaments(title, entry_fee, prize_pool)
+          `)
+          .or('status.eq.live,status.eq.upcoming')
+          .order('status', { ascending: false }) // Live first
+          .limit(4);
+        setFeaturedMatches(matchData || []);
+
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
-    <main className="min-h-screen w-full bg-zinc-100 flex items-center justify-center p-6 relative overflow-hidden">
-      {/* Subtle Background Detail */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-zinc-200/50 blur-[120px] rounded-full" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-zinc-200/50 blur-[120px] rounded-full" />
+    <main className="min-h-screen w-full bg-zinc-100 pb-32 overflow-x-hidden">
+      {/* Hero Section (Full Viewport) */}
+      <section className="relative h-screen w-full flex items-center justify-center p-6 overflow-hidden">
+        {/* Subtle Background Detail */}
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-zinc-200/50 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-zinc-200/50 blur-[120px] rounded-full" />
 
-      {/* Hero Card */}
-      <div className="relative max-w-xl w-full bg-white/30 backdrop-blur-xl border border-zinc-200/0 shadow-2xl rounded-[3rem] px-8 py-12 md:px-12 md:py-16 animate-fadeIn">
-        <div className="flex flex-col items-center text-center space-y-8">
-          {/* Tagline */}
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-            className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 border border-black/5"
-          >
-            <Star size={12} className="text-black" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-black/60">
-              Welcome to Smartking's Arena
-            </span>
-          </motion.div>
-
-          {/* Main Heading */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="space-y-4"
-          >
-            <h1 className="text-5xl md:text-6xl font-heading text-black leading-tight tracking-tight">
-              Dominance <br /> 
-              <span className="italic">is a Choice.</span>
-            </h1>
-            <p className="text-xl md:text-2xl font-serif text-zinc-800 leading-relaxed max-w-md mx-auto">
-              Enter the most elite tournament platform and turn your skills into rewards.
-            </p>
-          </motion.div>
-
-          {/* CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="flex flex-col w-full gap-4 pt-4"
-          >
-            <Link 
-              href={user ? "/matches" : "/signup"}
-              className="group relative w-full bg-black text-white py-5 px-8 rounded-full font-serif text-lg flex items-center justify-center gap-3 transition-all hover:bg-zinc-800 hover:scale-[1.02] active:scale-95 shadow-xl"
+        <div className="relative max-w-xl w-full bg-white/30 backdrop-blur-xl border border-zinc-200/0 shadow-2xl rounded-[3rem] px-8 py-12 md:px-12 md:py-16 animate-fadeIn">
+          <div className="flex flex-col items-center text-center space-y-8">
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 border border-black/5"
             >
-              {user ? "Enter the Arena" : "Begin Your Journey"}
-              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-            
-            <Link 
-              href="/matches"
-              className="text-sm font-serif text-black/60 hover:text-black transition-colors underline underline-offset-4 decoration-black/20 hover:decoration-black"
-            >
-              Explore Live Tournaments
-            </Link>
-          </motion.div>
+              <Star size={12} className="text-black" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-black/60">
+                The Elite Arena
+              </span>
+            </motion.div>
 
-          {/* Stats Summary (Glassy Details) */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 1 }}
-            className="grid grid-cols-3 gap-8 pt-8 border-t border-black/5 w-full"
-          >
-            <div className="text-center">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-black/40 mb-1">Active</p>
-              <p className="text-xl font-heading text-black">12k+</p>
-            </div>
-            <div className="text-center">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-black/40 mb-1">Matches</p>
-              <p className="text-xl font-heading text-black">840</p>
-            </div>
-            <div className="text-center">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-black/40 mb-1">Rewards</p>
-              <p className="text-xl font-heading text-black">₹5M+</p>
-            </div>
-          </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="space-y-4"
+            >
+              <h1 className="text-5xl md:text-6xl font-heading text-black leading-tight tracking-tight">
+                Dominance <br /> 
+                <span className="italic">is a Choice.</span>
+              </h1>
+              <p className="text-xl md:text-2xl font-serif text-zinc-800 leading-relaxed max-w-md mx-auto">
+                Enter the most elite tournament platform and turn your skills into rewards.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="flex flex-col w-full gap-4 pt-4"
+            >
+              <Link 
+                href={user ? "/matches" : "/signup"}
+                className="group relative w-full bg-black text-white py-5 px-8 rounded-full font-serif text-lg flex items-center justify-center gap-3 transition-all hover:bg-zinc-800 hover:scale-[1.02] active:scale-95 shadow-xl"
+              >
+                {user ? "Enter the Arena" : "Begin Your Journey"}
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <p className="text-xs font-serif text-zinc-400">Join 12,000+ warriors today</p>
+            </motion.div>
+          </div>
         </div>
-      </div>
+
+        {/* Scroll Indicator */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 1 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        >
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-black/20">Scroll to Explore</span>
+          <div className="w-px h-12 bg-gradient-to-b from-black/20 to-transparent" />
+        </motion.div>
+      </section>
+
+      {/* Stories Section */}
+      <section className="px-6 py-12 max-w-4xl mx-auto">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h2 className="text-2xl font-heading text-black">Top Warriors</h2>
+            <p className="text-sm font-serif text-zinc-500">The most feared competitors this week</p>
+          </div>
+          <Link href="/admin/leaderboard" className="text-xs font-bold text-black/40 hover:text-black transition-colors">VIEW ALL</Link>
+        </div>
+
+        <div className="flex gap-6 overflow-x-auto no-scrollbar pb-4 -mx-6 px-6">
+          {profiles.map((profile, i) => (
+            <motion.div 
+              key={profile.id}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.1 }}
+              className="flex-shrink-0 flex flex-col items-center gap-3 group cursor-pointer"
+            >
+              <div className="relative p-1 rounded-full bg-gradient-to-tr from-black via-zinc-400 to-white group-hover:scale-105 transition-transform">
+                <div className="w-20 h-20 rounded-full bg-zinc-100 border-4 border-zinc-100 flex items-center justify-center overflow-hidden">
+                  {profile.avatar_url ? (
+                    <img src={profile.avatar_url} alt={profile.full_name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="text-2xl font-heading text-black/20">{profile.full_name?.[0]}</div>
+                  )}
+                </div>
+                {profile.status === 'Active' && (
+                  <div className="absolute bottom-1 right-1 w-5 h-5 bg-green-500 border-4 border-zinc-100 rounded-full" />
+                )}
+              </div>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-black/60 group-hover:text-black transition-colors">
+                {profile.full_name?.split(' ')[0]}
+              </span>
+            </motion.div>
+          ))}
+          {/* Add a placeholder story */}
+          <div className="flex-shrink-0 flex flex-col items-center gap-3 opacity-30">
+            <div className="w-20 h-20 rounded-full border-2 border-dashed border-black/20 flex items-center justify-center">
+              <Zap size={24} className="text-black" />
+            </div>
+            <span className="text-[11px] font-bold uppercase tracking-wider">SOON</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Tournament Cards */}
+      <section className="px-6 py-12 max-w-4xl mx-auto">
+        <div className="flex items-center justify-between mb-10">
+          <div>
+            <h2 className="text-3xl font-heading text-black">Active Battles</h2>
+            <p className="text-sm font-serif text-zinc-500">Live and upcoming tournaments you can join now</p>
+          </div>
+          <Link href="/matches">
+            <button className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/50 border border-black/5 text-xs font-bold text-black hover:bg-black hover:text-white transition-all shadow-sm">
+              BROWSE ALL <ChevronRight size={14} />
+            </button>
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {featuredMatches.map((match, i) => (
+            <motion.div
+              key={match.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="group relative bg-white/30 backdrop-blur-xl border border-white/20 rounded-[2.5rem] p-8 shadow-xl hover:shadow-2xl transition-all"
+            >
+              <div className="absolute top-6 right-8">
+                <Badge className={`${
+                  match.status === 'live' ? 'bg-red-500' : 'bg-black'
+                } text-white rounded-full text-[10px] px-3 py-1 font-bold border-none`}>
+                  {match.status.toUpperCase()}
+                </Badge>
+              </div>
+
+              <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-2xl bg-black/5 flex items-center justify-center">
+                    {match.status === 'live' ? (
+                      <Play size={28} className="text-red-500" fill="currentColor" />
+                    ) : (
+                      <Swords size={28} className="text-black" />
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-heading text-black group-hover:translate-x-1 transition-transform">{match.title}</h3>
+                    <p className="text-[11px] text-zinc-400 font-bold uppercase tracking-[0.2em]">{match.tournament?.title}</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-black/5 rounded-2xl p-4 flex flex-col gap-1">
+                    <span className="text-[10px] font-bold text-black/30 uppercase tracking-widest">Prize Pool</span>
+                    <span className="text-xl font-heading text-black">₹{match.tournament?.prize_pool}</span>
+                  </div>
+                  <div className="bg-black/5 rounded-2xl p-4 flex flex-col gap-1">
+                    <span className="text-[10px] font-bold text-black/30 uppercase tracking-widest">Entry Fee</span>
+                    <span className="text-xl font-heading text-black">₹{match.tournament?.entry_fee}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-4">
+                  <div className="flex items-center gap-2 text-zinc-400">
+                    <Users size={14} />
+                    <span className="text-xs font-serif">{match.mode} • {match.map || 'Bermuda'}</span>
+                  </div>
+                  <Link href={match.status === 'live' ? `/live?matchId=${match.id}` : '/matches'}>
+                    <button className="flex items-center gap-2 text-xs font-bold text-black group-hover:gap-4 transition-all">
+                      {match.status === 'live' ? 'WATCH LIVE' : 'RESERVE SLOT'} <ArrowRight size={16} />
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Featured Section (Large Banner Style) */}
+      <section className="px-6 py-12 max-w-4xl mx-auto">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          className="relative overflow-hidden rounded-[3rem] bg-black p-12 text-center space-y-8 shadow-2xl"
+        >
+          <div className="absolute inset-0 opacity-20 pointer-events-none">
+            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-zinc-200 blur-[100px] rounded-full" />
+            <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-zinc-400 blur-[100px] rounded-full" />
+          </div>
+
+          <div className="relative z-10 space-y-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/10 border border-white/10">
+              <Trophy size={14} className="text-white" />
+              <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Grand Prize Event</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-heading text-white">The Pro Arena <br /> <span className="italic">Championship</span></h2>
+            <p className="text-lg font-serif text-white/60 max-w-md mx-auto">Registration opens in 48 hours. Only the top 64 warriors will be selected.</p>
+            <button className="px-10 py-5 bg-white text-black rounded-full font-serif text-lg hover:scale-105 active:scale-95 transition-all shadow-xl">
+              Get Notified
+            </button>
+          </div>
+        </motion.div>
+      </section>
 
       <BottomNav />
     </main>
