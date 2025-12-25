@@ -51,26 +51,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen w-full bg-zinc-100 pb-32 overflow-x-hidden">
-      {/* Hero Section (Full Viewport) */}
-      <section className="relative h-screen w-full flex items-center justify-center p-6 overflow-hidden">
-        {/* Subtle Background Detail */}
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-zinc-200/50 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-zinc-200/50 blur-[120px] rounded-full" />
-
-
-
-        {/* Scroll Indicator */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        >
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-black/20">Scroll to Explore</span>
-          <div className="w-px h-12 bg-gradient-to-b from-black/20 to-transparent" />
-        </motion.div>
-      </section>
-
       {/* Stories Section */}
       <section className="px-6 py-12 max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-8">
