@@ -121,7 +121,8 @@ nextjs-portal {
 }
 
 .glass {
-  @apply bg-opacity-20 backdrop-blur-md border border-white/10;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .hero-gradient {
