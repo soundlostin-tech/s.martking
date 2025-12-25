@@ -17,8 +17,8 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-2xl border-t border-stone-200/50 shadow-[0_-8px_30px_rgba(0,0,0,0.04)] px-4 pb-safe">
-      <div className="flex justify-around items-center h-20 max-w-lg mx-auto">
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-lg bg-white/30 backdrop-blur-xl border border-white/20 shadow-2xl rounded-full px-4 overflow-hidden">
+      <div className="flex justify-around items-center h-20">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
@@ -29,28 +29,22 @@ export function BottomNav() {
               href={item.href}
               className="relative flex flex-col items-center justify-center flex-1 h-full outline-none"
             >
-              <div className="relative flex flex-col items-center gap-1.5 transition-all duration-300">
+              <div className="relative flex flex-col items-center gap-1 transition-all duration-300">
                 <motion.div
                   animate={{ 
                     scale: isActive ? 1.1 : 1,
-                    y: isActive ? -2 : 0 
+                    y: isActive ? -1 : 0 
                   }}
                   transition={{ type: "spring", stiffness: 400, damping: 25 }}
                   className={`relative z-10 p-2 rounded-2xl transition-colors ${
-                    isActive ? "text-onyx bg-stone-50" : "text-stone-400 hover:text-onyx"
+                    isActive ? "text-black" : "text-zinc-400 hover:text-black"
                   }`}
                 >
-                  <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
-                  {isActive && (
-                    <motion.div 
-                      layoutId="nav-dot"
-                      className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-onyx rounded-full"
-                    />
-                  )}
+                  <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
                 </motion.div>
 
-                <span className={`text-[9px] font-black uppercase tracking-[0.15em] transition-colors ${
-                  isActive ? "text-onyx opacity-100" : "text-stone-400 opacity-60"
+                <span className={`text-[10px] font-serif transition-colors ${
+                  isActive ? "text-black font-bold" : "text-zinc-400 font-medium"
                 }`}>
                   {item.label}
                 </span>
@@ -59,7 +53,7 @@ export function BottomNav() {
               {isActive && (
                 <motion.div 
                   layoutId="nav-pill"
-                  className="absolute inset-x-2 inset-y-3 bg-stone-50/50 rounded-[24px] -z-0 border border-stone-100/50"
+                  className="absolute inset-x-1 inset-y-2 bg-black/5 rounded-full -z-0"
                   transition={{ type: "spring", stiffness: 350, damping: 30 }}
                 />
               )}

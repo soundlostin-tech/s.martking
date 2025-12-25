@@ -1,12 +1,13 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { HeroSection } from "@/components/layout/HeroSection";
 import { PillButton } from "@/components/ui/PillButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
-import { Crown, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Crown, Eye, EyeOff, Loader2, Star } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
@@ -69,73 +70,58 @@ export default function Signin() {
     }
   };
 
-  const handleForgotPassword = () => {
-    if (!formData.email) {
-      toast.info("Please enter your email address first to reset your password.");
-      setErrors({ email: "Email is required for password reset" });
-      return;
-    }
-    // We would normally call supabase.auth.resetPasswordForEmail here
-    toast.success("If an account exists for this email, you will receive a password reset link shortly.");
-  };
-
   return (
-    <main className="min-h-screen bg-stone-100 pb-12 overflow-hidden">
-      {/* App Logo & Title */}
-      <div className="pt-8 px-6 flex flex-col items-center">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-10 h-10 bg-onyx rounded-full flex items-center justify-center border-2 border-lime-yellow shadow-md">
-            <Crown className="text-lime-yellow" size={20} />
+    <main className="min-h-screen bg-zinc-100 flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Subtle Background Details */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-zinc-200/50 blur-[120px] rounded-full" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-zinc-200/50 blur-[120px] rounded-full" />
+
+      {/* Auth Card */}
+      <div className="relative max-w-lg w-full bg-white/30 backdrop-blur-xl border border-zinc-200/0 shadow-2xl rounded-[3rem] px-8 py-12 md:px-12 md:py-16 animate-fadeIn">
+        <div className="flex flex-col space-y-8">
+          {/* Header */}
+          <div className="text-center space-y-4">
+            <div className="flex justify-center mb-6">
+              <div className="w-16 h-16 bg-black text-white rounded-2xl flex items-center justify-center shadow-xl">
+                <Crown size={32} />
+              </div>
+            </div>
+            <h1 className="text-4xl font-heading text-black leading-tight tracking-tight">
+              Welcome <span className="italic">Back.</span>
+            </h1>
+            <p className="text-lg font-serif text-zinc-600">
+              Sign in to continue your dominance.
+            </p>
           </div>
-          <h1 className="text-xl font-heading tracking-tight text-onyx">Smartking's Arena</h1>
-        </div>
-      </div>
 
-      <HeroSection 
-        title="Welcome Back" 
-        subtitle="Sign in to your account and jump back into the action."
-        className="pb-24 mt-4 relative"
-      >
-        <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-lime-yellow/20 to-transparent pointer-events-none" />
-        <div className="absolute top-1/2 -right-4 w-8 h-32 bg-lime-yellow rounded-full blur-xl" />
-      </HeroSection>
-
-      <div className="px-6 -mt-16">
-        <div className="bg-alabaster-grey-2 rounded-[24px] p-8 border border-stone-200 shadow-lg relative z-10">
-          <form className="flex flex-col gap-6" onSubmit={handleSignin}>
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email Address</Label>
+          <form className="space-y-6" onSubmit={handleSignin}>
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-4">Email Address</Label>
               <Input 
                 id="email" 
                 type="email" 
-                placeholder="name@example.com" 
-                className={`rounded-full bg-stone-100 px-6 h-12 ${errors.email ? 'border-red-500' : ''}`}
+                placeholder="warrior@arena.com" 
+                className={`h-16 px-8 rounded-full border-zinc-200 bg-white/60 shadow-lg text-black font-serif ${errors.email ? 'border-red-500' : ''}`}
                 value={formData.email}
                 onChange={(e) => {
                   setFormData({ ...formData, email: e.target.value });
                   if (errors.email) setErrors({ ...errors, email: "" });
                 }}
               />
-              {errors.email && <p className="text-[10px] text-red-500 px-3 mt-0.5">{errors.email}</p>}
+              {errors.email && <p className="text-[10px] text-red-500 px-6 mt-1">{errors.email}</p>}
             </div>
 
-            <div className="grid gap-2">
-              <div className="flex justify-between items-center px-1">
-                <Label htmlFor="password">Password</Label>
-                <button 
-                  type="button" 
-                  onClick={handleForgotPassword}
-                  className="text-xs text-olive font-extrabold hover:underline"
-                >
-                  Forgot password?
-                </button>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center px-4">
+                <Label htmlFor="password" className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Password</Label>
+                <button type="button" className="text-[10px] text-black/40 hover:text-black font-bold uppercase tracking-wider transition-colors">Forgot?</button>
               </div>
               <div className="relative">
                 <Input 
                   id="password" 
                   type={showPassword ? "text" : "password"} 
                   placeholder="••••••••" 
-                  className={`rounded-full bg-stone-100 px-6 pr-12 h-12 ${errors.password ? 'border-red-500' : ''}`}
+                  className={`h-16 px-8 pr-16 rounded-full border-zinc-200 bg-white/60 shadow-lg text-black font-serif ${errors.password ? 'border-red-500' : ''}`}
                   value={formData.password}
                   onChange={(e) => {
                     setFormData({ ...formData, password: e.target.value });
@@ -145,38 +131,26 @@ export default function Signin() {
                 <button 
                   type="button" 
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 transition-colors"
+                  className="absolute right-6 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-black transition-colors"
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              {errors.password && <p className="text-[10px] text-red-500 px-3 mt-0.5">{errors.password}</p>}
+              {errors.password && <p className="text-[10px] text-red-500 px-6 mt-1">{errors.password}</p>}
             </div>
 
-            <div className="flex items-center space-x-3 px-1">
-              <Checkbox 
-                id="remember" 
-                className="border-stone-300 data-[state=checked]:bg-lemon-lime data-[state=checked]:text-onyx w-5 h-5 rounded-md" 
-                checked={rememberMe}
-                onCheckedChange={(checked) => setRememberMe(checked as boolean)}
-              />
-              <label htmlFor="remember" className="text-sm font-medium leading-none text-stone-600">
-                Remember me
-              </label>
-            </div>
-
-            <PillButton type="submit" className="w-full mt-2 h-14 text-lg font-heading tracking-wide" disabled={loading}>
-              {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Sign In"}
+            <PillButton type="submit" className="w-full h-16 text-lg font-serif shadow-2xl" disabled={loading}>
+              {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Enter the Arena"}
             </PillButton>
           </form>
-        </div>
 
-        <p className="text-center mt-10 text-stone-500 mb-8 text-sm">
-          New here?{" "}
-          <Link href="/signup" className="text-lemon-lime font-extrabold hover:underline">
-            Create account
-          </Link>
-        </p>
+          <p className="text-center text-sm font-serif text-zinc-500">
+            New to the arena?{" "}
+            <Link href="/signup" className="text-black font-bold underline underline-offset-4 decoration-black/10 hover:decoration-black">
+              Create identity
+            </Link>
+          </p>
+        </div>
       </div>
     </main>
   );

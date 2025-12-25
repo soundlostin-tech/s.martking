@@ -25,7 +25,8 @@ import {
   AlertCircle,
   CheckCircle2,
   Swords,
-  TrendingUp
+  TrendingUp,
+  Settings
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useState, useEffect } from "react";
@@ -42,7 +43,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 
 export default function Profile() {
   const { user, loading: authLoading } = useAuth();
@@ -120,301 +120,191 @@ export default function Profile() {
     window.location.href = "/signin";
   };
 
-  const handleDeleteAccount = async () => {
-    toast.error("Account deletion is restricted for demo purposes. Please contact support.");
-    setIsDeleteDialogOpen(false);
-  };
-
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-stone-100">
-        <Loader2 className="w-8 h-8 animate-spin text-lemon-lime" />
+      <div className="min-h-screen flex items-center justify-center bg-zinc-100">
+        <Loader2 className="w-8 h-8 animate-spin text-black" />
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen pb-32 bg-stone-50">
-      {/* Header / Hero Section */}
+    <main className="min-h-screen pb-32 bg-zinc-100">
       <HeroSection 
-        title="" 
-        subtitle=""
-        className="mx-0 rounded-none pb-24 pt-16 relative overflow-hidden"
-      >
-        <div className="flex flex-col items-center gap-6 relative z-10">
-          <motion.div 
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="relative"
-          >
-            <Avatar className="w-32 h-32 border-4 border-lime-yellow shadow-[0_0_30px_rgba(214,253,2,0.4)] ring-8 ring-onyx/20">
+        title="Agent Profile" 
+        subtitle="Customize your identity and review your battlefield achievements."
+        className="bg-zinc-100"
+      />
+
+      <div className="px-6 -mt-16 relative z-10 space-y-8 max-w-2xl mx-auto">
+        {/* Profile Card */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-white/40 backdrop-blur-xl border border-white/20 rounded-[3rem] p-8 md:p-12 shadow-2xl relative overflow-hidden flex flex-col items-center text-center"
+        >
+          <div className="relative mb-6">
+            <Avatar className="w-32 h-32 border-4 border-white shadow-2xl">
               <AvatarImage src={profile?.avatar_url || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop"} />
-              <AvatarFallback className="bg-onyx text-white text-3xl font-heading">
+              <AvatarFallback className="bg-black text-white text-3xl font-heading">
                 {profile?.full_name?.substring(0, 2).toUpperCase() || "SK"}
               </AvatarFallback>
             </Avatar>
-            <div className="absolute -bottom-2 -right-2 bg-lime-yellow text-onyx p-2 rounded-full border-4 border-onyx shadow-xl">
-              <Trophy size={18} />
+            <div className="absolute -bottom-2 -right-2 bg-black text-white p-2.5 rounded-2xl shadow-xl">
+              <Trophy size={20} />
             </div>
-          </motion.div>
+          </div>
           
-          <div className="text-center space-y-2">
-            <h2 className="text-4xl font-heading text-white tracking-tight">{profile?.full_name || "Arena Champion"}</h2>
+          <div className="space-y-2 relative z-10">
+            <h2 className="text-4xl font-heading text-black">{profile?.full_name || "Arena Champion"}</h2>
             <div className="flex items-center justify-center gap-2">
-              <Badge className="bg-lime-yellow text-onyx border-none rounded-full px-5 py-1.5 text-xs font-bold uppercase tracking-[0.2em]">
-                {profile?.role || "Player"}
+              <Badge className="bg-black/5 text-black border-none rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-wider">
+                {profile?.role || "Elite Player"}
               </Badge>
-              <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
-                <CheckCircle2 size={12} className="text-green-400" />
-                <span className="text-[10px] text-white/80 font-bold uppercase tracking-wider">Verified</span>
+              <div className="flex items-center gap-1.5 px-3 py-1 bg-white/20 rounded-full border border-white/30 backdrop-blur-sm">
+                <CheckCircle2 size={12} className="text-black" />
+                <span className="text-[9px] text-black font-bold uppercase tracking-widest">Verified</span>
               </div>
             </div>
           </div>
+          <div className="absolute top-[-20%] left-[-20%] w-[50%] h-[50%] bg-zinc-200/30 blur-[100px] rounded-full" />
+        </motion.div>
+
+        {/* Action Controls */}
+        <div className="grid grid-cols-2 gap-4">
+          <button 
+            onClick={() => setIsEditing(!isEditing)}
+            className="h-20 flex items-center justify-center gap-3 bg-white/40 backdrop-blur-xl border border-white/20 rounded-full font-serif text-lg text-black shadow-xl hover:bg-white/60 transition-all active:scale-95"
+          >
+            {isEditing ? <X size={20} /> : <Settings size={20} />}
+            {isEditing ? "Close" : "Edit Profile"}
+          </button>
+          <button 
+            onClick={handleLogout}
+            className="h-20 flex items-center justify-center gap-3 bg-black text-white rounded-full font-serif text-lg shadow-xl hover:bg-zinc-800 transition-all active:scale-95"
+          >
+            <LogOut size={20} />
+            Sign Out
+          </button>
         </div>
 
-        {/* Decorative elements */}
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-lime-yellow/20 rounded-full blur-[120px]" />
-        </div>
-      </HeroSection>
-
-      <div className="px-6 -mt-12 relative z-20 space-y-8">
-        {/* Gameplay Stats Section */}
-        <section className="grid grid-cols-2 gap-4">
-          {[
-            { label: "Tournaments", value: profile?.matches_played || 0, icon: Swords, color: "text-blue-500", bg: "bg-blue-50" },
-            { label: "Win Rate", value: `${profile?.win_rate || 0}%`, icon: TrendingUp, color: "text-green-500", bg: "bg-green-50" },
-            { label: "Matches", value: (profile?.matches_played || 0) * 4, icon: Target, color: "text-purple-500", bg: "bg-purple-50" },
-            { label: "Earnings", value: `₹${(wallet?.lifetime_earnings || 0).toLocaleString()}`, icon: DollarSign, color: "text-amber-500", bg: "bg-amber-50" },
-          ].map((stat, i) => (
-            <motion.div 
-              key={i}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: i * 0.1 }}
-              className="bg-white p-5 rounded-[32px] border border-stone-200 shadow-sm flex flex-col gap-3 group hover:border-lime-yellow transition-all"
+        {/* Content Section */}
+        <AnimatePresence mode="wait">
+          {isEditing ? (
+            <motion.form 
+              key="edit"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              onSubmit={handleUpdateProfile}
+              className="bg-white/40 backdrop-blur-xl border border-white/20 rounded-[3rem] p-10 shadow-2xl space-y-8"
             >
-              <div className={`p-2.5 ${stat.bg} ${stat.color} rounded-2xl w-fit group-hover:scale-110 transition-transform`}>
-                <stat.icon size={20} />
+              <h3 className="text-2xl font-heading text-black">Update Identity</h3>
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-4">Full Name</label>
+                  <Input 
+                    value={formData.full_name} 
+                    onChange={(e) => setFormData({ ...formData, full_name: e.target.value })} 
+                    className="h-16 px-8 rounded-full border-zinc-200 bg-white/60 shadow-lg text-black font-serif"
+                    placeholder="E.g. John Doe"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-4">Phone Number</label>
+                  <Input 
+                    value={formData.phone} 
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })} 
+                    className="h-16 px-8 rounded-full border-zinc-200 bg-white/60 shadow-lg text-black font-serif"
+                    placeholder="+91 XXXXX XXXXX"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-4">Avatar Image URL</label>
+                  <Input 
+                    value={formData.avatar_url} 
+                    onChange={(e) => setFormData({ ...formData, avatar_url: e.target.value })} 
+                    className="h-16 px-8 rounded-full border-zinc-200 bg-white/60 shadow-lg text-black font-serif"
+                    placeholder="https://images..."
+                  />
+                </div>
               </div>
-              <div>
-                <p className="text-[10px] text-stone-400 uppercase font-bold tracking-widest">{stat.label}</p>
-                <h4 className="text-2xl font-heading text-onyx">{stat.value}</h4>
+              <button 
+                type="submit" 
+                disabled={saving}
+                className="w-full h-16 bg-black text-white rounded-full font-serif text-lg shadow-xl hover:bg-zinc-800 transition-all flex items-center justify-center gap-3"
+              >
+                {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Save size={20} /> Save Changes</>}
+              </button>
+            </motion.form>
+          ) : (
+            <motion.div 
+              key="view"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-8"
+            >
+              {/* Stats Grid */}
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { label: "Matches", value: profile?.matches_played || 12, icon: Swords },
+                  { label: "Win Rate", value: `${profile?.win_rate || 24}%`, icon: TrendingUp },
+                  { label: "Kills", value: "342", icon: Target },
+                  { label: "Rewards", value: `₹${(wallet?.lifetime_earnings || 0).toLocaleString()}`, icon: DollarSign },
+                ].map((stat, i) => (
+                  <div key={i} className="bg-white/40 backdrop-blur-xl border border-white/20 rounded-[2.5rem] p-6 shadow-xl flex flex-col gap-3">
+                    <div className="w-10 h-10 bg-black text-white rounded-2xl flex items-center justify-center shadow-lg">
+                      <stat.icon size={20} />
+                    </div>
+                    <div>
+                      <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest">{stat.label}</p>
+                      <p className="text-2xl font-heading text-black">{stat.value}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Account List */}
+              <div className="bg-white/40 backdrop-blur-xl border border-white/20 rounded-[3rem] p-4 shadow-2xl space-y-2">
+                {[
+                  { label: "Email", value: user?.email, icon: Mail },
+                  { label: "Phone", value: profile?.phone || "Not linked", icon: Phone },
+                  { label: "Location", value: profile?.country || "India", icon: Globe },
+                  { label: "Member Since", value: new Date(profile?.created_at).toLocaleDateString(), icon: Calendar },
+                ].map((item, i) => (
+                  <div key={i} className="group flex justify-between items-center p-5 hover:bg-white/40 rounded-[2rem] transition-all">
+                    <div className="flex items-center gap-5">
+                      <div className="w-12 h-12 bg-black/5 rounded-2xl flex items-center justify-center text-black/40 group-hover:bg-black group-hover:text-white transition-all">
+                        <item.icon size={22} />
+                      </div>
+                      <div>
+                        <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest">{item.label}</p>
+                        <p className="text-base font-serif text-black font-bold">{item.value}</p>
+                      </div>
+                    </div>
+                    <ChevronRight size={18} className="text-zinc-200 group-hover:text-black transition-colors" />
+                  </div>
+                ))}
               </div>
             </motion.div>
-          ))}
-        </section>
-
-        {/* Profile Details Section */}
-        <section className="bg-white rounded-[40px] border border-stone-200 overflow-hidden shadow-sm">
-          <div className="p-8 border-b border-stone-100 flex justify-between items-center">
-            <div>
-              <h3 className="font-heading text-2xl text-onyx">Profile Details</h3>
-              <p className="text-xs text-stone-400 font-medium">Manage your public information</p>
-            </div>
-            <button 
-              onClick={() => setIsEditing(!isEditing)}
-              className="w-12 h-12 flex items-center justify-center bg-stone-50 rounded-2xl text-stone-600 hover:bg-onyx hover:text-white transition-all shadow-sm"
-            >
-              {isEditing ? <X size={20} /> : <Edit2 size={20} />}
-            </button>
-          </div>
-          
-          <div className="p-8">
-            <AnimatePresence mode="wait">
-              {isEditing ? (
-                <motion.form 
-                  key="edit"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  onSubmit={handleUpdateProfile} 
-                  className="space-y-6"
-                >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-[11px] text-stone-500 uppercase font-bold tracking-wider ml-1">Full Name</label>
-                      <div className="relative">
-                        <User className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" size={18} />
-                        <Input 
-                          value={formData.full_name} 
-                          onChange={(e) => setFormData({ ...formData, full_name: e.target.value })} 
-                          className="rounded-[20px] bg-stone-50 border-stone-200 h-14 pl-12 focus-visible:ring-lime-yellow"
-                          placeholder="Your full name"
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[11px] text-stone-500 uppercase font-bold tracking-wider ml-1">Phone Number</label>
-                      <div className="relative">
-                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" size={18} />
-                        <Input 
-                          value={formData.phone} 
-                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })} 
-                          className="rounded-[20px] bg-stone-50 border-stone-200 h-14 pl-12 focus-visible:ring-lime-yellow"
-                          placeholder="+91 XXXXX XXXXX"
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[11px] text-stone-500 uppercase font-bold tracking-wider ml-1">Country / Region</label>
-                      <div className="relative">
-                        <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" size={18} />
-                        <Input 
-                          value={formData.country} 
-                          onChange={(e) => setFormData({ ...formData, country: e.target.value })} 
-                          className="rounded-[20px] bg-stone-50 border-stone-200 h-14 pl-12 focus-visible:ring-lime-yellow"
-                          placeholder="Select country"
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[11px] text-stone-500 uppercase font-bold tracking-wider ml-1">Avatar URL</label>
-                      <div className="relative">
-                        <Shield className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" size={18} />
-                        <Input 
-                          value={formData.avatar_url} 
-                          onChange={(e) => setFormData({ ...formData, avatar_url: e.target.value })} 
-                          className="rounded-[20px] bg-stone-50 border-stone-200 h-14 pl-12 focus-visible:ring-lime-yellow"
-                          placeholder="https://..."
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <Button 
-                    type="submit" 
-                    disabled={saving}
-                    className="w-full h-14 bg-onyx hover:bg-lime-yellow hover:text-onyx text-white rounded-[24px] font-bold text-base transition-all shadow-xl shadow-onyx/20 flex gap-3"
-                  >
-                    {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Save size={20} /> Update Profile</>}
-                  </Button>
-                </motion.form>
-              ) : (
-                <motion.div 
-                  key="view"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  className="space-y-2"
-                >
-                  {[
-                    { label: "Full Name", value: profile?.full_name, icon: User },
-                    { label: "Email Address", value: user?.email, icon: Mail, sub: "Verified Primary Email" },
-                    { label: "Phone Number", value: profile?.phone, icon: Phone },
-                    { label: "Country", value: profile?.country, icon: Globe },
-                  ].map((item, i) => (
-                    <div key={i} className="group flex justify-between items-center py-4 px-4 hover:bg-stone-50 rounded-2xl transition-colors">
-                      <div className="flex items-center gap-5">
-                        <div className="w-12 h-12 rounded-2xl bg-stone-100 flex items-center justify-center text-stone-500 group-hover:bg-onyx group-hover:text-white transition-all">
-                          <item.icon size={22} />
-                        </div>
-                        <div>
-                          <p className="text-[10px] text-stone-400 uppercase font-bold tracking-widest">{item.label}</p>
-                          <p className="text-base font-bold text-onyx leading-tight">{item.value || "Not configured"}</p>
-                          {item.sub && <p className="text-[10px] text-green-500 font-bold uppercase mt-1 flex items-center gap-1"><CheckCircle2 size={10} /> {item.sub}</p>}
-                        </div>
-                      </div>
-                      <ChevronRight size={18} className="text-stone-300 group-hover:text-onyx transition-colors" />
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </section>
-
-        {/* Account Actions Section */}
-        <section className="space-y-4">
-          <h3 className="font-heading text-xl text-onyx ml-2">Account & Security</h3>
-          <div className="bg-white rounded-[40px] border border-stone-200 overflow-hidden shadow-sm p-4 space-y-2">
-            {[
-              { label: "Change Password", icon: Lock, color: "text-amber-500", bg: "bg-amber-50" },
-              { label: "Notification Preferences", icon: Bell, color: "text-blue-500", bg: "bg-blue-50" },
-              { label: "Two-Factor Authentication", icon: Shield, color: "text-green-500", bg: "bg-green-50", badge: "On" },
-            ].map((action, i) => (
-              <button 
-                key={i}
-                className="w-full flex justify-between items-center p-4 hover:bg-stone-50 rounded-3xl transition-all group"
-              >
-                <div className="flex items-center gap-4">
-                  <div className={`w-12 h-12 rounded-2xl ${action.bg} ${action.color} flex items-center justify-center`}>
-                    <action.icon size={22} />
-                  </div>
-                  <div className="text-left">
-                    <span className="text-base font-bold text-onyx">{action.label}</span>
-                    {action.badge && (
-                      <span className="ml-3 px-2 py-0.5 bg-green-500 text-white text-[9px] font-bold rounded-full uppercase">
-                        {action.badge}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <ChevronRight size={20} className="text-stone-300 group-hover:text-onyx transition-colors" />
-              </button>
-            ))}
-            
-            <div className="h-[1px] bg-stone-100 mx-4 my-2" />
-
-            <button 
-              onClick={handleLogout}
-              className="w-full flex justify-between items-center p-4 hover:bg-red-50 rounded-3xl transition-all group"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-red-100 text-red-500 flex items-center justify-center">
-                  <LogOut size={22} />
-                </div>
-                <span className="text-base font-bold text-red-600">Logout</span>
-              </div>
-              <ChevronRight size={20} className="text-red-200 group-hover:text-red-600 transition-colors" />
-            </button>
-          </div>
-        </section>
+          )}
+        </AnimatePresence>
 
         {/* Danger Zone */}
-        <section className="bg-red-50/50 rounded-[40px] border border-red-100 p-8 flex flex-col items-center text-center space-y-4">
-          <div className="w-16 h-16 rounded-3xl bg-red-100 text-red-600 flex items-center justify-center">
-            <Trash2 size={28} />
+        <div className="bg-red-50/20 backdrop-blur-sm border border-red-100 rounded-[3rem] p-8 text-center space-y-4">
+          <div className="w-14 h-14 bg-red-100 text-red-500 rounded-2xl flex items-center justify-center mx-auto shadow-sm">
+            <Trash2 size={24} />
           </div>
-          <div>
-            <h4 className="font-heading text-xl text-red-600">Delete Account</h4>
-            <p className="text-sm text-red-500/80 max-w-[280px]">
-              This action is permanent and will result in the loss of all earnings and match history.
+          <div className="space-y-1">
+            <h4 className="text-lg font-heading text-red-600">Retire Account</h4>
+            <p className="text-xs text-red-400 font-serif max-w-[240px] mx-auto leading-relaxed">
+              Permanent deletion will remove all match history and forfeits remaining balance.
             </p>
           </div>
-          <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-            <DialogTrigger asChild>
-              <Button variant="ghost" className="text-red-600 font-bold hover:bg-red-100 rounded-2xl px-8 h-12">
-                Begin Deletion Process
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="rounded-[32px] border-none bg-white p-8">
-              <DialogHeader>
-                <div className="w-14 h-14 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center mb-4">
-                  <AlertCircle size={32} />
-                </div>
-                <DialogTitle className="text-2xl font-heading text-onyx">Are you absolutely sure?</DialogTitle>
-                <DialogDescription className="text-stone-500 text-sm">
-                  This action cannot be undone. All your data, tournament history, and wallet balance (₹{wallet?.balance || 0}) will be permanently deleted.
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter className="flex-col gap-3 mt-6">
-                <Button 
-                  onClick={handleDeleteAccount}
-                  className="w-full h-14 bg-red-600 hover:bg-red-700 text-white rounded-[20px] font-bold"
-                >
-                  Confirm Permanent Deletion
-                </Button>
-                <Button 
-                  variant="ghost" 
-                  onClick={() => setIsDeleteDialogOpen(false)}
-                  className="w-full h-14 rounded-[20px] font-bold text-stone-500"
-                >
-                  Cancel
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </section>
+          <button className="text-xs font-bold text-red-600 underline underline-offset-4 decoration-red-200 hover:decoration-red-600 transition-all">
+            Initiate Deletion
+          </button>
+        </div>
       </div>
 
       <BottomNav />

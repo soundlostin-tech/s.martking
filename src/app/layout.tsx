@@ -1,6 +1,6 @@
 "use client";
 
-import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import { Geist, Geist_Mono, Playfair_Display, Berkshire_Swash } from "next/font/google";
 import "./globals.css";
 import { VisualEditsMessenger } from "orchids-visual-edits";
 import { motion, AnimatePresence } from "framer-motion";
@@ -20,6 +20,12 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
 });
 
+const berkshire = Berkshire_Swash({
+  variable: "--font-berkshire",
+  weight: "400",
+  subsets: ["latin"],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} font-serif antialiased bg-background text-foreground`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${berkshire.variable} font-serif antialiased bg-background text-foreground`}
       >
         <AnimatePresence mode="wait">
           <motion.div

@@ -11,24 +11,36 @@ interface HeroSectionProps {
 
 export function HeroSection({ title, subtitle, children, className }: HeroSectionProps) {
   return (
-    <div className={`relative overflow-hidden rounded-b-[32px] hero-gradient px-6 pt-16 pb-12 shadow-lg ${className}`}>
-      {/* Animated Neon Blobs */}
-      <div className="neon-glow bg-lime-yellow w-64 h-64 -top-20 -right-20" />
-      <div className="neon-glow bg-olive w-48 h-48 bottom-0 -left-20" />
-      <div className="neon-glow bg-lemon-lime w-32 h-32 top-20 left-10" />
-
-      <div className="relative z-10 flex flex-col gap-2">
-        <h1 className="text-[36px] leading-tight text-white font-heading">
+    <div className={`relative overflow-hidden bg-zinc-100 px-6 pt-20 pb-16 ${className}`}>
+      {/* Subtle background detail */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-zinc-200/50 blur-[100px] rounded-full -mr-32 -mt-32" />
+      
+      <div className="relative z-10 flex flex-col gap-3 max-w-4xl mx-auto text-center">
+        <motion.h1 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-4xl md:text-5xl font-heading text-black tracking-tight"
+        >
           {title}
-        </h1>
-        <p className="text-[20px] text-alabaster-grey/80">
+        </motion.h1>
+        <motion.p 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-lg md:text-xl font-serif text-zinc-600 max-w-2xl mx-auto"
+        >
           {subtitle}
-        </p>
+        </motion.p>
         
         {children && (
-          <div className="mt-8">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="mt-8"
+          >
             {children}
-          </div>
+          </motion.div>
         )}
       </div>
     </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { HeroSection } from "@/components/layout/HeroSection";
 import { PillButton } from "@/components/ui/PillButton";
 import { Input } from "@/components/ui/input";
@@ -13,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
-import { Crown, Loader2, Eye, EyeOff } from "lucide-react";
+import { Crown, Loader2, Eye, EyeOff, Star } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
@@ -22,7 +23,6 @@ import { toast } from "sonner";
 export default function Signup() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [countryCode, setCountryCode] = useState("+91");
   const [formData, setFormData] = useState({
     fullname: "",
@@ -37,30 +37,12 @@ export default function Signup() {
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
-    if (!formData.fullname.trim()) {
-      newErrors.fullname = "Full name is required";
-    }
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Invalid email format";
-    }
-    if (!formData.phone) {
-      newErrors.phone = "Phone number is required";
-    } else if (countryCode === "+91" && !/^\d{10}$/.test(formData.phone)) {
-      newErrors.phone = "Phone number must be 10 digits";
-    }
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-    }
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
-    }
-    if (!formData.terms) {
-      newErrors.terms = "You must agree to the terms";
-    }
+    if (!formData.fullname.trim()) newErrors.fullname = "Full name is required";
+    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.phone) newErrors.phone = "Phone is required";
+    if (formData.password.length < 6) newErrors.password = "Min 6 characters";
+    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Mismatch";
+    if (!formData.terms) newErrors.terms = "Accept terms";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -85,37 +67,18 @@ export default function Signup() {
       if (authError) throw authError;
 
       if (authData.user) {
-        const isConfirmationRequired = !authData.session;
-
-        if (isConfirmationRequired) {
-          toast.success("Account created! Please check your email to confirm your account.");
-          router.push("/signin");
-          return;
-        }
-
-        // Create profile
-        const { error: profileError } = await supabase.from("profiles").insert({
+        await supabase.from("profiles").insert({
           id: authData.user.id,
           full_name: formData.fullname,
           phone: `${countryCode}${formData.phone}`,
         });
-
-        if (profileError) {
-          console.error("Profile creation error:", profileError);
-        }
-
-        // Create wallet
-        const { error: walletError } = await supabase.from("wallets").insert({
+        await supabase.from("wallets").insert({
           id: authData.user.id,
           balance: 0,
         });
 
-        if (walletError) {
-          console.error("Wallet creation error:", walletError);
-        }
-
         toast.success("Account created successfully!");
-        router.push("/");
+        router.push("/signin");
       }
     } catch (error: any) {
       toast.error(error.message || "An error occurred during signup");
@@ -125,174 +88,116 @@ export default function Signup() {
   };
 
   return (
-    <main className="min-h-screen bg-stone-100 pb-12">
-      {/* App Logo & Title */}
-      <div className="pt-8 px-6 flex flex-col items-center">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-10 h-10 bg-onyx rounded-full flex items-center justify-center border-2 border-lime-yellow shadow-md">
-            <Crown className="text-lime-yellow" size={20} />
+    <main className="min-h-screen bg-zinc-100 flex items-center justify-center p-6 relative overflow-hidden py-20">
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-zinc-200/50 blur-[120px] rounded-full" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-zinc-200/50 blur-[120px] rounded-full" />
+
+      <div className="relative max-w-lg w-full bg-white/30 backdrop-blur-xl border border-zinc-200/0 shadow-2xl rounded-[3rem] px-8 py-12 md:px-12 animate-fadeIn">
+        <div className="flex flex-col space-y-8">
+          <div className="text-center space-y-4">
+            <div className="flex justify-center mb-6">
+              <div className="w-16 h-16 bg-black text-white rounded-2xl flex items-center justify-center shadow-xl">
+                <Star size={32} />
+              </div>
+            </div>
+            <h1 className="text-4xl font-heading text-black leading-tight tracking-tight">
+              Create <span className="italic">Identity.</span>
+            </h1>
+            <p className="text-lg font-serif text-zinc-600">
+              Join the elite circle of warriors.
+            </p>
           </div>
-          <h1 className="text-xl font-heading tracking-tight text-onyx">Smartking's Arena</h1>
-        </div>
-      </div>
 
-      <HeroSection 
-        title="Create Account" 
-        subtitle="Join the elite community of gamers and start winning today."
-        className="pb-20 mt-4"
-      />
-
-      <div className="px-6 -mt-16">
-        <div className="bg-alabaster-grey-2 rounded-[24px] p-8 border border-stone-200 shadow-lg relative z-10">
-          <form className="flex flex-col gap-5" onSubmit={handleSignup}>
-            {/* Full Name */}
-            <div className="grid gap-2">
-              <Label htmlFor="fullname">Full Name</Label>
+          <form className="space-y-5" onSubmit={handleSignup}>
+            <div className="space-y-1">
+              <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-4">Agent Name</Label>
               <Input 
-                id="fullname" 
-                placeholder="John Doe" 
-                className={`rounded-full bg-stone-100 px-6 h-12 ${errors.fullname ? 'border-red-500' : ''}`}
+                placeholder="Full Name" 
+                className="h-14 px-8 rounded-full border-zinc-200 bg-white/60 shadow-lg font-serif"
                 value={formData.fullname}
-                onChange={(e) => {
-                    setFormData({ ...formData, fullname: e.target.value });
-                    if (errors.fullname) setErrors({ ...errors, fullname: "" });
-                }}
+                onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
               />
-              {errors.fullname && <p className="text-[10px] text-red-500 px-3 mt-0.5">{errors.fullname}</p>}
-            </div>
-            
-            {/* Email Address */}
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email Address</Label>
-              <Input 
-                id="email" 
-                type="email" 
-                placeholder="name@example.com" 
-                className={`rounded-full bg-stone-100 px-6 h-12 ${errors.email ? 'border-red-500' : ''}`}
-                value={formData.email}
-                onChange={(e) => {
-                    setFormData({ ...formData, email: e.target.value });
-                    if (errors.email) setErrors({ ...errors, email: "" });
-                }}
-              />
-              {errors.email && <p className="text-[10px] text-red-500 px-3 mt-0.5">{errors.email}</p>}
             </div>
 
-            {/* Phone Number */}
-            <div className="grid gap-2">
-              <Label htmlFor="phone">Phone Number</Label>
+            <div className="space-y-1">
+              <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-4">Email Address</Label>
+              <Input 
+                type="email" 
+                placeholder="warrior@arena.com" 
+                className="h-14 px-8 rounded-full border-zinc-200 bg-white/60 shadow-lg font-serif"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              />
+            </div>
+
+            <div className="space-y-1">
+              <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-4">Phone Number</Label>
               <div className="flex gap-2">
                 <Select value={countryCode} onValueChange={setCountryCode}>
-                  <SelectTrigger className="w-[90px] rounded-full bg-stone-100 h-12 px-4">
+                  <SelectTrigger className="w-[100px] h-14 rounded-full border-zinc-200 bg-white/60 shadow-lg">
                     <SelectValue placeholder="+91" />
                   </SelectTrigger>
-                  <SelectContent className="rounded-xl">
+                  <SelectContent>
                     <SelectItem value="+91">+91</SelectItem>
                     <SelectItem value="+1">+1</SelectItem>
-                    <SelectItem value="+44">+44</SelectItem>
-                    <SelectItem value="+971">+971</SelectItem>
                   </SelectContent>
                 </Select>
                 <Input 
-                  id="phone" 
-                  type="tel"
                   placeholder="9876543210" 
-                  className={`rounded-full bg-stone-100 px-6 h-12 flex-1 ${errors.phone ? 'border-red-500' : ''}`}
+                  className="h-14 px-8 rounded-full border-zinc-200 bg-white/60 shadow-lg font-serif flex-1"
                   value={formData.phone}
-                  onChange={(e) => {
-                      setFormData({ ...formData, phone: e.target.value });
-                      if (errors.phone) setErrors({ ...errors, phone: "" });
-                  }}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 />
               </div>
-              {errors.phone && <p className="text-[10px] text-red-500 px-3 mt-0.5">{errors.phone}</p>}
             </div>
 
-            {/* Password */}
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <div className="relative">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-4">Password</Label>
                 <Input 
-                  id="password" 
-                  type={showPassword ? "text" : "password"} 
-                  placeholder="••••••••" 
-                  className={`rounded-full bg-stone-100 px-6 pr-12 h-12 ${errors.password ? 'border-red-500' : ''}`}
+                  type="password" 
+                  placeholder="••••••" 
+                  className="h-14 px-8 rounded-full border-zinc-200 bg-white/60 shadow-lg font-serif"
                   value={formData.password}
-                  onChange={(e) => {
-                      setFormData({ ...formData, password: e.target.value });
-                      if (errors.password) setErrors({ ...errors, password: "" });
-                  }}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 />
-                <button 
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 transition-colors"
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
               </div>
-              {errors.password && <p className="text-[10px] text-red-500 px-3 mt-0.5">{errors.password}</p>}
-            </div>
-
-            {/* Confirm Password */}
-            <div className="grid gap-2">
-              <Label htmlFor="confirm-password">Confirm Password</Label>
-              <div className="relative">
+              <div className="space-y-1">
+                <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-4">Confirm</Label>
                 <Input 
-                  id="confirm-password" 
-                  type={showConfirmPassword ? "text" : "password"} 
-                  placeholder="••••••••" 
-                  className={`rounded-full bg-stone-100 px-6 pr-12 h-12 ${errors.confirmPassword ? 'border-red-500' : ''}`}
+                  type="password" 
+                  placeholder="••••••" 
+                  className="h-14 px-8 rounded-full border-zinc-200 bg-white/60 shadow-lg font-serif"
                   value={formData.confirmPassword}
-                  onChange={(e) => {
-                      setFormData({ ...formData, confirmPassword: e.target.value });
-                      if (errors.confirmPassword) setErrors({ ...errors, confirmPassword: "" });
-                  }}
+                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                 />
-                <button 
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 transition-colors"
-                >
-                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
               </div>
-              {errors.confirmPassword && <p className="text-[10px] text-red-500 px-3 mt-0.5">{errors.confirmPassword}</p>}
             </div>
 
-            {/* Terms & Conditions */}
-            <div className="flex flex-col gap-1 mt-1">
-              <div className="flex items-start space-x-3">
-                <Checkbox 
-                  id="terms" 
-                  className="mt-1 border-stone-300 data-[state=checked]:bg-lemon-lime data-[state=checked]:text-onyx w-5 h-5 rounded-md" 
-                  checked={formData.terms}
-                  onCheckedChange={(checked) => {
-                    setFormData({ ...formData, terms: checked as boolean });
-                    if (errors.terms) setErrors({ ...errors, terms: "" });
-                  }}
-                />
-                <label htmlFor="terms" className="text-sm font-medium leading-snug text-stone-600">
-                  I agree to the <Link href="/terms" className="text-olive font-bold hover:underline">Terms & Conditions</Link> and <Link href="/privacy" className="text-olive font-bold hover:underline">Privacy Policy</Link>
-                </label>
-              </div>
-              {errors.terms && <p className="text-[10px] text-red-500 px-3 mt-1">{errors.terms}</p>}
+            <div className="flex items-center space-x-3 px-4">
+              <Checkbox 
+                id="terms" 
+                className="w-5 h-5 rounded-md border-zinc-300" 
+                checked={formData.terms}
+                onCheckedChange={(checked) => setFormData({ ...formData, terms: checked as boolean })}
+              />
+              <label htmlFor="terms" className="text-xs font-serif text-zinc-500">
+                I accept the <span className="text-black font-bold">Terms of Engagement</span>
+              </label>
             </div>
 
-            {/* Submit Button */}
-            <PillButton type="submit" className="w-full mt-4 h-14 text-lg font-heading tracking-wide" disabled={loading}>
-              {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Create Account"}
+            <PillButton type="submit" className="w-full h-16 text-lg font-serif shadow-2xl mt-4" disabled={loading}>
+              {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Enlist Now"}
             </PillButton>
           </form>
-        </div>
 
-        {/* Link to Signin */}
-        <p className="text-center mt-10 text-stone-500 mb-8 text-sm">
-          Already have an account?{" "}
-          <Link href="/signin" className="text-lemon-lime font-extrabold hover:underline">
-            Sign in
-          </Link>
-        </p>
+          <p className="text-center text-sm font-serif text-zinc-500">
+            Already enlisted?{" "}
+            <Link href="/signin" className="text-black font-bold underline underline-offset-4 decoration-black/10 hover:decoration-black">
+              Sign in
+            </Link>
+          </p>
+        </div>
       </div>
     </main>
   );
