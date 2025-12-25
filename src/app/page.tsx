@@ -199,61 +199,61 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="group relative bg-black rounded-[2.5rem] p-10 shadow-2xl overflow-hidden hover:-translate-y-2 transition-all duration-500 border border-white/5"
+              className="group relative bg-zinc-50 rounded-[2.5rem] p-10 shadow-2xl overflow-hidden hover:-translate-y-2 transition-all duration-500 border border-black/5"
             >
               {/* Radial Glow Effects */}
               <div className="absolute inset-0 opacity-20 pointer-events-none">
-                <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-zinc-400 blur-[120px] rounded-full" />
-                <div className="absolute bottom-[-20%] right-[-10%] w-[80%] h-[80%] bg-zinc-600 blur-[120px] rounded-full" />
+                <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-zinc-200 blur-[120px] rounded-full" />
+                <div className="absolute bottom-[-20%] right-[-10%] w-[80%] h-[80%] bg-zinc-300 blur-[120px] rounded-full" />
               </div>
 
               <div className="relative z-10 space-y-8">
                 <div className="flex items-center justify-between">
                   <Badge className={`${
-                    match.status === 'live' ? 'bg-white text-black' : 'bg-white/10 text-white'
+                    match.status === 'live' ? 'bg-black text-white' : 'bg-black/10 text-black'
                   } rounded-full text-[10px] px-4 py-1.5 font-bold border-none tracking-widest shadow-lg`}>
                     {match.status.toUpperCase()}
                   </Badge>
                   <div className="flex -space-x-2">
                     {[1, 2, 3].map((_, i) => (
-                      <div key={i} className="w-7 h-7 rounded-full border-2 border-black bg-zinc-800" />
+                      <div key={i} className="w-7 h-7 rounded-full border-2 border-zinc-50 bg-zinc-200" />
                     ))}
-                    <div className="w-7 h-7 rounded-full border-2 border-black bg-white flex items-center justify-center text-[10px] font-bold text-black">+24</div>
+                    <div className="w-7 h-7 rounded-full border-2 border-zinc-50 bg-black flex items-center justify-center text-[10px] font-bold text-white">+24</div>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-6">
-                    <div className="w-20 h-20 rounded-3xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform duration-500 shadow-inner">
+                    <div className="w-20 h-20 rounded-3xl bg-black/5 flex items-center justify-center border border-black/10 group-hover:scale-110 transition-transform duration-500 shadow-inner">
                     {match.status === 'live' ? (
-                      <Play size={32} className="text-white" fill="currentColor" />
+                      <Play size={32} className="text-black" fill="currentColor" />
                     ) : (
-                      <Swords size={32} className="text-white" />
+                      <Swords size={32} className="text-black" />
                     )}
                   </div>
                   <div className="space-y-1">
-                    <h3 className="text-2xl font-heading text-white leading-tight">{match.title}</h3>
-                    <p className="text-[10px] text-white/40 font-bold uppercase tracking-[0.3em]">{match.tournament?.title}</p>
+                    <h3 className="text-2xl font-heading text-black leading-tight">{match.title}</h3>
+                    <p className="text-[10px] text-black/40 font-bold uppercase tracking-[0.3em]">{match.tournament?.title}</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-5">
-                  <div className="bg-white/[0.03] rounded-[2rem] p-6 border border-white/5 flex flex-col gap-1 hover:bg-white/[0.05] transition-colors">
-                    <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Prize Pool</span>
-                    <span className="text-2xl font-heading text-white">₹{match.tournament?.prize_pool}</span>
+                  <div className="bg-black/[0.03] rounded-[2rem] p-6 border border-black/5 flex flex-col gap-1 hover:bg-black/[0.05] transition-colors">
+                    <span className="text-[10px] font-bold text-black/30 uppercase tracking-widest">Prize Pool</span>
+                    <span className="text-2xl font-heading text-black">₹{match.tournament?.prize_pool}</span>
                   </div>
-                  <div className="bg-white/[0.03] rounded-[2rem] p-6 border border-white/5 flex flex-col gap-1 hover:bg-white/[0.05] transition-colors">
-                    <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Entry Fee</span>
-                    <span className="text-2xl font-heading text-white">₹{match.tournament?.entry_fee}</span>
+                  <div className="bg-black/[0.03] rounded-[2rem] p-6 border border-black/5 flex flex-col gap-1 hover:bg-black/[0.05] transition-colors">
+                    <span className="text-[10px] font-bold text-black/30 uppercase tracking-widest">Entry Fee</span>
+                    <span className="text-2xl font-heading text-black">₹{match.tournament?.entry_fee}</span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-6 border-t border-white/10">
-                  <div className="flex items-center gap-3 text-white/40">
+                <div className="flex items-center justify-between pt-6 border-t border-black/10">
+                  <div className="flex items-center gap-3 text-black/40">
                     <Users size={16} />
                     <span className="text-xs font-serif italic">{match.mode} • {match.map || 'Bermuda'}</span>
                   </div>
                   <Link href={match.status === 'live' ? `/live?matchId=${match.id}` : '/matches'} className="w-full max-w-[140px]">
-                    <button className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-white text-black text-[11px] font-bold hover:bg-zinc-200 transition-all shadow-xl active:scale-95">
+                    <button className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-black text-white text-[11px] font-bold hover:bg-zinc-800 transition-all shadow-xl active:scale-95">
                       {match.status === 'live' ? 'WATCH LIVE' : 'JOIN NOW'}
                     </button>
                   </Link>
