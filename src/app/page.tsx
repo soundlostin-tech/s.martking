@@ -86,7 +86,7 @@ export default function Home() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-2xl font-heading text-black">Smartking's</h2>
-            <p className="text-sm font-serif text-zinc-500">The most feared competitors this week</p>
+            <p className="text-sm font-serif text-zinc-500">Said Hamare Zamane Mein.....</p>
           </div>
           <Link href="/admin/leaderboard" className="text-xs font-bold text-black/40 hover:text-black transition-colors">VIEW ALL</Link>
         </div>
