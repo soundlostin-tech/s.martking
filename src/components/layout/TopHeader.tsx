@@ -55,27 +55,27 @@ export function TopHeader() {
           </Link>
         </motion.div>
 
-        <div className="flex items-center gap-3">
-          {user && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="hidden sm:flex items-center gap-3 bg-white/50 border border-black/5 rounded-full px-4 py-1.5 shadow-sm"
-            >
-              <Link href="/wallet" className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-full bg-black flex items-center justify-center text-white shadow-lg">
-                  <Wallet size={12} />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[8px] font-bold text-zinc-400 uppercase leading-none">Vault</span>
-                  <span className="text-xs font-heading text-black leading-none mt-0.5">₹{balance?.toLocaleString() ?? '0'}</span>
-                </div>
-              </Link>
-            </motion.div>
-          )}
-
-
-        </div>
+          <div className="flex items-center gap-3">
+            {user && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex items-center bg-white/40 backdrop-blur-xl border border-black/[0.03] rounded-2xl px-3 py-2 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1)] transition-all cursor-pointer group"
+              >
+                <Link href="/wallet" className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-zinc-800 to-black flex items-center justify-center text-white shadow-lg group-hover:rotate-12 transition-transform">
+                    <Wallet size={14} />
+                  </div>
+                  <div className="flex flex-col pr-1">
+                    <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-tighter leading-none">Vault Balance</span>
+                    <span className="text-sm font-heading text-black leading-none mt-1">₹{balance?.toLocaleString() ?? '0'}</span>
+                  </div>
+                </Link>
+              </motion.div>
+            )}
+          </div>
       </div>
     </header>
   );
