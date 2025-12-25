@@ -146,7 +146,7 @@ export default function Home() {
                       <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
                     </div>
                     {profile.status === 'Active' && (
-                      <div className="absolute bottom-1 right-1 w-5 h-5 bg-green-500 border-2 border-black rounded-full shadow-md" />
+                      <div className="absolute bottom-1 right-1 w-5 h-5 bg-white border-2 border-black rounded-full shadow-md" />
                     )}
                   </div>
                   <span className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-colors ${
@@ -180,7 +180,7 @@ export default function Home() {
           <div className="space-y-2">
             <h2 className="text-4xl font-heading text-black tracking-tight">Active <span className="italic font-serif opacity-60">Battles</span></h2>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+              <div className="w-2 h-2 rounded-full bg-white animate-pulse shadow-[0_0_8px_rgba(255,255,255,0.4)]" />
               <p className="text-xs font-bold uppercase tracking-widest text-zinc-400">Live tournaments in progress</p>
             </div>
           </div>
@@ -210,8 +210,8 @@ export default function Home() {
               <div className="relative z-10 space-y-8">
                 <div className="flex items-center justify-between">
                   <Badge className={`${
-                    match.status === 'live' ? 'bg-emerald-500' : 'bg-white/10'
-                  } text-white rounded-full text-[10px] px-4 py-1.5 font-bold border-none tracking-widest shadow-lg`}>
+                    match.status === 'live' ? 'bg-white text-black' : 'bg-white/10 text-white'
+                  } rounded-full text-[10px] px-4 py-1.5 font-bold border-none tracking-widest shadow-lg`}>
                     {match.status.toUpperCase()}
                   </Badge>
                   <div className="flex -space-x-2">
@@ -223,9 +223,9 @@ export default function Home() {
                 </div>
 
                 <div className="flex items-center gap-6">
-                  <div className="w-20 h-20 rounded-3xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform duration-500 shadow-inner">
+                    <div className="w-20 h-20 rounded-3xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform duration-500 shadow-inner">
                     {match.status === 'live' ? (
-                      <Play size={32} className="text-emerald-400" fill="currentColor" />
+                      <Play size={32} className="text-white" fill="currentColor" />
                     ) : (
                       <Swords size={32} className="text-white" />
                     )}
