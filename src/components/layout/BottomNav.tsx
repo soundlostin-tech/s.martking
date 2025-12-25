@@ -32,32 +32,32 @@ export function BottomNav() {
               <div className="relative">
                 <AnimatePresence>
                   {isActive && (
-                    <motion.div 
-                      layoutId="nav-glow"
-                      className="absolute inset-0 bg-lime-yellow/20 blur-xl rounded-full"
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={{ scale: 1.5, opacity: 1 }}
-                      exit={{ scale: 0, opacity: 0 }}
-                    />
-                  )}
-                </AnimatePresence>
-                
-                <div className={`relative z-10 p-2.5 rounded-2xl transition-all duration-500 ease-out ${isActive ? "bg-lime-yellow text-onyx shadow-[0_0_20px_rgba(214,253,2,0.4)] scale-110 -translate-y-1" : "text-stone-500 group-hover:text-white"}`}>
-                  <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+                      <motion.div 
+                        layoutId="nav-glow"
+                        className="absolute inset-0 bg-cyan-400/20 blur-xl rounded-full"
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1.5, opacity: 1 }}
+                        exit={{ scale: 0, opacity: 0 }}
+                      />
+                    )}
+                  </AnimatePresence>
+                  
+                  <div className={`relative z-10 p-2.5 rounded-2xl transition-all duration-500 ease-out ${isActive ? "bg-cyan-400 text-onyx shadow-[0_0_20px_rgba(34,211,238,0.4)] scale-110 -translate-y-1" : "text-stone-500 group-hover:text-white"}`}>
+                    <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+                  </div>
                 </div>
-              </div>
 
-              <span className={`text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${isActive ? "text-lime-yellow opacity-100 scale-105" : "text-stone-500 opacity-60"}`}>
-                {item.label}
-              </span>
-              
-              {isActive && (
-                <motion.div 
-                  layoutId="nav-dot"
-                  className="absolute -bottom-0.5 w-1 h-1 bg-lime-yellow rounded-full shadow-[0_0_10px_rgba(214,253,2,1)]"
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                />
-              )}
+                <span className={`text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${isActive ? "text-cyan-400 opacity-100 scale-105" : "text-stone-500 opacity-60"}`}>
+                  {item.label}
+                </span>
+                
+                {isActive && (
+                  <motion.div 
+                    layoutId="nav-dot"
+                    className="absolute -bottom-0.5 w-1 h-1 bg-cyan-400 rounded-full shadow-[0_0_10px_rgba(34,211,238,1)]"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
             </Link>
           );
         })}
