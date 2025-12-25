@@ -119,15 +119,25 @@ export function StoryUpload({ isOpen, onClose, onSuccess }: StoryUploadProps) {
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-zinc-100">
+                <div className="relative rounded-3xl overflow-hidden bg-zinc-100 flex items-center justify-center">
                   {file?.type.startsWith('video') ? (
-                    <video src={preview} className="w-full h-full object-cover" />
+                    <video 
+                      src={preview} 
+                      className="w-full h-auto max-h-[500px] object-contain block" 
+                      autoPlay 
+                      muted 
+                      loop 
+                    />
                   ) : (
-                    <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                    <img 
+                      src={preview} 
+                      alt="Preview" 
+                      className="w-full h-auto max-h-[500px] object-contain block" 
+                    />
                   )}
                   <button 
                     onClick={() => { setFile(null); setPreview(null); }}
-                    className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors"
+                    className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors z-10"
                   >
                     <X size={16} />
                   </button>

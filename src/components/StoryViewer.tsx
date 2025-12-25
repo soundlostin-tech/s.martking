@@ -76,14 +76,15 @@ export function StoryViewer({ stories, initialIndex, isOpen, onClose }: StoryVie
 
   return (
     <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] bg-black flex items-center justify-center"
-      >
-        <div className="relative w-full max-w-lg h-full max-h-[90vh] md:max-h-[800px] bg-zinc-900 overflow-hidden md:rounded-3xl">
-          {/* Progress Bars */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm"
+        >
+          <div className="relative w-full max-w-md bg-zinc-900 overflow-hidden rounded-3xl shadow-2xl">
+            {/* Progress Bars */}
+
           <div className="absolute top-4 left-4 right-4 z-20 flex gap-1">
             {stories.map((_, index) => (
               <div key={index} className="h-1 flex-1 bg-white/20 rounded-full overflow-hidden">
@@ -119,24 +120,26 @@ export function StoryViewer({ stories, initialIndex, isOpen, onClose }: StoryVie
             </button>
           </div>
 
-          {/* Content */}
-          <div className="w-full h-full flex items-center justify-center">
-            {currentStory.media_type === 'image' ? (
-              <img 
-                src={currentStory.media_url} 
-                alt={currentStory.caption} 
-                className="w-full h-full object-contain"
-              />
-            ) : (
-              <video 
-                src={currentStory.media_url} 
-                autoPlay 
-                muted 
-                playsInline 
-                className="w-full h-full object-contain"
-              />
-            )}
-          </div>
+            {/* Content */}
+            <div className="w-full flex items-center justify-center bg-zinc-900">
+              {currentStory.media_type === 'image' ? (
+                <img 
+                  src={currentStory.media_url} 
+                  alt={currentStory.caption} 
+                  className="w-full h-auto max-h-[80vh] object-contain block"
+                />
+              ) : (
+                <video 
+                  src={currentStory.media_url} 
+                  autoPlay 
+                  muted 
+                  playsInline 
+                  loop
+                  className="w-full h-auto max-h-[80vh] object-contain block"
+                />
+              )}
+            </div>
+
 
           {/* Caption */}
           {currentStory.caption && (
