@@ -50,13 +50,6 @@ export function BottomNav() {
                 </span>
               </div>
               
-              {isActive && (
-                <motion.div 
-                  layoutId="nav-pill"
-                  className="absolute inset-x-2 inset-y-3 bg-black/5 rounded-3xl -z-0"
-                  transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                />
-              )}
             </Link>
           );
         })}
