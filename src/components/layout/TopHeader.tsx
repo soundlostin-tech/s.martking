@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Wallet, Bell, User, Search } from "lucide-react";
+import { Wallet } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
@@ -74,30 +74,7 @@ export function TopHeader() {
             </motion.div>
           )}
 
-          <div className="flex items-center gap-2">
-            <Link href="/wallet" className="sm:hidden w-10 h-10 rounded-full bg-white/50 border border-black/5 flex items-center justify-center shadow-sm">
-              <Wallet size={18} className="text-black" />
-            </Link>
-            
-            <button className="w-10 h-10 rounded-full bg-white/50 border border-black/5 flex items-center justify-center shadow-sm relative">
-              <Bell size={18} className="text-black" />
-              <div className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-zinc-100" />
-            </button>
 
-            <Link href="/profile">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-10 h-10 rounded-full bg-black border border-black/5 flex items-center justify-center shadow-lg overflow-hidden"
-              >
-                {user?.user_metadata?.avatar_url ? (
-                  <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover" />
-                ) : (
-                  <User size={20} className="text-white" />
-                )}
-              </motion.div>
-            </Link>
-          </div>
         </div>
       </div>
     </header>
