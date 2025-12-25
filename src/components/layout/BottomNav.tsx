@@ -17,7 +17,7 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-lg bg-black/90 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-[2.5rem] px-4 overflow-hidden">
+    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-lg bg-background/80 backdrop-blur-2xl border border-black/5 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-[2.5rem] px-4 overflow-hidden">
       <div className="flex justify-around items-center h-22 py-2">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
@@ -37,14 +37,14 @@ export function BottomNav() {
                   }}
                   transition={{ type: "spring", stiffness: 400, damping: 25 }}
                   className={`relative z-10 p-2.5 rounded-2xl transition-colors ${
-                    isActive ? "text-white" : "text-white/30 hover:text-white/60"
+                    isActive ? "text-black" : "text-black/30 hover:text-black/60"
                   }`}
                 >
                   <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
                 </motion.div>
 
                 <span className={`text-[9px] font-bold uppercase tracking-[0.2em] transition-colors ${
-                  isActive ? "text-white" : "text-white/20"
+                  isActive ? "text-black" : "text-black/20"
                 }`}>
                   {item.label}
                 </span>
@@ -53,7 +53,7 @@ export function BottomNav() {
               {isActive && (
                 <motion.div 
                   layoutId="nav-pill"
-                  className="absolute inset-x-2 inset-y-3 bg-white/10 rounded-3xl -z-0"
+                  className="absolute inset-x-2 inset-y-3 bg-black/5 rounded-3xl -z-0"
                   transition={{ type: "spring", stiffness: 350, damping: 30 }}
                 />
               )}
