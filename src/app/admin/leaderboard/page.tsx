@@ -1,23 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { 
   Trophy, 
-  BarChart3, 
-  Download, 
   Search, 
-  Filter, 
   ArrowUpDown, 
   ChevronRight,
-  User,
-  Shield,
   Target,
   Swords,
   TrendingUp,
-  DollarSign,
   Loader2,
   Medal,
-  ExternalLink
+  ExternalLink,
+  Users,
+  Clock,
+  Zap,
+  IndianRupee,
+  MoreVertical,
+  Download
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/lib/supabase";
@@ -43,7 +43,6 @@ import {
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -59,7 +58,6 @@ export default function AdminLeaderboard() {
   const [leaderboard, setLeaderboard] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "points", direction: "desc" });
-  const [selectedPlayer, setSelectedPlayer] = useState<any>(null);
 
   useEffect(() => {
     fetchInitialData();
@@ -85,7 +83,6 @@ export default function AdminLeaderboard() {
   const fetchLeaderboardData = async () => {
     setLoading(true);
     try {
-      // Fetch profiles joined with wallets for earnings
       const { data, error } = await supabase
         .from("profiles")
         .select(`
@@ -102,12 +99,9 @@ export default function AdminLeaderboard() {
 
       if (error) throw error;
 
-      // Transform data and add simulated stats for kills/points
       const transformedData = data.map((profile: any, index: number) => {
         const earnings = profile.wallets?.lifetime_earnings || 0;
         const matches = profile.matches_played || 0;
-        
-        // Simulating kills and points based on matches and win rate
         const avgKillsPerMatch = 4.5 + (parseFloat(profile.win_rate) / 10);
         const totalKills = Math.floor(matches * avgKillsPerMatch);
         const wins = Math.floor(matches * (parseFloat(profile.win_rate) / 100));
@@ -124,16 +118,14 @@ export default function AdminLeaderboard() {
           earnings,
           win_rate: profile.win_rate,
           role: profile.role,
-          team: index % 3 === 0 ? "Team SK" : index % 3 === 1 ? "Soul" : "GodLike" // Simulated team names
+          team: index % 3 === 0 ? "TEAM SK" : index % 3 === 1 ? "SOUL" : "GODLIKE"
         };
       });
 
-      // Sort by points initially
       const sortedData = [...transformedData].sort((a, b) => b.points - a.points);
       setLeaderboard(sortedData);
     } catch (error: any) {
       toast.error("Failed to load leaderboard");
-      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -154,330 +146,179 @@ export default function AdminLeaderboard() {
     setLeaderboard(sorted);
   };
 
-  const handleExport = () => {
-    const headers = ["Rank", "Player", "Team", "Matches", "Wins", "Kills", "Points", "Earnings"];
-    const csvData = leaderboard.map((player, index) => [
-      index + 1,
-      player.name,
-      player.team,
-      player.matches,
-      player.wins,
-      player.kills,
-      player.points,
-      `₹${player.earnings}`
-    ]);
-
-    const csvContent = [headers, ...csvData].map(e => e.join(",")).join("\n");
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    link.setAttribute("download", `leaderboard_${selectedTournament}_${new Date().toISOString().split('T')[0]}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    toast.success("Leaderboard exported successfully");
-  };
-
-  const filteredLeaderboard = leaderboard.filter(player => 
-    player.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    player.team.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredLeaderboard = useMemo(() => {
+    return leaderboard.filter(player => 
+      player.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      player.team.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [leaderboard, searchQuery]);
 
   const topPlayer = leaderboard[0];
 
   return (
-    <main className="min-h-screen pb-24 bg-stone-50">
+    <main className="min-h-screen pb-32 bg-zinc-50">
       <HeroSection 
-        title="Arena Ranks" 
-        subtitle="Live monitoring of elite performance"
-        className="mx-0 rounded-none pb-12"
+        title={<>Arena <span className="italic font-serif opacity-60">Ranks</span></>}
+        subtitle="Live monitoring of elite performance."
+        className="mx-0 rounded-none pb-32 bg-zinc-50 border-b border-black/5"
       >
-        <div className="mt-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md p-1 rounded-2xl border border-white/20">
-            <Select value={selectedTournament} onValueChange={setSelectedTournament}>
-              <SelectTrigger className="w-[240px] h-12 bg-transparent border-none text-white font-bold focus:ring-0">
-                <SelectValue placeholder="Select Tournament" />
-              </SelectTrigger>
-              <SelectContent className="bg-onyx border-white/10 text-white rounded-2xl">
-                <SelectItem value="global" className="hover:bg-white/10 cursor-pointer">Global Leaderboard</SelectItem>
-                {tournaments.map((t) => (
-                  <SelectItem key={t.id} value={t.id} className="hover:bg-white/10 cursor-pointer">{t.title}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          
-          <Button 
-            onClick={handleExport}
-            className="bg-lime-yellow hover:bg-white text-onyx font-bold rounded-2xl h-12 px-6 flex gap-2 transition-all shadow-lg"
-          >
-            <Download size={18} /> Export Data
-          </Button>
+        <div className="absolute inset-0 opacity-20 pointer-events-none overflow-hidden">
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-zinc-200 rounded-full blur-[120px]" />
+          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-zinc-300 rounded-full blur-[120px]" />
         </div>
       </HeroSection>
 
-      <div className="max-w-7xl mx-auto px-6 -mt-8 space-y-6">
-        {/* Top Player Overview Card */}
+      <div className="px-6 -mt-24 relative z-10 space-y-10 max-w-5xl mx-auto">
+        {/* Top Player Card */}
         {topPlayer && (
           <motion.div 
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="bg-onyx text-white p-8 rounded-[40px] border border-white/10 shadow-2xl relative overflow-hidden"
+            className="bg-primary text-black p-10 rounded-[3rem] shadow-2xl shadow-primary/10 border border-black/5 relative overflow-hidden group"
           >
-            <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
+            <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
               <div className="relative">
-                <Avatar className="w-32 h-32 border-4 border-lime-yellow ring-8 ring-white/5">
+                <Avatar className="w-40 h-40 border-8 border-white shadow-2xl">
                   <AvatarImage src={topPlayer.avatar_url} />
-                  <AvatarFallback className="bg-stone-800 text-white text-3xl font-heading">
+                  <AvatarFallback className="bg-black text-white text-4xl font-heading">
                     {topPlayer.name.substring(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
-                <div className="absolute -bottom-2 -right-2 bg-lime-yellow text-onyx p-2 rounded-full border-4 border-onyx shadow-xl">
-                  <Medal size={20} />
+                <div className="absolute -bottom-2 -right-2 bg-black text-white p-3 rounded-2xl shadow-xl">
+                  <Medal size={24} />
                 </div>
               </div>
 
-              <div className="flex-1 text-center md:text-left space-y-2">
-                <div className="flex items-center justify-center md:justify-start gap-2">
-                  <Badge className="bg-lime-yellow text-onyx border-none rounded-full px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider">
-                    MVP Player
+              <div className="flex-1 text-center md:text-left space-y-3">
+                <div className="flex items-center justify-center md:justify-start gap-3">
+                  <Badge className="bg-black text-white border-none rounded-full px-4 py-1.5 text-[9px] font-bold uppercase tracking-widest">
+                    MVP PLAYER
                   </Badge>
-                  <span className="text-white/40 text-xs font-medium">RANK #1</span>
+                  <span className="text-black/40 text-[10px] font-bold uppercase tracking-widest">RANK #1</span>
                 </div>
-                <h2 className="text-4xl font-heading tracking-tight">{topPlayer.name}</h2>
-                <p className="text-white/60 font-medium">Member of <span className="text-lime-yellow">{topPlayer.team}</span></p>
+                <h2 className="text-5xl font-heading tracking-tight leading-none">{topPlayer.name}</h2>
+                <p className="text-black/40 font-bold text-xs uppercase tracking-[0.2em]">Affiliation: <span className="text-black">{topPlayer.team}</span></p>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full md:w-auto">
+              <div className="grid grid-cols-2 gap-4 w-full md:w-auto">
                 {[
-                  { label: "Points", value: topPlayer.points, icon: Trophy, color: "text-lime-yellow" },
-                  { label: "Kills", value: topPlayer.kills, icon: Target, color: "text-red-400" },
-                  { label: "Wins", value: topPlayer.wins, icon: Swords, color: "text-blue-400" },
-                  { label: "Earnings", value: `₹${topPlayer.earnings.toLocaleString()}`, icon: DollarSign, color: "text-green-400" },
+                  { label: "Points", value: topPlayer.points, icon: Trophy },
+                  { label: "Kills", value: topPlayer.kills, icon: Target },
                 ].map((stat, i) => (
-                  <div key={i} className="bg-white/5 backdrop-blur-md p-4 rounded-3xl border border-white/10 text-center">
-                    <stat.icon size={16} className={`${stat.color} mx-auto mb-2`} />
-                    <p className="text-[10px] text-white/40 uppercase font-bold tracking-widest">{stat.label}</p>
-                    <p className="text-xl font-heading text-white">{stat.value}</p>
+                  <div key={i} className="bg-white/40 backdrop-blur-md p-6 rounded-[2rem] border border-white/20 text-center min-w-[120px]">
+                    <stat.icon size={20} className="mx-auto mb-2 opacity-40" />
+                    <p className="text-[9px] text-black/40 uppercase font-bold tracking-widest">{stat.label}</p>
+                    <p className="text-2xl font-heading text-black">{stat.value}</p>
                   </div>
                 ))}
               </div>
             </div>
-
-            {/* Background Decoration */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-lime-yellow/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-white/20 rounded-full blur-[100px]" />
           </motion.div>
         )}
 
-        {/* Leaderboard Table Section */}
-        <section className="bg-white rounded-[40px] border border-stone-200 overflow-hidden shadow-sm">
-          <div className="p-8 border-b border-stone-100 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div>
-              <h3 className="font-heading text-2xl text-onyx">Rankings</h3>
-              <p className="text-xs text-stone-400 font-medium">Sorted by highest points across the arena</p>
+        {/* Action & Filter Bar */}
+        <div className="bg-zinc-50 rounded-[2.5rem] border border-black/5 p-6 shadow-2xl shadow-black/5 flex flex-col md:flex-row gap-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-black/20" size={18} />
+            <Input 
+              className="bg-black/[0.03] border-none pl-14 rounded-2xl h-14 text-xs font-bold tracking-wide focus-visible:ring-black placeholder:text-black/20" 
+              placeholder="SEARCH PLAYERS OR TEAMS..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <div className="flex gap-2">
+            <Select value={selectedTournament} onValueChange={setSelectedTournament}>
+              <SelectTrigger className="w-[180px] h-14 rounded-2xl bg-black/[0.03] border-none font-bold text-[10px] tracking-widest">
+                <SelectValue placeholder="TOURNAMENT" />
+              </SelectTrigger>
+              <SelectContent className="rounded-2xl border-black/5 bg-zinc-50">
+                <SelectItem value="global" className="text-[10px] uppercase font-bold">GLOBAL ARENA</SelectItem>
+                {tournaments.map((t) => (
+                  <SelectItem key={t.id} value={t.id} className="text-[10px] uppercase font-bold">{t.title}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button className="h-14 w-14 rounded-2xl bg-black text-white hover:bg-zinc-800 transition-all p-0 shadow-xl shadow-black/10">
+              <Download size={20} />
+            </Button>
+          </div>
+        </div>
+
+        {/* Leaderboard Table */}
+        <div className="space-y-6">
+          <div className="flex items-end justify-between px-2">
+            <div className="space-y-1">
+              <h3 className="text-2xl font-heading text-black">Arena <span className="italic font-serif opacity-60">Directory</span></h3>
+              <p className="text-[10px] font-bold text-black/30 uppercase tracking-[0.2em]">{filteredLeaderboard.length} WARRIORS RANKED</p>
             </div>
-            
-            <div className="relative w-full md:w-72">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" size={18} />
-              <Input 
-                placeholder="Search players or teams..." 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="rounded-2xl bg-stone-50 border-stone-200 h-12 pl-12 focus-visible:ring-lime-yellow"
-              />
-            </div>
+            <Badge className="bg-black/5 text-black/40 border-none font-bold text-[8px] tracking-widest px-3 py-1">LAST UPDATED: JUST NOW</Badge>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="bg-zinc-50 rounded-[3rem] border border-black/5 shadow-2xl shadow-black/[0.02] overflow-hidden">
             <Table>
-              <TableHeader className="bg-stone-50/50">
-                <TableRow className="border-stone-100 hover:bg-transparent">
-                  <TableHead className="w-20 pl-8 font-bold text-stone-400 uppercase text-[10px] tracking-widest">Rank</TableHead>
-                  <TableHead className="font-bold text-stone-400 uppercase text-[10px] tracking-widest">Player</TableHead>
-                  <TableHead className="font-bold text-stone-400 uppercase text-[10px] tracking-widest">Team</TableHead>
-                  <TableHead 
-                    className="font-bold text-stone-400 uppercase text-[10px] tracking-widest cursor-pointer hover:text-onyx transition-colors"
-                    onClick={() => handleSort("matches")}
-                  >
-                    <div className="flex items-center gap-2">Matches <ArrowUpDown size={12} /></div>
+              <TableHeader className="bg-black/[0.02]">
+                <TableRow className="border-black/5 hover:bg-transparent h-16">
+                  <TableHead className="w-24 pl-8 font-bold text-black/20 uppercase text-[9px] tracking-widest">Rank</TableHead>
+                  <TableHead className="font-bold text-black/20 uppercase text-[9px] tracking-widest">Warrior</TableHead>
+                  <TableHead className="font-bold text-black/20 uppercase text-[9px] tracking-widest">Affiliation</TableHead>
+                  <TableHead className="font-bold text-black/20 uppercase text-[9px] tracking-widest text-center">Wins</TableHead>
+                  <TableHead className="font-bold text-black/20 uppercase text-[9px] tracking-widest text-center cursor-pointer hover:text-black transition-colors" onClick={() => handleSort("points")}>
+                    <div className="flex items-center justify-center gap-2">Points <ArrowUpDown size={12} /></div>
                   </TableHead>
-                  <TableHead 
-                    className="font-bold text-stone-400 uppercase text-[10px] tracking-widest cursor-pointer hover:text-onyx transition-colors"
-                    onClick={() => handleSort("wins")}
-                  >
-                    <div className="flex items-center gap-2">Wins <ArrowUpDown size={12} /></div>
-                  </TableHead>
-                  <TableHead 
-                    className="font-bold text-stone-400 uppercase text-[10px] tracking-widest cursor-pointer hover:text-onyx transition-colors"
-                    onClick={() => handleSort("kills")}
-                  >
-                    <div className="flex items-center gap-2">Kills <ArrowUpDown size={12} /></div>
-                  </TableHead>
-                  <TableHead 
-                    className="font-bold text-stone-400 uppercase text-[10px] tracking-widest cursor-pointer hover:text-onyx transition-colors"
-                    onClick={() => handleSort("points")}
-                  >
-                    <div className="flex items-center gap-2 text-onyx font-black">Points <ArrowUpDown size={12} /></div>
-                  </TableHead>
-                  <TableHead 
-                    className="font-bold text-stone-400 uppercase text-[10px] tracking-widest cursor-pointer hover:text-onyx transition-colors pr-8"
-                    onClick={() => handleSort("earnings")}
-                  >
-                    <div className="flex items-center gap-2">Earnings <ArrowUpDown size={12} /></div>
-                  </TableHead>
+                  <TableHead className="font-bold text-black/20 uppercase text-[9px] tracking-widest text-right pr-8">Earnings</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {loading ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="h-64 text-center">
-                      <Loader2 className="w-8 h-8 animate-spin text-lime-yellow mx-auto" />
-                      <p className="text-stone-400 mt-4 font-medium">Calibrating ranks...</p>
+                    <TableCell colSpan={6} className="h-64 text-center">
+                      <Loader2 className="w-10 h-10 animate-spin text-black/10 mx-auto" />
                     </TableCell>
                   </TableRow>
-                ) : filteredLeaderboard.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={8} className="h-64 text-center">
-                      <p className="text-stone-400 font-medium">No players found matching your search</p>
+                ) : filteredLeaderboard.map((player, index) => (
+                  <TableRow key={player.id} className="border-black/5 hover:bg-black/[0.01] transition-colors h-24">
+                    <TableCell className="pl-8">
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-heading text-lg ${
+                        index === 0 ? "bg-primary text-black" :
+                        index === 1 ? "bg-zinc-200 text-black/60" :
+                        index === 2 ? "bg-zinc-100 text-black/40" : "text-black/20"
+                      }`}>
+                        {index + 1}
+                      </div>
                     </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-4">
+                        <Avatar className="w-12 h-12 border border-black/5 shadow-sm">
+                          <AvatarImage src={player.avatar_url} />
+                          <AvatarFallback className="bg-black/5 text-black/20 text-sm font-heading">
+                            {player.name.substring(0, 2).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="space-y-0.5">
+                          <p className="font-heading text-black">{player.name}</p>
+                          <p className="text-[9px] text-black/30 font-bold uppercase tracking-widest">{player.role}</p>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="rounded-full border-black/5 text-black/40 font-bold text-[9px] tracking-widest px-3 py-0.5">
+                        {player.team}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-center font-heading text-black/40">{player.wins}</TableCell>
+                    <TableCell className="text-center font-heading text-xl text-black">{player.points}</TableCell>
+                    <TableCell className="text-right pr-8 font-heading text-black">₹{player.earnings.toLocaleString()}</TableCell>
                   </TableRow>
-                ) : (
-                  filteredLeaderboard.map((player, index) => (
-                    <Sheet key={player.id}>
-                      <SheetTrigger asChild>
-                        <TableRow 
-                          className="border-stone-100 hover:bg-stone-50 cursor-pointer group transition-colors"
-                          onClick={() => setSelectedPlayer(player)}
-                        >
-                          <TableCell className="pl-8 py-6">
-                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-heading text-sm ${
-                              index === 0 ? "bg-amber-100 text-amber-600" :
-                              index === 1 ? "bg-stone-200 text-stone-600" :
-                              index === 2 ? "bg-orange-100 text-orange-600" :
-                              "bg-stone-50 text-stone-400"
-                            }`}>
-                              {index + 1}
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-3">
-                              <Avatar className="w-10 h-10 border-2 border-stone-100 group-hover:border-lime-yellow transition-colors">
-                                <AvatarImage src={player.avatar_url} />
-                                <AvatarFallback className="bg-stone-100 text-stone-600 text-xs">
-                                  {player.name.substring(0, 2).toUpperCase()}
-                                </AvatarFallback>
-                              </Avatar>
-                              <div>
-                                <p className="font-bold text-onyx">{player.name}</p>
-                                <p className="text-[10px] text-stone-400 font-bold uppercase tracking-widest">{player.role || "Elite Player"}</p>
-                              </div>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant="outline" className="rounded-full border-stone-200 text-stone-500 bg-stone-50 font-bold px-3 py-0.5">
-                              {player.team}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="font-medium text-stone-600">{player.matches}</TableCell>
-                          <TableCell className="font-medium text-blue-600">{player.wins}</TableCell>
-                          <TableCell className="font-medium text-red-600">{player.kills}</TableCell>
-                          <TableCell className="font-black text-onyx text-base">{player.points}</TableCell>
-                          <TableCell className="font-bold text-green-600 pr-8">₹{player.earnings.toLocaleString()}</TableCell>
-                        </TableRow>
-                      </SheetTrigger>
-                      <SheetContent className="w-full sm:max-w-md bg-white border-l border-stone-200 p-0">
-                        <PlayerDetails player={player} />
-                      </SheetContent>
-                    </Sheet>
-                  ))
-                )}
+                ))}
               </TableBody>
             </Table>
           </div>
-        </section>
+        </div>
       </div>
 
       <AdminNav />
     </main>
-  );
-}
-
-function PlayerDetails({ player }: { player: any }) {
-  if (!player) return null;
-
-  return (
-    <div className="h-full flex flex-col">
-      <div className="relative h-48 bg-onyx overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-lime-yellow/20 to-transparent" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-lime-yellow/10 rounded-full blur-[60px]" />
-      </div>
-
-      <div className="px-8 -mt-16 flex-1 space-y-8 pb-12 overflow-y-auto no-scrollbar">
-        <div className="flex flex-col items-center text-center space-y-4">
-          <Avatar className="w-32 h-32 border-4 border-white shadow-xl ring-4 ring-lime-yellow/20">
-            <AvatarImage src={player.avatar_url} />
-            <AvatarFallback className="bg-onyx text-white text-3xl font-heading">
-              {player.name.substring(0, 2).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <h3 className="text-3xl font-heading text-onyx">{player.name}</h3>
-            <p className="text-stone-400 font-medium">Joined Arena 2025 • {player.team}</p>
-            <div className="flex justify-center gap-2 mt-4">
-              <Badge className="bg-lime-yellow text-onyx border-none rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-widest">
-                {player.role || "PRO PLAYER"}
-              </Badge>
-              <Badge variant="outline" className="rounded-full border-stone-200 text-stone-500 font-bold px-4 py-1 text-[10px] uppercase tracking-widest">
-                VERIFIED
-              </Badge>
-            </div>
-          </div>
-        </div>
-
-        <section className="space-y-4">
-          <h4 className="text-xs font-black text-stone-400 uppercase tracking-[0.2em] ml-1">Performance Matrix</h4>
-          <div className="grid grid-cols-2 gap-4">
-            {[
-              { label: "Matches Played", value: player.matches, icon: Swords, color: "text-blue-500", bg: "bg-blue-50" },
-              { label: "Total Victory", value: player.wins, icon: Trophy, color: "text-amber-500", bg: "bg-amber-50" },
-              { label: "Kill Count", value: player.kills, icon: Target, color: "text-red-500", bg: "bg-red-50" },
-              { label: "Win Ratio", value: `${player.win_rate}%`, icon: TrendingUp, color: "text-green-500", bg: "bg-green-50" },
-            ].map((stat, i) => (
-              <div key={i} className="bg-stone-50 p-4 rounded-3xl border border-stone-100">
-                <div className={`w-10 h-10 rounded-2xl ${stat.bg} ${stat.color} flex items-center justify-center mb-3`}>
-                  <stat.icon size={20} />
-                </div>
-                <p className="text-[10px] text-stone-400 uppercase font-bold tracking-widest">{stat.label}</p>
-                <p className="text-xl font-heading text-onyx">{stat.value}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="space-y-4">
-          <h4 className="text-xs font-black text-stone-400 uppercase tracking-[0.2em] ml-1">Financial Overview</h4>
-          <div className="bg-onyx text-white p-6 rounded-[32px] border border-white/10 flex justify-between items-center shadow-xl">
-            <div>
-              <p className="text-[10px] text-white/40 uppercase font-bold tracking-widest">Lifetime Earnings</p>
-              <h4 className="text-3xl font-heading text-lime-yellow mt-1">₹{player.earnings.toLocaleString()}</h4>
-            </div>
-            <div className="p-4 bg-white/10 rounded-2xl">
-              <DollarSign size={24} className="text-white" />
-            </div>
-          </div>
-        </section>
-
-        <div className="space-y-3">
-          <Button className="w-full h-14 bg-onyx hover:bg-lime-yellow hover:text-onyx text-white rounded-[24px] font-bold text-base transition-all shadow-xl shadow-onyx/20 flex gap-3">
-            <ExternalLink size={20} /> View Full History
-          </Button>
-          <Button variant="outline" className="w-full h-14 border-stone-200 hover:bg-stone-50 rounded-[24px] font-bold text-stone-500">
-            Contact Player
-          </Button>
-        </div>
-      </div>
-    </div>
   );
 }

@@ -175,27 +175,27 @@ export default function AdminLive() {
 
       <div className="px-6 -mt-24 relative z-10 space-y-10 max-w-5xl mx-auto">
         {/* KPI Strip */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <motion.div 
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="bg-black rounded-[2.5rem] p-8 text-white border border-white/10 shadow-2xl shadow-black/20 relative overflow-hidden group"
-          >
-            <div className="flex justify-between items-start relative z-10">
-              <div className="space-y-1">
-                <p className="text-[10px] text-white/40 uppercase font-bold tracking-[0.2em]">Active Deployments</p>
-                <h3 className="text-4xl font-heading">{summary.liveTournaments}</h3>
-                <div className="flex items-center gap-2 mt-2">
-                  <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                  <p className="text-[9px] text-white/40 font-bold uppercase tracking-widest">LIVE SYSTEM FEED</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              className="bg-primary rounded-[2.5rem] p-8 text-black border border-black/5 shadow-2xl shadow-black/10 relative overflow-hidden group"
+            >
+              <div className="flex justify-between items-start relative z-10">
+                <div className="space-y-1">
+                  <p className="text-[10px] text-black/40 uppercase font-bold tracking-[0.2em]">Active Deployments</p>
+                  <h3 className="text-4xl font-heading">{summary.liveTournaments}</h3>
+                  <div className="flex items-center gap-2 mt-2">
+                    <div className="w-2 h-2 rounded-full bg-black animate-pulse" />
+                    <p className="text-[9px] text-black/40 font-bold uppercase tracking-widest">LIVE SYSTEM FEED</p>
+                  </div>
+                </div>
+                <div className="p-4 rounded-2xl bg-black/10 text-black">
+                  <Activity size={24} />
                 </div>
               </div>
-              <div className="p-4 rounded-2xl bg-white/10 text-white">
-                <Activity size={24} />
-              </div>
-            </div>
-            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-white/5 rounded-full blur-3xl" />
-          </motion.div>
+              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-white/20 rounded-full blur-3xl" />
+            </motion.div>
 
           <motion.div 
             initial={{ y: 20, opacity: 0 }}

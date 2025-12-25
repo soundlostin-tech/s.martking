@@ -169,44 +169,44 @@ export default function AdminOverview() {
 
         {/* Summary KPIs */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {[
-            { label: "Tournaments", value: stats.totalTournaments, icon: Trophy, growth: stats.revenueGrowth, dark: true },
-            { label: "Members", value: stats.totalUsers, icon: Users, growth: stats.userGrowth },
-            { label: "Active Now", value: stats.activeToday, icon: Activity, sub: "In the Arena" },
-            { label: "Net Revenue", value: `₹${stats.totalRevenue.toLocaleString()}`, icon: IndianRupee, sub: "Platform Earnings" },
-          ].map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: i * 0.1 }}
-              className={`rounded-[2.5rem] p-8 border border-black/5 shadow-2xl shadow-black/5 relative overflow-hidden group ${
-                stat.dark ? "bg-black text-white" : "bg-zinc-50 text-black"
-              }`}
-            >
-              <div className="flex justify-between items-start relative z-10">
-                <div className="space-y-1">
-                  <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${stat.dark ? "text-white/40" : "text-black/30"}`}>
-                    {stat.label}
-                  </p>
-                  <h3 className="text-3xl font-heading leading-none">{stat.value}</h3>
-                  {stat.growth && (
-                    <div className={`flex items-center gap-1 text-[10px] font-bold mt-2 ${stat.dark ? "text-white/60" : "text-black/60"}`}>
-                      <ArrowUpRight size={12} strokeWidth={3} />
-                      {stat.growth}% GROWTH
-                    </div>
-                  )}
-                  {stat.sub && (
-                    <p className="text-[9px] font-bold uppercase tracking-widest text-black/20 mt-2">{stat.sub}</p>
-                  )}
+            {[
+              { label: "Tournaments", value: stats.totalTournaments, icon: Trophy, growth: stats.revenueGrowth, primary: true },
+              { label: "Members", value: stats.totalUsers, icon: Users, growth: stats.userGrowth },
+              { label: "Active Now", value: stats.activeToday, icon: Activity, sub: "In the Arena" },
+              { label: "Net Revenue", value: `₹${stats.totalRevenue.toLocaleString()}`, icon: IndianRupee, sub: "Platform Earnings" },
+            ].map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: i * 0.1 }}
+                className={`rounded-[2.5rem] p-8 border border-black/5 shadow-2xl shadow-black/5 relative overflow-hidden group ${
+                  stat.primary ? "bg-primary text-black" : "bg-zinc-50 text-black"
+                }`}
+              >
+                <div className="flex justify-between items-start relative z-10">
+                  <div className="space-y-1">
+                    <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${stat.primary ? "text-black/40" : "text-black/30"}`}>
+                      {stat.label}
+                    </p>
+                    <h3 className="text-3xl font-heading leading-none">{stat.value}</h3>
+                    {stat.growth && (
+                      <div className={`flex items-center gap-1 text-[10px] font-bold mt-2 ${stat.primary ? "text-black/60" : "text-black/60"}`}>
+                        <ArrowUpRight size={12} strokeWidth={3} />
+                        {stat.growth}% GROWTH
+                      </div>
+                    )}
+                    {stat.sub && (
+                      <p className={`text-[9px] font-bold uppercase tracking-widest mt-2 ${stat.primary ? "text-black/40" : "text-black/20"}`}>{stat.sub}</p>
+                    )}
+                  </div>
+                  <div className={`p-3.5 rounded-2xl ${stat.primary ? "bg-black/10 text-black" : "bg-black/5 text-black"} group-hover:scale-110 transition-transform duration-500`}>
+                    <stat.icon size={22} />
+                  </div>
                 </div>
-                <div className={`p-3.5 rounded-2xl ${stat.dark ? "bg-white/10 text-white" : "bg-black/5 text-black"} group-hover:scale-110 transition-transform duration-500`}>
-                  <stat.icon size={22} />
-                </div>
-              </div>
-              <div className={`absolute -bottom-6 -right-6 w-24 h-24 rounded-full blur-2xl ${stat.dark ? "bg-white/5" : "bg-black/[0.02]"}`} />
-            </motion.div>
-          ))}
+                <div className={`absolute -bottom-6 -right-6 w-24 h-24 rounded-full blur-2xl ${stat.primary ? "bg-white/20" : "bg-black/[0.02]"}`} />
+              </motion.div>
+            ))}
         </div>
 
         {/* Analytics Section */}

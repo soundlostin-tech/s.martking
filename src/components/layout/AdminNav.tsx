@@ -31,24 +31,24 @@ export function AdminNav() {
               className="relative flex flex-col items-center justify-center flex-1 h-full outline-none"
             >
               <div className="relative flex flex-col items-center gap-1.5 transition-all duration-300 py-3">
-                <motion.div
-                  animate={{ 
-                    scale: isActive ? 1.15 : 1,
-                    y: isActive ? -2 : 0 
-                  }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  className={`relative z-10 p-2.5 rounded-2xl transition-colors ${
-                    isActive ? "text-black" : "text-black/30 hover:text-black/60"
-                  }`}
-                >
-                  <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
-                </motion.div>
+                  <motion.div
+                    animate={{ 
+                      scale: isActive ? 1.15 : 1,
+                      y: isActive ? -2 : 0 
+                    }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    className={`relative z-10 p-2.5 rounded-2xl transition-colors ${
+                      isActive ? "text-primary bg-black" : "text-black/30 hover:text-black/60"
+                    }`}
+                  >
+                    <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
+                  </motion.div>
 
-                <span className={`text-[9px] font-bold uppercase tracking-[0.2em] transition-colors ${
-                  isActive ? "text-black" : "text-black/20"
-                }`}>
-                  {item.label}
-                </span>
+                  <span className={`text-[9px] font-bold uppercase tracking-[0.2em] transition-colors ${
+                    isActive ? "text-black" : "text-black/20"
+                  }`}>
+                    {item.label}
+                  </span>
               </div>
             </Link>
           );

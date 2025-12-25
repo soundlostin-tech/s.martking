@@ -49,10 +49,12 @@ export function TopHeader() {
           animate={{ opacity: 1, x: 0 }}
           className="flex flex-col"
         >
-          <Link href="/" className="group">
-            <h1 className="text-2xl font-heading text-black leading-tight group-hover:tracking-wider transition-all uppercase">Smartking</h1>
-            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-zinc-400">Battle Arena Premium</p>
-          </Link>
+            <Link href="/" className="group flex flex-col items-center">
+              <span className="bg-primary px-3 py-1 rounded-lg">
+                <h1 className="text-2xl font-heading text-black leading-tight group-hover:tracking-wider transition-all uppercase">Smartking</h1>
+              </span>
+              <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-zinc-400 mt-1">Battle Arena Premium</p>
+            </Link>
         </motion.div>
 
           <div className="flex items-center gap-3">
