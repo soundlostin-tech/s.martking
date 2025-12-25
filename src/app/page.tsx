@@ -13,6 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { StoryViewer } from "@/components/StoryViewer";
 import { StoryUpload } from "@/components/StoryUpload";
+import { TopHeader } from "@/components/layout/TopHeader";
 
 export default function Home() {
   const { user, loading: authLoading } = useAuth(false);
@@ -81,15 +82,10 @@ export default function Home() {
 
   return (
     <main className="min-h-screen w-full bg-zinc-100 pb-32 overflow-x-hidden">
-      {/* Stories Section */}
-      <section className="px-6 py-12 max-w-4xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-2xl font-heading text-black">SMARTKING's</h2>
-            <p className="text-sm font-serif text-zinc-500">Said Hamare Zamane Mein.....</p>
-          </div>
-        </div>
+      <TopHeader />
 
+      {/* Stories Section */}
+      <section className="px-6 py-8 max-w-4xl mx-auto">
         <div className="flex gap-6 overflow-x-auto no-scrollbar pb-4 -mx-6 px-6">
           {/* My Story / Add Story */}
           {user && (
