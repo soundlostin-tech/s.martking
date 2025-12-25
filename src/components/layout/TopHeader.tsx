@@ -51,7 +51,7 @@ export function TopHeader() {
         >
           <Link href="/" className="group">
             <h1 className="text-2xl font-heading text-black leading-tight group-hover:tracking-wider transition-all">SMARTKING's</h1>
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400">Arena</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400">Said Hamare Zamane Mein.....</p>
           </Link>
         </motion.div>
 
