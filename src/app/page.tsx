@@ -81,7 +81,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen w-full bg-zinc-100 pb-32 overflow-x-hidden">
+    <main className="min-h-screen w-full bg-zinc-50 pb-32 overflow-x-hidden">
       <TopHeader />
 
       {/* Stories Section */}
@@ -96,26 +96,28 @@ export default function Home() {
                   if (myStories.length > 0) openStory(user.id);
                   else setIsUploadOpen(true);
                 }}
-                className={`relative p-1 rounded-full cursor-pointer transition-transform hover:scale-105 ${
+                className={`relative p-1 rounded-full cursor-pointer transition-transform hover:scale-110 ${
                   stories.some(s => s.user_id === user.id) 
-                    ? 'bg-gradient-to-tr from-black via-zinc-400 to-white' 
+                    ? 'bg-gradient-to-tr from-black via-zinc-400 to-white p-[2px]' 
                     : 'bg-zinc-200'
                 }`}
               >
-                <div className="w-20 h-20 rounded-full bg-zinc-100 border border-zinc-100 flex items-center justify-center overflow-hidden">
+                <div className="w-20 h-20 rounded-full bg-black border border-white/10 flex items-center justify-center overflow-hidden shadow-2xl">
                   {user.user_metadata?.avatar_url ? (
-                    <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover" />
+                    <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover opacity-80" />
                   ) : (
-                    <div className="text-2xl font-heading text-black/20">{user.email?.[0].toUpperCase()}</div>
+                    <div className="text-2xl font-heading text-white/20">{user.email?.[0].toUpperCase()}</div>
                   )}
+                  {/* Subtle inner glow */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
                 </div>
                   {!stories.some(s => s.user_id === user.id) && (
-                    <div className="absolute bottom-1 right-1 w-6 h-6 bg-black border border-zinc-100 rounded-full flex items-center justify-center">
-                      <Plus size={14} className="text-white" />
+                    <div className="absolute bottom-1 right-1 w-6 h-6 bg-white border-2 border-black rounded-full flex items-center justify-center shadow-lg">
+                      <Plus size={14} className="text-black" />
                     </div>
                   )}
               </div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-black/60">Your Story</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-black/60">You</span>
             </div>
           )}
 
@@ -132,22 +134,23 @@ export default function Home() {
                   onClick={() => hasStory && openStory(profile.id)}
                   className={`flex-shrink-0 flex flex-col items-center gap-3 group ${hasStory ? 'cursor-pointer' : ''}`}
                 >
-                  <div className={`relative p-1 rounded-full transition-transform group-hover:scale-105 ${
+                  <div className={`relative p-[2px] rounded-full transition-transform group-hover:scale-110 ${
                     hasStory ? 'bg-gradient-to-tr from-black via-zinc-400 to-white' : 'bg-transparent border border-zinc-200'
                   }`}>
-                    <div className="w-20 h-20 rounded-full bg-zinc-100 border border-zinc-100 flex items-center justify-center overflow-hidden">
+                    <div className="w-20 h-20 rounded-full bg-black border border-white/10 flex items-center justify-center overflow-hidden shadow-2xl">
                       {profile.avatar_url ? (
-                        <img src={profile.avatar_url} alt={profile.full_name} className="w-full h-full object-cover" />
+                        <img src={profile.avatar_url} alt={profile.full_name} className="w-full h-full object-cover opacity-80" />
                       ) : (
-                        <div className="text-2xl font-heading text-black/20">{profile.full_name?.[0]}</div>
+                        <div className="text-2xl font-heading text-white/20">{profile.full_name?.[0]}</div>
                       )}
+                      <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
                     </div>
                     {profile.status === 'Active' && (
-                      <div className="absolute bottom-1 right-1 w-5 h-5 bg-green-500 border-2 border-zinc-100 rounded-full" />
+                      <div className="absolute bottom-1 right-1 w-5 h-5 bg-green-500 border-2 border-black rounded-full shadow-md" />
                     )}
                   </div>
-                  <span className={`text-[11px] font-bold uppercase tracking-wider transition-colors ${
-                    hasStory ? 'text-black group-hover:text-black' : 'text-black/60'
+                  <span className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-colors ${
+                    hasStory ? 'text-black' : 'text-black/40'
                   }`}>
                     {profile.full_name?.split(' ')[0]}
                   </span>
@@ -173,19 +176,22 @@ export default function Home() {
 
       {/* Featured Tournament Cards */}
       <section className="px-6 py-12 max-w-4xl mx-auto">
-        <div className="flex items-center justify-between mb-10">
-          <div>
-            <h2 className="text-3xl font-heading text-black">Active Battles</h2>
-            <p className="text-sm font-serif text-zinc-500">Live and upcoming tournaments you can join now</p>
+        <div className="flex items-end justify-between mb-12">
+          <div className="space-y-2">
+            <h2 className="text-4xl font-heading text-black tracking-tight">Active <span className="italic font-serif opacity-60">Battles</span></h2>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <p className="text-xs font-bold uppercase tracking-widest text-zinc-400">Live tournaments in progress</p>
+            </div>
           </div>
           <Link href="/matches">
-            <button className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/50 border border-black/5 text-xs font-bold text-black hover:bg-black hover:text-white transition-all shadow-sm">
-              BROWSE ALL <ChevronRight size={14} />
+            <button className="group flex items-center gap-3 px-8 py-4 rounded-full bg-black text-[10px] font-bold text-white hover:scale-105 transition-all shadow-xl shadow-black/10">
+              BROWSE ALL <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {featuredMatches.map((match, i) => (
             <motion.div
               key={match.id}
@@ -193,50 +199,62 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="group relative bg-white/30 backdrop-blur-xl border border-white/20 rounded-[2.5rem] p-8 shadow-xl hover:shadow-2xl transition-all"
+              className="group relative bg-black rounded-[2.5rem] p-10 shadow-2xl overflow-hidden hover:-translate-y-2 transition-all duration-500"
             >
-              <div className="absolute top-6 right-8">
-                <Badge className={`${
-                  match.status === 'live' ? 'bg-red-500' : 'bg-black'
-                } text-white rounded-full text-[10px] px-3 py-1 font-bold border-none`}>
-                  {match.status.toUpperCase()}
-                </Badge>
+              {/* Radial Glow Effects */}
+              <div className="absolute inset-0 opacity-20 pointer-events-none">
+                <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-zinc-400 blur-[120px] rounded-full" />
+                <div className="absolute bottom-[-20%] right-[-10%] w-[80%] h-[80%] bg-zinc-600 blur-[120px] rounded-full" />
               </div>
 
-              <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-2xl bg-black/5 flex items-center justify-center">
+              <div className="relative z-10 space-y-8">
+                <div className="flex items-center justify-between">
+                  <Badge className={`${
+                    match.status === 'live' ? 'bg-red-500' : 'bg-white/10'
+                  } text-white rounded-full text-[10px] px-4 py-1.5 font-bold border-none tracking-widest`}>
+                    {match.status.toUpperCase()}
+                  </Badge>
+                  <div className="flex -space-x-2">
+                    {[1, 2, 3].map((_, i) => (
+                      <div key={i} className="w-7 h-7 rounded-full border-2 border-black bg-zinc-800" />
+                    ))}
+                    <div className="w-7 h-7 rounded-full border-2 border-black bg-white flex items-center justify-center text-[10px] font-bold text-black">+24</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-6">
+                  <div className="w-20 h-20 rounded-3xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform duration-500">
                     {match.status === 'live' ? (
-                      <Play size={28} className="text-red-500" fill="currentColor" />
+                      <Play size={32} className="text-red-500" fill="currentColor" />
                     ) : (
-                      <Swords size={28} className="text-black" />
+                      <Swords size={32} className="text-white" />
                     )}
                   </div>
-                  <div>
-                    <h3 className="text-2xl font-heading text-black group-hover:translate-x-1 transition-transform">{match.title}</h3>
-                    <p className="text-[11px] text-zinc-400 font-bold uppercase tracking-[0.2em]">{match.tournament?.title}</p>
+                  <div className="space-y-1">
+                    <h3 className="text-2xl font-heading text-white leading-tight">{match.title}</h3>
+                    <p className="text-[10px] text-white/40 font-bold uppercase tracking-[0.3em]">{match.tournament?.title}</p>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-black/5 rounded-2xl p-4 flex flex-col gap-1">
-                    <span className="text-[10px] font-bold text-black/30 uppercase tracking-widest">Prize Pool</span>
-                    <span className="text-xl font-heading text-black">₹{match.tournament?.prize_pool}</span>
+                <div className="grid grid-cols-2 gap-5">
+                  <div className="bg-white/5 rounded-3xl p-5 border border-white/5 flex flex-col gap-1">
+                    <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Prize Pool</span>
+                    <span className="text-2xl font-heading text-white">₹{match.tournament?.prize_pool}</span>
                   </div>
-                  <div className="bg-black/5 rounded-2xl p-4 flex flex-col gap-1">
-                    <span className="text-[10px] font-bold text-black/30 uppercase tracking-widest">Entry Fee</span>
-                    <span className="text-xl font-heading text-black">₹{match.tournament?.entry_fee}</span>
+                  <div className="bg-white/5 rounded-3xl p-5 border border-white/5 flex flex-col gap-1">
+                    <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Entry Fee</span>
+                    <span className="text-2xl font-heading text-white">₹{match.tournament?.entry_fee}</span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-4">
-                  <div className="flex items-center gap-2 text-zinc-400">
-                    <Users size={14} />
-                    <span className="text-xs font-serif">{match.mode} • {match.map || 'Bermuda'}</span>
+                <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                  <div className="flex items-center gap-3 text-white/40">
+                    <Users size={16} />
+                    <span className="text-xs font-serif italic">{match.mode} • {match.map || 'Bermuda'}</span>
                   </div>
-                  <Link href={match.status === 'live' ? `/live?matchId=${match.id}` : '/matches'}>
-                    <button className="flex items-center gap-2 text-xs font-bold text-black group-hover:gap-4 transition-all">
-                      {match.status === 'live' ? 'WATCH LIVE' : 'RESERVE SLOT'} <ArrowRight size={16} />
+                  <Link href={match.status === 'live' ? `/live?matchId=${match.id}` : '/matches'} className="w-full max-w-[140px]">
+                    <button className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-white text-black text-[11px] font-bold hover:bg-zinc-200 transition-all shadow-xl">
+                      {match.status === 'live' ? 'WATCH LIVE' : 'JOIN NOW'}
                     </button>
                   </Link>
                 </div>

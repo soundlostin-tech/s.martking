@@ -130,183 +130,198 @@ export default function Profile() {
   }
 
   return (
-    <main className="min-h-screen pb-32 bg-zinc-100">
-      <HeroSection 
-        title="Agent Profile" 
-        subtitle="Customize your identity and review your battlefield achievements."
-        className="bg-zinc-100"
-      />
+      <main className="min-h-screen pb-32 bg-zinc-50">
+        <HeroSection 
+          title="Agent Profile" 
+          subtitle="Customize your identity and review your battlefield achievements."
+          className="bg-zinc-50"
+        />
 
-      <div className="px-6 -mt-16 relative z-10 space-y-8 max-w-2xl mx-auto">
-        {/* Profile Card */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-white/40 backdrop-blur-xl border border-white/20 rounded-[3rem] p-8 md:p-12 shadow-2xl relative overflow-hidden flex flex-col items-center text-center"
-        >
-          <div className="relative mb-6">
-            <Avatar className="w-32 h-32 border-4 border-white shadow-2xl">
-              <AvatarImage src={profile?.avatar_url || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop"} />
-              <AvatarFallback className="bg-black text-white text-3xl font-heading">
-                {profile?.full_name?.substring(0, 2).toUpperCase() || "SK"}
-              </AvatarFallback>
-            </Avatar>
-            <div className="absolute -bottom-2 -right-2 bg-black text-white p-2.5 rounded-2xl shadow-xl">
-              <Trophy size={20} />
+        <div className="px-6 -mt-16 relative z-10 space-y-8 max-w-2xl mx-auto">
+          {/* Profile Card */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-black rounded-[3rem] p-10 md:p-14 shadow-2xl relative overflow-hidden flex flex-col items-center text-center"
+          >
+            {/* Radial Glows */}
+            <div className="absolute inset-0 opacity-20 pointer-events-none">
+              <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-zinc-400 blur-[120px] rounded-full" />
+              <div className="absolute bottom-[-20%] right-[-10%] w-[80%] h-[80%] bg-zinc-600 blur-[120px] rounded-full" />
             </div>
-          </div>
-          
-          <div className="space-y-2 relative z-10">
-            <h2 className="text-4xl font-heading text-black">{profile?.full_name || "Arena Champion"}</h2>
-            <div className="flex items-center justify-center gap-2">
-              <Badge className="bg-black/5 text-black border-none rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-wider">
-                {profile?.role || "Elite Player"}
-              </Badge>
-              <div className="flex items-center gap-1.5 px-3 py-1 bg-white/20 rounded-full border border-white/30 backdrop-blur-sm">
-                <CheckCircle2 size={12} className="text-black" />
-                <span className="text-[9px] text-black font-bold uppercase tracking-widest">Verified</span>
+
+            <div className="relative mb-8 group">
+              <div className="absolute inset-0 bg-white/20 blur-2xl rounded-full scale-110 group-hover:scale-125 transition-transform" />
+              <Avatar className="w-40 h-40 border-4 border-white shadow-2xl relative z-10">
+                <AvatarImage src={profile?.avatar_url || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop"} className="object-cover" />
+                <AvatarFallback className="bg-black text-white text-4xl font-heading uppercase">
+                  {profile?.full_name?.substring(0, 2) || "SK"}
+                </AvatarFallback>
+              </Avatar>
+              <div className="absolute -bottom-2 -right-2 bg-white text-black p-3 rounded-2xl shadow-2xl z-20 group-hover:scale-110 transition-transform">
+                <Trophy size={24} />
               </div>
             </div>
-          </div>
-          <div className="absolute top-[-20%] left-[-20%] w-[50%] h-[50%] bg-zinc-200/30 blur-[100px] rounded-full" />
-        </motion.div>
+            
+            <div className="space-y-4 relative z-10">
+              <h2 className="text-4xl md:text-5xl font-heading text-white tracking-tight">{profile?.full_name || "Arena Champion"}</h2>
+              <div className="flex items-center justify-center gap-3">
+                <Badge className="bg-white/10 text-white/60 border-none rounded-full px-5 py-2 text-[10px] font-bold uppercase tracking-[0.2em]">
+                  {profile?.role || "Elite Player"}
+                </Badge>
+                <div className="flex items-center gap-2 px-4 py-2 bg-white text-black rounded-full shadow-xl">
+                  <CheckCircle2 size={14} />
+                  <span className="text-[10px] font-bold uppercase tracking-widest">Verified</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
 
-        {/* Action Controls */}
-        <div className="grid grid-cols-2 gap-4">
-          <button 
-            onClick={() => setIsEditing(!isEditing)}
-            className="h-20 flex items-center justify-center gap-3 bg-white/40 backdrop-blur-xl border border-white/20 rounded-full font-serif text-lg text-black shadow-xl hover:bg-white/60 transition-all active:scale-95"
-          >
-            {isEditing ? <X size={20} /> : <Settings size={20} />}
-            {isEditing ? "Close" : "Edit Profile"}
-          </button>
-          <button 
-            onClick={handleLogout}
-            className="h-20 flex items-center justify-center gap-3 bg-black text-white rounded-full font-serif text-lg shadow-xl hover:bg-zinc-800 transition-all active:scale-95"
-          >
-            <LogOut size={20} />
-            Sign Out
-          </button>
-        </div>
-
-        {/* Content Section */}
-        <AnimatePresence mode="wait">
-          {isEditing ? (
-            <motion.form 
-              key="edit"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              onSubmit={handleUpdateProfile}
-              className="bg-white/40 backdrop-blur-xl border border-white/20 rounded-[3rem] p-10 shadow-2xl space-y-8"
+          {/* Action Controls */}
+          <div className="grid grid-cols-2 gap-5">
+            <button 
+              onClick={() => setIsEditing(!isEditing)}
+              className="h-20 flex items-center justify-center gap-3 bg-white border border-black/5 rounded-full font-serif text-lg text-black shadow-xl hover:bg-zinc-50 transition-all active:scale-95"
             >
-              <h3 className="text-2xl font-heading text-black">Update Identity</h3>
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-4">Full Name</label>
-                  <Input 
-                    value={formData.full_name} 
-                    onChange={(e) => setFormData({ ...formData, full_name: e.target.value })} 
-                    className="h-16 px-8 rounded-full border-zinc-200 bg-white/60 shadow-lg text-black font-serif"
-                    placeholder="E.g. John Doe"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-4">Phone Number</label>
-                  <Input 
-                    value={formData.phone} 
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })} 
-                    className="h-16 px-8 rounded-full border-zinc-200 bg-white/60 shadow-lg text-black font-serif"
-                    placeholder="+91 XXXXX XXXXX"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-4">Avatar Image URL</label>
-                  <Input 
-                    value={formData.avatar_url} 
-                    onChange={(e) => setFormData({ ...formData, avatar_url: e.target.value })} 
-                    className="h-16 px-8 rounded-full border-zinc-200 bg-white/60 shadow-lg text-black font-serif"
-                    placeholder="https://images..."
-                  />
-                </div>
-              </div>
-              <button 
-                type="submit" 
-                disabled={saving}
-                className="w-full h-16 bg-black text-white rounded-full font-serif text-lg shadow-xl hover:bg-zinc-800 transition-all flex items-center justify-center gap-3"
+              {isEditing ? <X size={20} /> : <Settings size={20} />}
+              {isEditing ? "Cancel" : "Preferences"}
+            </button>
+            <button 
+              onClick={handleLogout}
+              className="h-20 flex items-center justify-center gap-3 bg-black text-white rounded-full font-serif text-lg shadow-2xl hover:bg-zinc-900 transition-all active:scale-95"
+            >
+              <LogOut size={20} />
+              Sign Out
+            </button>
+          </div>
+
+          {/* Content Section */}
+          <AnimatePresence mode="wait">
+            {isEditing ? (
+              <motion.form 
+                key="edit"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                onSubmit={handleUpdateProfile}
+                className="bg-black rounded-[3rem] p-12 shadow-2xl space-y-10 relative overflow-hidden"
               >
-                {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Save size={20} /> Save Changes</>}
-              </button>
-            </motion.form>
-          ) : (
-            <motion.div 
-              key="view"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="space-y-8"
-            >
-              {/* Stats Grid */}
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { label: "Matches", value: profile?.matches_played || 12, icon: Swords },
-                  { label: "Win Rate", value: `${profile?.win_rate || 24}%`, icon: TrendingUp },
-                  { label: "Kills", value: "342", icon: Target },
-                  { label: "Rewards", value: `₹${(wallet?.lifetime_earnings || 0).toLocaleString()}`, icon: DollarSign },
-                ].map((stat, i) => (
-                  <div key={i} className="bg-white/40 backdrop-blur-xl border border-white/20 rounded-[2.5rem] p-6 shadow-xl flex flex-col gap-3">
-                    <div className="w-10 h-10 bg-black text-white rounded-2xl flex items-center justify-center shadow-lg">
-                      <stat.icon size={20} />
+                <div className="absolute inset-0 opacity-10 pointer-events-none">
+                  <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-zinc-400 blur-[100px] rounded-full" />
+                </div>
+
+                <div className="relative z-10">
+                  <h3 className="text-2xl font-heading text-white mb-8 tracking-tight">Update <span className="italic font-serif opacity-60">Identity</span></h3>
+                  <div className="space-y-8">
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em] ml-6">Full Name</label>
+                      <Input 
+                        value={formData.full_name} 
+                        onChange={(e) => setFormData({ ...formData, full_name: e.target.value })} 
+                        className="h-16 px-8 rounded-[2rem] border-white/5 bg-white/5 text-white font-serif placeholder:text-white/10 focus:ring-white/20 transition-all"
+                        placeholder="E.g. John Doe"
+                      />
                     </div>
-                    <div>
-                      <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest">{stat.label}</p>
-                      <p className="text-2xl font-heading text-black">{stat.value}</p>
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em] ml-6">Phone Number</label>
+                      <Input 
+                        value={formData.phone} 
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })} 
+                        className="h-16 px-8 rounded-[2rem] border-white/5 bg-white/5 text-white font-serif placeholder:text-white/10 focus:ring-white/20 transition-all"
+                        placeholder="+91 XXXXX XXXXX"
+                      />
+                    </div>
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em] ml-6">Avatar Image URL</label>
+                      <Input 
+                        value={formData.avatar_url} 
+                        onChange={(e) => setFormData({ ...formData, avatar_url: e.target.value })} 
+                        className="h-16 px-8 rounded-[2rem] border-white/5 bg-white/5 text-white font-serif placeholder:text-white/10 focus:ring-white/20 transition-all"
+                        placeholder="https://images..."
+                      />
                     </div>
                   </div>
-                ))}
-              </div>
-
-              {/* Account List */}
-              <div className="bg-white/40 backdrop-blur-xl border border-white/20 rounded-[3rem] p-4 shadow-2xl space-y-2">
-                {[
-                  { label: "Email", value: user?.email, icon: Mail },
-                  { label: "Phone", value: profile?.phone || "Not linked", icon: Phone },
-                  { label: "Location", value: profile?.country || "India", icon: Globe },
-                  { label: "Member Since", value: new Date(profile?.created_at).toLocaleDateString(), icon: Calendar },
-                ].map((item, i) => (
-                  <div key={i} className="group flex justify-between items-center p-5 hover:bg-white/40 rounded-[2rem] transition-all">
-                    <div className="flex items-center gap-5">
-                      <div className="w-12 h-12 bg-black/5 rounded-2xl flex items-center justify-center text-black/40 group-hover:bg-black group-hover:text-white transition-all">
-                        <item.icon size={22} />
+                  <button 
+                    type="submit" 
+                    disabled={saving}
+                    className="w-full h-20 bg-white text-black rounded-full font-serif text-xl shadow-2xl hover:bg-zinc-200 transition-all flex items-center justify-center gap-3 mt-12"
+                  >
+                    {saving ? <Loader2 className="w-6 h-6 animate-spin" /> : <><Save size={22} /> Update Agent</>}
+                  </button>
+                </div>
+              </motion.form>
+            ) : (
+              <motion.div 
+                key="view"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-8"
+              >
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 gap-5">
+                  {[
+                    { label: "Matches", value: profile?.matches_played || 12, icon: Swords },
+                    { label: "Win Rate", value: `${profile?.win_rate || 24}%`, icon: TrendingUp },
+                    { label: "Kills", value: "342", icon: Target },
+                    { label: "Rewards", value: `₹${(wallet?.lifetime_earnings || 0).toLocaleString()}`, icon: DollarSign },
+                  ].map((stat, i) => (
+                    <div key={i} className="bg-black rounded-[2.5rem] p-8 shadow-2xl flex flex-col gap-5 relative overflow-hidden group">
+                      <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <div className="w-14 h-14 bg-white/5 text-white rounded-2xl flex items-center justify-center border border-white/5 shadow-xl group-hover:scale-110 transition-transform">
+                        <stat.icon size={28} />
                       </div>
-                      <div>
-                        <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest">{item.label}</p>
-                        <p className="text-base font-serif text-black font-bold">{item.value}</p>
+                      <div className="space-y-1">
+                        <p className="text-[10px] text-white/30 font-bold uppercase tracking-[0.2em]">{stat.label}</p>
+                        <p className="text-3xl font-heading text-white">{stat.value}</p>
                       </div>
                     </div>
-                    <ChevronRight size={18} className="text-zinc-200 group-hover:text-black transition-colors" />
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                  ))}
+                </div>
 
-        {/* Danger Zone */}
-        <div className="bg-red-50/20 backdrop-blur-sm border border-red-100 rounded-[3rem] p-8 text-center space-y-4">
-          <div className="w-14 h-14 bg-red-100 text-red-500 rounded-2xl flex items-center justify-center mx-auto shadow-sm">
-            <Trash2 size={24} />
+                {/* Account List */}
+                <div className="bg-white border border-black/5 rounded-[3rem] p-6 shadow-2xl space-y-3">
+                  {[
+                    { label: "Email Address", value: user?.email, icon: Mail },
+                    { label: "Mobile Contact", value: profile?.phone || "Not linked", icon: Phone },
+                    { label: "Country / Region", value: profile?.country || "India", icon: Globe },
+                    { label: "Agent Since", value: new Date(profile?.created_at).toLocaleDateString(), icon: Calendar },
+                  ].map((item, i) => (
+                    <div key={i} className="group flex justify-between items-center p-6 hover:bg-zinc-50 rounded-[2.5rem] transition-all">
+                      <div className="flex items-center gap-6">
+                        <div className="w-14 h-14 bg-black text-white rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                          <item.icon size={24} />
+                        </div>
+                        <div className="space-y-0.5">
+                          <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-[0.2em]">{item.label}</p>
+                          <p className="text-lg font-serif text-black font-bold tracking-tight">{item.value}</p>
+                        </div>
+                      </div>
+                      <ChevronRight size={20} className="text-zinc-200 group-hover:text-black group-hover:translate-x-1 transition-all" />
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Danger Zone */}
+          <div className="bg-red-500 rounded-[3rem] p-12 text-center space-y-6 shadow-2xl shadow-red-500/20 relative overflow-hidden group">
+            <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="w-20 h-20 bg-white/10 text-white rounded-3xl flex items-center justify-center mx-auto shadow-2xl border border-white/20 group-hover:scale-110 transition-transform">
+              <Trash2 size={36} />
+            </div>
+            <div className="space-y-2">
+              <h4 className="text-2xl font-heading text-white">Retire Account</h4>
+              <p className="text-sm text-white/60 font-serif max-w-xs mx-auto leading-relaxed italic">
+                Permanent deletion will remove all records. This action cannot be undone.
+              </p>
+            </div>
+            <button className="px-10 py-4 bg-white text-red-600 rounded-full text-xs font-bold uppercase tracking-[0.2em] shadow-xl hover:scale-105 active:scale-95 transition-all">
+              Initiate Deletion
+            </button>
           </div>
-          <div className="space-y-1">
-            <h4 className="text-lg font-heading text-red-600">Retire Account</h4>
-            <p className="text-xs text-red-400 font-serif max-w-[240px] mx-auto leading-relaxed">
-              Permanent deletion will remove all match history and forfeits remaining balance.
-            </p>
-          </div>
-          <button className="text-xs font-bold text-red-600 underline underline-offset-4 decoration-red-200 hover:decoration-red-600 transition-all">
-            Initiate Deletion
-          </button>
         </div>
-      </div>
+
 
       <BottomNav />
     </main>

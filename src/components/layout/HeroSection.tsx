@@ -11,15 +11,16 @@ interface HeroSectionProps {
 
 export function HeroSection({ title, subtitle, children, className }: HeroSectionProps) {
   return (
-    <div className={`relative overflow-hidden bg-zinc-100 px-6 pt-20 pb-16 ${className}`}>
+    <div className={`relative overflow-hidden bg-zinc-50 px-6 pt-24 pb-20 ${className}`}>
       {/* Subtle background detail */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-zinc-200/50 blur-[100px] rounded-full -mr-32 -mt-32" />
+      <div className="absolute top-0 right-0 w-80 h-80 bg-zinc-200/40 blur-[120px] rounded-full -mr-40 -mt-40" />
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-zinc-300/20 blur-[100px] rounded-full -ml-32 -mb-32" />
       
-      <div className="relative z-10 flex flex-col gap-3 max-w-4xl mx-auto text-center">
+      <div className="relative z-10 flex flex-col gap-4 max-w-4xl mx-auto text-center">
         <motion.h1 
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl md:text-5xl font-heading text-black tracking-tight"
+          className="text-5xl md:text-7xl font-heading text-black tracking-tighter uppercase"
         >
           {title}
         </motion.h1>
@@ -27,7 +28,7 @@ export function HeroSection({ title, subtitle, children, className }: HeroSectio
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-lg md:text-xl font-serif text-zinc-600 max-w-2xl mx-auto"
+          className="text-lg md:text-xl font-serif text-zinc-400 italic max-w-2xl mx-auto"
         >
           {subtitle}
         </motion.p>

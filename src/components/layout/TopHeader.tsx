@@ -42,7 +42,7 @@ export function TopHeader() {
   }, [user]);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-zinc-100/80 backdrop-blur-md border-b border-black/5 px-6 py-4">
+    <header className="sticky top-0 z-50 w-full bg-zinc-50/80 backdrop-blur-xl border-b border-black/5 px-6 py-4">
       <div className="max-w-4xl mx-auto flex items-center justify-between">
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
@@ -50,8 +50,8 @@ export function TopHeader() {
           className="flex flex-col"
         >
           <Link href="/" className="group">
-            <h1 className="text-2xl font-heading text-black leading-tight group-hover:tracking-wider transition-all">SMARTKING's</h1>
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400">Said Hamare Zamane Mein.....</p>
+            <h1 className="text-2xl font-heading text-black leading-tight group-hover:tracking-wider transition-all uppercase">Smartking</h1>
+            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-zinc-400">Battle Arena Premium</p>
           </Link>
         </motion.div>
 
@@ -62,20 +62,21 @@ export function TopHeader() {
                 animate={{ opacity: 1, scale: 1 }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center bg-white/40 backdrop-blur-xl border border-black/[0.03] rounded-2xl px-3 py-2 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1)] transition-all cursor-pointer group"
+                className="flex items-center bg-black rounded-[1.25rem] px-4 py-2 shadow-xl shadow-black/10 hover:shadow-black/20 transition-all cursor-pointer group"
               >
                 <Link href="/wallet" className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-zinc-800 to-black flex items-center justify-center text-white shadow-lg group-hover:rotate-12 transition-transform">
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-black shadow-lg group-hover:scale-110 transition-transform">
                     <Wallet size={14} />
                   </div>
-                  <div className="flex flex-col pr-1">
-                    <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-tighter leading-none">Vault Balance</span>
-                    <span className="text-sm font-heading text-black leading-none mt-1">₹{balance?.toLocaleString() ?? '0'}</span>
+                  <div className="flex flex-col">
+                    <span className="text-[8px] font-bold text-white/40 uppercase tracking-widest leading-none">Balance</span>
+                    <span className="text-sm font-heading text-white leading-none mt-1">₹{balance?.toLocaleString() ?? '0'}</span>
                   </div>
                 </Link>
               </motion.div>
             )}
           </div>
+
       </div>
     </header>
   );

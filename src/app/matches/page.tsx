@@ -110,56 +110,57 @@ export default function MatchesPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-zinc-100">
+      <div className="min-h-screen flex items-center justify-center bg-zinc-50">
         <Loader2 className="w-8 h-8 animate-spin text-black" />
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen pb-32 bg-zinc-100">
+    <main className="min-h-screen pb-32 bg-zinc-50">
       <HeroSection 
         title="Battle Arena" 
         subtitle="The stage is set. Claim your glory in the upcoming tournaments."
-        className="bg-zinc-100"
+        className="bg-zinc-50"
       />
 
-      <div className="px-6 -mt-8 relative z-20 space-y-8 max-w-2xl mx-auto">
-        {/* Filter Controls */}
-        <div className="flex bg-white/40 backdrop-blur-xl p-1.5 rounded-full border border-white/20 overflow-x-auto no-scrollbar gap-1 shadow-xl">
-          {filters.map((filter) => (
-            <button
-              key={filter}
-              onClick={() => setActiveFilter(filter)}
-              className={`px-6 py-2.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
-                activeFilter === filter 
-                  ? "bg-black text-white shadow-lg" 
-                  : "text-zinc-400 hover:text-black"
-              }`}
-            >
-              {filter}
-            </button>
-          ))}
-        </div>
+        <div className="px-6 -mt-12 relative z-20 space-y-10 max-w-2xl mx-auto">
+          {/* Filter Controls */}
+          <div className="flex bg-black/5 backdrop-blur-xl p-2 rounded-full border border-black/5 overflow-x-auto no-scrollbar gap-2 shadow-2xl shadow-black/5">
+            {filters.map((filter) => (
+              <button
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
+                className={`px-8 py-4 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap ${
+                  activeFilter === filter 
+                    ? "bg-black text-white shadow-2xl scale-105" 
+                    : "text-black/40 hover:text-black hover:bg-white/50"
+                }`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
 
-        {/* Search Bar */}
-        <div className="relative group">
-          <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-black transition-colors" size={18} />
-          <input 
-            type="text" 
-            placeholder="Search tournament..." 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-white/40 backdrop-blur-xl border border-white/20 rounded-full py-5 pl-14 pr-6 text-sm focus:outline-none focus:ring-2 focus:ring-black/5 transition-all shadow-xl font-serif"
-          />
-        </div>
+          {/* Search Bar */}
+          <div className="relative group">
+            <Search className="absolute left-8 top-1/2 -translate-y-1/2 text-black/20 group-focus-within:text-black transition-all group-focus-within:scale-110" size={20} />
+            <input 
+              type="text" 
+              placeholder="Search tournament..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-white border border-black/5 rounded-[2.5rem] py-8 pl-20 pr-10 text-xs focus:outline-none focus:ring-8 focus:ring-black/[0.02] transition-all shadow-2xl shadow-black/5 font-bold uppercase tracking-[0.2em] placeholder:text-black/10"
+            />
+          </div>
+
 
         {/* Match List */}
-        <div className="space-y-6">
+        <div className="grid grid-cols-1 gap-8">
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-20 gap-3">
-              <Loader2 className="w-8 h-8 animate-spin text-zinc-300" />
-              <p className="text-zinc-400 font-serif">Awaiting orders...</p>
+            <div className="flex flex-col items-center justify-center py-20 gap-4">
+              <Loader2 className="w-10 h-10 animate-spin text-zinc-200" />
+              <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">Awaiting orders...</p>
             </div>
           ) : matches.length > 0 ? (
             <AnimatePresence mode="popLayout">
@@ -170,75 +171,75 @@ export default function MatchesPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ delay: index * 0.05 }}
-                  className="bg-white/40 backdrop-blur-xl border border-white/20 rounded-[2.5rem] p-6 shadow-xl hover:shadow-2xl transition-all group"
+                  className="bg-black rounded-[2.5rem] p-8 shadow-2xl overflow-hidden group relative"
                 >
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="flex items-center gap-4">
-                      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${
-                        match.status === 'live' ? 'bg-red-50 text-red-500' : 'bg-zinc-50 text-zinc-400'
-                      }`}>
-                        {match.status === 'live' ? <Play size={24} fill="currentColor" /> : <Swords size={24} />}
-                      </div>
-                      <div>
-                        <h3 className="font-heading text-xl leading-tight text-black">{match.title}</h3>
-                        <p className="text-[11px] text-zinc-400 font-bold uppercase tracking-widest">{match.tournament?.title}</p>
-                      </div>
-                    </div>
-                    <Badge className={`${getStatusColor(match.status)} rounded-full text-[10px] px-3 py-1 font-bold border-none`}>
-                      {match.status.toUpperCase()}
-                    </Badge>
+                  {/* Radial Glows */}
+                  <div className="absolute inset-0 opacity-20 pointer-events-none">
+                    <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-zinc-400 blur-[120px] rounded-full" />
+                    <div className="absolute bottom-[-20%] right-[-10%] w-[80%] h-[80%] bg-zinc-600 blur-[120px] rounded-full" />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-6 mb-8 px-2">
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3">
-                        <Calendar size={16} className="text-zinc-400" />
-                        <span className="text-sm font-serif text-zinc-600">
-                          {match.start_time ? new Date(match.start_time).toLocaleDateString() : 'TBD'}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <Users size={16} className="text-zinc-400" />
-                        <span className="text-sm font-serif text-zinc-600">{match.mode}</span>
-                      </div>
-                    </div>
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3">
-                        <Play size={16} className="text-zinc-400" />
-                        <span className="text-sm font-serif text-zinc-600">
-                          {match.start_time ? new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'TBD'}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <MapPin size={16} className="text-zinc-400" />
-                        <span className="text-sm font-serif text-zinc-600">{match.map || 'Bermuda'}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-6 border-t border-black/5 flex items-center justify-between gap-4">
-                    {match.status === "upcoming" ? (
-                      <>
-                        <button className="flex-1 py-4 px-6 rounded-full text-xs font-bold text-zinc-400 hover:text-black transition-colors font-serif">
-                          View Details
-                        </button>
-                        <button 
-                          onClick={() => handleJoinMatch(match.tournament_id, match.id)}
-                          disabled={joining === match.id}
-                          className="flex-1 bg-black text-white py-4 px-6 rounded-full text-xs font-bold hover:bg-zinc-800 transition-all shadow-lg flex items-center justify-center gap-2"
-                        >
-                          {joining === match.id ? <Loader2 className="w-4 h-4 animate-spin" /> : "Join Battle"}
-                        </button>
-                      </>
-                    ) : (
-                      <Link href={match.status === 'live' ? `/live?matchId=${match.id}` : '#'} className="w-full">
-                        <button className={`w-full py-4 px-6 rounded-full text-xs font-bold transition-all shadow-lg flex items-center justify-center gap-2 ${
-                          match.status === 'live' ? 'bg-red-500 text-white hover:bg-red-600' : 'bg-zinc-200 text-zinc-600'
+                  <div className="relative z-10">
+                    <div className="flex justify-between items-start mb-8">
+                      <div className="flex items-center gap-5">
+                        <div className={`w-16 h-16 rounded-2xl flex items-center justify-center border border-white/5 ${
+                          match.status === 'live' ? 'bg-red-500/10 text-red-500' : 'bg-white/5 text-white'
                         }`}>
-                          {match.status === 'live' ? <><Play size={16} fill="white" /> Watch Live</> : "View Results"}
-                        </button>
-                      </Link>
-                    )}
+                          {match.status === 'live' ? <Play size={28} fill="currentColor" /> : <Swords size={28} />}
+                        </div>
+                        <div className="space-y-1">
+                          <h3 className="font-heading text-2xl leading-tight text-white">{match.title}</h3>
+                          <p className="text-[10px] text-white/40 font-bold uppercase tracking-[0.3em]">{match.tournament?.title}</p>
+                        </div>
+                      </div>
+                      <Badge className={`${getStatusColor(match.status)} rounded-full text-[10px] px-4 py-1.5 font-bold border-none tracking-widest`}>
+                        {match.status.toUpperCase()}
+                      </Badge>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-5 mb-8">
+                      <div className="bg-white/5 rounded-3xl p-5 border border-white/5">
+                        <div className="flex items-center gap-3 text-white/40 mb-3">
+                          <Calendar size={14} />
+                          <span className="text-[10px] font-bold uppercase tracking-widest">Schedule</span>
+                        </div>
+                        <p className="text-sm font-serif italic text-white/90">
+                          {match.start_time ? new Date(match.start_time).toLocaleDateString() : 'TBD'} @ {match.start_time ? new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'TBD'}
+                        </p>
+                      </div>
+                      <div className="bg-white/5 rounded-3xl p-5 border border-white/5">
+                        <div className="flex items-center gap-3 text-white/40 mb-3">
+                          <Users size={14} />
+                          <span className="text-[10px] font-bold uppercase tracking-widest">Configuration</span>
+                        </div>
+                        <p className="text-sm font-serif italic text-white/90">{match.mode} • {match.map || 'Bermuda'}</p>
+                      </div>
+                    </div>
+
+                    <div className="pt-8 border-t border-white/5 flex items-center justify-between gap-5">
+                      {match.status === "upcoming" ? (
+                        <>
+                          <button className="flex-1 py-5 px-8 rounded-2xl text-[10px] font-bold uppercase tracking-widest text-white/40 hover:text-white transition-colors border border-white/5">
+                            Details
+                          </button>
+                          <button 
+                            onClick={() => handleJoinMatch(match.tournament_id, match.id)}
+                            disabled={joining === match.id}
+                            className="flex-[2] bg-white text-black py-5 px-8 rounded-2xl text-[11px] font-bold uppercase tracking-widest hover:bg-zinc-200 transition-all shadow-xl flex items-center justify-center gap-3"
+                          >
+                            {joining === match.id ? <Loader2 className="w-4 h-4 animate-spin" /> : "RESERVE SLOT"}
+                          </button>
+                        </>
+                      ) : (
+                        <Link href={match.status === 'live' ? `/live?matchId=${match.id}` : '#'} className="w-full">
+                          <button className={`w-full py-5 px-8 rounded-2xl text-[11px] font-bold uppercase tracking-widest transition-all shadow-xl flex items-center justify-center gap-3 ${
+                            match.status === 'live' ? 'bg-red-500 text-white hover:bg-red-600 shadow-red-500/20' : 'bg-white/5 text-white/40'
+                          }`}>
+                            {match.status === 'live' ? <><Play size={18} fill="white" /> WATCH ARENA</> : "VIEW RESULTS"}
+                          </button>
+                        </Link>
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -247,20 +248,20 @@ export default function MatchesPage() {
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="bg-white/40 backdrop-blur-xl p-16 rounded-[3rem] border border-zinc-200 text-center space-y-6 shadow-xl"
+              className="bg-white p-20 rounded-[3.5rem] border border-black/5 text-center space-y-8 shadow-2xl shadow-black/5"
             >
               <div className="w-24 h-24 bg-zinc-50 rounded-full flex items-center justify-center mx-auto">
                 <Swords size={48} className="text-zinc-200" />
               </div>
-              <div className="space-y-2">
-                <h3 className="text-2xl font-heading text-black">Arena is Quiet</h3>
-                <p className="text-sm text-zinc-400 font-serif">No matches found matching your criteria.</p>
+              <div className="space-y-3">
+                <h3 className="text-3xl font-heading text-black uppercase tracking-tight">Arena is Quiet</h3>
+                <p className="text-sm text-zinc-400 font-serif italic">No battles match your current search criteria.</p>
               </div>
               <button 
                 onClick={() => { setActiveFilter("All"); setSearchQuery(""); }}
-                className="text-xs font-bold text-black underline underline-offset-8 decoration-black/10 hover:decoration-black"
+                className="text-[10px] font-bold text-black uppercase tracking-[0.3em] border-b-2 border-black/10 hover:border-black transition-colors pb-1"
               >
-                Clear all filters
+                Reset Search
               </button>
             </motion.div>
           )}
