@@ -9,7 +9,7 @@ import Link from "next/link";
 import { IndianRupee, Trophy, Swords, ChevronRight, Calendar, ArrowRight, Star } from "lucide-react";
 
 export default function Home() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useAuth(false);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 

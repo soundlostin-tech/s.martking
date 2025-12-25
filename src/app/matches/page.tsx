@@ -75,9 +75,12 @@ export default function MatchesPage() {
         query = query.eq("status", statusMap[activeFilter]);
       }
 
-      const { data, error } = await query.order("start_time", { ascending: true, nullsFirst: false });
+      const { data, error } = await query.order("start_time", { ascending: true });
       
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase error fetching matches:", error);
+        throw error;
+      }
 
       let filteredData = data || [];
       if (searchQuery) {
