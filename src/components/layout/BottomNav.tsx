@@ -27,39 +27,67 @@ export function BottomNav() {
             <Link
               key={item.label}
               href={item.href}
-              className="flex flex-col items-center gap-1 group relative flex-1 py-1"
+              className="flex flex-col items-center gap-1 group relative flex-1 py-1 outline-none"
             >
-              <div className="relative">
-                <AnimatePresence>
+              <motion.div 
+                whileTap={{ scale: 0.9 }}
+                className="relative flex flex-col items-center"
+              >
+                <div className="relative">
                   {isActive && (
-                      <motion.div 
-                        layoutId="nav-glow"
-                        className="absolute inset-0 bg-cyan-400/20 blur-xl rounded-full"
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: 1.5, opacity: 1 }}
-                        exit={{ scale: 0, opacity: 0 }}
-                      />
-                    )}
-                  </AnimatePresence>
+                    <motion.div 
+                      layoutId="nav-glow"
+                      className="absolute -inset-4 bg-cyan-400/20 blur-2xl rounded-full"
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
+                  {isActive && (
+                    <motion.div 
+                      layoutId="nav-active-bg"
+                      className="absolute inset-0 bg-cyan-400 rounded-2xl shadow-[0_0_15px_rgba(34,211,238,0.4)]"
+                      transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                    />
+                  )}
                   
-                  <div className={`relative z-10 p-2.5 rounded-2xl transition-all duration-500 ease-out ${isActive ? "bg-cyan-400 text-onyx shadow-[0_0_20px_rgba(34,211,238,0.4)] scale-110 -translate-y-1" : "text-stone-500 group-hover:text-white"}`}>
+                  <motion.div 
+                    animate={{ 
+                      scale: isActive ? 1.1 : 1,
+                      y: isActive ? -2 : 0,
+                      rotate: isActive ? [0, -5, 5, 0] : 0
+                    }}
+                    transition={{ 
+                      scale: { type: "spring", stiffness: 400, damping: 25 },
+                      y: { type: "spring", stiffness: 400, damping: 25 },
+                      rotate: { duration: 0.4, ease: "easeInOut" }
+                    }}
+                    className={`relative z-10 p-2.5 rounded-2xl transition-colors duration-300 ${isActive ? "text-onyx" : "text-stone-500 group-hover:text-white"}`}
+                  >
                     <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
-                  </div>
+                  </motion.div>
                 </div>
 
-                <span className={`text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${isActive ? "text-cyan-400 opacity-100 scale-105" : "text-stone-500 opacity-60"}`}>
+                <motion.span 
+                  animate={{ 
+                    scale: isActive ? 1.05 : 1,
+                    opacity: isActive ? 1 : 0.6,
+                    y: isActive ? 1 : 0
+                  }}
+                  className={`text-[9px] font-black uppercase tracking-widest mt-1 ${isActive ? "text-cyan-400" : "text-stone-500"}`}
+                >
                   {item.label}
-                </span>
+                </motion.span>
                 
                 {isActive && (
                   <motion.div 
                     layoutId="nav-dot"
-                    className="absolute -bottom-0.5 w-1 h-1 bg-cyan-400 rounded-full shadow-[0_0_10px_rgba(34,211,238,1)]"
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    className="absolute -bottom-2 w-1 h-1 bg-cyan-400 rounded-full shadow-[0_0_10px_rgba(34,211,238,1)]"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
+              </motion.div>
             </Link>
           );
+
         })}
       </div>
     </div>
