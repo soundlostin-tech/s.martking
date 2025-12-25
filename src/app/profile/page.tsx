@@ -4,11 +4,12 @@ import { HeroSection } from "@/components/layout/HeroSection";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight, User, Shield, Bell, LogOut, Trophy, Target, DollarSign, Loader2 } from "lucide-react";
+import { ChevronRight, User, Shield, Bell, LogOut, Trophy, Target, DollarSign, Loader2, Edit2, Save, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
 
 export default function Profile() {
   const { user, loading: authLoading } = useAuth();
@@ -18,6 +19,13 @@ export default function Profile() {
     tournamentsJoined: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [formData, setFormData] = useState({
+    full_name: "",
+    phone: "",
+    avatar_url: "",
+  });
 
   useEffect(() => {
     if (user) {
@@ -33,6 +41,11 @@ export default function Profile() {
         .eq("id", user!.id)
         .single();
       setProfile(profileData);
+      setFormData({
+        full_name: profileData?.full_name || "",
+        phone: profileData?.phone || "",
+        avatar_url: profileData?.avatar_url || "",
+      });
 
       const { data: winningsData } = await supabase
         .from("transactions")
@@ -53,6 +66,26 @@ export default function Profile() {
       console.error("Error fetching profile data:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleUpdateProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      const { error } = await supabase
+        .from("profiles")
+        .update(formData)
+        .eq("id", user!.id);
+      
+      if (error) throw error;
+      toast.success("Profile updated successfully");
+      setIsEditing(false);
+      fetchProfileData();
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -114,27 +147,72 @@ export default function Profile() {
         </div>
 
         <div className="bg-alabaster-grey-2 rounded-[24px] border border-stone-200 overflow-hidden shadow-sm">
-          <div className="p-6 border-b border-stone-300">
+          <div className="p-6 border-b border-stone-300 flex justify-between items-center">
             <h3 className="font-heading text-xl">Personal Info</h3>
+            <button 
+              onClick={() => setIsEditing(!isEditing)}
+              className="text-stone-500 hover:text-onyx transition-all"
+            >
+              {isEditing ? <X size={20} /> : <Edit2 size={20} />}
+            </button>
           </div>
-          <div className="p-2">
-            {[
-              { label: "Full Name", value: profile?.full_name, icon: User },
-              { label: "Email", value: user?.email, icon: Bell },
-              { label: "Phone", value: profile?.phone, icon: Shield },
-            ].map((item, i) => (
-              <div key={i} className="w-full flex justify-between items-center p-4 rounded-2xl">
-                <div className="flex items-center gap-4 text-left">
-                  <div className="text-stone-400">
-                    <item.icon size={20} />
-                  </div>
-                  <div>
-                    <p className="text-[10px] text-stone-500 uppercase font-bold">{item.label}</p>
-                    <p className="text-sm font-medium">{item.value || "Not set"}</p>
-                  </div>
+          
+          <div className="p-4">
+            {isEditing ? (
+              <form onSubmit={handleUpdateProfile} className="flex flex-col gap-4">
+                <div className="grid gap-2">
+                  <label className="text-[10px] text-stone-500 uppercase font-bold">Full Name</label>
+                  <Input 
+                    value={formData.full_name} 
+                    onChange={(e) => setFormData({ ...formData, full_name: e.target.value })} 
+                    className="rounded-full bg-white"
+                  />
                 </div>
+                <div className="grid gap-2">
+                  <label className="text-[10px] text-stone-500 uppercase font-bold">Phone</label>
+                  <Input 
+                    value={formData.phone} 
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })} 
+                    className="rounded-full bg-white"
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <label className="text-[10px] text-stone-500 uppercase font-bold">Avatar URL</label>
+                  <Input 
+                    value={formData.avatar_url} 
+                    onChange={(e) => setFormData({ ...formData, avatar_url: e.target.value })} 
+                    className="rounded-full bg-white"
+                  />
+                </div>
+                <button 
+                  type="submit" 
+                  disabled={saving}
+                  className="bg-onyx text-white rounded-full py-3 font-bold flex items-center justify-center gap-2 mt-2"
+                >
+                  {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Save size={18} /> Save Changes</>}
+                </button>
+              </form>
+            ) : (
+              <div className="flex flex-col">
+                {[
+                  { label: "Full Name", value: profile?.full_name, icon: User },
+                  { label: "Email", value: user?.email, icon: Bell },
+                  { label: "Phone", value: profile?.phone, icon: Shield },
+                ].map((item, i) => (
+                  <div key={i} className="w-full flex justify-between items-center py-3">
+                    <div className="flex items-center gap-4 text-left">
+                      <div className="text-stone-400">
+                        <item.icon size={20} />
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-stone-500 uppercase font-bold">{item.label}</p>
+                        <p className="text-sm font-medium">{item.value || "Not set"}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
           </div>
         </div>
 
