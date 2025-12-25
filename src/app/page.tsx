@@ -88,7 +88,6 @@ export default function Home() {
             <h2 className="text-2xl font-heading text-black">SMARTKING's</h2>
             <p className="text-sm font-serif text-zinc-500">Said Hamare Zamane Mein.....</p>
           </div>
-          <Link href="/admin/leaderboard" className="text-xs font-bold text-black/40 hover:text-black transition-colors">VIEW ALL</Link>
         </div>
 
         <div className="flex gap-6 overflow-x-auto no-scrollbar pb-4 -mx-6 px-6">
