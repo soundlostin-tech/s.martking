@@ -29,7 +29,14 @@ export default function Signin() {
         password: formData.password,
       });
 
-      if (error) throw error;
+      if (error) {
+        if (error.message === "Email not confirmed") {
+          toast.error("Please confirm your email address before signing in.");
+        } else {
+          throw error;
+        }
+        return;
+      }
 
       toast.success("Signed in successfully!");
       router.push("/");

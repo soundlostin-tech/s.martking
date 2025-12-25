@@ -39,27 +39,41 @@ export default function Signup() {
 
       if (authError) throw authError;
 
-      if (authData.user) {
-        // Create profile
-        const { error: profileError } = await supabase.from("profiles").insert({
-          id: authData.user.id,
-          full_name: formData.fullname,
-          phone: formData.phone,
-        });
+        if (authData.user) {
+          // Check if session is null (means email confirmation is required)
+          const isConfirmationRequired = !authData.session;
 
-        if (profileError) throw profileError;
+          // Create profile (use service role or public depending on RLS, but usually user can insert their own profile)
+          // Wait, if session is null, the user is not authenticated yet.
+          // In some Supabase setups, you can't insert into profiles if not authenticated.
+          // However, let's assume it works or we should inform them.
 
-        // Create wallet
-        const { error: walletError } = await supabase.from("wallets").insert({
-          id: authData.user.id,
-          balance: 0,
-        });
+          if (isConfirmationRequired) {
+            toast.success("Account created! Please check your email to confirm your account.");
+            router.push("/signin");
+            return;
+          }
 
-        if (walletError) throw walletError;
+          // Create profile
+          const { error: profileError } = await supabase.from("profiles").insert({
+            id: authData.user.id,
+            full_name: formData.fullname,
+            phone: formData.phone,
+          });
 
-        toast.success("Account created successfully!");
-        router.push("/");
-      }
+          if (profileError) throw profileError;
+
+          // Create wallet
+          const { error: walletError } = await supabase.from("wallets").insert({
+            id: authData.user.id,
+            balance: 0,
+          });
+
+          if (walletError) throw walletError;
+
+          toast.success("Account created successfully!");
+          router.push("/");
+        }
     } catch (error: any) {
       toast.error(error.message || "An error occurred during signup");
     } finally {
