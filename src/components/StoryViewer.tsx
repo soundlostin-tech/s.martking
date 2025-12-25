@@ -100,9 +100,9 @@ export function StoryViewer({ stories, initialIndex, isOpen, onClose }: StoryVie
 
           {/* Header */}
           <div className="absolute top-8 left-4 right-4 z-20 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full border-2 border-white overflow-hidden bg-zinc-800">
-                {currentStory.user.avatar_url ? (
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full border border-white overflow-hidden bg-zinc-800">
+                  {currentStory.user.avatar_url ? (
                   <img src={currentStory.user.avatar_url} alt="" className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-white font-bold">
