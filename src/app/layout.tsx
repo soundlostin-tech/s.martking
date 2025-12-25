@@ -5,6 +5,8 @@ import "./globals.css";
 import { VisualEditsMessenger } from "orchids-visual-edits";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { Toaster } from "sonner";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -44,8 +46,9 @@ export default function RootLayout({
           >
             {children}
           </motion.div>
-        </AnimatePresence>
-        <VisualEditsMessenger />
+          </AnimatePresence>
+          <Toaster position="top-center" />
+          <VisualEditsMessenger />
       </body>
     </html>
   );

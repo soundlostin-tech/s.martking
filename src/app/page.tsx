@@ -8,46 +8,76 @@ import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { 
   IndianRupee, Trophy, Swords, ChevronRight, Calendar, 
-  ArrowRight, Star, Users, Play, Target, Zap 
+  ArrowRight, Star, Users, Play, Target, Zap, Plus 
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { StoryViewer } from "@/components/StoryViewer";
+import { StoryUpload } from "@/components/StoryUpload";
 
 export default function Home() {
   const { user, loading: authLoading } = useAuth(false);
   const [profiles, setProfiles] = useState<any[]>([]);
+  const [stories, setStories] = useState<any[]>([]);
   const [featuredMatches, setFeaturedMatches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Story state
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [selectedStoryIndex, setSelectedStoryIndex] = useState(0);
+  const [activeStories, setActiveStories] = useState<any[]>([]);
+
+  const fetchData = async () => {
+    try {
+      // Fetch profiles for "Stories"
+      const { data: profileData } = await supabase
+        .from("profiles")
+        .select("*")
+        .limit(10);
+      setProfiles(profileData || []);
+
+      // Fetch active stories
+      const { data: storyData } = await supabase
+        .from("stories")
+        .select(`
+          *,
+          user:profiles(full_name, avatar_url)
+        `)
+        .gt('expires_at', new Date().toISOString())
+        .order('created_at', { ascending: true });
+      setStories(storyData || []);
+
+      // Fetch matches for "Tournament Cards"
+      const { data: matchData } = await supabase
+        .from("matches")
+        .select(`
+          *,
+          tournament:tournaments(title, entry_fee, prize_pool)
+        `)
+        .or('status.eq.live,status.eq.upcoming')
+        .order('status', { ascending: false }) // Live first
+        .limit(4);
+      setFeaturedMatches(matchData || []);
+
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch profiles for "Stories"
-        const { data: profileData } = await supabase
-          .from("profiles")
-          .select("*")
-          .limit(10);
-        setProfiles(profileData || []);
-
-        // Fetch matches for "Tournament Cards"
-        const { data: matchData } = await supabase
-          .from("matches")
-          .select(`
-            *,
-            tournament:tournaments(title, entry_fee, prize_pool)
-          `)
-          .or('status.eq.live,status.eq.upcoming')
-          .order('status', { ascending: false }) // Live first
-          .limit(4);
-        setFeaturedMatches(matchData || []);
-
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchData();
   }, []);
+
+  const openStory = (userId: string) => {
+    const userStories = stories.filter(s => s.user_id === userId);
+    if (userStories.length > 0) {
+      setActiveStories(userStories);
+      setSelectedStoryIndex(0);
+      setIsViewerOpen(true);
+    }
+  };
 
   return (
     <main className="min-h-screen w-full bg-zinc-100 pb-32 overflow-x-hidden">
@@ -62,40 +92,89 @@ export default function Home() {
         </div>
 
         <div className="flex gap-6 overflow-x-auto no-scrollbar pb-4 -mx-6 px-6">
-          {profiles.map((profile, i) => (
-            <motion.div 
-              key={profile.id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: i * 0.1 }}
-              className="flex-shrink-0 flex flex-col items-center gap-3 group cursor-pointer"
-            >
-              <div className="relative p-1 rounded-full bg-gradient-to-tr from-black via-zinc-400 to-white group-hover:scale-105 transition-transform">
+          {/* My Story / Add Story */}
+          {user && (
+            <div className="flex-shrink-0 flex flex-col items-center gap-3">
+              <div 
+                onClick={() => {
+                  const myStories = stories.filter(s => s.user_id === user.id);
+                  if (myStories.length > 0) openStory(user.id);
+                  else setIsUploadOpen(true);
+                }}
+                className={`relative p-1 rounded-full cursor-pointer transition-transform hover:scale-105 ${
+                  stories.some(s => s.user_id === user.id) 
+                    ? 'bg-gradient-to-tr from-black via-zinc-400 to-white' 
+                    : 'bg-zinc-200'
+                }`}
+              >
                 <div className="w-20 h-20 rounded-full bg-zinc-100 border-4 border-zinc-100 flex items-center justify-center overflow-hidden">
-                  {profile.avatar_url ? (
-                    <img src={profile.avatar_url} alt={profile.full_name} className="w-full h-full object-cover" />
+                  {user.user_metadata?.avatar_url ? (
+                    <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover" />
                   ) : (
-                    <div className="text-2xl font-heading text-black/20">{profile.full_name?.[0]}</div>
+                    <div className="text-2xl font-heading text-black/20">{user.email?.[0].toUpperCase()}</div>
                   )}
                 </div>
-                {profile.status === 'Active' && (
-                  <div className="absolute bottom-1 right-1 w-5 h-5 bg-green-500 border-4 border-zinc-100 rounded-full" />
+                {!stories.some(s => s.user_id === user.id) && (
+                  <div className="absolute bottom-1 right-1 w-6 h-6 bg-black border-2 border-zinc-100 rounded-full flex items-center justify-center">
+                    <Plus size={14} className="text-white" />
+                  </div>
                 )}
               </div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-black/60 group-hover:text-black transition-colors">
-                {profile.full_name?.split(' ')[0]}
-              </span>
-            </motion.div>
-          ))}
-          {/* Add a placeholder story */}
-          <div className="flex-shrink-0 flex flex-col items-center gap-3 opacity-30">
-            <div className="w-20 h-20 rounded-full border-2 border-dashed border-black/20 flex items-center justify-center">
-              <Zap size={24} className="text-black" />
+              <span className="text-[11px] font-bold uppercase tracking-wider text-black/60">Your Story</span>
             </div>
-            <span className="text-[11px] font-bold uppercase tracking-wider">SOON</span>
-          </div>
+          )}
+
+          {profiles
+            .filter(p => p.id !== user?.id)
+            .map((profile, i) => {
+              const hasStory = stories.some(s => s.user_id === profile.id);
+              return (
+                <motion.div 
+                  key={profile.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.1 }}
+                  onClick={() => hasStory && openStory(profile.id)}
+                  className={`flex-shrink-0 flex flex-col items-center gap-3 group ${hasStory ? 'cursor-pointer' : ''}`}
+                >
+                  <div className={`relative p-1 rounded-full transition-transform group-hover:scale-105 ${
+                    hasStory ? 'bg-gradient-to-tr from-black via-zinc-400 to-white' : 'bg-transparent border border-zinc-200'
+                  }`}>
+                    <div className="w-20 h-20 rounded-full bg-zinc-100 border-4 border-zinc-100 flex items-center justify-center overflow-hidden">
+                      {profile.avatar_url ? (
+                        <img src={profile.avatar_url} alt={profile.full_name} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="text-2xl font-heading text-black/20">{profile.full_name?.[0]}</div>
+                      )}
+                    </div>
+                    {profile.status === 'Active' && (
+                      <div className="absolute bottom-1 right-1 w-5 h-5 bg-green-500 border-4 border-zinc-100 rounded-full" />
+                    )}
+                  </div>
+                  <span className={`text-[11px] font-bold uppercase tracking-wider transition-colors ${
+                    hasStory ? 'text-black group-hover:text-black' : 'text-black/60'
+                  }`}>
+                    {profile.full_name?.split(' ')[0]}
+                  </span>
+                </motion.div>
+              );
+            })}
         </div>
       </section>
+
+      {/* Modals */}
+      <StoryViewer 
+        stories={activeStories}
+        initialIndex={selectedStoryIndex}
+        isOpen={isViewerOpen}
+        onClose={() => setIsViewerOpen(false)}
+      />
+
+      <StoryUpload 
+        isOpen={isUploadOpen}
+        onClose={() => setIsUploadOpen(false)}
+        onSuccess={fetchData}
+      />
 
       {/* Featured Tournament Cards */}
       <section className="px-6 py-12 max-w-4xl mx-auto">
