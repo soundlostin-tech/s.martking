@@ -101,13 +101,13 @@ export default function Home() {
                   if (myStories.length > 0) openStory(user.id);
                   else setIsUploadOpen(true);
                 }}
-                className={`relative p-1 rounded-full cursor-pointer transition-transform hover:scale-105 ${
+                className={`relative p-2 rounded-full cursor-pointer transition-transform hover:scale-105 ${
                   stories.some(s => s.user_id === user.id) 
                     ? 'bg-gradient-to-tr from-black via-zinc-400 to-white' 
                     : 'bg-zinc-200'
                 }`}
               >
-                <div className="w-20 h-20 rounded-full bg-zinc-100 border-4 border-zinc-100 flex items-center justify-center overflow-hidden">
+                <div className="w-20 h-20 rounded-full bg-zinc-100 border-2 border-zinc-100 flex items-center justify-center overflow-hidden">
                   {user.user_metadata?.avatar_url ? (
                     <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover" />
                   ) : (
@@ -137,10 +137,10 @@ export default function Home() {
                   onClick={() => hasStory && openStory(profile.id)}
                   className={`flex-shrink-0 flex flex-col items-center gap-3 group ${hasStory ? 'cursor-pointer' : ''}`}
                 >
-                  <div className={`relative p-1 rounded-full transition-transform group-hover:scale-105 ${
+                  <div className={`relative p-2 rounded-full transition-transform group-hover:scale-105 ${
                     hasStory ? 'bg-gradient-to-tr from-black via-zinc-400 to-white' : 'bg-transparent border border-zinc-200'
                   }`}>
-                    <div className="w-20 h-20 rounded-full bg-zinc-100 border-4 border-zinc-100 flex items-center justify-center overflow-hidden">
+                    <div className="w-20 h-20 rounded-full bg-zinc-100 border-2 border-zinc-100 flex items-center justify-center overflow-hidden">
                       {profile.avatar_url ? (
                         <img src={profile.avatar_url} alt={profile.full_name} className="w-full h-full object-cover" />
                       ) : (
