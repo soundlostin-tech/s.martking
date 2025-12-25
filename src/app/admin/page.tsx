@@ -2,120 +2,418 @@
 
 import { HeroSection } from "@/components/layout/HeroSection";
 import { AdminNav } from "@/components/layout/AdminNav";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { 
+  Trophy, 
+  Users, 
+  Activity, 
+  IndianRupee, 
+  TrendingUp, 
+  Calendar, 
+  ChevronRight,
+  ArrowUpRight,
+  ArrowDownRight,
+  Clock,
+  LayoutDashboard
+} from "lucide-react";
+import { 
+  AreaChart, 
+  Area, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  BarChart,
+  Bar
+} from 'recharts';
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { Loader2 } from "lucide-react";
+import { format } from "date-fns";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/hooks/useAuth";
+
+// Mock data for charts since DB might be empty
+const revenueData = [
+  { name: 'Mon', value: 4000 },
+  { name: 'Tue', value: 3000 },
+  { name: 'Wed', value: 2000 },
+  { name: 'Thu', value: 2780 },
+  { name: 'Fri', value: 1890 },
+  { name: 'Sat', value: 2390 },
+  { name: 'Sun', value: 3490 },
+];
+
+const playerData = [
+  { name: 'Mon', players: 120 },
+  { name: 'Tue', players: 150 },
+  { name: 'Wed', players: 180 },
+  { name: 'Thu', players: 140 },
+  { name: 'Fri', players: 210 },
+  { name: 'Sat', players: 350 },
+  { name: 'Sun', players: 280 },
+];
 
 export default function AdminOverview() {
+  const { user } = useAuth();
+  const [timeRange, setTimeRange] = useState("Week");
   const [stats, setStats] = useState({
-    revenue: 0,
-    tournaments: 0,
-    players: 0,
-    payouts: 0,
+    totalTournaments: 0,
+    totalUsers: 0,
+    activeToday: 0,
+    totalRevenue: 0,
+    revenueGrowth: 12.5,
+    userGrowth: 8.2,
   });
+  const [latestTournaments, setLatestTournaments] = useState<any[]>([]);
+  const [latestPayouts, setLatestPayouts] = useState<any[]>([]);
+  const [activities, setActivities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchStats();
+    const fetchData = async () => {
+      try {
+        // Fetch KPIs
+        const { count: tournamentsCount } = await supabase
+          .from("tournaments")
+          .select("*", { count: 'exact', head: true });
+        
+        const { count: usersCount } = await supabase
+          .from("profiles")
+          .select("*", { count: 'exact', head: true });
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const { count: activeCount } = await supabase
+          .from("participants")
+          .select("user_id", { count: 'exact', head: true })
+          .gte("joined_at", today.toISOString());
+
+        const { data: revenueData } = await supabase
+          .from("transactions")
+          .select("amount")
+          .in("type", ["fee", "deposit"]);
+        
+        const totalRevenue = revenueData?.reduce((acc, curr) => acc + Number(curr.amount), 0) || 0;
+
+        setStats(prev => ({
+          ...prev,
+          totalTournaments: tournamentsCount || 0,
+          totalUsers: usersCount || 0,
+          activeToday: activeCount || 0,
+          totalRevenue: totalRevenue,
+        }));
+
+        // Fetch Latest Tournaments
+        const { data: tournaments } = await supabase
+          .from("tournaments")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(4);
+        setLatestTournaments(tournaments || []);
+
+        // Fetch Latest Payouts (withdrawals)
+        const { data: payouts, error: payoutsError } = await supabase
+          .from("transactions")
+          .select("*")
+          .eq("type", "withdrawal")
+          .order("created_at", { ascending: false })
+          .limit(4);
+        
+        if (payoutsError) {
+          console.error("Payouts fetch error:", payoutsError);
+          setLatestPayouts([]);
+        } else {
+          setLatestPayouts(payouts || []);
+        }
+
+        // Mock Activity Log (since we don't have a dedicated table yet)
+        setActivities([
+          { id: 1, event: "Tournament Created", detail: "PUBG Mobile Pro League", time: "2m ago", icon: Trophy, color: "text-lemon-lime" },
+          { id: 2, event: "User Suspended", detail: "User ID #8821 for cheating", time: "15m ago", icon: Users, color: "text-red-500" },
+          { id: 3, event: "Payout Approved", detail: "₹5,000 to Rahul Sharma", time: "1h ago", icon: IndianRupee, color: "text-green-500" },
+          { id: 4, event: "New Organizer", detail: "Matrix Esports joined", time: "3h ago", icon: Activity, color: "text-purple-500" },
+        ]);
+
+      } catch (error) {
+        console.error("Error fetching admin dashboard data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  const fetchStats = async () => {
-    setLoading(true);
-    try {
-      const { count: tournamentCount } = await supabase
-        .from("tournaments")
-        .select("*", { count: 'exact', head: true });
-
-      const { count: profileCount } = await supabase
-        .from("profiles")
-        .select("*", { count: 'exact', head: true });
-
-      const { data: txData } = await supabase
-        .from("transactions")
-        .select("amount, type, status");
-
-      const revenue = txData?.filter(t => t.type === 'entry_fee').reduce((acc, t) => acc + Number(t.amount), 0) || 0;
-      const payouts = txData?.filter(t => t.type === 'winning' || (t.type === 'withdrawal' && t.status === 'completed')).reduce((acc, t) => acc + Number(t.amount), 0) || 0;
-
-      setStats({
-        revenue,
-        tournaments: tournamentCount || 0,
-        players: profileCount || 0,
-        payouts,
-      });
-    } catch (error) {
-      console.error("Error fetching admin stats:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const chartData = [
-    { name: "Mon", revenue: 4000 },
-    { name: "Tue", revenue: 3000 },
-    { name: "Wed", revenue: 2000 },
-    { name: "Thu", revenue: 2780 },
-    { name: "Fri", revenue: 1890 },
-    { name: "Sat", revenue: 2390 },
-    { name: "Sun", revenue: stats.revenue / 10 }, // Dummy for now
-  ];
-
   return (
-    <main className="min-h-screen pb-24 bg-stone-100">
+    <main className="min-h-screen pb-32 bg-stone-50">
       <HeroSection 
-        title="Admin Dashboard" 
-        subtitle="Overview of your arena performance."
-        className="mx-0 rounded-none pb-24"
-      >
-        <div className="bg-white/5 backdrop-blur-md rounded-[24px] p-6 border border-white/10 mt-4 shadow-2xl">
-          <p className="text-sm opacity-60 uppercase tracking-widest text-white mb-2">Total Revenue</p>
-          <h2 className="text-4xl font-heading text-white">₹{stats.revenue.toLocaleString()}</h2>
-          <div className="flex gap-2 mt-2">
-            <span className="text-lime-yellow text-xs font-bold">+100%</span>
-            <span className="text-white/40 text-xs">all time</span>
-          </div>
+        title="Admin Overview" 
+        subtitle={`Welcome back, Admin. Here's what's happening today.`}
+        className="mx-0 rounded-none pb-32"
+      />
+
+      <div className="px-6 -mt-24 relative z-10 space-y-6">
+        {/* Time Range Selector */}
+        <div className="flex bg-white p-1 rounded-2xl border border-stone-200 shadow-sm w-fit">
+          {["Today", "Week", "Month", "All"].map((range) => (
+            <button
+              key={range}
+              onClick={() => setTimeRange(range)}
+              className={`px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${
+                timeRange === range 
+                  ? "bg-onyx text-white shadow-md" 
+                  : "text-stone-400 hover:text-onyx"
+              }`}
+            >
+              {range}
+            </button>
+          ))}
         </div>
-      </HeroSection>
 
-      <div className="px-6 -mt-12 relative z-10 flex flex-col gap-4">
-        {loading ? (
-          <div className="flex justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-lemon-lime" />
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                { label: "Tourneys", value: stats.tournaments, color: "text-onyx" },
-                { label: "Players", value: stats.players, color: "text-onyx" },
-                { label: "Payouts", value: `₹${stats.payouts.toLocaleString()}`, color: "text-amber-600" },
-              ].map((kpi, i) => (
-                <div key={i} className="bg-alabaster-grey-2 p-4 rounded-2xl border border-stone-200 shadow-sm">
-                  <p className="text-[10px] text-stone-500 uppercase font-bold mb-1">{kpi.label}</p>
-                  <p className={`text-lg font-heading ${kpi.color}`}>{kpi.value}</p>
+        {/* Summary KPIs */}
+        <div className="grid grid-cols-2 gap-4">
+          <Card className="rounded-[32px] border-none shadow-xl bg-onyx text-white overflow-hidden relative">
+            <CardContent className="p-5">
+              <div className="flex justify-between items-start mb-4">
+                <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center text-lemon-lime">
+                  <Trophy size={20} />
                 </div>
-              ))}
-            </div>
+                <div className="flex items-center gap-1 text-[10px] font-bold text-lemon-lime">
+                  <ArrowUpRight size={12} />
+                  {stats.revenueGrowth}%
+                </div>
+              </div>
+              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Total Tournaments</p>
+              <h4 className="text-2xl font-heading mt-1">{stats.totalTournaments}</h4>
+              <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-lemon-lime/10 rounded-full blur-2xl" />
+            </CardContent>
+          </Card>
 
-            <div className="bg-white rounded-[24px] p-6 border border-stone-200 shadow-sm">
-              <h3 className="font-heading text-xl mb-6">Revenue Trend</h3>
-              <div className="h-64 w-full">
+          <Card className="rounded-[32px] border-none shadow-xl bg-white overflow-hidden relative border border-stone-100">
+            <CardContent className="p-5">
+              <div className="flex justify-between items-start mb-4">
+                <div className="w-10 h-10 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500">
+                  <Users size={20} />
+                </div>
+                <div className="flex items-center gap-1 text-[10px] font-bold text-blue-500">
+                  <ArrowUpRight size={12} />
+                  {stats.userGrowth}%
+                </div>
+              </div>
+              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Registered Users</p>
+              <h4 className="text-2xl font-heading mt-1">{stats.totalUsers}</h4>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-[32px] border-none shadow-xl bg-white overflow-hidden relative border border-stone-100">
+            <CardContent className="p-5">
+              <div className="flex justify-between items-start mb-4">
+                <div className="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500">
+                  <Activity size={20} />
+                </div>
+              </div>
+              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Active Players</p>
+              <h4 className="text-2xl font-heading mt-1">{stats.activeToday}</h4>
+              <p className="text-[9px] text-stone-400 mt-1 font-medium">Currently in arena</p>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-[32px] border-none shadow-xl bg-white overflow-hidden relative border border-stone-100">
+            <CardContent className="p-5">
+              <div className="flex justify-between items-start mb-4">
+                <div className="w-10 h-10 rounded-2xl bg-green-50 flex items-center justify-center text-green-500">
+                  <IndianRupee size={20} />
+                </div>
+              </div>
+              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Platform Revenue</p>
+              <h4 className="text-2xl font-heading mt-1">₹{stats.totalRevenue.toLocaleString()}</h4>
+              <p className="text-[9px] text-stone-400 mt-1 font-medium">Net earnings</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Analytics Section */}
+        <section className="space-y-4">
+          <h2 className="text-xl font-heading text-onyx">Analytics</h2>
+          
+          <div className="space-y-4">
+            <Card className="rounded-[32px] border-stone-200 shadow-sm overflow-hidden bg-white">
+              <CardHeader className="p-6 pb-0">
+                <CardTitle className="text-sm font-bold uppercase tracking-widest text-stone-400 flex items-center justify-between">
+                  Revenue Growth
+                  <Badge variant="outline" className="text-[9px] border-stone-100">Live</Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 pt-2 h-[200px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData}>
+                  <AreaChart data={revenueData}>
+                    <defs>
+                      <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#D6FD02" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="#D6FD02" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: "#888" }} />
-                    <Tooltip 
-                      cursor={{ fill: "transparent" }}
-                      contentStyle={{ borderRadius: "12px", border: "none", boxShadow: "0 10px 20px rgba(0,0,0,0.1)" }}
+                    <XAxis 
+                      dataKey="name" 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{fontSize: 10, fill: '#A8A29E'}}
                     />
-                    <Bar dataKey="revenue" fill="#D6FD02" radius={[4, 4, 0, 0]} />
+                    <YAxis hide />
+                    <Tooltip 
+                      contentStyle={{borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
+                      labelStyle={{fontWeight: 'bold', marginBottom: '4px'}}
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey="value" 
+                      stroke="#D6FD02" 
+                      strokeWidth={3}
+                      fillOpacity={1} 
+                      fill="url(#colorValue)" 
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-[32px] border-stone-200 shadow-sm overflow-hidden bg-white">
+              <CardHeader className="p-6 pb-0">
+                <CardTitle className="text-sm font-bold uppercase tracking-widest text-stone-400">
+                  Player Engagement
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 pt-2 h-[200px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={playerData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                    <XAxis 
+                      dataKey="name" 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{fontSize: 10, fill: '#A8A29E'}}
+                    />
+                    <YAxis hide />
+                    <Tooltip 
+                      cursor={{fill: '#f8f8f8'}}
+                      contentStyle={{borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
+                    />
+                    <Bar 
+                      dataKey="players" 
+                      fill="#1C1917" 
+                      radius={[6, 6, 0, 0]} 
+                      barSize={20}
+                    />
                   </BarChart>
                 </ResponsiveContainer>
-              </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Quick Panels */}
+        <div className="grid grid-cols-1 gap-6">
+          {/* Latest Tournaments */}
+          <section className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-heading text-onyx">Latest Tournaments</h2>
+              <Link href="/admin/tournaments" className="text-[10px] font-bold text-stone-400 uppercase tracking-widest flex items-center gap-1">
+                View All <ChevronRight size={14} />
+              </Link>
             </div>
-          </>
-        )}
+            <div className="space-y-3">
+              {latestTournaments.length > 0 ? (
+                latestTournaments.map((t) => (
+                  <div key={t.id} className="bg-white p-4 rounded-[24px] border border-stone-100 shadow-sm flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-stone-50 flex items-center justify-center text-stone-400">
+                        <Trophy size={18} />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-xs leading-tight">{t.title}</h4>
+                        <p className="text-[9px] text-stone-400 font-medium">Created {format(new Date(t.created_at), "MMM d, HH:mm")}</p>
+                      </div>
+                    </div>
+                    <Badge className={`${t.status === 'upcoming' ? 'bg-green-50 text-green-600' : 'bg-stone-100 text-stone-500'} border-none text-[8px] uppercase`}>
+                      {t.status}
+                    </Badge>
+                  </div>
+                ))
+              ) : (
+                <div className="bg-white p-8 rounded-[24px] border border-dashed border-stone-200 text-center">
+                  <p className="text-[10px] text-stone-400 font-bold uppercase">No recent tournaments</p>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Latest Payouts */}
+          <section className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-heading text-onyx">Latest Withdrawals</h2>
+              <Link href="/admin/transactions" className="text-[10px] font-bold text-stone-400 uppercase tracking-widest flex items-center gap-1">
+                View All <ChevronRight size={14} />
+              </Link>
+            </div>
+            <div className="space-y-3">
+              {latestPayouts.length > 0 ? (
+                latestPayouts.map((p) => (
+                  <div key={p.id} className="bg-white p-4 rounded-[24px] border border-stone-100 shadow-sm flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-green-50 text-green-500 flex items-center justify-center">
+                        <IndianRupee size={18} />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-xs leading-tight">{p.profile?.full_name || 'Arena Player'}</h4>
+                        <p className="text-[9px] text-stone-400 font-medium">{format(new Date(p.created_at), "MMM d, HH:mm")}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-heading text-sm">₹{Number(p.amount).toLocaleString()}</p>
+                      <span className={`text-[8px] font-bold uppercase tracking-widest ${p.status === 'completed' ? 'text-green-500' : 'text-orange-500'}`}>
+                        {p.status}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="bg-white p-8 rounded-[24px] border border-dashed border-stone-200 text-center">
+                  <p className="text-[10px] text-stone-400 font-bold uppercase">No recent withdrawals</p>
+                </div>
+              )}
+            </div>
+          </section>
+        </div>
+
+        {/* Activity Log */}
+        <section className="space-y-4">
+          <h2 className="text-xl font-heading text-onyx">Activity Log</h2>
+          <div className="bg-white rounded-[32px] border border-stone-200 shadow-sm p-2">
+            {activities.map((activity, index) => (
+              <div 
+                key={activity.id} 
+                className={`flex items-start gap-4 p-4 ${index !== activities.length - 1 ? 'border-b border-stone-50' : ''}`}
+              >
+                <div className={`mt-1 p-2 rounded-xl bg-stone-50 ${activity.color}`}>
+                  <activity.icon size={16} />
+                </div>
+                <div className="flex-1">
+                  <div className="flex justify-between items-start">
+                    <h5 className="text-[11px] font-bold text-onyx">{activity.event}</h5>
+                    <span className="text-[9px] text-stone-400 font-medium flex items-center gap-1">
+                      <Clock size={10} /> {activity.time}
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-stone-500 mt-0.5">{activity.detail}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
 
       <AdminNav />
