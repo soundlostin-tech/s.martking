@@ -42,7 +42,7 @@ export function TopHeader() {
   }, [user]);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-zinc-50/80 backdrop-blur-xl border-b border-black/5 px-6 py-4">
+    <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-xl border-b border-evergreen/5 px-6 py-4">
       <div className="max-w-4xl mx-auto flex items-center justify-between">
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
@@ -51,34 +51,34 @@ export function TopHeader() {
         >
             <Link href="/" className="group flex flex-col items-center">
               <span className="bg-primary px-3 py-1 rounded-lg">
-                <h1 className="text-2xl font-heading text-white leading-tight group-hover:tracking-wider transition-all uppercase">Smartking</h1>
+                <h1 className="text-2xl font-heading text-primary-foreground leading-tight group-hover:tracking-wider transition-all uppercase">Smartking</h1>
               </span>
-              <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-zinc-400 mt-1">Battle Arena Premium</p>
+              <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-muted-foreground mt-1">Battle Arena Premium</p>
             </Link>
         </motion.div>
-
-          <div className="flex items-center gap-3">
-            {user && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex items-center bg-black rounded-[1.25rem] px-4 py-2 shadow-xl shadow-black/10 hover:shadow-black/20 transition-all cursor-pointer group"
-              >
-                <Link href="/wallet" className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-black shadow-lg group-hover:scale-110 transition-transform">
-                    <Wallet size={14} />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-[8px] font-bold text-white/40 uppercase tracking-widest leading-none">Balance</span>
-                    <span className="text-sm font-heading text-white leading-none mt-1">₹{balance?.toLocaleString() ?? '0'}</span>
-                  </div>
-                </Link>
-              </motion.div>
-            )}
-          </div>
-
+  
+            <div className="flex items-center gap-3">
+              {user && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex items-center bg-evergreen rounded-[1.25rem] px-4 py-2 shadow-xl shadow-evergreen/10 hover:shadow-evergreen/20 transition-all cursor-pointer group"
+                >
+                  <Link href="/wallet" className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-frosted-mint flex items-center justify-center text-evergreen shadow-lg group-hover:scale-110 transition-transform">
+                      <Wallet size={14} />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[8px] font-bold text-frosted-mint/40 uppercase tracking-widest leading-none">Balance</span>
+                      <span className="text-sm font-heading text-frosted-mint leading-none mt-1">₹{balance?.toLocaleString() ?? '0'}</span>
+                    </div>
+                  </Link>
+                </motion.div>
+              )}
+            </div>
+  
       </div>
     </header>
   );
