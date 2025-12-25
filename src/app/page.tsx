@@ -180,12 +180,12 @@ export default function Home() {
           <div className="space-y-2">
             <h2 className="text-4xl font-heading text-black tracking-tight">Active <span className="italic font-serif opacity-60">Battles</span></h2>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
               <p className="text-xs font-bold uppercase tracking-widest text-zinc-400">Live tournaments in progress</p>
             </div>
           </div>
           <Link href="/matches">
-            <button className="group flex items-center gap-3 px-8 py-4 rounded-full bg-black text-[10px] font-bold text-white hover:scale-105 transition-all shadow-xl shadow-black/10">
+            <button className="group flex items-center gap-3 px-8 py-4 rounded-full bg-black text-[10px] font-bold text-white hover:scale-105 transition-all shadow-xl shadow-black/10 border border-white/10">
               BROWSE ALL <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </Link>
@@ -199,7 +199,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="group relative bg-black rounded-[2.5rem] p-10 shadow-2xl overflow-hidden hover:-translate-y-2 transition-all duration-500"
+              className="group relative bg-black rounded-[2.5rem] p-10 shadow-2xl overflow-hidden hover:-translate-y-2 transition-all duration-500 border border-white/5"
             >
               {/* Radial Glow Effects */}
               <div className="absolute inset-0 opacity-20 pointer-events-none">
@@ -210,8 +210,8 @@ export default function Home() {
               <div className="relative z-10 space-y-8">
                 <div className="flex items-center justify-between">
                   <Badge className={`${
-                    match.status === 'live' ? 'bg-red-500' : 'bg-white/10'
-                  } text-white rounded-full text-[10px] px-4 py-1.5 font-bold border-none tracking-widest`}>
+                    match.status === 'live' ? 'bg-emerald-500' : 'bg-white/10'
+                  } text-white rounded-full text-[10px] px-4 py-1.5 font-bold border-none tracking-widest shadow-lg`}>
                     {match.status.toUpperCase()}
                   </Badge>
                   <div className="flex -space-x-2">
@@ -223,9 +223,9 @@ export default function Home() {
                 </div>
 
                 <div className="flex items-center gap-6">
-                  <div className="w-20 h-20 rounded-3xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform duration-500">
+                  <div className="w-20 h-20 rounded-3xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform duration-500 shadow-inner">
                     {match.status === 'live' ? (
-                      <Play size={32} className="text-red-500" fill="currentColor" />
+                      <Play size={32} className="text-emerald-400" fill="currentColor" />
                     ) : (
                       <Swords size={32} className="text-white" />
                     )}
@@ -237,23 +237,23 @@ export default function Home() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-5">
-                  <div className="bg-white/5 rounded-3xl p-5 border border-white/5 flex flex-col gap-1">
+                  <div className="bg-white/[0.03] rounded-[2rem] p-6 border border-white/5 flex flex-col gap-1 hover:bg-white/[0.05] transition-colors">
                     <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Prize Pool</span>
                     <span className="text-2xl font-heading text-white">₹{match.tournament?.prize_pool}</span>
                   </div>
-                  <div className="bg-white/5 rounded-3xl p-5 border border-white/5 flex flex-col gap-1">
+                  <div className="bg-white/[0.03] rounded-[2rem] p-6 border border-white/5 flex flex-col gap-1 hover:bg-white/[0.05] transition-colors">
                     <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Entry Fee</span>
                     <span className="text-2xl font-heading text-white">₹{match.tournament?.entry_fee}</span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                <div className="flex items-center justify-between pt-6 border-t border-white/10">
                   <div className="flex items-center gap-3 text-white/40">
                     <Users size={16} />
                     <span className="text-xs font-serif italic">{match.mode} • {match.map || 'Bermuda'}</span>
                   </div>
                   <Link href={match.status === 'live' ? `/live?matchId=${match.id}` : '/matches'} className="w-full max-w-[140px]">
-                    <button className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-white text-black text-[11px] font-bold hover:bg-zinc-200 transition-all shadow-xl">
+                    <button className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-white text-black text-[11px] font-bold hover:bg-zinc-200 transition-all shadow-xl active:scale-95">
                       {match.status === 'live' ? 'WATCH LIVE' : 'JOIN NOW'}
                     </button>
                   </Link>
