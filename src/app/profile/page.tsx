@@ -26,7 +26,8 @@ import {
   CheckCircle2,
   Swords,
   TrendingUp,
-  Settings
+  Settings,
+  Calendar
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useState, useEffect } from "react";
