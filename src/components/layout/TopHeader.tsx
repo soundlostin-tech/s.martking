@@ -51,7 +51,7 @@ export function TopHeader() {
         >
             <Link href="/" className="group flex flex-col items-center">
               <span className="bg-primary px-3 py-1 rounded-lg">
-                <h1 className="text-2xl font-heading text-black leading-tight group-hover:tracking-wider transition-all uppercase">Smartking</h1>
+                <h1 className="text-2xl font-heading text-white leading-tight group-hover:tracking-wider transition-all uppercase">Smartking</h1>
               </span>
               <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-zinc-400 mt-1">Battle Arena Premium</p>
             </Link>

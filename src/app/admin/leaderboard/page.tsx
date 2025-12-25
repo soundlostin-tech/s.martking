@@ -174,7 +174,7 @@ export default function AdminLeaderboard() {
           <motion.div 
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="bg-primary text-black p-10 rounded-[3rem] shadow-2xl shadow-primary/10 border border-black/5 relative overflow-hidden group"
+            className="bg-primary text-primary-foreground p-10 rounded-[3rem] shadow-2xl shadow-primary/10 border border-black/5 relative overflow-hidden group"
           >
             <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
               <div className="relative">
@@ -281,7 +281,7 @@ export default function AdminLeaderboard() {
                   <TableRow key={player.id} className="border-black/5 hover:bg-black/[0.01] transition-colors h-24">
                     <TableCell className="pl-8">
                       <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-heading text-lg ${
-                        index === 0 ? "bg-primary text-black" :
+                        index === 0 ? "bg-primary text-primary-foreground" :
                         index === 1 ? "bg-zinc-200 text-black/60" :
                         index === 2 ? "bg-zinc-100 text-black/40" : "text-black/20"
                       }`}>

@@ -181,7 +181,7 @@ export default function AdminOverview() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: i * 0.1 }}
                 className={`rounded-[2.5rem] p-8 border border-black/5 shadow-2xl shadow-black/5 relative overflow-hidden group ${
-                  stat.primary ? "bg-primary text-black" : "bg-zinc-50 text-black"
+                  stat.primary ? "bg-primary text-primary-foreground" : "bg-zinc-50 text-black"
                 }`}
               >
                 <div className="flex justify-between items-start relative z-10">

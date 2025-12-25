@@ -25,7 +25,7 @@ export function AnalyticsCard({
   const variants = {
     light: "bg-alabaster-grey-2 text-onyx border-stone-200",
     dark: "bg-onyx/20 text-white border-white/10 glass shadow-lg",
-    highlight: "bg-gradient-to-br from-lime-yellow to-lemon-lime text-onyx shadow-lg",
+    highlight: "bg-black text-white shadow-lg border-black/10",
   };
 
   return (

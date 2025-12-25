@@ -158,7 +158,7 @@ export default function AdminUsers() {
   const getStatusBadge = (status: string) => {
     const baseClass = "text-[9px] font-bold px-3 py-1 rounded-full border-none shadow-sm";
     switch (status) {
-      case 'Active': return <Badge className={`${baseClass} bg-primary text-black`}>ACTIVE</Badge>;
+      case 'Active': return <Badge className={`${baseClass} bg-primary text-primary-foreground`}>ACTIVE</Badge>;
       case 'Suspended': return <Badge className={`${baseClass} bg-black/10 text-black`}>SUSPENDED</Badge>;
       case 'Banned': return <Badge className={`${baseClass} bg-black text-white`}>BANNED</Badge>;
       default: return <Badge className={`${baseClass} bg-black/5 text-black/40`}>{status.toUpperCase()}</Badge>;
@@ -167,7 +167,7 @@ export default function AdminUsers() {
 
   const getRoleBadge = (role: string) => {
     switch (role) {
-      case 'Admin': return <Badge className="bg-primary text-black border-none text-[8px] tracking-widest px-2">ADMIN</Badge>;
+      case 'Admin': return <Badge className="bg-primary text-primary-foreground border-none text-[8px] tracking-widest px-2">ADMIN</Badge>;
       case 'Organizer': return <Badge className="bg-zinc-200 text-black border-none text-[8px] tracking-widest px-2">ORGANIZER</Badge>;
       default: return <Badge className="bg-zinc-100 text-black/40 border-none text-[8px] tracking-widest px-2">PLAYER</Badge>;
     }
