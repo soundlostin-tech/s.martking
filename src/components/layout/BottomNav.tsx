@@ -36,8 +36,8 @@ export function BottomNav() {
                       y: isActive ? -2 : 0 
                     }}
                     transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                      className={`relative z-10 p-2.5 rounded-2xl transition-colors ${
-                        isActive ? "text-white bg-black" : "text-black/30 hover:text-black/60"
+                      className={`relative z-10 transition-colors ${
+                        isActive ? "text-black" : "text-black/30 hover:text-black/60"
                       }`}
                   >
                     <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
