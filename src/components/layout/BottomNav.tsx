@@ -9,7 +9,7 @@ const navItems = [
   { label: "Live", icon: Play, href: "/live" },
   { label: "Matches", icon: Swords, href: "/matches" },
   { label: "Wallet", icon: Wallet, href: "/wallet" },
-  { label: "Profile", icon: "/profile" },
+  { label: "Profile", icon: User, href: "/profile" },
 ];
 
 export function BottomNav() {
@@ -19,7 +19,7 @@ export function BottomNav() {
     <div className="fixed bottom-0 left-0 right-0 bg-stone-100 border-t border-stone-200 px-6 py-3 flex justify-between items-center z-50">
       {navItems.map((item) => {
         const isActive = pathname === item.href;
-        const Icon = item.icon === "/profile" ? User : item.icon;
+        const Icon = item.icon;
         
         return (
           <Link
