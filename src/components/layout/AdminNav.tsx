@@ -3,6 +3,7 @@
 import { LayoutDashboard, PlayCircle, Trophy, BarChart3, ReceiptIndianRupee, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 
 const navItems = [
   { label: "Dash", icon: LayoutDashboard, href: "/admin" },
@@ -17,29 +18,42 @@ export function AdminNav() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-stone-100 border-t border-stone-200 px-4 py-2 flex justify-between items-center z-50 overflow-x-auto no-scrollbar">
-      {navItems.map((item) => {
-        const isActive = pathname === item.href;
-        const Icon = item.icon;
-        
-        return (
-          <Link
-            key={item.label}
-            href={item.href}
-            className="flex flex-col items-center gap-1 group min-w-[60px]"
-          >
-            <div className={`p-1 rounded-md transition-all ${isActive ? "text-black" : "text-stone-400 group-hover:text-stone-600"}`}>
-              <Icon size={20} />
-            </div>
-            <span className={`text-[10px] font-bold uppercase tracking-tighter ${isActive ? "text-black" : "text-stone-400"}`}>
-              {item.label}
-            </span>
-            {isActive && (
-              <div className="h-0.5 w-4 bg-lime-yellow rounded-full" />
-            )}
-          </Link>
-        );
-      })}
+    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-2xl bg-zinc-50 border border-black/5 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-[2.5rem] px-4 overflow-hidden">
+      <div className="flex justify-around items-center h-22 py-2">
+        {navItems.map((item) => {
+          const isActive = pathname === item.href;
+          const Icon = item.icon;
+          
+          return (
+            <Link
+              key={item.label}
+              href={item.href}
+              className="relative flex flex-col items-center justify-center flex-1 h-full outline-none"
+            >
+              <div className="relative flex flex-col items-center gap-1.5 transition-all duration-300 py-3">
+                <motion.div
+                  animate={{ 
+                    scale: isActive ? 1.15 : 1,
+                    y: isActive ? -2 : 0 
+                  }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                  className={`relative z-10 p-2.5 rounded-2xl transition-colors ${
+                    isActive ? "text-black" : "text-black/30 hover:text-black/60"
+                  }`}
+                >
+                  <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
+                </motion.div>
+
+                <span className={`text-[9px] font-bold uppercase tracking-[0.2em] transition-colors ${
+                  isActive ? "text-black" : "text-black/20"
+                }`}>
+                  {item.label}
+                </span>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
     </div>
   );
 }

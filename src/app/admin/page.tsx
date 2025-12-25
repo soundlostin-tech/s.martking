@@ -8,13 +8,10 @@ import {
   Users, 
   Activity, 
   IndianRupee, 
-  TrendingUp, 
-  Calendar, 
   ChevronRight,
   ArrowUpRight,
-  ArrowDownRight,
   Clock,
-  LayoutDashboard
+  Zap
 } from "lucide-react";
 import { 
   AreaChart, 
@@ -33,8 +30,9 @@ import { format } from "date-fns";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
+import { motion } from "framer-motion";
 
-// Mock data for charts since DB might be empty
+// Mock data for charts
 const revenueData = [
   { name: 'Mon', value: 4000 },
   { name: 'Tue', value: 3000 },
@@ -74,7 +72,6 @@ export default function AdminOverview() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch KPIs
         const { count: tournamentsCount } = await supabase
           .from("tournaments")
           .select("*", { count: 'exact', head: true });
@@ -106,7 +103,6 @@ export default function AdminOverview() {
           totalRevenue: totalRevenue,
         }));
 
-        // Fetch Latest Tournaments
         const { data: tournaments } = await supabase
           .from("tournaments")
           .select("*")
@@ -114,27 +110,20 @@ export default function AdminOverview() {
           .limit(4);
         setLatestTournaments(tournaments || []);
 
-        // Fetch Latest Payouts (withdrawals)
-        const { data: payouts, error: payoutsError } = await supabase
+        const { data: payouts } = await supabase
           .from("transactions")
           .select("*")
           .eq("type", "withdrawal")
           .order("created_at", { ascending: false })
           .limit(4);
         
-        if (payoutsError) {
-          console.error("Payouts fetch error:", payoutsError);
-          setLatestPayouts([]);
-        } else {
-          setLatestPayouts(payouts || []);
-        }
+        setLatestPayouts(payouts || []);
 
-        // Mock Activity Log (since we don't have a dedicated table yet)
         setActivities([
-          { id: 1, event: "Tournament Created", detail: "PUBG Mobile Pro League", time: "2m ago", icon: Trophy, color: "text-lemon-lime" },
-          { id: 2, event: "User Suspended", detail: "User ID #8821 for cheating", time: "15m ago", icon: Users, color: "text-red-500" },
-          { id: 3, event: "Payout Approved", detail: "₹5,000 to Rahul Sharma", time: "1h ago", icon: IndianRupee, color: "text-green-500" },
-          { id: 4, event: "New Organizer", detail: "Matrix Esports joined", time: "3h ago", icon: Activity, color: "text-purple-500" },
+          { id: 1, event: "Tournament Created", detail: "PUBG Mobile Pro League", time: "2m ago", icon: Trophy },
+          { id: 2, event: "User Suspended", detail: "User ID #8821 for cheating", time: "15m ago", icon: Users },
+          { id: 3, event: "Payout Approved", detail: "₹5,000 to Rahul Sharma", time: "1h ago", icon: IndianRupee },
+          { id: 4, event: "New Organizer", detail: "Matrix Esports joined", time: "3h ago", icon: Activity },
         ]);
 
       } catch (error) {
@@ -148,24 +137,29 @@ export default function AdminOverview() {
   }, []);
 
   return (
-    <main className="min-h-screen pb-32 bg-stone-50">
+    <main className="min-h-screen pb-32 bg-zinc-50">
       <HeroSection 
-        title="Admin Overview" 
-        subtitle={`Welcome back, Admin. Here's what's happening today.`}
-        className="mx-0 rounded-none pb-32"
-      />
+        title={<>Command <span className="italic font-serif opacity-60">Center</span></>}
+        subtitle="Operational intelligence and arena performance metrics."
+        className="mx-0 rounded-none pb-32 bg-zinc-50 border-b border-black/5"
+      >
+        <div className="absolute inset-0 opacity-20 pointer-events-none overflow-hidden">
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-zinc-200 rounded-full blur-[120px]" />
+          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-zinc-300 rounded-full blur-[120px]" />
+        </div>
+      </HeroSection>
 
-      <div className="px-6 -mt-24 relative z-10 space-y-6">
+      <div className="px-6 -mt-24 relative z-10 space-y-10 max-w-5xl mx-auto">
         {/* Time Range Selector */}
-        <div className="flex bg-white p-1 rounded-2xl border border-stone-200 shadow-sm w-fit">
+        <div className="flex bg-zinc-50 p-1.5 rounded-[1.5rem] border border-black/5 shadow-2xl shadow-black/5 w-fit mx-auto md:mx-0">
           {["Today", "Week", "Month", "All"].map((range) => (
             <button
               key={range}
               onClick={() => setTimeRange(range)}
-              className={`px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${
+              className={`px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${
                 timeRange === range 
-                  ? "bg-onyx text-white shadow-md" 
-                  : "text-stone-400 hover:text-onyx"
+                  ? "bg-black text-white shadow-xl" 
+                  : "text-black/30 hover:text-black hover:bg-black/5"
               }`}
             >
               {range}
@@ -174,246 +168,196 @@ export default function AdminOverview() {
         </div>
 
         {/* Summary KPIs */}
-        <div className="grid grid-cols-2 gap-4">
-          <Card className="rounded-[32px] border-none shadow-xl bg-onyx text-white overflow-hidden relative">
-            <CardContent className="p-5">
-              <div className="flex justify-between items-start mb-4">
-                <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center text-lemon-lime">
-                  <Trophy size={20} />
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {[
+            { label: "Tournaments", value: stats.totalTournaments, icon: Trophy, growth: stats.revenueGrowth, dark: true },
+            { label: "Members", value: stats.totalUsers, icon: Users, growth: stats.userGrowth },
+            { label: "Active Now", value: stats.activeToday, icon: Activity, sub: "In the Arena" },
+            { label: "Net Revenue", value: `₹${stats.totalRevenue.toLocaleString()}`, icon: IndianRupee, sub: "Platform Earnings" },
+          ].map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: i * 0.1 }}
+              className={`rounded-[2.5rem] p-8 border border-black/5 shadow-2xl shadow-black/5 relative overflow-hidden group ${
+                stat.dark ? "bg-black text-white" : "bg-zinc-50 text-black"
+              }`}
+            >
+              <div className="flex justify-between items-start relative z-10">
+                <div className="space-y-1">
+                  <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${stat.dark ? "text-white/40" : "text-black/30"}`}>
+                    {stat.label}
+                  </p>
+                  <h3 className="text-3xl font-heading leading-none">{stat.value}</h3>
+                  {stat.growth && (
+                    <div className={`flex items-center gap-1 text-[10px] font-bold mt-2 ${stat.dark ? "text-white/60" : "text-black/60"}`}>
+                      <ArrowUpRight size={12} strokeWidth={3} />
+                      {stat.growth}% GROWTH
+                    </div>
+                  )}
+                  {stat.sub && (
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-black/20 mt-2">{stat.sub}</p>
+                  )}
                 </div>
-                <div className="flex items-center gap-1 text-[10px] font-bold text-lemon-lime">
-                  <ArrowUpRight size={12} />
-                  {stats.revenueGrowth}%
-                </div>
-              </div>
-              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Total Tournaments</p>
-              <h4 className="text-2xl font-heading mt-1">{stats.totalTournaments}</h4>
-              <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-lemon-lime/10 rounded-full blur-2xl" />
-            </CardContent>
-          </Card>
-
-          <Card className="rounded-[32px] border-none shadow-xl bg-white overflow-hidden relative border border-stone-100">
-            <CardContent className="p-5">
-              <div className="flex justify-between items-start mb-4">
-                <div className="w-10 h-10 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500">
-                  <Users size={20} />
-                </div>
-                <div className="flex items-center gap-1 text-[10px] font-bold text-blue-500">
-                  <ArrowUpRight size={12} />
-                  {stats.userGrowth}%
-                </div>
-              </div>
-              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Registered Users</p>
-              <h4 className="text-2xl font-heading mt-1">{stats.totalUsers}</h4>
-            </CardContent>
-          </Card>
-
-          <Card className="rounded-[32px] border-none shadow-xl bg-white overflow-hidden relative border border-stone-100">
-            <CardContent className="p-5">
-              <div className="flex justify-between items-start mb-4">
-                <div className="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500">
-                  <Activity size={20} />
+                <div className={`p-3.5 rounded-2xl ${stat.dark ? "bg-white/10 text-white" : "bg-black/5 text-black"} group-hover:scale-110 transition-transform duration-500`}>
+                  <stat.icon size={22} />
                 </div>
               </div>
-              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Active Players</p>
-              <h4 className="text-2xl font-heading mt-1">{stats.activeToday}</h4>
-              <p className="text-[9px] text-stone-400 mt-1 font-medium">Currently in arena</p>
-            </CardContent>
-          </Card>
-
-          <Card className="rounded-[32px] border-none shadow-xl bg-white overflow-hidden relative border border-stone-100">
-            <CardContent className="p-5">
-              <div className="flex justify-between items-start mb-4">
-                <div className="w-10 h-10 rounded-2xl bg-green-50 flex items-center justify-center text-green-500">
-                  <IndianRupee size={20} />
-                </div>
-              </div>
-              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Platform Revenue</p>
-              <h4 className="text-2xl font-heading mt-1">₹{stats.totalRevenue.toLocaleString()}</h4>
-              <p className="text-[9px] text-stone-400 mt-1 font-medium">Net earnings</p>
-            </CardContent>
-          </Card>
+              <div className={`absolute -bottom-6 -right-6 w-24 h-24 rounded-full blur-2xl ${stat.dark ? "bg-white/5" : "bg-black/[0.02]"}`} />
+            </motion.div>
+          ))}
         </div>
 
         {/* Analytics Section */}
-        <section className="space-y-4">
-          <h2 className="text-xl font-heading text-onyx">Analytics</h2>
-          
-          <div className="space-y-4">
-            <Card className="rounded-[32px] border-stone-200 shadow-sm overflow-hidden bg-white">
-              <CardHeader className="p-6 pb-0">
-                <CardTitle className="text-sm font-bold uppercase tracking-widest text-stone-400 flex items-center justify-between">
-                  Revenue Growth
-                  <Badge variant="outline" className="text-[9px] border-stone-100">Live</Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 pt-2 h-[200px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={revenueData}>
-                    <defs>
-                      <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#D6FD02" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#D6FD02" stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                    <XAxis 
-                      dataKey="name" 
-                      axisLine={false} 
-                      tickLine={false} 
-                      tick={{fontSize: 10, fill: '#A8A29E'}}
-                    />
-                    <YAxis hide />
-                    <Tooltip 
-                      contentStyle={{borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
-                      labelStyle={{fontWeight: 'bold', marginBottom: '4px'}}
-                    />
-                    <Area 
-                      type="monotone" 
-                      dataKey="value" 
-                      stroke="#D6FD02" 
-                      strokeWidth={3}
-                      fillOpacity={1} 
-                      fill="url(#colorValue)" 
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <Card className="rounded-[3rem] border-black/5 shadow-2xl shadow-black/5 overflow-hidden bg-zinc-50 p-8 space-y-8">
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-black/20">FINANCIALS</h4>
+                <h3 className="text-xl font-heading text-black">Revenue <span className="italic font-serif opacity-60">Flow</span></h3>
+              </div>
+              <Badge className="bg-black text-white rounded-full text-[9px] px-3 py-1 font-bold border-none">LIVE FEED</Badge>
+            </div>
+            <div className="h-[240px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={revenueData}>
+                  <defs>
+                    <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#000" stopOpacity={0.1}/>
+                      <stop offset="95%" stopColor="#000" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#00000005" />
+                  <XAxis 
+                    dataKey="name" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{fontSize: 10, fontWeight: 'bold', fill: '#00000030'}}
+                  />
+                  <YAxis hide />
+                  <Tooltip 
+                    contentStyle={{borderRadius: '24px', border: 'none', boxShadow: '0 20px 40px rgba(0,0,0,0.1)', background: '#fff'}}
+                    labelStyle={{fontWeight: 'bold', fontSize: '12px', color: '#000'}}
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="value" 
+                    stroke="#000" 
+                    strokeWidth={4}
+                    fillOpacity={1} 
+                    fill="url(#colorValue)" 
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </Card>
 
-            <Card className="rounded-[32px] border-stone-200 shadow-sm overflow-hidden bg-white">
-              <CardHeader className="p-6 pb-0">
-                <CardTitle className="text-sm font-bold uppercase tracking-widest text-stone-400">
-                  Player Engagement
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 pt-2 h-[200px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={playerData}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                    <XAxis 
-                      dataKey="name" 
-                      axisLine={false} 
-                      tickLine={false} 
-                      tick={{fontSize: 10, fill: '#A8A29E'}}
-                    />
-                    <YAxis hide />
-                    <Tooltip 
-                      cursor={{fill: '#f8f8f8'}}
-                      contentStyle={{borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
-                    />
-                    <Bar 
-                      dataKey="players" 
-                      fill="#1C1917" 
-                      radius={[6, 6, 0, 0]} 
-                      barSize={20}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </div>
+          <Card className="rounded-[3rem] border-black/5 shadow-2xl shadow-black/5 overflow-hidden bg-zinc-50 p-8 space-y-8">
+            <div className="space-y-1">
+              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-black/20">ENGAGEMENT</h4>
+              <h3 className="text-xl font-heading text-black">Warrior <span className="italic font-serif opacity-60">Retention</span></h3>
+            </div>
+            <div className="h-[240px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={playerData}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#00000005" />
+                  <XAxis 
+                    dataKey="name" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{fontSize: 10, fontWeight: 'bold', fill: '#00000030'}}
+                  />
+                  <YAxis hide />
+                  <Tooltip 
+                    cursor={{fill: '#00000005'}}
+                    contentStyle={{borderRadius: '24px', border: 'none', boxShadow: '0 20px 40px rgba(0,0,0,0.1)', background: '#fff'}}
+                  />
+                  <Bar 
+                    dataKey="players" 
+                    fill="#000" 
+                    radius={[12, 12, 0, 0]} 
+                    barSize={24}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </Card>
         </section>
 
-        {/* Quick Panels */}
-        <div className="grid grid-cols-1 gap-6">
+        {/* Intelligence Feeds */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Latest Tournaments */}
-          <section className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-heading text-onyx">Latest Tournaments</h2>
-              <Link href="/admin/tournaments" className="text-[10px] font-bold text-stone-400 uppercase tracking-widest flex items-center gap-1">
-                View All <ChevronRight size={14} />
+          <section className="lg:col-span-2 space-y-6">
+            <div className="flex justify-between items-end px-2">
+              <div className="space-y-1">
+                <h3 className="text-2xl font-heading text-black">Live <span className="italic font-serif opacity-60">Deployments</span></h3>
+                <p className="text-[10px] font-bold text-black/30 uppercase tracking-[0.2em]">RECENT TOURNAMENTS</p>
+              </div>
+              <Link href="/admin/tournaments" className="text-[10px] font-bold text-black/40 hover:text-black uppercase tracking-[0.2em] flex items-center gap-2 mb-1">
+                EXPLORE ALL <ChevronRight size={14} strokeWidth={3} />
               </Link>
             </div>
-            <div className="space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {latestTournaments.length > 0 ? (
                 latestTournaments.map((t) => (
-                  <div key={t.id} className="bg-white p-4 rounded-[24px] border border-stone-100 shadow-sm flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-stone-50 flex items-center justify-center text-stone-400">
-                        <Trophy size={18} />
+                  <div key={t.id} className="bg-zinc-50 p-6 rounded-[2rem] border border-black/5 shadow-2xl shadow-black/[0.02] flex items-center justify-between group hover:border-black/10 transition-all duration-500">
+                    <div className="flex items-center gap-4">
+                      <div className="w-14 h-14 rounded-2xl bg-black/5 flex items-center justify-center text-black/20 group-hover:text-black group-hover:bg-black/10 transition-all duration-500">
+                        <Trophy size={24} />
                       </div>
-                      <div>
-                        <h4 className="font-bold text-xs leading-tight">{t.title}</h4>
-                        <p className="text-[9px] text-stone-400 font-medium">Created {format(new Date(t.created_at), "MMM d, HH:mm")}</p>
+                      <div className="space-y-0.5">
+                        <h4 className="font-heading text-sm text-black">{t.title}</h4>
+                        <p className="text-[9px] text-black/30 font-bold uppercase tracking-widest">{format(new Date(t.created_at), "MMM d, HH:mm")}</p>
                       </div>
                     </div>
-                    <Badge className={`${t.status === 'upcoming' ? 'bg-green-50 text-green-600' : 'bg-stone-100 text-stone-500'} border-none text-[8px] uppercase`}>
-                      {t.status}
+                    <Badge className={`${t.status === 'upcoming' ? 'bg-black text-white' : 'bg-black/5 text-black/40'} border-none text-[8px] px-3 font-bold tracking-widest rounded-full`}>
+                      {t.status.toUpperCase()}
                     </Badge>
                   </div>
                 ))
               ) : (
-                <div className="bg-white p-8 rounded-[24px] border border-dashed border-stone-200 text-center">
-                  <p className="text-[10px] text-stone-400 font-bold uppercase">No recent tournaments</p>
+                <div className="col-span-2 bg-zinc-50 p-12 rounded-[2.5rem] border border-dashed border-black/10 text-center">
+                  <p className="text-[10px] text-black/20 font-bold uppercase tracking-[0.3em]">No recent deployments detected</p>
                 </div>
               )}
             </div>
           </section>
 
-          {/* Latest Payouts */}
-          <section className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-heading text-onyx">Latest Withdrawals</h2>
-              <Link href="/admin/transactions" className="text-[10px] font-bold text-stone-400 uppercase tracking-widest flex items-center gap-1">
-                View All <ChevronRight size={14} />
-              </Link>
+          {/* Activity Log */}
+          <section className="space-y-6">
+            <div className="space-y-1 px-2">
+              <h3 className="text-2xl font-heading text-black">Signal <span className="italic font-serif opacity-60">Logs</span></h3>
+              <p className="text-[10px] font-bold text-black/30 uppercase tracking-[0.2em]">SYSTEM ACTIVITY</p>
             </div>
-            <div className="space-y-3">
-              {latestPayouts.length > 0 ? (
-                latestPayouts.map((p) => (
-                  <div key={p.id} className="bg-white p-4 rounded-[24px] border border-stone-100 shadow-sm flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-green-50 text-green-500 flex items-center justify-center">
-                        <IndianRupee size={18} />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-xs leading-tight">{p.profile?.full_name || 'Arena Player'}</h4>
-                        <p className="text-[9px] text-stone-400 font-medium">{format(new Date(p.created_at), "MMM d, HH:mm")}</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-heading text-sm">₹{Number(p.amount).toLocaleString()}</p>
-                      <span className={`text-[8px] font-bold uppercase tracking-widest ${p.status === 'completed' ? 'text-green-500' : 'text-orange-500'}`}>
-                        {p.status}
+            <div className="bg-zinc-50 rounded-[2.5rem] border border-black/5 shadow-2xl shadow-black/[0.02] overflow-hidden">
+              {activities.map((activity, index) => (
+                <div 
+                  key={activity.id} 
+                  className={`flex items-start gap-4 p-6 ${index !== activities.length - 1 ? 'border-b border-black/5' : ''} hover:bg-black/[0.02] transition-colors`}
+                >
+                  <div className="mt-1 p-2.5 rounded-xl bg-black/5 text-black/20">
+                    <activity.icon size={18} />
+                  </div>
+                  <div className="flex-1 space-y-1">
+                    <div className="flex justify-between items-start">
+                      <h5 className="text-[10px] font-bold text-black uppercase tracking-widest">{activity.event}</h5>
+                      <span className="text-[9px] text-black/20 font-bold uppercase tracking-tighter flex items-center gap-1.5">
+                        <Clock size={10} strokeWidth={3} /> {activity.time.toUpperCase()}
                       </span>
                     </div>
+                    <p className="text-[11px] font-serif italic text-black/40 leading-relaxed">{activity.detail}</p>
                   </div>
-                ))
-              ) : (
-                <div className="bg-white p-8 rounded-[24px] border border-dashed border-stone-200 text-center">
-                  <p className="text-[10px] text-stone-400 font-bold uppercase">No recent withdrawals</p>
                 </div>
-              )}
+              ))}
+              <div className="p-6 bg-black/[0.02] text-center">
+                <button className="text-[10px] font-bold uppercase tracking-[0.3em] text-black/20 hover:text-black transition-colors">
+                  VIEW ARCHIVES
+                </button>
+              </div>
             </div>
           </section>
         </div>
-
-        {/* Activity Log */}
-        <section className="space-y-4">
-          <h2 className="text-xl font-heading text-onyx">Activity Log</h2>
-          <div className="bg-white rounded-[32px] border border-stone-200 shadow-sm p-2">
-            {activities.map((activity, index) => (
-              <div 
-                key={activity.id} 
-                className={`flex items-start gap-4 p-4 ${index !== activities.length - 1 ? 'border-b border-stone-50' : ''}`}
-              >
-                <div className={`mt-1 p-2 rounded-xl bg-stone-50 ${activity.color}`}>
-                  <activity.icon size={16} />
-                </div>
-                <div className="flex-1">
-                  <div className="flex justify-between items-start">
-                    <h5 className="text-[11px] font-bold text-onyx">{activity.event}</h5>
-                    <span className="text-[9px] text-stone-400 font-medium flex items-center gap-1">
-                      <Clock size={10} /> {activity.time}
-                    </span>
-                  </div>
-                  <p className="text-[10px] text-stone-500 mt-0.5">{activity.detail}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
       </div>
 
       <AdminNav />

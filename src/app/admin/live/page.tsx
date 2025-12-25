@@ -1,12 +1,10 @@
 "use client";
 
+import { HeroSection } from "@/components/layout/HeroSection";
 import { AdminNav } from "@/components/layout/AdminNav";
 import { Badge } from "@/components/ui/badge";
-import { PillButton } from "@/components/ui/PillButton";
 import { 
   Play, 
-  Pause, 
-  Square, 
   Users, 
   Activity, 
   Trophy, 
@@ -59,25 +57,19 @@ export default function AdminLive() {
 
   useEffect(() => {
     fetchLiveData();
-    const interval = setInterval(fetchLiveData, 30000); // Refresh every 30s
+    const interval = setInterval(fetchLiveData, 30000);
     return () => clearInterval(interval);
   }, []);
 
   const fetchLiveData = async () => {
     try {
-      // 1. Fetch active tournaments
       const { data: activeTournaments, error: tError } = await supabase
         .from("tournaments")
-        .select(`
-          id, 
-          title, 
-          status
-        `)
+        .select(`id, title, status`)
         .eq("status", "active");
 
       if (tError) throw tError;
 
-      // 2. Fetch all live matches
       const { data: liveMatches, error: mError } = await supabase
         .from("matches")
         .select("*")
@@ -85,7 +77,6 @@ export default function AdminLive() {
 
       if (mError) throw mError;
 
-      // 3. Fetch counts for tournaments
       const tournamentsWithCounts = await Promise.all((activeTournaments || []).map(async (t) => {
         const { count: mCount } = await supabase
           .from("matches")
@@ -105,7 +96,6 @@ export default function AdminLive() {
         };
       }));
 
-      // 4. Summary counts
       const { count: totalPlayersInMatches } = await supabase
         .from("participants")
         .select("user_id", { count: 'exact', head: true })
@@ -164,108 +154,144 @@ export default function AdminLive() {
 
   if (loading && tournaments.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-stone-50">
-        <Loader2 className="w-8 h-8 animate-spin text-lemon-lime" />
+      <div className="min-h-screen flex items-center justify-center bg-zinc-50">
+        <Loader2 className="w-12 h-12 animate-spin text-black/10" />
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen pb-32 bg-stone-50">
-      {/* Header */}
-      <div className="bg-onyx text-white px-6 pt-16 pb-20 rounded-b-[40px] shadow-2xl relative overflow-hidden">
-        <div className="relative z-10">
-          <div className="flex justify-between items-start mb-8">
-            <div>
-              <h1 className="text-3xl font-heading text-white">Live Monitoring</h1>
-              <p className="text-stone-400 text-sm">Real-time arena oversight & control.</p>
-            </div>
-            <Badge className="bg-lime-yellow text-onyx px-4 py-1.5 rounded-full font-bold animate-pulse">
-              LIVE SYSTEM
-            </Badge>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white/10 backdrop-blur-md rounded-3xl p-5 border border-white/10">
-              <div className="flex items-center gap-3 text-lime-yellow mb-2">
-                <Activity size={18} />
-                <span className="text-[10px] font-bold uppercase tracking-widest">Live Tournaments</span>
-              </div>
-              <h3 className="text-3xl font-heading">{summary.liveTournaments}</h3>
-            </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-3xl p-5 border border-white/10">
-              <div className="flex items-center gap-3 text-blue-400 mb-2">
-                <Users size={18} />
-                <span className="text-[10px] font-bold uppercase tracking-widest">Active Players</span>
-              </div>
-              <h3 className="text-3xl font-heading">{summary.totalPlayers}</h3>
-            </div>
-          </div>
+    <main className="min-h-screen pb-32 bg-zinc-50">
+      <HeroSection 
+        title={<>Live <span className="italic font-serif opacity-60">Control</span></>}
+        subtitle="Real-time arena oversight and deployment control."
+        className="mx-0 rounded-none pb-32 bg-zinc-50 border-b border-black/5"
+      >
+        <div className="absolute inset-0 opacity-20 pointer-events-none overflow-hidden">
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-zinc-200 rounded-full blur-[120px]" />
+          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-zinc-300 rounded-full blur-[120px]" />
         </div>
-        <div className="absolute top-0 right-0 w-64 h-64 bg-lemon-lime/10 blur-[100px] rounded-full" />
-      </div>
+      </HeroSection>
 
-      <div className="px-6 -mt-10 space-y-6 relative z-20">
+      <div className="px-6 -mt-24 relative z-10 space-y-10 max-w-5xl mx-auto">
+        {/* KPI Strip */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <motion.div 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="bg-black rounded-[2.5rem] p-8 text-white border border-white/10 shadow-2xl shadow-black/20 relative overflow-hidden group"
+          >
+            <div className="flex justify-between items-start relative z-10">
+              <div className="space-y-1">
+                <p className="text-[10px] text-white/40 uppercase font-bold tracking-[0.2em]">Active Deployments</p>
+                <h3 className="text-4xl font-heading">{summary.liveTournaments}</h3>
+                <div className="flex items-center gap-2 mt-2">
+                  <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                  <p className="text-[9px] text-white/40 font-bold uppercase tracking-widest">LIVE SYSTEM FEED</p>
+                </div>
+              </div>
+              <div className="p-4 rounded-2xl bg-white/10 text-white">
+                <Activity size={24} />
+              </div>
+            </div>
+            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-white/5 rounded-full blur-3xl" />
+          </motion.div>
+
+          <motion.div 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.1 }}
+            className="bg-zinc-50 rounded-[2.5rem] p-8 text-black border border-black/5 shadow-2xl shadow-black/5 relative overflow-hidden group"
+          >
+            <div className="flex justify-between items-start relative z-10">
+              <div className="space-y-1">
+                <p className="text-[10px] text-black/30 uppercase font-bold tracking-[0.2em]">Warriors in Action</p>
+                <h3 className="text-4xl font-heading">{summary.totalPlayers}</h3>
+                <p className="text-[9px] text-black/20 font-bold uppercase tracking-widest mt-2">TOTAL ACTIVE PARTICIPANTS</p>
+              </div>
+              <div className="p-4 rounded-2xl bg-black/5 text-black">
+                <Users size={24} />
+              </div>
+            </div>
+            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-black/[0.02] rounded-full blur-3xl" />
+          </motion.div>
+        </div>
+
         {/* Live Tournaments List */}
-        <section className="space-y-4">
+        <section className="space-y-6">
           <div className="flex justify-between items-end px-2">
-            <h2 className="text-xl font-heading text-onyx">Tournaments in Play</h2>
-            <span className="text-[10px] font-bold text-stone-400 uppercase">{tournaments.length} ACTIVE</span>
+            <div className="space-y-1">
+              <h3 className="text-2xl font-heading text-black">Active <span className="italic font-serif opacity-60">Operations</span></h3>
+              <p className="text-[10px] font-bold text-black/30 uppercase tracking-[0.2em]">{tournaments.length} DEPLOYMENTS DETECTED</p>
+            </div>
           </div>
           
-          <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
+          <div className="flex gap-6 overflow-x-auto pb-6 no-scrollbar -mx-6 px-6">
             {tournaments.map((t) => (
               <motion.div
                 key={t.id}
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedTournament(t.id)}
-                className={`flex-shrink-0 w-72 p-5 rounded-[32px] border transition-all cursor-pointer ${
+                className={`flex-shrink-0 w-80 p-8 rounded-[2.5rem] border transition-all duration-500 cursor-pointer relative overflow-hidden group ${
                   selectedTournament === t.id 
-                    ? 'bg-white border-lime-yellow shadow-xl' 
-                    : 'bg-white/60 border-stone-200 shadow-sm opacity-70'
+                    ? 'bg-zinc-50 border-black shadow-2xl shadow-black/10' 
+                    : 'bg-zinc-50 border-black/5 shadow-sm opacity-60 hover:opacity-100'
                 }`}
               >
-                <div className="flex justify-between items-start mb-4">
-                  <div className="p-2 bg-onyx text-lime-yellow rounded-xl">
-                    <Trophy size={20} />
+                <div className="relative z-10 space-y-6">
+                  <div className="flex justify-between items-start">
+                    <div className={`p-3 rounded-2xl transition-colors duration-500 ${selectedTournament === t.id ? 'bg-black text-white' : 'bg-black/5 text-black/20'}`}>
+                      <Trophy size={20} />
+                    </div>
+                    <Badge className={`border-none font-bold text-[8px] tracking-[0.2em] px-3 py-1 rounded-full ${selectedTournament === t.id ? 'bg-black text-white' : 'bg-black/5 text-black/40'}`}>
+                      ACTIVE
+                    </Badge>
                   </div>
-                  <Badge className="bg-green-500/10 text-green-600 border-none font-bold text-[10px]">
-                    ACTIVE
-                  </Badge>
-                </div>
-                <h3 className="font-heading text-onyx mb-4 line-clamp-1">{t.title}</h3>
-                
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="flex items-center gap-1.5">
-                    <Monitor size={14} className="text-stone-400" />
-                    <span className="text-xs font-bold text-onyx">{t.matches_count} <span className="text-stone-400 font-medium">Matches</span></span>
+                  
+                  <h3 className={`text-xl font-heading leading-tight ${selectedTournament === t.id ? 'text-black' : 'text-black/60'}`}>{t.title}</h3>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-0.5">
+                      <span className="text-[9px] font-bold text-black/20 uppercase tracking-widest">Matches</span>
+                      <p className="text-lg font-heading text-black">{t.matches_count}</p>
+                    </div>
+                    <div className="space-y-0.5">
+                      <span className="text-[9px] font-bold text-black/20 uppercase tracking-widest">Players</span>
+                      <p className="text-lg font-heading text-black">{t.players_count}</p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <Users size={14} className="text-stone-400" />
-                    <span className="text-xs font-bold text-onyx">{t.players_count} <span className="text-stone-400 font-medium">Players</span></span>
-                  </div>
-                </div>
 
-                <div className="flex gap-2">
-                  <button 
-                    onClick={(e) => { e.stopPropagation(); updateTournamentStatus(t.id, 'paused'); }}
-                    className="flex-1 py-2 bg-stone-100 text-onyx rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-stone-200 transition-colors"
-                  >
-                    Pause
-                  </button>
-                  <button 
-                    onClick={(e) => { e.stopPropagation(); updateTournamentStatus(t.id, 'completed'); }}
-                    className="flex-1 py-2 bg-red-50 text-red-600 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-red-100 transition-colors"
-                  >
-                    End
-                  </button>
+                  <div className="flex gap-2 pt-2">
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); updateTournamentStatus(t.id, 'paused'); }}
+                      className={`flex-1 py-3 rounded-xl text-[9px] font-bold uppercase tracking-[0.2em] transition-all ${
+                        selectedTournament === t.id ? 'bg-black/5 text-black hover:bg-black/10' : 'bg-black/[0.02] text-black/20'
+                      }`}
+                    >
+                      Pause
+                    </button>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); updateTournamentStatus(t.id, 'completed'); }}
+                      className={`flex-1 py-3 rounded-xl text-[9px] font-bold uppercase tracking-[0.2em] transition-all ${
+                        selectedTournament === t.id ? 'bg-black text-white hover:bg-zinc-800' : 'bg-black/[0.02] text-black/20'
+                      }`}
+                    >
+                      End
+                    </button>
+                  </div>
                 </div>
+                {selectedTournament === t.id && (
+                  <div className="absolute inset-0 opacity-10 pointer-events-none">
+                    <div className="absolute top-[-20%] right-[-10%] w-full h-full bg-zinc-200 blur-[80px] rounded-full" />
+                  </div>
+                )}
               </motion.div>
             ))}
             
             {tournaments.length === 0 && (
-              <div className="w-full bg-white p-8 rounded-[32px] border border-dashed border-stone-300 text-center">
-                <p className="text-stone-400 text-sm font-medium">No live tournaments found.</p>
+              <div className="w-full bg-zinc-50 p-16 rounded-[3rem] border border-dashed border-black/10 text-center flex flex-col items-center gap-4">
+                <Monitor size={48} strokeWidth={1} className="text-black/5" />
+                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-black/20">No active deployments detected</p>
               </div>
             )}
           </div>
@@ -279,105 +305,108 @@ export default function AdminLive() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="space-y-6"
+              className="space-y-8"
             >
-              <div className="bg-white p-8 rounded-[40px] border border-stone-100 shadow-xl shadow-stone-200/50 space-y-8">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className="text-[10px] font-bold text-stone-400 uppercase tracking-[0.2em]">Live Overview</span>
-                    <h2 className="text-2xl font-heading text-onyx mt-1">{currentTournament.title}</h2>
-                  </div>
-                  <div className="flex -space-x-3">
-                    {[1,2,3].map((i) => (
-                      <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-stone-100 overflow-hidden">
-                        <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+10}`} alt="player" />
-                      </div>
-                    ))}
-                    <div className="w-10 h-10 rounded-full border-2 border-white bg-onyx flex items-center justify-center text-[10px] font-bold text-white">
-                      +{currentTournament.players_count! > 3 ? currentTournament.players_count! - 3 : 0}
+              <div className="bg-zinc-50 p-10 rounded-[3rem] border border-black/5 shadow-2xl shadow-black/[0.02] space-y-12 overflow-hidden relative">
+                <div className="relative z-10 space-y-12">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-bold text-black/20 uppercase tracking-[0.3em]">OPERATIONAL DOSSIER</span>
+                      <h2 className="text-3xl font-heading text-black leading-tight">{currentTournament.title}</h2>
                     </div>
-                  </div>
-                </div>
-
-                {/* Tournament Stats */}
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="p-4 bg-stone-50 rounded-[24px] border border-stone-100">
-                    <div className="w-8 h-8 bg-white rounded-xl flex items-center justify-center text-red-500 shadow-sm mb-3">
-                      <Target size={16} />
-                    </div>
-                    <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Total Kills</p>
-                    <p className="text-lg font-heading text-onyx">{statsSummary?.totalKills || 0}</p>
-                  </div>
-                  <div className="p-4 bg-stone-50 rounded-[24px] border border-stone-100">
-                    <div className="w-8 h-8 bg-white rounded-xl flex items-center justify-center text-purple-500 shadow-sm mb-3">
-                      <Clock size={16} />
-                    </div>
-                    <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Avg Kills/Match</p>
-                    <p className="text-lg font-heading text-onyx">{statsSummary?.avgKills || 0}</p>
-                  </div>
-                  <div className="p-4 bg-stone-50 rounded-[24px] border border-stone-100">
-                    <div className="w-8 h-8 bg-white rounded-xl flex items-center justify-center text-blue-500 shadow-sm mb-3">
-                      <Users size={16} />
-                    </div>
-                    <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Total Viewers</p>
-                    <p className="text-lg font-heading text-onyx">{statsSummary?.totalViewers.toLocaleString() || 0}</p>
-                  </div>
-                </div>
-
-                {/* Live Matches List */}
-                <div className="space-y-4">
-                  <h3 className="text-sm font-bold text-onyx px-2 flex items-center gap-2">
-                    <Zap size={14} className="text-lime-yellow" />
-                    Ongoing Matches
-                  </h3>
-                  <div className="space-y-3">
-                    {tournamentMatches.map((m) => (
-                      <div 
-                        key={m.id}
-                        className="p-4 bg-stone-50 rounded-[28px] border border-stone-100 hover:border-onyx/20 transition-all group"
-                      >
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-onyx shadow-sm border border-stone-100">
-                              <Gamepad2 size={24} />
-                            </div>
-                            <div>
-                              <h4 className="font-bold text-sm text-onyx">{m.title}</h4>
-                              <p className="text-[10px] text-stone-500 font-bold uppercase">{m.mode} • {m.map}</p>
-                            </div>
-                          </div>
-                          <Badge className="bg-onyx text-white border-none px-3 py-1 text-[9px] font-bold">
-                            ROUND {m.current_round}
-                          </Badge>
+                    <div className="flex -space-x-3">
+                      {[1,2,3,4].map((i) => (
+                        <div key={i} className="w-12 h-12 rounded-full border-4 border-zinc-50 bg-black/5 shadow-xl overflow-hidden">
+                          <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+10}`} alt="warrior" />
                         </div>
-                        
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-6">
-                            <div className="flex flex-col">
-                              <span className="text-[8px] font-bold text-stone-400 uppercase tracking-widest">Teams Alive</span>
-                              <span className="text-xs font-bold text-onyx">{m.live_stats?.teams_alive || 0}</span>
-                            </div>
-                            <div className="flex flex-col">
-                              <span className="text-[8px] font-bold text-stone-400 uppercase tracking-widest">Viewers</span>
-                              <span className="text-xs font-bold text-onyx">{m.viewers_count.toLocaleString()}</span>
-                            </div>
-                          </div>
-                          <button 
-                            className="flex items-center gap-2 px-4 py-2 bg-onyx text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-lime-yellow hover:text-onyx transition-all shadow-lg shadow-onyx/20"
-                            onClick={() => window.location.href = `/live?match=${m.id}`}
-                          >
-                            Enter Match <ChevronRight size={14} />
-                          </button>
+                      ))}
+                      <div className="w-12 h-12 rounded-full border-4 border-zinc-50 bg-black flex items-center justify-center text-[10px] font-bold text-white shadow-xl">
+                        +{currentTournament.players_count! > 4 ? currentTournament.players_count! - 4 : 0}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Tournament Stats */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {[
+                      { label: "Confirmed Kills", value: statsSummary?.totalKills || 0, icon: Target },
+                      { label: "Avg Lethality", value: statsSummary?.avgKills || 0, icon: Activity },
+                      { label: "System Viewers", value: statsSummary?.totalViewers.toLocaleString() || 0, icon: Monitor },
+                    ].map((stat, i) => (
+                      <div key={i} className="p-6 bg-zinc-50 rounded-[2rem] border border-black/5 flex items-center gap-6 shadow-2xl shadow-black/[0.01]">
+                        <div className="w-14 h-14 rounded-2xl bg-black/5 text-black flex items-center justify-center">
+                          <stat.icon size={22} />
+                        </div>
+                        <div className="space-y-0.5">
+                          <p className="text-[9px] text-black/20 uppercase font-bold tracking-widest">{stat.label}</p>
+                          <p className="text-2xl font-heading text-black">{stat.value}</p>
                         </div>
                       </div>
                     ))}
-                    {tournamentMatches.length === 0 && (
-                      <div className="py-12 text-center">
-                        <p className="text-stone-400 text-xs font-medium italic">No active matches for this tournament session.</p>
-                      </div>
-                    )}
+                  </div>
+
+                  {/* Live Matches List */}
+                  <div className="space-y-8">
+                    <div className="flex items-center gap-3 px-2">
+                      <div className="w-2 h-2 rounded-full bg-black animate-pulse" />
+                      <h3 className="text-[10px] font-bold text-black uppercase tracking-[0.3em]">ONGOING BATTLES</h3>
+                    </div>
+                    <div className="grid grid-cols-1 gap-6">
+                      {tournamentMatches.map((m) => (
+                        <div 
+                          key={m.id}
+                          className="p-8 bg-zinc-50 rounded-[2.5rem] border border-black/5 hover:border-black/10 transition-all duration-500 group flex flex-col md:flex-row md:items-center justify-between gap-8 shadow-2xl shadow-black/[0.01]"
+                        >
+                          <div className="flex items-center gap-8">
+                            <div className="w-20 h-20 bg-black/5 rounded-[2rem] flex items-center justify-center text-black/20 group-hover:text-black group-hover:bg-black/10 transition-all duration-500 shadow-inner">
+                              <Gamepad2 size={32} />
+                            </div>
+                            <div className="space-y-1.5">
+                              <div className="flex items-center gap-3">
+                                <h4 className="text-xl font-heading text-black">{m.title}</h4>
+                                <Badge className="bg-black text-white border-none px-3 py-1 text-[8px] font-bold tracking-widest rounded-full">
+                                  ROUND {m.current_round}
+                                </Badge>
+                              </div>
+                              <p className="text-[10px] text-black/30 font-bold uppercase tracking-[0.2em] flex items-center gap-3">
+                                {m.mode.toUpperCase()}
+                                <span className="w-1 h-1 bg-black/10 rounded-full" />
+                                {m.map.toUpperCase()}
+                              </p>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center justify-between md:justify-end gap-12 border-t md:border-t-0 pt-6 md:pt-0 border-black/5">
+                            <div className="flex items-center gap-8">
+                              <div className="space-y-0.5 text-center md:text-left">
+                                <span className="text-[8px] font-bold text-black/20 uppercase tracking-widest">Teams Alive</span>
+                                <p className="text-lg font-heading text-black">{m.live_stats?.teams_alive || 0}</p>
+                              </div>
+                              <div className="space-y-0.5 text-center md:text-left">
+                                <span className="text-[8px] font-bold text-black/20 uppercase tracking-widest">Viewers</span>
+                                <p className="text-lg font-heading text-black">{m.viewers_count.toLocaleString()}</p>
+                              </div>
+                            </div>
+                            <button 
+                              className="px-8 py-4 bg-black text-white rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-zinc-800 transition-all shadow-2xl shadow-black/20 flex items-center gap-2"
+                              onClick={() => window.location.href = `/live?match=${m.id}`}
+                            >
+                              ENTER FEED <ChevronRight size={14} strokeWidth={3} />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                      {tournamentMatches.length === 0 && (
+                        <div className="py-20 text-center flex flex-col items-center gap-4">
+                          <Zap size={32} strokeWidth={1} className="text-black/5" />
+                          <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-black/20 italic">No active match signals detected</p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
+                {/* Visual Glows */}
+                <div className="absolute top-[-20%] left-[-10%] w-full h-full bg-zinc-200/20 blur-[100px] rounded-full pointer-events-none" />
               </div>
             </motion.section>
           )}
