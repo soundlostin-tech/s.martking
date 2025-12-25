@@ -85,7 +85,7 @@ export default function Home() {
       <section className="px-6 py-12 max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-2xl font-heading text-black">SMARTKING'S</h2>
+            <h2 className="text-2xl font-heading text-black">SMARTKING's</h2>
             <p className="text-sm font-serif text-zinc-500">Said Hamare Zamane Mein.....</p>
           </div>
           <Link href="/admin/leaderboard" className="text-xs font-bold text-black/40 hover:text-black transition-colors">VIEW ALL</Link>
