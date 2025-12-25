@@ -3,19 +3,129 @@
 import { HeroSection } from "@/components/layout/HeroSection";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
-import { Swords, Calendar, Users } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Swords, Calendar, Users, Loader2, IndianRupee } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
+import { PillButton } from "@/components/ui/PillButton";
 
-const filters = ["All", "Upcoming", "Ongoing", "Completed"];
+const filters = ["All", "Upcoming", "Active", "Completed"];
 
 export default function Matches() {
+  const { user, loading: authLoading } = useAuth();
   const [activeFilter, setActiveFilter] = useState("All");
+  const [tournaments, setTournaments] = useState<any[]>([]);
+  const [userParticipations, setUserParticipations] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [joiningId, setJoiningId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (user) {
+      fetchTournaments();
+      fetchUserParticipations();
+    }
+  }, [user, activeFilter]);
+
+  const fetchTournaments = async () => {
+    try {
+      let query = supabase.from("tournaments").select("*");
+      
+      if (activeFilter !== "All") {
+        query = query.eq("status", activeFilter.toLowerCase());
+      }
+
+      const { data, error } = await query.order("start_time", { ascending: true });
+      if (error) throw error;
+      setTournaments(data || []);
+    } catch (error) {
+      console.error("Error fetching tournaments:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchUserParticipations = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("participants")
+        .select("tournament_id")
+        .eq("user_id", user!.id);
+      
+      if (error) throw error;
+      setUserParticipations(data.map(p => p.tournament_id));
+    } catch (error) {
+      console.error("Error fetching participations:", error);
+    }
+  };
+
+  const handleJoin = async (tournament: any) => {
+    if (joiningId) return;
+    setJoiningId(tournament.id);
+
+    try {
+      // 1. Get user wallet balance
+      const { data: wallet, error: walletError } = await supabase
+        .from("wallets")
+        .select("balance")
+        .eq("id", user!.id)
+        .single();
+
+      if (walletError) throw walletError;
+
+      if (Number(wallet.balance) < Number(tournament.entry_fee)) {
+        toast.error("Insufficient balance. Please add funds.");
+        return;
+      }
+
+      // 2. Subtract fee and create transaction
+      const { error: txError } = await supabase.from("transactions").insert({
+        user_id: user!.id,
+        amount: tournament.entry_fee,
+        type: "entry_fee",
+        status: "completed",
+        description: `Entry fee for ${tournament.title}`,
+      });
+
+      if (txError) throw txError;
+
+      const { error: walletUpdateError } = await supabase
+        .from("wallets")
+        .update({ balance: Number(wallet.balance) - Number(tournament.entry_fee) })
+        .eq("id", user!.id);
+
+      if (walletUpdateError) throw walletUpdateError;
+
+      // 3. Add to participants
+      const { error: participantError } = await supabase.from("participants").insert({
+        user_id: user!.id,
+        tournament_id: tournament.id,
+      });
+
+      if (participantError) throw participantError;
+
+      toast.success(`Successfully joined ${tournament.title}!`);
+      fetchUserParticipations();
+    } catch (error: any) {
+      toast.error(error.message || "Failed to join tournament");
+    } finally {
+      setJoiningId(null);
+    }
+  };
+
+  if (authLoading || loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-stone-100">
+        <Loader2 className="w-8 h-8 animate-spin text-lemon-lime" />
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen pb-24 bg-stone-100">
       <HeroSection 
-        title="Your Matches" 
-        subtitle="Browse upcoming, ongoing, and completed battles."
+        title="Arena Tournaments" 
+        subtitle="Browse upcoming, active, and completed battles."
         className="mx-0 rounded-none"
       />
 
@@ -35,66 +145,70 @@ export default function Matches() {
             </button>
           ))}
         </div>
-        <p className="mt-4 px-2 text-xs text-stone-500 font-medium uppercase tracking-widest">
-          Matches this month: <span className="text-onyx font-bold">24</span>
-        </p>
       </div>
 
       <div className="px-6 mt-8 flex flex-col gap-4">
-        {[1, 2, 3, 4, 5].map((i) => (
-          <div key={i} className="bg-alabaster-grey-2 border border-stone-200 rounded-[24px] p-6 shadow-md hover:shadow-lg transition-all">
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <Badge className="bg-olive/10 text-olive border-none mb-2 rounded-full text-[10px] uppercase tracking-tighter">Premier League</Badge>
-                <h3 className="text-xl font-heading leading-tight">Elite Squad Rush #{i}</h3>
-              </div>
-              <Badge className={
-                i === 1 ? "bg-lime-yellow text-onyx border-none" : 
-                i === 2 ? "bg-onyx text-white border-none" : 
-                "bg-stone-300 text-stone-600 border-none"
-              }>
-                {i === 1 ? "LIVE" : i === 2 ? "UPCOMING" : "COMPLETED"}
-              </Badge>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 mt-6">
-              <div className="flex items-center gap-2">
-                <div className="p-2 bg-stone-100 rounded-lg text-stone-500">
-                  <Calendar size={16} />
-                </div>
+        {tournaments.length > 0 ? (
+          tournaments.map((t) => (
+            <div key={t.id} className="bg-white border border-stone-200 rounded-[24px] p-6 shadow-md hover:shadow-lg transition-all">
+              <div className="flex justify-between items-start mb-4">
                 <div>
-                  <p className="text-[10px] text-stone-500 uppercase">Date & Time</p>
-                  <p className="text-sm font-medium">25 Dec, 08:00 PM</p>
+                  <Badge className="bg-olive/10 text-olive border-none mb-2 rounded-full text-[10px] uppercase tracking-tighter">
+                    Prize Pool: ₹{t.prize_pool.toLocaleString()}
+                  </Badge>
+                  <h3 className="text-xl font-heading leading-tight">{t.title}</h3>
                 </div>
+                <Badge className={
+                  t.status === "active" ? "bg-lime-yellow text-onyx border-none" : 
+                  t.status === "upcoming" ? "bg-onyx text-white border-none" : 
+                  "bg-stone-300 text-stone-600 border-none"
+                }>
+                  {t.status.toUpperCase()}
+                </Badge>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="p-2 bg-stone-100 rounded-lg text-stone-500">
-                  <Users size={16} />
-                </div>
-                <div>
-                  <p className="text-[10px] text-stone-500 uppercase">Mode</p>
-                  <p className="text-sm font-medium">SQUAD Mode</p>
-                </div>
-              </div>
-            </div>
 
-            <div className="mt-6 pt-4 border-t border-stone-300 flex justify-between items-center">
-              <div className="flex -space-x-2">
-                {[1, 2, 3].map((j) => (
-                  <div key={j} className="w-8 h-8 rounded-full border-2 border-alabaster-grey-2 bg-stone-200 flex items-center justify-center text-[10px] font-bold">
-                    P{j}
+              <div className="grid grid-cols-2 gap-4 mt-6">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 bg-stone-100 rounded-lg text-stone-500">
+                    <Calendar size={16} />
                   </div>
-                ))}
-                <div className="w-8 h-8 rounded-full border-2 border-alabaster-grey-2 bg-onyx text-white flex items-center justify-center text-[10px] font-bold">
-                  +12
+                  <div>
+                    <p className="text-[10px] text-stone-500 uppercase">Start Time</p>
+                    <p className="text-sm font-medium">{new Date(t.start_time).toLocaleString()}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="p-2 bg-stone-100 rounded-lg text-stone-500">
+                    <IndianRupee size={16} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-stone-500 uppercase">Entry Fee</p>
+                    <p className="text-sm font-medium">₹{t.entry_fee}</p>
+                  </div>
                 </div>
               </div>
-              <button className="text-onyx font-bold text-sm flex items-center gap-1">
-                Match Details <Swords size={16} className="text-lime-yellow" />
-              </button>
+
+              <div className="mt-6 pt-4 border-t border-stone-100 flex justify-between items-center">
+                <div className="text-sm text-stone-500">
+                  {t.description}
+                </div>
+                {userParticipations.includes(t.id) ? (
+                  <Badge className="bg-olive text-white border-none px-4 py-2">JOINED</Badge>
+                ) : (
+                  <PillButton 
+                    className="text-sm h-10 px-6" 
+                    onClick={() => handleJoin(t)}
+                    disabled={joiningId === t.id || t.status === 'completed'}
+                  >
+                    {joiningId === t.id ? <Loader2 className="w-4 h-4 animate-spin" /> : "Join Now"}
+                  </PillButton>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className="text-center text-stone-500 py-12">No tournaments found for this filter.</p>
+        )}
       </div>
 
       <BottomNav />

@@ -5,11 +5,40 @@ import { PillButton } from "@/components/ui/PillButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { supabase } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const router = useRouter();
+
+  const handleSignin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (error) throw error;
+
+      toast.success("Signed in successfully!");
+      router.push("/");
+    } catch (error: any) {
+      toast.error(error.message || "An error occurred during signin");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="min-h-screen bg-stone-100 pb-12 overflow-hidden">
@@ -24,10 +53,18 @@ export default function Signin() {
 
       <div className="px-6 mt-8">
         <div className="bg-alabaster-grey-2 rounded-[24px] p-8 border border-stone-200 shadow-lg relative z-10">
-          <form className="flex flex-col gap-6">
+          <form className="flex flex-col gap-6" onSubmit={handleSignin}>
             <div className="grid gap-2">
               <Label htmlFor="email">Email Address</Label>
-              <Input id="email" type="email" placeholder="name@example.com" className="rounded-full bg-stone-100 px-6" />
+              <Input 
+                id="email" 
+                type="email" 
+                placeholder="name@example.com" 
+                className="rounded-full bg-stone-100 px-6"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                required
+              />
             </div>
 
             <div className="grid gap-2">
@@ -40,7 +77,10 @@ export default function Signin() {
                   id="password" 
                   type={showPassword ? "text" : "password"} 
                   placeholder="••••••••" 
-                  className="rounded-full bg-stone-100 px-6 pr-12" 
+                  className="rounded-full bg-stone-100 px-6 pr-12"
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  required
                 />
                 <button 
                   type="button" 
@@ -52,8 +92,8 @@ export default function Signin() {
               </div>
             </div>
 
-            <PillButton type="submit" className="w-full mt-4">
-              Sign In
+            <PillButton type="submit" className="w-full mt-4" disabled={loading}>
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Sign In"}
             </PillButton>
           </form>
         </div>
