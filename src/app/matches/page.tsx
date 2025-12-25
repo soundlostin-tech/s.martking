@@ -25,7 +25,40 @@ export default function MatchesPage() {
     fetchMatches();
   }, [activeFilter, searchQuery]);
 
-  const fetchMatches = async () => {
+    const [joining, setJoining] = useState<string | null>(null);
+
+    const handleJoinMatch = async (tournamentId: string, matchId: string) => {
+      if (!user) {
+        toast.error("Please sign in to join matches");
+        return;
+      }
+
+      setJoining(matchId);
+      try {
+        const { data, error } = await supabase.rpc('join_tournament', {
+          p_tournament_id: tournamentId,
+          p_match_id: matchId
+        });
+
+        if (error) throw error;
+
+        const result = typeof data === 'string' ? JSON.parse(data) : data;
+
+        if (result.success) {
+          toast.success(result.message);
+          fetchMatches();
+        } else {
+          toast.error(result.message);
+        }
+      } catch (error: any) {
+        console.error("Error joining match:", error);
+        toast.error(error.message || "Failed to join match");
+      } finally {
+        setJoining(null);
+      }
+    };
+
+    const fetchMatches = async () => {
     setLoading(true);
     try {
       let query = supabase
@@ -196,9 +229,13 @@ export default function MatchesPage() {
                         <button className="flex-1 py-3 px-4 rounded-2xl text-xs font-bold text-stone-500 hover:bg-stone-50 transition-colors">
                           View Details
                         </button>
-                        <PillButton className="flex-1 text-xs h-12 shadow-lg shadow-lime-yellow/20">
-                          Join Match
-                        </PillButton>
+                          <PillButton 
+                            className="flex-1 text-xs h-12 shadow-lg shadow-lime-yellow/20"
+                            onClick={() => handleJoinMatch(match.tournament_id, match.id)}
+                            disabled={joining === match.id}
+                          >
+                            {joining === match.id ? <Loader2 className="w-4 h-4 animate-spin" /> : "Join Match"}
+                          </PillButton>
                       </>
                     ) : match.status === "live" ? (
                       <Link href={`/live?matchId=${match.id}`} className="w-full">
