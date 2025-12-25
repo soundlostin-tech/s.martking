@@ -15,7 +15,7 @@
   --color-onyx: #11130D;
   --color-olive-leaf: #494E2B;
   --color-lemon-lime: #C7E323;
-  --color-dust-grey: #D8D0C9;
+  --color-dust-grey: #f5f5f0;
   --color-alabaster-grey: #CFD7D4;
   --color-dry-sage: #C4CD99;
   --color-carbon-black: #1D1E13;
@@ -80,7 +80,7 @@
   --primary-foreground: #11130D;
   --secondary: #494E2B;
   --secondary-foreground: #D4D8DC;
-  --muted: #D8D0C9;
+  --muted: #f5f5f0;
   --muted-foreground: #494E2B;
   --accent: #C7E323;
   --accent-foreground: #11130D;
