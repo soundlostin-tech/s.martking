@@ -71,41 +71,6 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       <main className="pb-24 overflow-x-hidden">
         <TopHeader />
-        {/* Pull to refresh indicator simulation */}
-        <div className="pull-to-refresh">
-          <motion.div 
-            animate={{ rotate: 360 }}
-            transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-            className="w-5 h-5 border-2 border-primary/30 border-t-primary rounded-full"
-          />
-        </div>
-
-        {/* Hero Banner - Mobile Native Style */}
-        <section className="px-6 pt-6">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="relative h-44 rounded-[2rem] overflow-hidden bg-white border border-foreground/[0.04] shadow-xl shadow-foreground/5"
-          >
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary rounded-full blur-3xl -mr-16 -mt-16" />
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-accent rounded-full blur-2xl -ml-12 -mb-12" />
-            </div>
-            <div className="relative h-full p-8 flex flex-col justify-center">
-              <span className="text-[10px] font-bold text-foreground/40 uppercase tracking-widest mb-1">Weekly Special</span>
-              <h1 className="text-2xl font-heading text-foreground leading-tight mb-4">The Pro Arena <br />Championship</h1>
-              <Link href="/matches">
-                <button className="w-fit px-5 py-2.5 bg-jungle-teal text-white rounded-full text-[11px] font-bold shadow-lg active:scale-95 transition-all">
-                  JOIN NOW
-                </button>
-              </Link>
-            </div>
-            {/* Geometric accents */}
-            <div className="absolute right-6 top-1/2 -translate-y-1/2 w-16 h-16 opacity-5">
-              <div className="w-full h-full bg-primary shape-diamond rotate-12" />
-            </div>
-          </motion.div>
-        </section>
 
         {/* Stories - Native App Pattern */}
         <section className="pt-8 pb-4">
