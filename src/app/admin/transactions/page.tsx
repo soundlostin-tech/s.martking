@@ -181,9 +181,9 @@ export default function AdminTransactions() {
   const getTypeBadge = (type: string) => {
     const baseClass = "text-[9px] font-bold px-3 py-1 rounded-full border-none shadow-sm";
     switch (type) {
-      case 'deposit': return <Badge className={`${baseClass} bg-green-500/10 text-green-600`}>DEPOSIT</Badge>;
-      case 'withdrawal': return <Badge className={`${baseClass} bg-blue-500/10 text-blue-600`}>WITHDRAWAL</Badge>;
-      case 'prize': return <Badge className={`${baseClass} bg-primary text-black`}>PRIZE</Badge>;
+      case 'deposit': return <Badge className={`${baseClass} bg-sea-green-500/10 text-sea-green-600`}>DEPOSIT</Badge>;
+      case 'withdrawal': return <Badge className={`${baseClass} bg-jungle-teal-500/10 text-jungle-teal-600`}>WITHDRAWAL</Badge>;
+      case 'prize': return <Badge className={`${baseClass} bg-primary text-white`}>PRIZE</Badge>;
       case 'entry_fee': return <Badge className={`${baseClass} bg-black/5 text-black/40`}>ENTRY FEE</Badge>;
       default: return <Badge className={`${baseClass} bg-black/5 text-black/40`}>{type.replace('_', ' ').toUpperCase()}</Badge>;
     }
@@ -192,9 +192,9 @@ export default function AdminTransactions() {
   const getStatusBadge = (status: string) => {
     const baseClass = "text-[9px] font-bold px-3 py-1 rounded-full border-none shadow-sm";
     switch (status) {
-      case 'completed': return <Badge className={`${baseClass} bg-black text-white`}>COMPLETED</Badge>;
-      case 'pending': return <Badge className={`${baseClass} bg-primary text-black`}>PENDING</Badge>;
-      case 'failed': return <Badge className={`${baseClass} bg-red-500/10 text-red-600`}>FAILED</Badge>;
+      case 'completed': return <Badge className={`${baseClass} bg-primary text-white`}>COMPLETED</Badge>;
+      case 'pending': return <Badge className={`${baseClass} bg-accent text-black`}>PENDING</Badge>;
+      case 'failed': return <Badge className={`${baseClass} bg-destructive/10 text-destructive`}>FAILED</Badge>;
       default: return <Badge className={`${baseClass} bg-black/5 text-black/40`}>{status.toUpperCase()}</Badge>;
     }
   };

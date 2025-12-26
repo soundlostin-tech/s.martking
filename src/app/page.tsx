@@ -184,10 +184,10 @@ export default function Home() {
         <div className="flex items-end justify-between mb-12">
           <div className="space-y-2">
             <h2 className="text-4xl font-heading text-foreground tracking-tight">Active <span className="italic font-serif opacity-60">Battles</span></h2>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(79,70,229,0.4)]" />
-              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Live tournaments in progress</p>
-            </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(34,119,58,0.4)]" />
+                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Live tournaments in progress</p>
+              </div>
           </div>
           <Link href="/matches">
             <button className="group flex items-center gap-3 px-8 py-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground hover:scale-105 transition-all shadow-xl shadow-primary/10 border border-white/20">
