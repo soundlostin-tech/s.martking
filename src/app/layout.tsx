@@ -28,7 +28,6 @@ const berkshire = Berkshire_Swash({
   subsets: ["latin"],
 });
 
-import { TopHeader } from "@/components/layout/TopHeader";
 import { GeometricBackground } from "@/components/layout/GeometricBackground";
 
 export default function RootLayout({
@@ -42,7 +41,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${berkshire.variable} font-serif antialiased bg-background text-foreground`}
       >
         <GeometricBackground />
-        <TopHeader />
         <AnimatePresence mode="wait">
           <motion.div
             initial={{ opacity: 0 }}
