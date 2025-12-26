@@ -147,8 +147,8 @@ export default function Home() {
 
         {/* Featured Hero - Native Banner Style */}
         <section className="px-6 mb-8">
-          <div className="relative h-44 rounded-[32px] overflow-hidden bg-primary shadow-xl shadow-primary/20">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-accent opacity-90" />
+          <div className="relative h-44 rounded-[32px] overflow-hidden bg-dark-emerald shadow-xl shadow-dark-teal/40">
+            <div className="absolute inset-0 bg-gradient-to-br from-dark-emerald via-medium-jungle to-moss-green opacity-90" />
             
             {/* Animated Background Elements */}
             <div className="absolute inset-0 overflow-hidden opacity-40">
@@ -176,19 +176,7 @@ export default function Home() {
                   repeat: Infinity,
                   ease: "linear"
                 }}
-                className="absolute -bottom-10 -right-10 w-48 h-48 bg-accent/30 blur-[70px] rounded-full"
-              />
-              <motion.div
-                animate={{
-                  opacity: [0.2, 0.5, 0.2],
-                  scale: [0.8, 1.1, 0.8],
-                }}
-                transition={{
-                  duration: 5,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white/10 blur-[80px] rounded-full"
+                className="absolute -bottom-10 -right-10 w-48 h-48 bg-moss-green/30 blur-[70px] rounded-full"
               />
             </div>
             
@@ -199,7 +187,7 @@ export default function Home() {
               </div>
               <h2 className="text-3xl font-heading text-white leading-tight">Win ₹50,000<br/>Weekly Pool</h2>
               <div className="mt-4 flex items-center gap-3">
-                <button className="px-6 py-2 bg-white text-primary rounded-full text-[10px] font-bold uppercase tracking-wider">Join Now</button>
+                <button className="px-6 py-2 bg-white text-dark-emerald rounded-full text-[10px] font-bold uppercase tracking-wider">Join Now</button>
                 <div className="flex items-center gap-1 text-white/60">
                   <Users size={12} />
                   <span className="text-[10px] font-bold">1.2k joined</span>
@@ -211,36 +199,36 @@ export default function Home() {
 
         {/* Quick Stats Grid - Native Mini Cards */}
         <section className="px-6 mb-10 overflow-x-auto no-scrollbar flex gap-4">
-          <div className="flex-shrink-0 w-32 bg-card rounded-[24px] p-4 border border-foreground/[0.04] shadow-sm">
-            <div className="w-8 h-8 rounded-xl bg-accent/10 flex items-center justify-center mb-3">
-              <Trophy size={16} className="text-accent" />
+          <div className="flex-shrink-0 w-32 bg-card rounded-[24px] p-4 border border-moss-green/10 shadow-sm">
+            <div className="w-8 h-8 rounded-xl bg-moss-green/10 flex items-center justify-center mb-3">
+              <Trophy size={16} className="text-moss-green" />
             </div>
-            <p className="text-[9px] font-bold text-foreground/30 uppercase tracking-widest mb-0.5">Wins</p>
-            <h4 className="text-xl font-bold text-foreground">124</h4>
+            <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest mb-0.5">Wins</p>
+            <h4 className="text-xl font-bold text-white">124</h4>
           </div>
-          <div className="flex-shrink-0 w-32 bg-card rounded-[24px] p-4 border border-foreground/[0.04] shadow-sm">
-            <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
-              <Zap size={16} className="text-primary" />
+          <div className="flex-shrink-0 w-32 bg-card rounded-[24px] p-4 border border-medium-jungle/10 shadow-sm">
+            <div className="w-8 h-8 rounded-xl bg-dark-emerald/20 flex items-center justify-center mb-3">
+              <Zap size={16} className="text-medium-jungle" />
             </div>
-            <p className="text-[9px] font-bold text-foreground/30 uppercase tracking-widest mb-0.5">Rank</p>
-            <h4 className="text-xl font-bold text-foreground">#42</h4>
+            <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest mb-0.5">Rank</p>
+            <h4 className="text-xl font-bold text-white">#42</h4>
           </div>
-          <div className="flex-shrink-0 w-32 bg-card rounded-[24px] p-4 border border-foreground/[0.04] shadow-sm">
-            <div className="w-8 h-8 rounded-xl bg-secondary/10 flex items-center justify-center mb-3">
-              <TrendingUp size={16} className="text-secondary" />
+          <div className="flex-shrink-0 w-32 bg-card rounded-[24px] p-4 border border-moss-green/10 shadow-sm">
+            <div className="w-8 h-8 rounded-xl bg-moss-green/10 flex items-center justify-center mb-3">
+              <TrendingUp size={16} className="text-moss-green" />
             </div>
-            <p className="text-[9px] font-bold text-foreground/30 uppercase tracking-widest mb-0.5">Growth</p>
-            <h4 className="text-xl font-bold text-foreground">+12%</h4>
+            <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest mb-0.5">Growth</p>
+            <h4 className="text-xl font-bold text-white">+12%</h4>
           </div>
         </section>
 
         {/* Native Section Header */}
         <section className="px-6 pb-4 flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-heading text-foreground">Active Arena</h2>
-            <p className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest">Ongoing Battles</p>
+            <h2 className="text-xl font-heading text-white">Active Arena</h2>
+            <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Ongoing Battles</p>
           </div>
-          <Link href="/matches" className="text-[10px] font-bold text-primary px-3 py-1 bg-primary/5 rounded-full active:opacity-50 transition-opacity uppercase tracking-wider">
+          <Link href="/matches" className="text-[10px] font-bold text-moss-green px-3 py-1 bg-moss-green/10 rounded-full active:opacity-50 transition-opacity uppercase tracking-wider">
             View All
           </Link>
         </section>
@@ -255,49 +243,49 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
               whileTap={{ scale: 0.96 }}
-              className="bg-card rounded-[28px] p-4 border border-foreground/[0.04] shadow-sm active:shadow-lg transition-all flex items-center gap-4"
+              className="bg-card rounded-[28px] p-4 border border-moss-green/5 shadow-sm active:shadow-lg transition-all flex items-center gap-4"
             >
-              <div className="relative w-20 h-20 rounded-2xl bg-foreground/5 overflow-hidden flex-shrink-0">
+              <div className="relative w-20 h-20 rounded-2xl bg-white/5 overflow-hidden flex-shrink-0">
                  {match.status === 'live' ? (
-                  <div className="absolute inset-0 bg-primary/5 flex items-center justify-center">
-                    <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                      <Play size={20} className="text-primary translate-x-0.5" fill="currentColor" />
+                  <div className="absolute inset-0 bg-dark-emerald/20 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-dark-emerald/40 flex items-center justify-center">
+                      <Play size={20} className="text-moss-green translate-x-0.5" fill="currentColor" />
                     </div>
                   </div>
                 ) : (
-                  <div className="absolute inset-0 bg-foreground/5 flex items-center justify-center">
-                    <Swords size={24} className="text-foreground/20" />
+                  <div className="absolute inset-0 bg-white/5 flex items-center justify-center">
+                    <Swords size={24} className="text-white/20" />
                   </div>
                 )}
-                <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded-md bg-background/80 backdrop-blur-md border border-white/10 shadow-sm flex items-center gap-1">
-                  <div className={`w-1 h-1 rounded-full ${match.status === 'live' ? 'bg-red-500 animate-pulse' : 'bg-foreground/30'}`} />
-                  <span className="text-[8px] font-bold uppercase tracking-tighter text-foreground/60">{match.status}</span>
+                <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded-md bg-dark-teal/80 backdrop-blur-md border border-white/10 shadow-sm flex items-center gap-1">
+                  <div className={`w-1 h-1 rounded-full ${match.status === 'live' ? 'bg-red-500 animate-pulse' : 'bg-white/30'}`} />
+                  <span className="text-[8px] font-bold uppercase tracking-tighter text-white/60">{match.status}</span>
                 </div>
               </div>
               
               <div className="flex-1 min-w-0">
-                <p className="text-[9px] font-bold text-foreground/30 uppercase tracking-[0.1em] mb-1">{match.mode} • Round 2</p>
-                <h3 className="text-base font-bold text-foreground truncate mb-2">{match.title}</h3>
+                <p className="text-[9px] font-bold text-white/30 uppercase tracking-[0.1em] mb-1">{match.mode} • Round 2</p>
+                <h3 className="text-base font-bold text-white truncate mb-2">{match.title}</h3>
                 
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-1.5">
-                    <div className="w-4 h-4 rounded-full bg-accent/20 flex items-center justify-center">
-                      <Trophy size={10} className="text-accent" />
+                    <div className="w-4 h-4 rounded-full bg-moss-green/20 flex items-center justify-center">
+                      <Trophy size={10} className="text-moss-green" />
                     </div>
-                    <span className="text-[11px] font-bold text-foreground/70">₹{match.tournament?.prize_pool}</span>
+                    <span className="text-[11px] font-bold text-white/70">₹{match.tournament?.prize_pool}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <div className="w-4 h-4 rounded-full bg-foreground/5 flex items-center justify-center">
-                      <Users size={10} className="text-foreground/40" />
+                    <div className="w-4 h-4 rounded-full bg-white/5 flex items-center justify-center">
+                      <Users size={10} className="text-white/40" />
                     </div>
-                    <span className="text-[11px] font-bold text-foreground/40">24/48</span>
+                    <span className="text-[11px] font-bold text-white/40">24/48</span>
                   </div>
                 </div>
               </div>
 
               <div className="flex flex-col items-end justify-center gap-1 pl-2">
-                <span className="text-[8px] font-bold text-foreground/20 uppercase tracking-[0.2em]">Join</span>
-                <span className="text-lg font-bold text-primary">₹{match.tournament?.entry_fee}</span>
+                <span className="text-[8px] font-bold text-white/20 uppercase tracking-[0.2em]">Join</span>
+                <span className="text-lg font-bold text-moss-green">₹{match.tournament?.entry_fee}</span>
               </div>
             </motion.div>
           ))}
