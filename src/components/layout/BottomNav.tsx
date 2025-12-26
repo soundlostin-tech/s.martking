@@ -17,8 +17,8 @@ export function BottomNav() {
   const pathname = usePathname();
 
     return (
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-3xl border-t border-dark-slate-grey/5 pb-safe shadow-[0_-10px_40px_-15px_rgba(36,62,54,0.1)]">
-        <div className="flex justify-around items-center h-16 max-w-lg mx-auto px-4">
+      <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-lg bg-white border-2 border-ink-blue/20 rounded-3xl shadow-xl transform rotate-1">
+        <div className="flex justify-around items-center h-16 px-4">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
@@ -27,28 +27,28 @@ export function BottomNav() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="relative flex flex-col items-center justify-center flex-1 h-full outline-none"
+                className="relative flex flex-col items-center justify-center flex-1 h-full outline-none group"
               >
                 <motion.div
                   whileTap={{ scale: 0.85 }}
-                  className="relative flex flex-col items-center gap-1 transition-all duration-300"
+                  className="relative flex flex-col items-center gap-0.5 transition-all duration-300"
                 >
-                  <div className={`relative z-10 p-1.5 rounded-2xl transition-all duration-300 ${
-                    isActive ? "bg-primary/10 text-primary" : "text-dark-slate-grey/30"
+                  <div className={`relative z-10 p-1 rounded-xl transition-all duration-300 ${
+                    isActive ? "text-ink-blue rotate-6 scale-125" : "text-ink-blue/30"
                   }`}>
-                    <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+                    <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
                   </div>
   
-                  <span className={`text-[9px] font-bold uppercase tracking-wider transition-all duration-300 ${
-                    isActive ? "text-primary scale-110" : "text-dark-slate-grey/20"
+                  <span className={`text-[10px] font-handwritten font-bold uppercase tracking-wider transition-all duration-300 ${
+                    isActive ? "text-ink-blue" : "text-ink-blue/20"
                   }`}>
                     {item.label}
                   </span>
   
                   {isActive && (
                     <motion.div 
-                      layoutId="nav-indicator-glow"
-                      className="absolute -top-1 left-1/2 -translate-x-1/2 w-8 h-8 bg-primary/10 blur-xl rounded-full"
+                      layoutId="nav-indicator"
+                      className="absolute -bottom-1 w-8 h-0.5 bg-ink-blue/30"
                     />
                   )}
                 </motion.div>
@@ -56,9 +56,6 @@ export function BottomNav() {
             );
           })}
         </div>
-
-      {/* iOS Home Indicator Space */}
-      <div className="h-4" />
     </nav>
   );
 }
