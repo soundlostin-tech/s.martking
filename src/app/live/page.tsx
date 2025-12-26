@@ -101,7 +101,7 @@ function LiveContent() {
       <TopHeader />
 
       <div className="px-6 space-y-10 mt-8 max-w-2xl mx-auto">
-        {activeMatch ? (
+        {activeMatch ? 
           <>
             {/* Primary Feed - Cinematic Player */}
             <section className="space-y-6">
@@ -242,8 +242,8 @@ function LiveContent() {
                 </div>
               </section>
             )}
-          <>
-        ) : (
+          </>
+        : 
           <div className="py-24 text-center space-y-8 mt-12 bg-white/5 backdrop-blur-xl rounded-[50px] border border-dashed border-white/10">
             <div className="w-24 h-24 bg-white/5 rounded-[32px] flex items-center justify-center mx-auto text-white/10 shadow-inner">
               <WifiOff size={48} strokeWidth={1} />
@@ -257,10 +257,10 @@ function LiveContent() {
                 INITIALIZE RECON
               </button>
             </div>
-          </div>
-        )}
-      </div>
-    </main>
+            </div>
+          }
+        </div>
+      </main>
   );
 }
 

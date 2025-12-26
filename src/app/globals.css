@@ -192,7 +192,7 @@
 }
 
 .glass {
-  @apply bg-muted-teal/10 backdrop-blur-2xl border border-white/10 shadow-2xl;
+  @apply bg-light-coral/10 backdrop-blur-2xl border border-white/10 shadow-2xl;
 }
 
 @keyframes fadeIn {
