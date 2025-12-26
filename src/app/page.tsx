@@ -211,21 +211,21 @@ export default function Home() {
 
         {/* Quick Stats Grid - Native Mini Cards */}
         <section className="px-6 mb-10 overflow-x-auto no-scrollbar flex gap-4">
-          <div className="flex-shrink-0 w-32 bg-white rounded-[24px] p-4 border border-foreground/[0.04] shadow-sm">
+          <div className="flex-shrink-0 w-32 bg-card rounded-[24px] p-4 border border-foreground/[0.04] shadow-sm">
             <div className="w-8 h-8 rounded-xl bg-accent/10 flex items-center justify-center mb-3">
               <Trophy size={16} className="text-accent" />
             </div>
             <p className="text-[9px] font-bold text-foreground/30 uppercase tracking-widest mb-0.5">Wins</p>
             <h4 className="text-xl font-bold text-foreground">124</h4>
           </div>
-          <div className="flex-shrink-0 w-32 bg-white rounded-[24px] p-4 border border-foreground/[0.04] shadow-sm">
+          <div className="flex-shrink-0 w-32 bg-card rounded-[24px] p-4 border border-foreground/[0.04] shadow-sm">
             <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
               <Zap size={16} className="text-primary" />
             </div>
             <p className="text-[9px] font-bold text-foreground/30 uppercase tracking-widest mb-0.5">Rank</p>
             <h4 className="text-xl font-bold text-foreground">#42</h4>
           </div>
-          <div className="flex-shrink-0 w-32 bg-white rounded-[24px] p-4 border border-foreground/[0.04] shadow-sm">
+          <div className="flex-shrink-0 w-32 bg-card rounded-[24px] p-4 border border-foreground/[0.04] shadow-sm">
             <div className="w-8 h-8 rounded-xl bg-secondary/10 flex items-center justify-center mb-3">
               <TrendingUp size={16} className="text-secondary" />
             </div>
@@ -255,9 +255,9 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
               whileTap={{ scale: 0.96 }}
-              className="bg-white rounded-[28px] p-4 border border-foreground/[0.04] shadow-sm active:shadow-lg transition-all flex items-center gap-4"
+              className="bg-card rounded-[28px] p-4 border border-foreground/[0.04] shadow-sm active:shadow-lg transition-all flex items-center gap-4"
             >
-              <div className="relative w-20 h-20 rounded-2xl bg-muted overflow-hidden flex-shrink-0">
+              <div className="relative w-20 h-20 rounded-2xl bg-foreground/5 overflow-hidden flex-shrink-0">
                  {match.status === 'live' ? (
                   <div className="absolute inset-0 bg-primary/5 flex items-center justify-center">
                     <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
@@ -269,7 +269,7 @@ export default function Home() {
                     <Swords size={24} className="text-foreground/20" />
                   </div>
                 )}
-                <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded-md bg-white/90 backdrop-blur-md border border-white/50 shadow-sm flex items-center gap-1">
+                <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded-md bg-background/80 backdrop-blur-md border border-white/10 shadow-sm flex items-center gap-1">
                   <div className={`w-1 h-1 rounded-full ${match.status === 'live' ? 'bg-red-500 animate-pulse' : 'bg-foreground/30'}`} />
                   <span className="text-[8px] font-bold uppercase tracking-tighter text-foreground/60">{match.status}</span>
                 </div>

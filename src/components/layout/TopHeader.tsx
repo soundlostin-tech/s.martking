@@ -5,7 +5,7 @@ import { Search, Bell, Menu } from "lucide-react";
 
 export function TopHeader() {
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-foreground/[0.04] px-6 py-4 flex items-center justify-between">
+    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-foreground/[0.04] px-6 py-4 flex items-center justify-between">
       <div className="flex flex-col">
         <h1 className="text-xl font-heading text-primary font-bold tracking-tight leading-none">
           Smartking's
@@ -27,7 +27,7 @@ export function TopHeader() {
           className="relative w-10 h-10 rounded-full bg-foreground/[0.03] flex items-center justify-center text-foreground/60"
         >
           <Bell size={20} />
-          <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-accent rounded-full border-2 border-white" />
+            <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-accent rounded-full border-2 border-background" />
         </motion.button>
       </div>
     </header>
