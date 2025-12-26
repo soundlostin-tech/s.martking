@@ -1,6 +1,5 @@
 "use client";
 
-import { HeroSection } from "@/components/layout/HeroSection";
 import { AdminNav } from "@/components/layout/AdminNav";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
@@ -138,18 +137,7 @@ export default function AdminOverview() {
 
   return (
     <main className="min-h-screen pb-32 bg-zinc-50">
-      <HeroSection 
-        title={<>Command <span className="italic font-serif opacity-60">Center</span></>}
-        subtitle="Operational intelligence and arena performance metrics."
-        className="mx-0 rounded-none pb-32 bg-zinc-50 border-b border-black/5"
-      >
-        <div className="absolute inset-0 opacity-20 pointer-events-none overflow-hidden">
-          <div className="absolute -top-24 -right-24 w-96 h-96 bg-zinc-200 rounded-full blur-[120px]" />
-          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-zinc-300 rounded-full blur-[120px]" />
-        </div>
-      </HeroSection>
-
-      <div className="px-6 -mt-24 relative z-10 space-y-10 max-w-5xl mx-auto">
+      <div className="px-6 pt-24 relative z-10 space-y-10 max-w-5xl mx-auto">
         {/* Time Range Selector */}
         <div className="flex bg-zinc-50 p-1.5 rounded-[1.5rem] border border-black/5 shadow-2xl shadow-black/5 w-fit mx-auto md:mx-0">
           {["Today", "Week", "Month", "All"].map((range) => (

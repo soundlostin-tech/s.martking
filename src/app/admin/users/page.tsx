@@ -1,6 +1,5 @@
 "use client";
 
-import { HeroSection } from "@/components/layout/HeroSection";
 import { AdminNav } from "@/components/layout/AdminNav";
 import { Badge } from "@/components/ui/badge";
 import { 
@@ -175,18 +174,7 @@ export default function AdminUsers() {
 
   return (
     <main className="min-h-screen pb-32 bg-zinc-50">
-      <HeroSection 
-        title={<>Member <span className="italic font-serif opacity-60">Registry</span></>}
-        subtitle="Control arena roles, status, and player verification."
-        className="mx-0 rounded-none pb-32 bg-zinc-50 border-b border-black/5"
-      >
-        <div className="absolute inset-0 opacity-20 pointer-events-none overflow-hidden">
-          <div className="absolute -top-24 -right-24 w-96 h-96 bg-zinc-200 rounded-full blur-[120px]" />
-          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-zinc-300 rounded-full blur-[120px]" />
-        </div>
-      </HeroSection>
-
-      <div className="px-6 -mt-24 relative z-10 space-y-10 max-w-4xl mx-auto">
+      <div className="px-6 pt-24 relative z-10 space-y-10 max-w-4xl mx-auto">
         {/* KPI Strip */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[

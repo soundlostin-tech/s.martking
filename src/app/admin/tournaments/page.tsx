@@ -1,6 +1,5 @@
 "use client";
 
-import { HeroSection } from "@/components/layout/HeroSection";
 import { AdminNav } from "@/components/layout/AdminNav";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -203,18 +202,7 @@ export default function AdminTournaments() {
 
   return (
     <main className="min-h-screen pb-32 bg-zinc-50">
-      <HeroSection 
-        title={<>Event <span className="italic font-serif opacity-60">Architect</span></>}
-        subtitle="Configure and monitor tournament logistics."
-        className="mx-0 rounded-none pb-32 bg-zinc-50 border-b border-black/5"
-      >
-        <div className="absolute inset-0 opacity-20 pointer-events-none overflow-hidden">
-          <div className="absolute -top-24 -right-24 w-96 h-96 bg-zinc-200 rounded-full blur-[120px]" />
-          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-zinc-300 rounded-full blur-[120px]" />
-        </div>
-      </HeroSection>
-
-      <div className="px-6 -mt-24 relative z-10 space-y-10 max-w-5xl mx-auto">
+      <div className="px-6 pt-24 relative z-10 space-y-10 max-w-5xl mx-auto">
         {/* Action Bar */}
         <div className="bg-zinc-50 rounded-[2.5rem] border border-black/5 p-6 shadow-2xl shadow-black/5 flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">

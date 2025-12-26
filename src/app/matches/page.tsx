@@ -1,6 +1,5 @@
 "use client";
 
-import { HeroSection } from "@/components/layout/HeroSection";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
@@ -123,13 +122,7 @@ export default function MatchesPage() {
         <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
       </div>
 
-      <HeroSection 
-        title="Battle Arena" 
-        subtitle="The stage is set. Claim your glory in the upcoming tournaments."
-        className="bg-transparent relative z-10"
-      />
-
-            <div className="px-6 -mt-12 relative z-20 space-y-10 max-w-2xl mx-auto">
+            <div className="px-6 pt-24 relative z-20 space-y-10 max-w-2xl mx-auto">
               {/* Filter Controls */}
               <div className="flex bg-white/60 backdrop-blur-xl p-2 rounded-full border border-primary/10 overflow-x-auto no-scrollbar gap-2 shadow-2xl">
                 {filters.map((filter) => (

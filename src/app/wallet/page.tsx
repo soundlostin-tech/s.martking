@@ -1,6 +1,5 @@
 "use client";
 
-import { HeroSection } from "@/components/layout/HeroSection";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { 
   ArrowUpRight, 
@@ -188,13 +187,7 @@ export default function WalletPage() {
         <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
       </div>
 
-      <HeroSection 
-        title="Arena Vault" 
-        subtitle="Secure your earnings and manage your financial dominance."
-        className="bg-transparent relative z-10"
-      />
-
-      <div className="px-6 -mt-16 relative z-10 space-y-8 max-w-2xl mx-auto">
+      <div className="px-6 pt-24 relative z-10 space-y-8 max-w-2xl mx-auto">
         {/* Wallet Summary Card */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
