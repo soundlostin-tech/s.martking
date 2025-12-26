@@ -1,132 +1,346 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { BottomNav } from "@/components/layout/BottomNav";
+import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
-import { HeroSection } from "@/components/layout/HeroSection";
-import { TopHeader } from "@/components/layout/TopHeader";
-import { BottomNav } from "@/components/layout/BottomNav";
-import { Trophy, Users, Calendar, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { 
+  Trophy, Swords, ChevronRight, 
+  Users, Play, TrendingUp, Award, Plus,
+  Sparkles, Timer, Zap, Map as MapIcon,
+  Activity, Star, IndianRupee, Bell,
+  Search, ShieldCheck, LayoutGrid, Signal
+} from "lucide-react";
+import { StoryViewer } from "@/components/StoryViewer";
+import { StoryUpload } from "@/components/StoryUpload";
+import { TopHeader } from "@/components/layout/TopHeader";
+import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 
 export default function Home() {
+  const { user, loading: authLoading } = useAuth(false);
+  const [profiles, setProfiles] = useState<any[]>([]);
+  const [stories, setStories] = useState<any[]>([]);
   const [featuredMatches, setFeaturedMatches] = useState<any[]>([]);
+  const [userStats, setUserStats] = useState({ wins: 0, rank: "N/A", growth: "+0%" });
   const [loading, setLoading] = useState(true);
+  
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [selectedStoryIndex, setSelectedStoryIndex] = useState(0);
+  const [activeStories, setActiveStories] = useState<any[]>([]);
 
   const fetchData = useCallback(async () => {
     try {
-      const { data: matchesRes } = await supabase
-        .from("matches")
-        .select(`*, tournament:tournaments(title, entry_fee, prize_pool)`)
-        .or('status.eq.live,status.eq.upcoming')
-        .order('status', { ascending: false })
-        .limit(3);
+      const [profilesRes, storiesRes, matchesRes] = await Promise.all([
+        supabase.from("profiles").select("*").limit(15),
+        supabase.from("stories")
+          .select(`*, user:profiles(full_name, avatar_url)`)
+          .gt('expires_at', new Date().toISOString())
+          .order('created_at', { ascending: true }),
+        supabase.from("matches")
+          .select(`*, tournament:tournaments(title, entry_fee, prize_pool)`)
+          .or('status.eq.live,status.eq.upcoming')
+          .order('status', { ascending: false })
+          .limit(10)
+      ]);
 
-      setFeaturedMatches(matchesRes || []);
+      setProfiles(profilesRes.data || []);
+      setStories(storiesRes.data || []);
+      setFeaturedMatches(matchesRes.data || []);
+
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("matches_played, win_rate")
+          .eq("id", user.id)
+          .single();
+        
+        if (profile) {
+          setUserStats({
+            wins: Math.floor((profile.matches_played || 0) * (parseFloat(profile.win_rate) / 100)),
+            rank: "#42", // Placeholder for actual rank calculation
+            growth: "+12%"
+          });
+        }
+      }
     } catch (error) {
       console.error("Error fetching arena data:", error);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
+  const openStory = (userId: string) => {
+    const userStories = stories.filter(s => s.user_id === userId);
+    if (userStories.length > 0) {
+      setActiveStories(userStories);
+      setSelectedStoryIndex(0);
+      setIsViewerOpen(true);
+    }
+  };
+
   return (
-    <div className="min-h-screen pb-24">
-      <TopHeader />
-      
-      <main className="pt-24 px-6 space-y-12 max-w-4xl mx-auto">
-        <section className="text-center space-y-4">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-5xl font-bold tracking-tight text-primary"
-          >
-            Smartking's Arena
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-xl text-muted-foreground"
-          >
-            Dominate the battlefield. Win legendary rewards.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="pt-4"
-          >
-            <Link 
-              href="/matches" 
-              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 rounded-full font-semibold hover:opacity-90 transition-opacity"
+    <div className="min-h-screen bg-background text-foreground">
+      <main className="pb-32 relative z-10">
+        <TopHeader />
+
+        {/* Stories - Cinematic Native Pattern */}
+        <section className="py-8 overflow-hidden">
+          <div className="flex gap-5 overflow-x-auto no-scrollbar px-6 items-center">
+            {user && (
+              <div className="flex-shrink-0 flex flex-col items-center gap-3">
+                <motion.div 
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => {
+                    const myStories = stories.filter(s => s.user_id === user.id);
+                    if (myStories.length > 0) openStory(user.id);
+                    else setIsUploadOpen(true);
+                  }}
+                  className={`relative w-[72px] h-[72px] rounded-[24px] p-[2.5px] flex items-center justify-center transition-all duration-500 ${
+                    stories.some(s => s.user_id === user.id) 
+                      ? 'bg-gradient-to-tr from-secondary to-accent shadow-lg shadow-secondary/20' 
+                      : 'border-2 border-dashed border-primary/10 hover:border-primary/20'
+                  }`}
+                >
+                  <div className="w-full h-full rounded-[21px] bg-background p-0.5">
+                    <div className="w-full h-full rounded-[19px] bg-primary/5 flex items-center justify-center overflow-hidden">
+                      {user.user_metadata?.avatar_url ? (
+                        <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-xl font-heading text-primary/20">{user.email?.[0].toUpperCase()}</span>
+                      )}
+                    </div>
+                  </div>
+                  {!stories.some(s => s.user_id === user.id) && (
+                    <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-secondary rounded-xl border-[3px] border-background flex items-center justify-center text-white shadow-xl">
+                      <Plus size={16} strokeWidth={4} />
+                    </div>
+                  )}
+                </motion.div>
+                <span className="text-[10px] font-bold text-primary/40 uppercase tracking-widest">YOU</span>
+              </div>
+            )}
+
+            {profiles.filter(p => p.id !== user?.id).map((profile) => {
+              const hasStory = stories.some(s => s.user_id === profile.id);
+              return (
+                <div 
+                  key={profile.id}
+                  onClick={() => hasStory && openStory(profile.id)}
+                  className="flex-shrink-0 flex flex-col items-center gap-3"
+                >
+                  <motion.div 
+                    whileTap={{ scale: 0.9 }}
+                    className={`w-[72px] h-[72px] rounded-[24px] p-[2.5px] transition-all duration-500 ${
+                      hasStory 
+                        ? 'bg-gradient-to-tr from-secondary to-accent shadow-lg shadow-secondary/20' 
+                        : 'bg-primary/5'
+                    }`}
+                  >
+                      <div className="w-full h-full rounded-[21px] bg-background p-0.5">
+                        <div className="w-full h-full rounded-[19px] bg-primary/5 flex items-center justify-center overflow-hidden">
+                          {profile.avatar_url ? (
+                            <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="text-xl font-heading text-primary/10">{profile.full_name?.[0].toUpperCase()}</span>
+                          )}
+                        </div>
+                      </div>
+                  </motion.div>
+                  <span className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${
+                    hasStory ? 'text-primary' : 'text-primary/20'
+                  }`}>
+                    {profile.full_name?.split(' ')[0].toUpperCase()}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Dynamic Hero Banner */}
+        <section className="px-6 mb-10">
+          <div className="relative h-56 rounded-[40px] overflow-hidden shadow-xl shadow-primary/5 group cursor-pointer active:scale-[0.98] transition-all duration-500 border border-primary/5">
+            <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors duration-700" />
+            
+            {/* Ambient FX */}
+            <div className="absolute inset-0 overflow-hidden opacity-60">
+              <motion.div
+                animate={{
+                  scale: [1, 1.2, 1],
+                  rotate: [0, 90, 0],
+                  opacity: [0.3, 0.6, 0.3],
+                }}
+                transition={{ duration: 15, repeat: Infinity }}
+                className="absolute -top-20 -left-20 w-64 h-64 bg-secondary/10 blur-[80px] rounded-full"
+              />
+              <motion.div
+                animate={{
+                  scale: [1, 1.3, 1],
+                  x: [0, -50, 0],
+                  opacity: [0.2, 0.4, 0.2],
+                }}
+                transition={{ duration: 12, repeat: Infinity }}
+                className="absolute -bottom-20 -right-20 w-80 h-80 bg-accent/30 blur-[100px] rounded-full"
+              />
+            </div>
+            
+            <div className="relative h-full p-10 flex flex-col justify-center">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+                <span className="text-[10px] font-bold text-secondary uppercase tracking-[0.4em]">ELITE DEPLOYMENT ACTIVE</span>
+              </div>
+              <h2 className="text-4xl font-heading text-primary leading-[1.1] tracking-tight">Win ₹1,00,000<br/>Mega Pool</h2>
+              <p className="text-[11px] text-primary/40 font-bold uppercase tracking-[0.2em] mt-4 flex items-center gap-2">
+                <Users size={14} className="text-secondary" /> 2,450 WARRIORS REGISTERED
+              </p>
+              
+              <div className="mt-8 flex items-center gap-4">
+                <button className="px-8 py-3.5 bg-primary text-white rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all">
+                  INITIALIZE ENTRY
+                </button>
+                <div className="flex -space-x-3">
+                  {[1,2,3].map(i => (
+                    <div key={i} className="w-10 h-10 rounded-full border-4 border-white bg-primary/5 overflow-hidden shadow-sm">
+                      <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+50}`} alt="" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            <div className="absolute right-10 top-1/2 -translate-y-1/2 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity text-primary">
+              <Trophy size={160} strokeWidth={1} />
+            </div>
+          </div>
+        </section>
+
+        {/* Live Performance Matrix */}
+        <section className="px-6 mb-12 overflow-x-auto no-scrollbar flex gap-5">
+          {[
+            { label: "Elite Wins", value: userStats.wins, icon: Trophy, color: "secondary" },
+            { label: "Global Rank", value: userStats.rank, icon: Zap, color: "secondary" },
+            { label: "Engagement", value: userStats.growth, icon: TrendingUp, color: "secondary" },
+          ].map((stat, i) => (
+            <motion.div 
+              key={i}
+              initial={{ x: 20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: i * 0.1 }}
+              className="flex-shrink-0 w-36 bg-white rounded-[32px] p-6 border border-primary/5 shadow-sm"
             >
-              Enter the Arena <ArrowRight size={20} />
-            </Link>
-          </motion.div>
+              <div className="w-10 h-10 rounded-2xl bg-secondary/10 flex items-center justify-center mb-4">
+                <stat.icon size={20} className="text-secondary" />
+              </div>
+              <p className="text-[9px] font-bold text-primary/30 uppercase tracking-widest mb-1">{stat.label}</p>
+              <h4 className="text-2xl font-heading text-primary">{stat.value}</h4>
+            </motion.div>
+          ))}
         </section>
 
-        <section className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Featured Battles</h2>
-            <Link href="/matches" className="text-sm font-medium text-jungle-teal hover:underline">
-              View All
-            </Link>
+        {/* Section Header */}
+        <section className="px-8 pb-6 flex items-center justify-between">
+          <div className="space-y-1">
+            <h2 className="text-2xl font-heading text-primary">Active <span className="italic font-serif opacity-60">Operations</span></h2>
+            <p className="text-[10px] font-bold text-primary/20 uppercase tracking-[0.3em]">BATTLE SIGNALS DETECTED</p>
           </div>
-
-          <div className="grid gap-4">
-            {loading ? (
-              [1, 2, 3].map((i) => (
-                <div key={i} className="h-32 bg-muted animate-pulse rounded-2xl" />
-              ))
-            ) : featuredMatches.map((match) => (
-              <Link 
-                key={match.id}
-                href={`/matches/${match.id}`}
-                className="group relative bg-card border border-border p-6 rounded-2xl hover:border-jungle-teal transition-all"
-              >
-                <div className="flex justify-between items-start">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
-                        match.status === 'live' ? 'bg-red-500 text-white' : 'bg-jungle-teal/10 text-jungle-teal'
-                      }`}>
-                        {match.status}
-                      </span>
-                      <span className="text-xs text-muted-foreground uppercase tracking-widest">{match.mode}</span>
-                    </div>
-                    <h3 className="text-xl font-bold group-hover:text-jungle-teal transition-colors">{match.title}</h3>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold">₹{match.tournament?.prize_pool}</div>
-                    <div className="text-xs text-muted-foreground">Prize Pool</div>
-                  </div>
-                </div>
-
-                <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
-                  <div className="flex gap-6">
-                    <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                      <Calendar size={14} />
-                      <span>{new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                      <Trophy size={14} />
-                      <span>₹{match.tournament?.entry_fee} Entry</span>
-                    </div>
-                  </div>
-                  <div className="text-sm font-bold text-jungle-teal">Join Now</div>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <Link href="/matches" className="p-3 bg-white rounded-2xl text-primary/40 hover:text-secondary shadow-sm transition-all border border-primary/5">
+            <LayoutGrid size={20} />
+          </Link>
         </section>
+
+        {/* Match Command Grid */}
+        <section className="px-6 space-y-5">
+          {featuredMatches.length > 0 ? featuredMatches.map((match, i) => (
+            <motion.div
+              key={match.id}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
+              whileTap={{ scale: 0.97 }}
+              className="bg-white rounded-[32px] p-6 border border-primary/5 shadow-sm hover:border-secondary/30 transition-all duration-500 group flex items-center gap-6"
+            >
+              <div className="relative w-24 h-24 rounded-3xl bg-primary/5 overflow-hidden flex-shrink-0 shadow-inner">
+                 {match.status === 'live' ? (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center animate-pulse">
+                      <Play size={24} className="text-secondary translate-x-0.5" fill="currentColor" />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center opacity-10">
+                    <Swords size={32} />
+                  </div>
+                )}
+                <div className="absolute bottom-2 left-2 right-2 px-2 py-1 rounded-xl bg-white/80 backdrop-blur-md border border-primary/5 flex items-center justify-center gap-1.5">
+                  <div className={`w-1 h-1 rounded-full ${match.status === 'live' ? 'bg-red-500 animate-pulse' : 'bg-secondary'}`} />
+                  <span className="text-[8px] font-bold uppercase tracking-tighter text-primary/80">{match.status}</span>
+                </div>
+              </div>
+              
+              <div className="flex-1 min-w-0 space-y-2">
+                <p className="text-[10px] font-bold text-primary/30 uppercase tracking-[0.2em]">{match.mode} • {match.map || 'Bermuda'}</p>
+                <h3 className="text-xl font-heading text-primary truncate group-hover:text-secondary transition-colors">{match.title}</h3>
+                
+                <div className="flex items-center gap-5 pt-1">
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-lg bg-secondary/10 flex items-center justify-center">
+                      <Trophy size={12} className="text-secondary" />
+                    </div>
+                    <span className="text-[11px] font-bold text-primary/60">₹{match.tournament?.prize_pool.toLocaleString()}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-lg bg-primary/5 flex items-center justify-center">
+                      <Users size={12} className="text-primary/30" />
+                    </div>
+                    <span className="text-[11px] font-bold text-primary/40">{match.live_stats?.players_alive || 48} / {match.tournament?.slots || 100}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col items-end justify-center gap-1 pl-4 border-l border-primary/5">
+                <span className="text-[9px] font-bold text-primary/20 uppercase tracking-[0.3em]">ENTRY</span>
+                <span className="text-2xl font-heading text-secondary">₹{match.tournament?.entry_fee}</span>
+              </div>
+            </motion.div>
+          )) : (
+            <div className="py-20 text-center flex flex-col items-center gap-4 bg-white rounded-[40px] border border-dashed border-primary/10 shadow-sm">
+              <Signal size={48} strokeWidth={1} className="text-primary/10" />
+              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/20 italic">Scanning for Battle Signals...</p>
+            </div>
+          )}
+        </section>
+
       </main>
 
+      <StoryViewer 
+        stories={activeStories}
+        initialIndex={selectedStoryIndex}
+        isOpen={isViewerOpen}
+        onClose={() => setIsViewerOpen(false)}
+      />
+
+      <StoryUpload 
+        isOpen={isUploadOpen}
+        onClose={() => setIsUploadOpen(false)}
+        onSuccess={fetchData}
+      />
+
       <BottomNav />
+      
+      {/* Visual background glows */}
+      <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0 opacity-40">
+        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-secondary/10 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/20 blur-[120px] rounded-full" />
+      </div>
     </div>
   );
 }

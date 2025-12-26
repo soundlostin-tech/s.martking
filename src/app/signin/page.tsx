@@ -9,7 +9,7 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { PaperWrapper } from "@/components/layout/PaperWrapper";
+import { Button } from "@/components/ui/button";
 
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,10 +26,10 @@ export default function Signin() {
     if (!formData.email) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Invalid format";
+      newErrors.email = "Invalid email format";
     }
     if (!formData.password) {
-      newErrors.password = "Required";
+      newErrors.password = "Password is required";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -47,99 +47,132 @@ export default function Signin() {
       });
 
       if (error) {
-        toast.error(error.message);
+        if (error.message === "Email not confirmed") {
+          toast.error("Please confirm your email address before signing in.");
+        } else if (error.message.includes("Invalid login credentials")) {
+          toast.error("Invalid email or password. Please try again.");
+        } else {
+          toast.error(error.message || "An error occurred during signin");
+        }
         return;
       }
 
-      toast.success("Welcome back!");
+      toast.success("Signed in successfully!");
       router.push("/");
     } catch (error: any) {
-      toast.error("Signin failed");
+      toast.error("An unexpected error occurred. Please try again.");
+      console.error("Signin error:", error);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="w-full">
-      <PaperWrapper className="!rotate-1">
-        <div className="space-y-10 py-10">
-          <div className="flex flex-col items-center text-center gap-4">
-            <div className="w-20 h-20 border-2 border-[#000033] rounded-3xl flex items-center justify-center rotate-3 shadow-sm">
+    <main className="min-h-screen bg-background flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-40">
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/20 rounded-full blur-[120px]" />
+      </div>
+
+      {/* Auth Card */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="relative max-w-lg w-full bg-white border border-primary/5 shadow-2xl rounded-[3rem] overflow-hidden animate-fadeIn"
+      >
+        <div className="bg-secondary/10 p-10 border-b border-primary/5 relative overflow-hidden">
+          <div className="relative z-10 flex flex-col items-center text-center space-y-4">
+            <div className="w-16 h-16 bg-secondary text-white rounded-2xl flex items-center justify-center shadow-xl shadow-secondary/20 mb-2">
               <Swords size={32} />
             </div>
             <div className="space-y-1">
-              <h1 className="text-5xl m-0">Arena Login</h1>
-              <p className="text-xl opacity-60">Ready for battle?</p>
+              <h4 className="text-[10px] font-bold text-secondary uppercase tracking-[0.4em]">Combat Uplink</h4>
+              <h1 className="text-4xl font-heading text-primary leading-tight">
+                Welcome <span className="italic font-serif opacity-60">Back.</span>
+              </h1>
             </div>
           </div>
+          <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-secondary/20 blur-[80px] rounded-full" />
+        </div>
 
-          <form className="space-y-6" onSubmit={handleSignin}>
-            <div className="space-y-2">
-              <Label className="text-xs font-bold opacity-40 uppercase tracking-widest ml-1">Deployment Email</Label>
-              <Input 
+        <div className="p-10 md:p-12 space-y-10">
+          <form className="space-y-8" onSubmit={handleSignin}>
+            <div className="space-y-3">
+              <Label htmlFor="email" className="text-[10px] font-bold text-primary/20 uppercase tracking-[0.3em] ml-4">Deployment Email</Label>
+              <input 
+                id="email" 
                 type="email" 
                 placeholder="warrior@arena.com" 
-                className="h-14 border-2 border-[#000033]/10 rounded-2xl px-6 text-xl bg-transparent focus:border-[#000033]/30"
+                className={`w-full h-16 px-8 rounded-[2rem] border-none bg-primary/5 shadow-inner text-primary font-bold text-xs tracking-wide focus:ring-2 focus:ring-secondary/20 placeholder:text-primary/10 ${errors.email ? 'ring-2 ring-red-500/50' : ''}`}
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={(e) => {
+                  setFormData({ ...formData, email: e.target.value });
+                  if (errors.email) setErrors({ ...errors, email: "" });
+                }}
               />
-              {errors.email && <p className="text-xs text-red-500 ml-1">{errors.email}</p>}
+              {errors.email && <p className="text-[10px] text-red-500 px-6 mt-1 font-bold">{errors.email}</p>}
             </div>
 
-            <div className="space-y-2">
-              <div className="flex justify-between items-center px-1">
-                <Label className="text-xs font-bold opacity-40 uppercase tracking-widest">Access Protocol</Label>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center px-4">
+                <Label htmlFor="password" className="text-[10px] font-bold text-primary/20 uppercase tracking-[0.3em]">Access Protocol</Label>
+                <button type="button" className="text-[10px] text-secondary/60 hover:text-secondary font-bold uppercase tracking-widest transition-colors">Recover Keys?</button>
               </div>
               <div className="relative">
-                <Input 
+                <input 
+                  id="password" 
                   type={showPassword ? "text" : "password"} 
                   placeholder="••••••••" 
-                  className="h-14 border-2 border-[#000033]/10 rounded-2xl px-6 text-xl bg-transparent focus:border-[#000033]/30"
+                  className={`w-full h-16 px-8 pr-16 rounded-[2rem] border-none bg-primary/5 shadow-inner text-primary font-bold text-xs tracking-wide focus:ring-2 focus:ring-secondary/20 placeholder:text-primary/10 ${errors.password ? 'ring-2 ring-red-500/50' : ''}`}
                   value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, password: e.target.value });
+                    if (errors.password) setErrors({ ...errors, password: "" });
+                  }}
                 />
                 <button 
                   type="button" 
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#000033]/20 hover:text-[#000033] transition-colors"
+                  className="absolute right-6 top-1/2 -translate-y-1/2 text-primary/20 hover:text-primary transition-colors"
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              {errors.password && <p className="text-xs text-red-500 ml-1">{errors.password}</p>}
+              {errors.password && <p className="text-[10px] text-red-500 px-6 mt-1 font-bold">{errors.password}</p>}
             </div>
 
-            <button 
+            <Button 
               type="submit" 
+              className="w-full h-16 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold text-[11px] uppercase tracking-[0.3em] shadow-xl shadow-primary/20 mt-4 border-none" 
               disabled={loading}
-              className="btn-hand-drawn w-full py-4 bg-[#000033] text-white"
             >
-              {loading ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "Establish Uplink"}
-            </button>
+              {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "ESTABLISH UPLINK"}
+            </Button>
           </form>
 
-          <div className="text-center">
-            <p className="text-xl opacity-60">
-              New Warrior?{" "}
-              <Link href="/signup" className="text-[#000033] font-bold underline">
-                Join Arena
+          <div className="pt-4 text-center">
+            <p className="text-[10px] font-bold text-primary/20 uppercase tracking-[0.2em]">
+              NEW TO THE ARENA?{" "}
+              <Link href="/signup" className="text-secondary hover:text-primary transition-colors">
+                CREATE IDENTITY
               </Link>
             </p>
           </div>
+        </div>
 
-          <div className="flex items-center justify-center gap-8 pt-4 opacity-20">
-            <div className="flex items-center gap-2">
-              <ShieldCheck size={16} />
-              <span className="text-[10px] font-bold uppercase tracking-widest">Encrypted</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Zap size={16} />
-              <span className="text-[10px] font-bold uppercase tracking-widest">Fast Link</span>
-            </div>
+        {/* Security Badges */}
+        <div className="bg-primary/5 p-6 flex items-center justify-center gap-8 border-t border-primary/5">
+          <div className="flex items-center gap-2">
+            <ShieldCheck size={14} className="text-secondary" />
+            <span className="text-[8px] font-bold text-primary/20 uppercase tracking-widest">ENCRYPTED</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Zap size={14} className="text-secondary" />
+            <span className="text-[8px] font-bold text-primary/20 uppercase tracking-widest">FAST UPLINK</span>
           </div>
         </div>
-      </PaperWrapper>
-    </div>
+      </motion.div>
+    </main>
   );
 }

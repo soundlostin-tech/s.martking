@@ -1,32 +1,34 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, Bell, User } from "lucide-react";
-import Link from "next/link";
+import { Search, Bell, Menu } from "lucide-react";
 
 export function TopHeader() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-[60] h-16 bg-background/80 backdrop-blur-md border-b border-border px-6">
-      <div className="max-w-4xl mx-auto h-full flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-jungle-teal rounded-lg flex items-center justify-center text-white font-bold">S</div>
-          <h1 className="text-xl font-bold tracking-tight text-primary m-0">
-            Smartking
-          </h1>
-        </Link>
-        
-        <div className="flex items-center gap-4">
-          <button className="text-muted-foreground hover:text-primary transition-colors">
-            <Search size={20} />
-          </button>
-          <button className="relative text-muted-foreground hover:text-primary transition-colors">
-            <Bell size={20} />
-            <span className="absolute top-0 right-0 w-2 h-2 bg-jungle-teal rounded-full border-2 border-background" />
-          </button>
-          <Link href="/profile" className="text-muted-foreground hover:text-primary transition-colors">
-            <User size={20} />
-          </Link>
-        </div>
+    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-primary/5 px-6 py-4 flex items-center justify-between">
+      <div className="flex flex-col">
+        <h1 className="text-xl font-heading text-primary font-bold tracking-tight leading-none">
+          Smartking's
+        </h1>
+        <p className="text-[9px] font-bold text-primary/30 uppercase tracking-[0.2em] mt-1">
+          The Arena Awaits
+        </p>
+      </div>
+      
+      <div className="flex items-center gap-3">
+        <motion.button 
+          whileTap={{ scale: 0.9 }}
+          className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary/60"
+        >
+          <Search size={20} />
+        </motion.button>
+        <motion.button 
+          whileTap={{ scale: 0.9 }}
+          className="relative w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary/60"
+        >
+          <Bell size={20} />
+            <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-secondary rounded-full border-2 border-background" />
+        </motion.button>
       </div>
     </header>
   );

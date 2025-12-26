@@ -137,8 +137,8 @@ export default function AdminOverview() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="space-y-4 text-center">
-          <Activity className="w-12 h-12 animate-pulse text-muted-teal mx-auto" />
-          <p className="text-[10px] font-bold text-dark-slate-grey/40 uppercase tracking-[0.3em]">Establishing Uplink...</p>
+          <Activity className="w-12 h-12 animate-pulse text-secondary mx-auto" />
+          <p className="text-[10px] font-bold text-primary/40 uppercase tracking-[0.3em]">Establishing Uplink...</p>
         </div>
       </div>
     );
@@ -147,28 +147,28 @@ export default function AdminOverview() {
   return (
     <main className="min-h-screen pb-32 bg-background">
       {/* Background Decor */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-30">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-muted-teal/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-frosted-mint/20 rounded-full blur-[120px]" />
+      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-40">
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/20 rounded-full blur-[120px]" />
       </div>
 
       <div className="px-6 pt-24 relative z-10 space-y-10 max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-1">
-            <h4 className="text-[10px] font-bold text-muted-teal uppercase tracking-[0.4em]">Intelligence Command</h4>
-            <h1 className="text-4xl md:text-5xl font-heading text-dark-slate-grey">Arena <span className="italic font-serif text-dark-slate-grey/60">Overview</span></h1>
+            <h4 className="text-[10px] font-bold text-secondary uppercase tracking-[0.4em]">Intelligence Command</h4>
+            <h1 className="text-4xl md:text-5xl font-heading text-primary">Arena <span className="italic font-serif opacity-60">Overview</span></h1>
           </div>
           
-          <div className="flex bg-dark-slate-grey/5 backdrop-blur-xl p-1 rounded-[1.2rem] border border-dark-slate-grey/5 shadow-2xl">
+          <div className="flex bg-white p-1 rounded-[1.2rem] border border-primary/5 shadow-xl">
             {["Today", "Week", "Month", "All"].map((range) => (
               <button
                 key={range}
                 onClick={() => setTimeRange(range)}
                 className={`px-6 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${
                   timeRange === range 
-                    ? "bg-muted-teal text-white shadow-[0_0_20px_rgba(124,169,130,0.3)]" 
-                    : "text-dark-slate-grey/40 hover:text-dark-slate-grey hover:bg-dark-slate-grey/5"
+                    ? "bg-secondary text-white shadow-lg shadow-secondary/20" 
+                    : "text-primary/40 hover:text-primary hover:bg-primary/5"
                 }`}
               >
                 {range}
@@ -190,44 +190,44 @@ export default function AdminOverview() {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: i * 0.1 }}
-                className={`rounded-[2.5rem] p-8 border border-dark-slate-grey/5 shadow-2xl relative overflow-hidden group ${
-                  stat.primary ? "bg-muted-teal text-white border-muted-teal shadow-muted-teal/20" : "bg-card backdrop-blur-xl"
+                className={`rounded-[2.5rem] p-8 border border-primary/5 shadow-lg relative overflow-hidden group ${
+                  stat.primary ? "bg-secondary/10 border-secondary/20" : "bg-white"
                 }`}
               >
                 <div className="flex justify-between items-start relative z-10">
                   <div className="space-y-1">
-                    <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${stat.primary ? "text-white/80" : "text-dark-slate-grey/40"}`}>
+                    <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${stat.primary ? "text-secondary" : "text-primary/40"}`}>
                       {stat.label}
                     </p>
-                    <h3 className={`text-4xl font-heading leading-none ${stat.primary ? "text-white" : "text-dark-slate-grey"}`}>{stat.value}</h3>
+                    <h3 className="text-4xl font-heading text-primary leading-none">{stat.value}</h3>
                     {stat.growth && (
-                      <div className={`flex items-center gap-1 text-[10px] font-bold mt-3 ${stat.primary ? "text-white" : "text-muted-teal"}`}>
+                      <div className="flex items-center gap-1 text-[10px] font-bold mt-3 text-secondary">
                         <TrendingUp size={12} strokeWidth={3} />
                         {stat.growth}%
                       </div>
                     )}
                     {stat.sub && (
-                      <p className={`text-[9px] font-bold uppercase tracking-widest mt-3 ${stat.primary ? "text-white/60" : "text-dark-slate-grey/20"}`}>{stat.sub}</p>
+                      <p className="text-[9px] font-bold uppercase tracking-widest mt-3 text-primary/20">{stat.sub}</p>
                     )}
                   </div>
-                  <div className={`p-4 rounded-2xl ${stat.primary ? "bg-white/20 text-white" : "bg-dark-slate-grey/5 text-muted-teal"} group-hover:scale-110 transition-all duration-500`}>
+                  <div className={`p-4 rounded-2xl ${stat.primary ? "bg-secondary text-white shadow-lg shadow-secondary/20" : "bg-primary/5 text-secondary"} group-hover:scale-110 transition-all duration-500`}>
                     <stat.icon size={22} />
                   </div>
                 </div>
-                <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-white/10" : "bg-dark-slate-grey/5"}`} />
+                <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-secondary/10" : "bg-primary/5"}`} />
               </motion.div>
             ))}
         </div>
 
         {/* Analytics Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <Card className="rounded-[3rem] border-dark-slate-grey/5 shadow-2xl overflow-hidden bg-card backdrop-blur-xl p-8 space-y-8">
+          <Card className="rounded-[3rem] border-primary/5 shadow-lg overflow-hidden bg-white p-8 space-y-8">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-teal">FINANCIALS</h4>
-                <h3 className="text-2xl font-heading text-dark-slate-grey font-normal">Revenue <span className="italic font-serif text-dark-slate-grey/60">Performance</span></h3>
+                <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">FINANCIALS</h4>
+                <h3 className="text-2xl font-heading text-primary font-normal">Revenue <span className="italic font-serif opacity-60">Performance</span></h3>
               </div>
-              <Badge className="bg-muted-teal/10 text-muted-teal rounded-full text-[9px] px-3 py-1 font-bold border border-muted-teal/10">LIVE DATA</Badge>
+              <Badge className="bg-secondary/10 text-secondary rounded-full text-[9px] px-3 py-1 font-bold border border-secondary/20">LIVE DATA</Badge>
             </div>
             <div className="h-[280px]">
               <ResponsiveContainer width="100%" height="100%">
@@ -238,12 +238,12 @@ export default function AdminOverview() {
                       <stop offset="95%" stopColor="#7ca982" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#243e3605" />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#243e3610" />
                   <XAxis 
                     dataKey="name" 
                     axisLine={false} 
                     tickLine={false} 
-                    tick={{fontSize: 10, fontWeight: 'bold', fill: '#243e3630'}}
+                    tick={{fontSize: 10, fontWeight: 'bold', fill: '#243e3640'}}
                   />
                   <YAxis hide />
                   <Tooltip 
@@ -251,7 +251,7 @@ export default function AdminOverview() {
                       borderRadius: '24px', 
                       border: '1px solid rgba(36,62,54,0.1)', 
                       boxShadow: '0 20px 40px rgba(36,62,54,0.1)', 
-                      background: 'rgba(241, 247, 237, 0.95)', 
+                      background: 'rgba(255, 255, 255, 0.95)', 
                       color: '#243e36',
                       padding: '16px'
                     }}
@@ -270,20 +270,20 @@ export default function AdminOverview() {
             </div>
           </Card>
 
-          <Card className="rounded-[3rem] border-dark-slate-grey/5 shadow-2xl overflow-hidden bg-card backdrop-blur-xl p-8 space-y-8">
+          <Card className="rounded-[3rem] border-primary/5 shadow-lg overflow-hidden bg-white p-8 space-y-8">
             <div className="space-y-1">
-              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-teal">ENGAGEMENT</h4>
-              <h3 className="text-2xl font-heading text-dark-slate-grey font-normal">Warrior <span className="italic font-serif text-dark-slate-grey/60">Activity</span></h3>
+              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">ENGAGEMENT</h4>
+              <h3 className="text-2xl font-heading text-primary font-normal">Warrior <span className="italic font-serif opacity-60">Activity</span></h3>
             </div>
             <div className="h-[280px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={playerData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#243e3605" />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#243e3610" />
                   <XAxis 
                     dataKey="name" 
                     axisLine={false} 
                     tickLine={false} 
-                    tick={{fontSize: 10, fontWeight: 'bold', fill: '#243e3630'}}
+                    tick={{fontSize: 10, fontWeight: 'bold', fill: '#243e3640'}}
                   />
                   <YAxis hide />
                   <Tooltip 
@@ -292,7 +292,7 @@ export default function AdminOverview() {
                       borderRadius: '24px', 
                       border: '1px solid rgba(36,62,54,0.1)', 
                       boxShadow: '0 20px 40px rgba(36,62,54,0.1)', 
-                      background: 'rgba(241, 247, 237, 0.95)', 
+                      background: 'rgba(255, 255, 255, 0.95)', 
                       color: '#243e36',
                       padding: '16px'
                     }}
@@ -315,10 +315,10 @@ export default function AdminOverview() {
           <div className="lg:col-span-2 space-y-6">
             <div className="flex justify-between items-end px-4">
               <div className="space-y-1">
-                <h3 className="text-2xl font-heading text-dark-slate-grey">Live <span className="italic font-serif text-dark-slate-grey/60">Deployments</span></h3>
-                <p className="text-[10px] font-bold text-dark-slate-grey/20 uppercase tracking-[0.2em]">RECENT ARENA ACTIVITY</p>
+                <h3 className="text-2xl font-heading text-primary">Live <span className="italic font-serif opacity-60">Deployments</span></h3>
+                <p className="text-[10px] font-bold text-primary/20 uppercase tracking-[0.2em]">RECENT ARENA ACTIVITY</p>
               </div>
-              <Link href="/admin/tournaments" className="group flex items-center gap-2 text-[10px] font-bold text-muted-teal uppercase tracking-widest hover:text-dark-slate-grey transition-colors pb-1">
+              <Link href="/admin/tournaments" className="group flex items-center gap-2 text-[10px] font-bold text-secondary uppercase tracking-widest hover:text-primary transition-colors pb-1">
                 COMMAND CENTER <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
@@ -329,31 +329,31 @@ export default function AdminOverview() {
                   <motion.div 
                     key={t.id}
                     whileHover={{ scale: 1.02 }}
-                    className="bg-card backdrop-blur-xl p-6 rounded-[2rem] border border-dark-slate-grey/5 shadow-xl flex items-center justify-between group cursor-pointer"
+                    className="bg-white p-6 rounded-[2rem] border border-primary/5 shadow-md flex items-center justify-between group cursor-pointer"
                   >
                     <div className="flex items-center gap-5">
-                      <div className="w-14 h-14 rounded-2xl bg-dark-slate-grey/5 flex items-center justify-center text-dark-slate-grey/20 group-hover:bg-muted-teal/10 group-hover:text-muted-teal transition-all duration-500">
+                      <div className="w-14 h-14 rounded-2xl bg-primary/5 flex items-center justify-center text-primary/20 group-hover:bg-secondary/10 group-hover:text-secondary transition-all duration-500">
                         <Trophy size={24} />
                       </div>
                       <div className="space-y-1">
-                        <h4 className="font-heading text-dark-slate-grey text-base leading-none">{t.title}</h4>
-                        <p className="text-[9px] text-dark-slate-grey/30 font-bold uppercase tracking-widest flex items-center gap-2">
+                        <h4 className="font-heading text-primary text-base leading-none">{t.title}</h4>
+                        <p className="text-[9px] text-primary/30 font-bold uppercase tracking-widest flex items-center gap-2">
                           <Clock size={10} />
                           {format(new Date(t.created_at), "MMM d, HH:mm")}
                         </p>
                       </div>
                     </div>
                     <Badge className={`border-none text-[8px] px-3 py-1 font-bold tracking-widest rounded-full ${
-                      t.status === 'active' ? 'bg-muted-teal text-white' : 'bg-dark-slate-grey/10 text-dark-slate-grey/40'
+                      t.status === 'active' ? 'bg-secondary text-white shadow-sm' : 'bg-primary/5 text-primary/40'
                     }`}>
                       {t.status.toUpperCase()}
                     </Badge>
                   </motion.div>
                 ))
               ) : (
-                <div className="col-span-2 bg-card backdrop-blur-xl p-16 rounded-[3rem] border border-dashed border-dark-slate-grey/10 text-center space-y-4">
-                  <Zap className="w-10 h-10 text-dark-slate-grey/10 mx-auto" strokeWidth={1} />
-                  <p className="text-[10px] text-dark-slate-grey/20 font-bold uppercase tracking-[0.4em]">No active deployments</p>
+                <div className="col-span-2 bg-white p-16 rounded-[3rem] border border-dashed border-primary/10 text-center space-y-4 shadow-sm">
+                  <Zap className="w-10 h-10 text-primary/10 mx-auto" strokeWidth={1} />
+                  <p className="text-[10px] text-primary/20 font-bold uppercase tracking-[0.4em]">No active deployments</p>
                 </div>
               )}
             </div>
@@ -362,33 +362,33 @@ export default function AdminOverview() {
           {/* Activity Logs */}
           <div className="space-y-6">
             <div className="px-4 space-y-1">
-              <h3 className="text-2xl font-heading text-dark-slate-grey">System <span className="italic font-serif text-dark-slate-grey/60">Logs</span></h3>
-              <p className="text-[10px] font-bold text-dark-slate-grey/20 uppercase tracking-[0.2em]">REAL-TIME AUDIT</p>
+              <h3 className="text-2xl font-heading text-primary">System <span className="italic font-serif opacity-60">Logs</span></h3>
+              <p className="text-[10px] font-bold text-primary/20 uppercase tracking-[0.2em]">REAL-TIME AUDIT</p>
             </div>
             
-            <div className="bg-card backdrop-blur-xl rounded-[2.5rem] border border-dark-slate-grey/5 shadow-2xl overflow-hidden">
+            <div className="bg-white rounded-[2.5rem] border border-primary/5 shadow-lg overflow-hidden">
               <div className="max-h-[420px] overflow-y-auto no-scrollbar">
                 {activities.map((activity, index) => (
                   <div 
                     key={activity.id} 
-                    className={`flex items-start gap-4 p-6 ${index !== activities.length - 1 ? 'border-b border-dark-slate-grey/5' : ''} hover:bg-dark-slate-grey/[0.02] transition-colors group`}
+                    className={`flex items-start gap-4 p-6 ${index !== activities.length - 1 ? 'border-b border-primary/5' : ''} hover:bg-primary/[0.02] transition-colors group`}
                   >
-                    <div className="mt-1 p-3 rounded-xl bg-dark-slate-grey/5 text-dark-slate-grey/20 group-hover:text-muted-teal transition-colors">
+                    <div className="mt-1 p-3 rounded-xl bg-primary/5 text-primary/20 group-hover:text-secondary transition-colors">
                       <activity.icon size={18} />
                     </div>
                     <div className="flex-1 space-y-1.5">
                       <div className="flex justify-between items-start">
-                        <h5 className="text-[10px] font-bold text-dark-slate-grey/60 uppercase tracking-widest">{activity.event}</h5>
-                        <span className="text-[8px] text-dark-slate-grey/20 font-bold uppercase tracking-tighter flex items-center gap-1.5">
+                        <h5 className="text-[10px] font-bold text-primary/60 uppercase tracking-widest">{activity.event}</h5>
+                        <span className="text-[8px] text-primary/20 font-bold uppercase tracking-tighter flex items-center gap-1.5">
                           <Clock size={10} /> {activity.time}
                         </span>
                       </div>
-                      <p className="text-xs text-dark-slate-grey/40 font-serif italic leading-relaxed">{activity.detail}</p>
+                      <p className="text-xs text-primary/40 font-serif italic leading-relaxed">{activity.detail}</p>
                     </div>
                   </div>
                 ))}
               </div>
-              <button className="w-full py-6 bg-dark-slate-grey/[0.02] text-[9px] font-bold uppercase tracking-[0.4em] text-dark-slate-grey/20 hover:text-muted-teal hover:bg-dark-slate-grey/[0.04] transition-all border-t border-dark-slate-grey/5">
+              <button className="w-full py-6 bg-primary/[0.02] text-[9px] font-bold uppercase tracking-[0.4em] text-primary/20 hover:text-secondary hover:bg-primary/[0.04] transition-all border-t border-primary/5">
                 ACCESS SYSTEM ARCHIVES
               </button>
             </div>
