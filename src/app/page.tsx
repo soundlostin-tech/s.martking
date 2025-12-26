@@ -70,6 +70,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       <main className="pb-24 overflow-x-hidden">
+        <TopHeader />
         {/* Pull to refresh indicator simulation */}
         <div className="pull-to-refresh">
           <motion.div 
