@@ -2,31 +2,75 @@
 
 import { BottomNav } from "@/components/layout/BottomNav";
 import { TopHeader } from "@/components/layout/TopHeader";
-import { useState, useEffect } from "react";
-import { Swords, Search, Loader2, Play, Trophy, Calendar, Users, Filter } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { Swords, Search, Loader2, Play, Trophy, Calendar, Users, Filter, Zap, Target, Signal, IndianRupee, ChevronRight, LayoutGrid } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 
 const filters = ["All", "Upcoming", "Live", "Completed"];
 
 export default function MatchesPage() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useAuth(false);
   const [activeFilter, setActiveFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [matches, setMatches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [joining, setJoining] = useState<string | null>(null);
 
+  const fetchMatches = useCallback(async () => {
+    try {
+      let query = supabase
+        .from("matches")
+        .select(`
+          *,
+          tournament:tournaments(title, entry_fee, prize_pool, slots)
+        `);
+      
+      if (activeFilter !== "All") {
+        query = query.eq("status", activeFilter.toLowerCase());
+      }
+
+      const { data, error } = await query.order("start_time", { ascending: true });
+      
+      if (error) throw error;
+
+      let filteredData = data || [];
+      if (searchQuery) {
+        filteredData = filteredData.filter(m => 
+          m.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+          m.tournament?.title.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+
+      // Fetch actual participant counts
+      const withCounts = await Promise.all(filteredData.map(async (m) => {
+        const { count } = await supabase
+          .from("participants")
+          .select("user_id", { count: 'exact' })
+          .eq("match_id", m.id);
+        return { ...m, current_slots: count || 0 };
+      }));
+
+      setMatches(withCounts);
+    } catch (error) {
+      console.error("Error fetching matches:", error);
+      toast.error("Failed to load matches");
+    } finally {
+      setLoading(false);
+    }
+  }, [activeFilter, searchQuery]);
+
   useEffect(() => {
     fetchMatches();
-  }, [activeFilter, searchQuery]);
+  }, [fetchMatches]);
 
   const handleJoinMatch = async (tournamentId: string, matchId: string) => {
     if (!user) {
-      toast.error("Please sign in to join matches");
+      toast.error("Security clearing required. Please sign in.");
       return;
     }
 
@@ -49,75 +93,40 @@ export default function MatchesPage() {
       }
     } catch (error: any) {
       console.error("Error joining match:", error);
-      toast.error(error.message || "Failed to join match");
+      toast.error(error.message || "Combat deployment failure");
     } finally {
       setJoining(null);
     }
   };
 
-  const fetchMatches = async () => {
-    setLoading(true);
-    try {
-      let query = supabase
-        .from("matches")
-        .select(`
-          *,
-          tournament:tournaments(title, entry_fee, prize_pool)
-        `);
-      
-      if (activeFilter !== "All") {
-        query = query.eq("status", activeFilter.toLowerCase());
-      }
-
-      const { data, error } = await query.order("start_time", { ascending: true });
-      
-      if (error) throw error;
-
-      let filteredData = data || [];
-      if (searchQuery) {
-        filteredData = filteredData.filter(m => 
-          m.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-          m.tournament?.title.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-      }
-
-      setMatches(filteredData);
-    } catch (error) {
-      console.error("Error fetching matches:", error);
-      toast.error("Failed to load matches");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-background">
-      <main className="pb-32">
+    <div className="min-h-screen bg-[#073b3a] bg-[radial-gradient(circle_at_50%_0%,_#0a4d4b_0%,_#073b3a_100%)] text-white">
+      <main className="pb-32 relative z-10">
         <TopHeader />
 
-        {/* Search & Filter Bar - Native App Style */}
-        <section className="px-6 pt-6 space-y-4">
+        {/* Search & Filter - Tactical Command Style */}
+        <section className="px-6 pt-8 space-y-6">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/20" size={18} />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20" size={18} />
             <input 
               type="text" 
-              placeholder="Search tournaments..." 
+              placeholder="SEARCH ARENA SECTORS..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-foreground/[0.03] border-none rounded-2xl py-4 pl-12 pr-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-foreground/20"
+              className="w-full bg-white/5 border-none rounded-[24px] py-5 pl-14 pr-6 text-xs font-bold tracking-widest focus:ring-2 focus:ring-moss-green/20 transition-all placeholder:text-white/20 uppercase"
             />
           </div>
 
-          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+          <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
             {filters.map((filter) => (
               <motion.button
                 key={filter}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setActiveFilter(filter)}
-                className={`px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all whitespace-nowrap ${
+                className={`px-8 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap border ${
                   activeFilter === filter 
-                    ? "bg-primary text-white shadow-lg shadow-primary/20" 
-                    : "bg-foreground/[0.03] text-foreground/40 hover:bg-foreground/[0.05]"
+                    ? "bg-moss-green text-white border-moss-green shadow-lg shadow-moss-green/20" 
+                    : "bg-white/5 text-white/40 border-white/5 hover:bg-white/10"
                 }`}
               >
                 {filter}
@@ -126,108 +135,137 @@ export default function MatchesPage() {
           </div>
         </section>
 
-          {/* Match List - Polished Native Style */}
-          <section className="px-6 pt-6 space-y-4 max-w-lg mx-auto">
-            {loading ? (
-              <div className="flex flex-col items-center justify-center py-20 gap-3">
-                <Loader2 className="w-8 h-8 animate-spin text-primary/30" />
-                <p className="text-[10px] text-foreground/30 font-bold uppercase tracking-widest">Scanning Arena...</p>
+        {/* Match List - Polished Arena Cards */}
+        <section className="px-6 pt-8 space-y-6 max-w-2xl mx-auto">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-32 gap-6 bg-white/5 backdrop-blur-xl rounded-[40px] border border-white/10">
+              <Loader2 className="w-12 h-12 animate-spin text-moss-green" />
+              <p className="text-[10px] text-white/20 font-bold uppercase tracking-[0.3em]">Accessing Arena Database...</p>
+            </div>
+          ) : matches.length > 0 ? (
+            <AnimatePresence mode="popLayout">
+              {matches.map((match, i) => (
+                <motion.div
+                  key={match.id}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ delay: i * 0.05 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="bg-white/5 backdrop-blur-xl rounded-[40px] p-8 border border-white/10 shadow-2xl relative overflow-hidden group"
+                >
+                  <div className="flex justify-between items-start mb-10">
+                    <div className="flex items-center gap-6">
+                      <div className={`w-16 h-16 rounded-[24px] flex items-center justify-center transition-all duration-500 ${
+                        match.status === 'live' 
+                          ? 'bg-red-500/20 text-red-400 group-hover:bg-red-500 group-hover:text-white' 
+                          : 'bg-moss-green/20 text-moss-green group-hover:bg-moss-green group-hover:text-white'
+                      } shadow-inner`}>
+                        {match.status === 'live' ? <Play size={28} fill="currentColor" className="translate-x-0.5" /> : <Swords size={28} />}
+                      </div>
+                      <div className="min-w-0 space-y-1.5">
+                        <h3 className="font-heading text-xl text-white truncate group-hover:text-moss-green transition-colors">{match.title}</h3>
+                        <div className="flex items-center gap-3">
+                          <Badge variant="outline" className="border-white/10 bg-white/5 text-[8px] font-bold tracking-widest text-white/40 px-3 py-0.5">
+                            {match.mode.toUpperCase()}
+                          </Badge>
+                          <p className="text-[9px] text-white/20 font-bold uppercase tracking-[0.2em]">{match.tournament?.title}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className={`px-4 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-[0.2em] border shadow-2xl ${
+                      match.status === 'live' 
+                        ? 'bg-red-500 text-white animate-pulse border-white/20' 
+                        : 'bg-white/5 text-white/40 border-white/10'
+                    }`}>
+                      {match.status}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 mb-10">
+                    <div className="bg-white/5 rounded-[28px] p-5 border border-white/5 flex items-center gap-5 group-hover:bg-white/10 transition-colors">
+                      <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-moss-green">
+                        <Calendar size={18} />
+                      </div>
+                      <div>
+                        <p className="text-[8px] font-bold text-white/20 uppercase tracking-widest">Deployment</p>
+                        <p className="text-[11px] font-bold text-white uppercase tracking-wide">
+                          {match.start_time ? new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' }) : 'TBD'}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="bg-white/5 rounded-[28px] p-5 border border-white/5 flex items-center gap-5 group-hover:bg-white/10 transition-colors">
+                      <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-accent">
+                        <Users size={18} />
+                      </div>
+                      <div>
+                        <p className="text-[8px] font-bold text-white/20 uppercase tracking-widest">Capacity</p>
+                        <p className="text-[11px] font-bold text-white uppercase tracking-wide">{match.current_slots || 0} / {match.tournament?.slots || 48} WARRIORS</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                    <div className="flex flex-col gap-1">
+                      <p className="text-[9px] font-bold text-white/20 uppercase tracking-[0.3em]">PRIZE POOL</p>
+                      <div className="flex items-center gap-2">
+                        <Trophy size={18} className="text-moss-green" />
+                        <span className="text-2xl font-heading text-white">₹{match.tournament?.prize_pool.toLocaleString() || 0}</span>
+                      </div>
+                    </div>
+                    
+                    {match.status === "upcoming" ? (
+                      <motion.button 
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handleJoinMatch(match.tournament_id, match.id)}
+                        disabled={joining === match.id}
+                        className="bg-moss-green text-white px-10 py-4 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-2xl shadow-moss-green/30 flex items-center gap-3 hover:bg-moss-green/80 transition-all border-none"
+                      >
+                        {joining === match.id ? <Loader2 size={16} className="animate-spin" /> : (
+                          <>DEPLOY ₹{match.tournament?.entry_fee} <ChevronRight size={14} strokeWidth={3} /></>
+                        )}
+                      </motion.button>
+                    ) : (
+                      <Link href={match.status === 'live' ? `/live?match=${match.id}` : '#'} className="bg-white text-[#073b3a] px-10 py-4 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-2xl flex items-center gap-3 hover:bg-white/90 transition-all">
+                        {match.status === 'live' ? <>WATCH FEED <Radio size={14} className="animate-pulse" /></> : "VIEW DEBRIEF"}
+                      </Link>
+                    )}
+                  </div>
+                  
+                  {/* Visual background glows */}
+                  <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-moss-green/5 blur-[100px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          ) : (
+            <div className="bg-white/5 backdrop-blur-xl p-20 rounded-[50px] border border-dashed border-white/10 text-center space-y-8 mt-8">
+              <div className="w-24 h-24 bg-white/5 rounded-[32px] flex items-center justify-center mx-auto text-white/10 shadow-inner">
+                <Signal size={48} strokeWidth={1} />
               </div>
-            ) : matches.length > 0 ? (
-              <AnimatePresence mode="popLayout">
-                {matches.map((match, i) => (
-                  <motion.div
-                    key={match.id}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ delay: i * 0.05 }}
-                    className="bg-card backdrop-blur-md rounded-[32px] p-5 border border-white/10 shadow-sm relative overflow-hidden"
-                  >
-                    <div className="flex justify-between items-start mb-6">
-                      <div className="flex items-center gap-4">
-                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
-                          match.status === 'live' ? 'bg-red-500/10 text-red-400' : 'bg-primary/20 text-primary'
-                        }`}>
-                          {match.status === 'live' ? <Play size={20} fill="currentColor" /> : <Swords size={20} />}
-                        </div>
-                        <div className="min-w-0">
-                          <h3 className="font-bold text-base text-foreground truncate">{match.title}</h3>
-                          <p className="text-[9px] text-foreground/30 font-bold uppercase tracking-widest">{match.tournament?.title}</p>
-                        </div>
-                      </div>
-                      <div className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider ${
-                        match.status === 'live' ? 'bg-red-500 text-white animate-pulse' : 'bg-white/5 text-foreground/40'
-                      }`}>
-                        {match.status}
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3 mb-6">
-                      <div className="bg-white/5 rounded-2xl p-3 flex items-center gap-3">
-                        <Calendar size={14} className="text-foreground/20" />
-                        <div>
-                          <p className="text-[8px] font-bold text-foreground/20 uppercase">Start Time</p>
-                          <p className="text-[10px] font-bold text-foreground/60">
-                            {match.start_time ? new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'TBD'}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="bg-white/5 rounded-2xl p-3 flex items-center gap-3">
-                        <Users size={14} className="text-foreground/20" />
-                        <div>
-                          <p className="text-[8px] font-bold text-foreground/20 uppercase">Slots</p>
-                          <p className="text-[10px] font-bold text-foreground/60">24 / 48 Joined</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                      <div className="flex items-center gap-1.5">
-                        <Trophy size={14} className="text-accent" />
-                        <span className="text-sm font-bold text-foreground">₹{match.tournament?.prize_pool || 0}</span>
-                      </div>
-                      
-                      {match.status === "upcoming" ? (
-                        <motion.button 
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => handleJoinMatch(match.tournament_id, match.id)}
-                          disabled={joining === match.id}
-                          className="bg-primary text-white px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider shadow-lg shadow-primary/20 flex items-center gap-2"
-                        >
-                          {joining === match.id ? <Loader2 size={12} className="animate-spin" /> : "Join ₹" + match.tournament?.entry_fee}
-                        </motion.button>
-                      ) : (
-                        <Link href={match.status === 'live' ? `/live` : '#'} className="bg-foreground text-background px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider shadow-lg shadow-foreground/20">
-                          {match.status === 'live' ? "Watch Live" : "View Result"}
-                        </Link>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            ) : (
-              <div className="bg-card backdrop-blur-md p-12 rounded-[40px] border border-white/10 text-center space-y-6 shadow-sm mt-8">
-                <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto text-foreground/10">
-                  <Swords size={40} />
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-xl font-bold text-foreground">Arena Empty</h3>
-                  <p className="text-xs text-foreground/40 font-medium">No matches found for this category. Try adjusting your filters.</p>
-                </div>
+              <div className="space-y-3 px-6">
+                <h3 className="text-2xl font-heading text-white">Silent <span className="italic font-serif opacity-60">Horizon</span></h3>
+                <p className="text-[11px] text-white/30 font-bold uppercase tracking-[0.2em] leading-loose">No battle signals detected in the selected sector. Adjust your scanners.</p>
+              </div>
+              <div className="px-10">
                 <button 
                   onClick={() => { setActiveFilter("All"); setSearchQuery(""); }}
-                  className="w-full py-4 bg-white/5 text-foreground/60 rounded-2xl text-[10px] font-bold uppercase tracking-widest"
+                  className="w-full py-5 bg-white/5 text-white/40 hover:text-white rounded-[20px] text-[10px] font-bold uppercase tracking-[0.3em] transition-all border border-white/5"
                 >
-                  Reset Filters
+                  RESET SCANNERS
                 </button>
               </div>
-            )}
-          </section>
+            </div>
+          )}
+        </section>
 
       </main>
 
       <BottomNav />
+      {/* Background Glows */}
+      <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0 opacity-20">
+        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-moss-green/10 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/5 blur-[120px] rounded-full" />
+      </div>
     </div>
   );
 }

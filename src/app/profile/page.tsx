@@ -24,17 +24,22 @@ import {
   Swords,
   TrendingUp,
   ShieldCheck,
-  CreditCard
+  CreditCard,
+  Zap,
+  Activity,
+  Award,
+  Gamepad2,
+  Signal
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Profile() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useAuth(true);
   const [profile, setProfile] = useState<any>(null);
   const [wallet, setWallet] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -44,26 +49,22 @@ export default function Profile() {
     full_name: "",
     phone: "",
     avatar_url: "",
+    username: "",
   });
 
-  useEffect(() => {
-    if (user) {
-      fetchProfileData();
-    }
-  }, [user]);
-
-  const fetchProfileData = async () => {
+  const fetchProfileData = useCallback(async () => {
+    if (!user) return;
     try {
       const { data: profileData } = await supabase
         .from("profiles")
         .select("*")
-        .eq("id", user!.id)
+        .eq("id", user.id)
         .single();
       
       const { data: walletData } = await supabase
         .from("wallets")
         .select("*")
-        .eq("id", user!.id)
+        .eq("user_id", user.id)
         .single();
       
       setProfile(profileData);
@@ -72,13 +73,18 @@ export default function Profile() {
         full_name: profileData?.full_name || "",
         phone: profileData?.phone || "",
         avatar_url: profileData?.avatar_url || "",
+        username: profileData?.username || "",
       });
     } catch (error) {
       console.error("Error fetching profile data:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    fetchProfileData();
+  }, [fetchProfileData]);
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,7 +96,7 @@ export default function Profile() {
         .eq("id", user!.id);
       
       if (error) throw error;
-      toast.success("Profile updated");
+      toast.success("Warrior dossiers updated");
       setIsEditing(false);
       fetchProfileData();
     } catch (error: any) {
@@ -102,181 +108,214 @@ export default function Profile() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    toast.success("Signed out");
+    toast.success("Uplink terminated");
     window.location.href = "/signin";
   };
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="min-h-screen flex items-center justify-center bg-[#073b3a]">
+        <Activity className="w-12 h-12 animate-pulse text-moss-green" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-[#073b3a] bg-[radial-gradient(circle_at_50%_0%,_#0a4d4b_0%,_#073b3a_100%)] text-white">
       <main className="pb-32 relative z-10">
         <TopHeader />
 
-        <div className="px-6 pt-8 space-y-8 max-w-lg mx-auto">
+        <div className="px-6 pt-8 space-y-10 max-w-2xl mx-auto">
           {/* Header Profile Section - Native Mobile Style */}
           <section className="flex flex-col items-center text-center">
-            <div className="relative mb-6">
+            <div className="relative mb-8">
               <motion.div 
                 whileTap={{ scale: 0.95 }}
-                className="w-32 h-32 rounded-[40px] p-1 bg-gradient-to-tr from-primary to-accent shadow-2xl shadow-primary/20"
+                className="w-36 h-36 rounded-[48px] p-1.5 bg-gradient-to-tr from-moss-green to-accent shadow-2xl shadow-moss-green/20"
               >
-                <div className="w-full h-full rounded-[38px] bg-background p-1">
-                  <Avatar className="w-full h-full rounded-[36px] border-none">
+                <div className="w-full h-full rounded-[44px] bg-[#073b3a] p-1">
+                  <Avatar className="w-full h-full rounded-[40px] border-none shadow-inner">
                     <AvatarImage src={profile?.avatar_url} className="object-cover" />
-                    <AvatarFallback className="bg-muted text-foreground/20 text-3xl font-bold">
-                      {profile?.full_name?.[0]}
+                    <AvatarFallback className="bg-white/5 text-white/20 text-4xl font-heading">
+                      {profile?.full_name?.[0].toUpperCase() || "SK"}
                     </AvatarFallback>
                   </Avatar>
                 </div>
               </motion.div>
               <button 
                 onClick={() => setIsEditing(true)}
-                className="absolute bottom-0 right-0 w-10 h-10 bg-accent text-accent-foreground rounded-2xl shadow-xl flex items-center justify-center active:scale-90 transition-all border border-white/20"
+                className="absolute bottom-0 right-0 w-12 h-12 bg-moss-green text-white rounded-2xl shadow-2xl flex items-center justify-center active:scale-90 transition-all border-4 border-[#073b3a]"
               >
-                <Edit2 size={18} />
+                <Edit2 size={20} strokeWidth={3} />
               </button>
             </div>
             
-            <h2 className="text-2xl font-bold text-foreground mb-1">{profile?.full_name || "New Player"}</h2>
-            <p className="text-[10px] font-bold text-moss-green uppercase tracking-[0.2em]">{user?.email}</p>
-          </section>
-
-          {/* Stats Grid - Native Mini Cards */}
-          <section className="grid grid-cols-2 gap-4">
-            <div className="bg-card backdrop-blur-md p-6 rounded-[32px] border border-white/10 shadow-sm">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-xl bg-primary/20 flex items-center justify-center text-primary">
-                  <Swords size={16} />
-                </div>
-                <span className="text-[9px] font-bold text-foreground/40 uppercase tracking-widest">Matches</span>
+            <div className="space-y-2">
+              <h2 className="text-3xl font-heading text-white">{profile?.full_name || "Initiate Warrior"}</h2>
+              <div className="flex items-center justify-center gap-3">
+                <Badge variant="outline" className="border-white/10 bg-white/5 text-[9px] font-bold tracking-[0.3em] text-moss-green px-4 py-1 rounded-full uppercase">
+                  LEVEL 42 PRO
+                </Badge>
+                <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">@{profile?.username || user?.email?.split('@')[0]}</p>
               </div>
-              <h4 className="text-2xl font-bold text-foreground">{profile?.matches_played || 0}</h4>
-            </div>
-            <div className="bg-card backdrop-blur-md p-6 rounded-[32px] border border-white/10 shadow-sm">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-xl bg-accent/20 flex items-center justify-center text-accent">
-                  <Trophy size={16} />
-                </div>
-                <span className="text-[9px] font-bold text-foreground/40 uppercase tracking-widest">Wins</span>
-              </div>
-              <h4 className="text-2xl font-bold text-foreground">{profile?.win_rate || 0}%</h4>
             </div>
           </section>
 
-          {/* Profile Menu - Native List Pattern */}
-          <section className="bg-card backdrop-blur-md rounded-[40px] overflow-hidden border border-white/10 shadow-sm">
-            <div className="p-4 space-y-1">
+          {/* Stats Grid - Performance Matrix */}
+          <section className="grid grid-cols-2 gap-6">
+            {[
+              { label: "Elite Wins", value: Math.floor((profile?.matches_played || 0) * (parseFloat(profile?.win_rate || "0") / 100)), icon: Award, color: "moss-green" },
+              { label: "Win Rate", value: `${profile?.win_rate || 0}%`, icon: TrendingUp, color: "accent" },
+              { label: "Earnings", value: `₹${(wallet?.lifetime_earnings || 0).toLocaleString()}`, icon: Trophy, color: "moss-green" },
+              { label: "Matches", value: profile?.matches_played || 0, icon: Gamepad2, color: "white/20" },
+            ].map((stat, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-white/5 backdrop-blur-xl p-6 rounded-[32px] border border-white/10 shadow-2xl"
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  <div className={`w-10 h-10 rounded-2xl bg-${stat.color.split('/')[0]}/10 flex items-center justify-center text-${stat.color.split('/')[0]}`}>
+                    <stat.icon size={20} />
+                  </div>
+                  <span className="text-[9px] font-bold text-white/30 uppercase tracking-widest">{stat.label}</span>
+                </div>
+                <h4 className="text-3xl font-heading text-white">{stat.value}</h4>
+              </motion.div>
+            ))}
+          </section>
+
+          {/* Profile Menu - System Protocols */}
+          <section className="bg-white/5 backdrop-blur-xl rounded-[40px] overflow-hidden border border-white/10 shadow-2xl">
+            <div className="p-4 space-y-2">
               {[
-                { label: "Account Settings", icon: Settings, href: "#", color: "text-blue-400" },
-                { label: "Notification", icon: Bell, href: "#", color: "text-orange-400" },
-                { label: "Payment Methods", icon: CreditCard, href: "/wallet", color: "text-accent" },
-                { label: "Security", icon: ShieldCheck, href: "#", color: "text-indigo-400" },
+                { label: "Operational Parameters", icon: Settings, href: "#", color: "text-moss-green" },
+                { label: "Signal Notifications", icon: Bell, href: "#", color: "text-accent" },
+                { label: "Finance Archives", icon: CreditCard, href: "/wallet", color: "text-moss-green" },
+                { label: "Security Clearance", icon: ShieldCheck, href: "#", color: "text-accent" },
               ].map((item, i) => (
                 <button 
                   key={i}
-                  className="w-full flex items-center justify-between p-4 hover:bg-white/[0.05] active:bg-white/[0.1] transition-all rounded-[24px] group text-left"
+                  className="w-full flex items-center justify-between p-5 hover:bg-white/[0.05] active:bg-white/[0.1] transition-all rounded-[28px] group text-left"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className={`w-10 h-10 rounded-2xl bg-white/[0.03] flex items-center justify-center ${item.color}`}>
-                      <item.icon size={20} />
+                  <div className="flex items-center gap-5">
+                    <div className={`w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center ${item.color}`}>
+                      <item.icon size={22} />
                     </div>
-                    <span className="text-sm font-bold text-foreground/90">{item.label}</span>
+                    <span className="text-[13px] font-bold text-white/80 uppercase tracking-widest">{item.label}</span>
                   </div>
-                  <ChevronRight size={18} className="text-foreground/20 group-active:translate-x-1 transition-all" />
+                  <ChevronRight size={20} className="text-white/10 group-active:translate-x-1 transition-all" />
                 </button>
               ))}
               
-              <div className="h-[1px] bg-white/[0.05] my-2 mx-4" />
+              <div className="h-[1px] bg-white/5 my-4 mx-6" />
               
               <button 
                 onClick={handleLogout}
-                className="w-full flex items-center justify-between p-4 hover:bg-red-500/10 active:bg-red-500/20 transition-all rounded-[24px] group text-left"
+                className="w-full flex items-center justify-between p-5 hover:bg-red-500/10 active:bg-red-500/20 transition-all rounded-[28px] group text-left"
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-2xl bg-red-500/10 flex items-center justify-center text-red-400">
-                    <LogOut size={20} />
+                <div className="flex items-center gap-5">
+                  <div className="w-12 h-12 rounded-2xl bg-red-500/10 flex items-center justify-center text-red-400">
+                    <LogOut size={22} />
                   </div>
-                  <span className="text-sm font-bold text-red-400">Sign Out</span>
+                  <span className="text-[13px] font-bold text-red-400 uppercase tracking-widest">Terminate Uplink</span>
                 </div>
-                <ChevronRight size={18} className="text-red-400/30 group-active:translate-x-1 transition-all" />
+                <ChevronRight size={20} className="text-red-400/20 group-active:translate-x-1 transition-all" />
               </button>
             </div>
           </section>
+        </div>
 
-          {/* Edit Profile Modal */}
-          <AnimatePresence>
-            {isEditing && (
+        {/* Edit Profile Overlay */}
+        <AnimatePresence>
+          {isEditing && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-xl flex items-end sm:items-center justify-center p-4"
+            >
               <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-md flex items-end sm:items-center justify-center p-4"
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "100%" }}
+                className="bg-[#0a4d4b] border border-white/10 w-full max-w-md rounded-t-[48px] sm:rounded-[48px] p-10 space-y-10 shadow-2xl relative overflow-hidden"
               >
-                <motion.div 
-                  initial={{ y: "100%" }}
-                  animate={{ y: 0 }}
-                  exit={{ y: "100%" }}
-                  className="bg-card border border-white/10 w-full max-w-md rounded-t-[40px] sm:rounded-[40px] p-8 space-y-8 shadow-2xl"
-                >
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-bold text-foreground">Edit Profile</h3>
-                    <button onClick={() => setIsEditing(false)} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-foreground">
-                      <X size={20} />
-                    </button>
+                <div className="relative z-10 flex items-center justify-between">
+                  <div className="space-y-1">
+                    <h3 className="text-2xl font-heading text-white">Dossier <span className="italic opacity-60">Update</span></h3>
+                    <p className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em]">Modify Warrior Identification</p>
                   </div>
+                  <button onClick={() => setIsEditing(false)} className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-white/40 hover:text-white transition-colors">
+                    <X size={24} />
+                  </button>
+                </div>
 
-                  <form onSubmit={handleUpdateProfile} className="space-y-6">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-moss-green uppercase tracking-widest ml-1">Full Name</label>
+                <form onSubmit={handleUpdateProfile} className="relative z-10 space-y-8">
+                  <div className="space-y-6">
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-bold text-moss-green uppercase tracking-[0.3em] ml-2">Display Designation</label>
                       <Input 
                         value={formData.full_name} 
                         onChange={(e) => setFormData({ ...formData, full_name: e.target.value })} 
-                        className="h-14 rounded-2xl border-white/10 bg-white/5 font-bold px-6 text-foreground"
+                        className="h-16 rounded-2xl border-none bg-white/5 font-bold px-8 text-white focus-visible:ring-moss-green text-sm"
                         placeholder="Your Name"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-moss-green uppercase tracking-widest ml-1">Phone Number</label>
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-bold text-moss-green uppercase tracking-[0.3em] ml-2">Arena Alias</label>
+                      <Input 
+                        value={formData.username} 
+                        onChange={(e) => setFormData({ ...formData, username: e.target.value })} 
+                        className="h-16 rounded-2xl border-none bg-white/5 font-bold px-8 text-white focus-visible:ring-moss-green text-sm"
+                        placeholder="Username"
+                      />
+                    </div>
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-bold text-moss-green uppercase tracking-[0.3em] ml-2">Signal Connection (Phone)</label>
                       <Input 
                         value={formData.phone} 
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })} 
-                        className="h-14 rounded-2xl border-white/10 bg-white/5 font-bold px-6 text-foreground"
+                        className="h-16 rounded-2xl border-none bg-white/5 font-bold px-8 text-white focus-visible:ring-moss-green text-sm"
                         placeholder="+91"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-moss-green uppercase tracking-widest ml-1">Avatar URL</label>
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-bold text-moss-green uppercase tracking-[0.3em] ml-2">Visual Proxy (URL)</label>
                       <Input 
                         value={formData.avatar_url} 
                         onChange={(e) => setFormData({ ...formData, avatar_url: e.target.value })} 
-                        className="h-14 rounded-2xl border-white/10 bg-white/5 font-bold px-6 text-foreground"
+                        className="h-16 rounded-2xl border-none bg-white/5 font-bold px-8 text-white focus-visible:ring-moss-green text-sm"
                         placeholder="https://..."
                       />
                     </div>
+                  </div>
 
-                    <button 
-                      type="submit" 
-                      disabled={saving}
-                      className="w-full py-4 bg-primary text-white rounded-2xl text-xs font-bold uppercase tracking-[0.2em] shadow-lg shadow-primary/20"
-                    >
-                      {saving ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Save Changes"}
-                    </button>
-                  </form>
-                </motion.div>
+                  <button 
+                    type="submit" 
+                    disabled={saving}
+                    className="w-full h-16 bg-moss-green text-white rounded-3xl text-[11px] font-bold uppercase tracking-[0.3em] shadow-2xl shadow-moss-green/20 active:scale-95 transition-all"
+                  >
+                    {saving ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "COMMIT CHANGES"}
+                  </button>
+                </form>
+                
+                {/* Visual Glow */}
+                <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-moss-green/20 blur-[100px] rounded-full pointer-events-none" />
               </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
       <BottomNav />
+      {/* Background Glows */}
+      <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0 opacity-30">
+        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-moss-green/20 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/10 blur-[120px] rounded-full" />
+      </div>
     </div>
   );
 }
