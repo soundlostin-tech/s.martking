@@ -28,6 +28,9 @@ const berkshire = Berkshire_Swash({
   subsets: ["latin"],
 });
 
+import { TopHeader } from "@/components/layout/TopHeader";
+import { GeometricBackground } from "@/components/layout/GeometricBackground";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -38,17 +41,20 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${berkshire.variable} font-serif antialiased bg-background text-foreground`}
       >
+        <GeometricBackground />
+        <TopHeader />
         <AnimatePresence mode="wait">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, ease: "linear" }}
+            className="min-h-screen"
           >
             {children}
           </motion.div>
-          </AnimatePresence>
-          <Toaster position="top-center" />
-          <VisualEditsMessenger />
+        </AnimatePresence>
+        <Toaster position="top-center" />
+        <VisualEditsMessenger />
       </body>
     </html>
   );
