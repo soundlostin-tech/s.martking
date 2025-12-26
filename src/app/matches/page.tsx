@@ -124,35 +124,35 @@ export default function MatchesPage() {
         className="bg-background"
       />
 
-          <div className="px-6 -mt-12 relative z-20 space-y-10 max-w-2xl mx-auto">
-            {/* Filter Controls */}
-            <div className="flex bg-black/5 backdrop-blur-xl p-2 rounded-full border border-black/5 overflow-x-auto no-scrollbar gap-2 shadow-2xl shadow-black/5">
-              {filters.map((filter) => (
-                <button
-                  key={filter}
-                  onClick={() => setActiveFilter(filter)}
-                  className={`px-8 py-4 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap ${
-                    activeFilter === filter 
-                      ? "bg-primary text-primary-foreground shadow-2xl scale-105" 
-                      : "text-foreground/40 hover:text-foreground hover:bg-background/50"
-                  }`}
-                >
-                  {filter}
-                </button>
-              ))}
-            </div>
-
-            {/* Search Bar */}
-            <div className="relative group">
-              <Search className="absolute left-8 top-1/2 -translate-y-1/2 text-foreground/20 group-focus-within:text-foreground transition-all group-focus-within:scale-110" size={20} />
-              <input 
-                type="text" 
-                placeholder="Search tournament..." 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-background border border-black/5 rounded-[2.5rem] py-8 pl-20 pr-10 text-xs focus:outline-none focus:ring-8 focus:ring-black/[0.02] transition-all shadow-2xl shadow-black/5 font-bold uppercase tracking-[0.2em] placeholder:text-foreground/10"
-              />
-            </div>
+            <div className="px-6 -mt-12 relative z-20 space-y-10 max-w-2xl mx-auto">
+              {/* Filter Controls */}
+              <div className="flex bg-card/50 backdrop-blur-xl p-2 rounded-full border border-royal-gold/10 overflow-x-auto no-scrollbar gap-2 shadow-2xl">
+                {filters.map((filter) => (
+                  <button
+                    key={filter}
+                    onClick={() => setActiveFilter(filter)}
+                    className={`px-8 py-4 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap ${
+                      activeFilter === filter 
+                        ? "bg-primary text-primary-foreground shadow-2xl scale-105" 
+                        : "text-foreground/40 hover:text-foreground hover:bg-white/5"
+                    }`}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+  
+              {/* Search Bar */}
+              <div className="relative group">
+                <Search className="absolute left-8 top-1/2 -translate-y-1/2 text-foreground/20 group-focus-within:text-foreground transition-all group-focus-within:scale-110" size={20} />
+                <input 
+                  type="text" 
+                  placeholder="Search tournament..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-card border border-royal-gold/10 rounded-[2.5rem] py-8 pl-20 pr-10 text-xs focus:outline-none focus:ring-8 focus:ring-royal-gold/5 transition-all shadow-2xl font-bold uppercase tracking-[0.2em] placeholder:text-foreground/10"
+                />
+              </div>
 
 
           {/* Match List */}
@@ -244,27 +244,27 @@ export default function MatchesPage() {
                   </motion.div>
                 ))}
               </AnimatePresence>
-            ) : (
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="bg-background p-20 rounded-[3.5rem] border border-black/5 text-center space-y-8 shadow-2xl shadow-black/5"
-              >
-                <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mx-auto">
-                  <Swords size={48} className="text-muted-foreground/30" />
-                </div>
-                <div className="space-y-3">
-                  <h3 className="text-3xl font-heading text-foreground uppercase tracking-tight">Arena is Quiet</h3>
-                  <p className="text-sm text-muted-foreground font-serif italic">No battles match your current search criteria.</p>
-                </div>
-                <button 
-                  onClick={() => { setActiveFilter("All"); setSearchQuery(""); }}
-                  className="text-[10px] font-bold text-foreground uppercase tracking-[0.3em] border-b-2 border-foreground/10 hover:border-foreground transition-colors pb-1"
+              ) : (
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="bg-card p-20 rounded-[3.5rem] border border-royal-gold/10 text-center space-y-8 shadow-2xl"
                 >
-                  Reset Search
-                </button>
-              </motion.div>
-            )}
+                  <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mx-auto">
+                    <Swords size={48} className="text-royal-gold/20" />
+                  </div>
+                  <div className="space-y-3">
+                    <h3 className="text-3xl font-heading text-foreground uppercase tracking-tight">Arena is Quiet</h3>
+                    <p className="text-sm text-muted-foreground font-serif italic">No battles match your current search criteria.</p>
+                  </div>
+                  <button 
+                    onClick={() => { setActiveFilter("All"); setSearchQuery(""); }}
+                    className="text-[10px] font-bold text-foreground uppercase tracking-[0.3em] border-b-2 border-primary/10 hover:border-primary transition-colors pb-1"
+                  >
+                    Reset Search
+                  </button>
+                </motion.div>
+              )}
           </div>
         </div>
 

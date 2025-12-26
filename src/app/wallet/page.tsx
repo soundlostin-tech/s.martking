@@ -194,7 +194,7 @@ export default function WalletPage() {
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-background/40 backdrop-blur-xl border border-black/20 rounded-[3rem] p-8 md:p-12 shadow-2xl relative overflow-hidden"
+          className="bg-card/40 backdrop-blur-xl border border-royal-gold/10 rounded-[3rem] p-8 md:p-12 shadow-2xl relative overflow-hidden"
         >
           <div className="relative z-10 space-y-8">
             <div className="flex justify-between items-start">
@@ -210,7 +210,7 @@ export default function WalletPage() {
               </div>
             </div>
             
-            <div className="grid grid-cols-2 gap-8 pt-8 border-t border-black/5">
+            <div className="grid grid-cols-2 gap-8 pt-8 border-t border-white/5">
               <div className="space-y-1">
                 <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Earnings</p>
                 <p className="font-heading text-2xl text-foreground">₹{(wallet?.lifetime_earnings || 0).toLocaleString()}</p>
@@ -228,7 +228,7 @@ export default function WalletPage() {
         {/* Action Buttons */}
         <div className="grid grid-cols-2 gap-4">
           <button 
-            className="h-20 flex items-center justify-center gap-3 bg-background/40 backdrop-blur-xl border border-black/20 rounded-full font-serif text-lg text-foreground shadow-xl hover:bg-background/60 transition-all active:scale-95"
+            className="h-20 flex items-center justify-center gap-3 bg-card/40 backdrop-blur-xl border border-royal-gold/10 rounded-full font-serif text-lg text-foreground shadow-xl hover:bg-card/60 transition-all active:scale-95"
             onClick={() => setIsDepositOpen(true)}
           >
             <Plus size={20} />
@@ -249,7 +249,7 @@ export default function WalletPage() {
             <h3 className="text-2xl font-heading text-foreground">Ledger</h3>
             <div className="flex gap-2">
               <Select value={activeType} onValueChange={setActiveType}>
-                <SelectTrigger className="w-[100px] h-10 text-[10px] font-bold rounded-full border-black/20 bg-background/40 backdrop-blur-xl shadow-lg">
+                <SelectTrigger className="w-[100px] h-10 text-[10px] font-bold rounded-full border-royal-gold/20 bg-card/40 backdrop-blur-xl shadow-lg">
                   <SelectValue placeholder="Type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -273,7 +273,7 @@ export default function WalletPage() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className="bg-background/40 backdrop-blur-xl rounded-[2rem] p-5 flex justify-between items-center border border-black/20 shadow-xl group hover:shadow-2xl transition-all"
+                    className="bg-card/40 backdrop-blur-xl rounded-[2rem] p-5 flex justify-between items-center border border-royal-gold/10 shadow-xl group hover:shadow-2xl transition-all"
                   >
                     <div className="flex items-center gap-4">
                       <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
@@ -304,7 +304,7 @@ export default function WalletPage() {
                 ))}
               </AnimatePresence>
             ) : (
-              <div className="bg-background/40 backdrop-blur-xl p-16 rounded-[3rem] border border-black/10 text-center space-y-4 shadow-xl">
+              <div className="bg-card/40 backdrop-blur-xl p-16 rounded-[3rem] border border-royal-gold/10 text-center space-y-4 shadow-xl">
                 <div className="w-20 h-20 bg-secondary rounded-full flex items-center justify-center mx-auto text-muted-foreground/30">
                   <History size={36} />
                 </div>
@@ -317,7 +317,7 @@ export default function WalletPage() {
 
       {/* Modals Styled Glassy */}
       <Dialog open={isDepositOpen} onOpenChange={setIsDepositOpen}>
-        <DialogContent className="rounded-[3rem] border-none shadow-2xl p-0 overflow-hidden bg-background/40 backdrop-blur-xl max-w-[90vw] sm:max-w-[420px]">
+        <DialogContent className="rounded-[3rem] border-none shadow-2xl p-0 overflow-hidden bg-card backdrop-blur-xl max-w-[90vw] sm:max-w-[420px]">
           <div className="bg-primary p-10 text-primary-foreground relative overflow-hidden">
             <DialogHeader>
               <DialogTitle className="text-3xl font-heading">Vault Recharge</DialogTitle>
@@ -331,7 +331,7 @@ export default function WalletPage() {
               <Input 
                 type="number" 
                 placeholder="500" 
-                className="h-20 px-8 rounded-[2rem] border-black/20 bg-background shadow-xl text-3xl font-heading text-foreground focus:ring-primary"
+                className="h-20 px-8 rounded-[2rem] border-royal-gold/20 bg-card shadow-xl text-3xl font-heading text-foreground focus:ring-primary"
                 value={depositAmount}
                 onChange={(e) => setDepositAmount(e.target.value)}
               />
@@ -348,7 +348,7 @@ export default function WalletPage() {
       </Dialog>
 
       <Dialog open={isWithdrawOpen} onOpenChange={setIsWithdrawOpen}>
-        <DialogContent className="rounded-[3rem] border-none shadow-2xl p-0 overflow-hidden bg-background/40 backdrop-blur-xl max-w-[90vw] sm:max-w-[420px]">
+        <DialogContent className="rounded-[3rem] border-none shadow-2xl p-0 overflow-hidden bg-card backdrop-blur-xl max-w-[90vw] sm:max-w-[420px]">
           <div className="bg-primary p-10 text-primary-foreground relative overflow-hidden">
             <DialogHeader>
               <DialogTitle className="text-3xl font-heading">Secure Payout</DialogTitle>
@@ -362,7 +362,7 @@ export default function WalletPage() {
               <Input 
                 type="number" 
                 placeholder="₹100 min" 
-                className="h-20 px-8 rounded-[2rem] border-black/20 bg-background shadow-xl text-3xl font-heading text-foreground focus:ring-primary"
+                className="h-20 px-8 rounded-[2rem] border-royal-gold/20 bg-card shadow-xl text-3xl font-heading text-foreground focus:ring-primary"
                 value={withdrawAmount}
                 onChange={(e) => setWithdrawAmount(e.target.value)}
               />

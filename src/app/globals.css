@@ -60,37 +60,58 @@
 
 :root {
   --radius: 1.5rem;
-  --background: #ffe169; /* royal-gold */
-    --foreground: #000000; /* black */
-    --card: rgba(255, 225, 105, 0.3);
-    --card-foreground: #000000;
-    --popover: rgba(255, 225, 105, 0.4);
-    --popover-foreground: #000000;
-    --primary: #926c15; /* golden-earth */
-    --primary-foreground: #ffe169;
-    --secondary: #fad643; /* mustard */
-    --secondary-foreground: #926c15;
-    --muted: #edc531; /* saffron */
-    --muted-foreground: #a47e1b; /* dark-goldenrod-2 */
-      --accent: #dbb42c; /* metallic-gold */
-      --accent-foreground: #000000;
+  --background: #000000; /* black */
+    --foreground: #ffe169; /* royal-gold */
+    --card: rgba(26, 26, 26, 0.8);
+    --card-foreground: #ffe169;
+    --popover: rgba(26, 26, 26, 0.9);
+    --popover-foreground: #ffe169;
+    --primary: #ffe169; /* royal-gold */
+    --primary-foreground: #000000;
+    --secondary: #1a1a1a;
+    --secondary-foreground: #ffe169;
+    --muted: #1a1a1a;
+    --muted-foreground: rgba(255, 225, 105, 0.6);
+      --accent: #926c15; /* golden-earth */
+      --accent-foreground: #ffe169;
       --destructive: oklch(0.577 0.245 27.325);
-      --border: rgba(146, 108, 21, 0.1);
-      --input: rgba(146, 108, 21, 0.1);
-      --ring: #926c15;
-      --chart-1: #926c15;
-      --chart-2: #a47e1b;
+      --border: rgba(255, 225, 105, 0.1);
+      --input: rgba(255, 225, 105, 0.1);
+      --ring: #ffe169;
+      --chart-1: #ffe169;
+      --chart-2: #dbb42c;
       --chart-3: #b69121;
-      --chart-4: #c9a227;
-      --chart-5: #dbb42c;
-      --sidebar: rgba(255, 225, 105, 0.4);
-      --sidebar-foreground: #000000;
-      --sidebar-primary: #926c15;
-      --sidebar-primary-foreground: #ffe169;
-      --sidebar-accent: rgba(146, 108, 21, 0.05);
-      --sidebar-accent-foreground: #000000;
-      --sidebar-border: rgba(146, 108, 21, 0.05);
-      --sidebar-ring: #926c15;
+      --chart-4: #926c15;
+      --chart-5: #76520e;
+      --sidebar: #000000;
+      --sidebar-foreground: #ffe169;
+      --sidebar-primary: #ffe169;
+      --sidebar-primary-foreground: #000000;
+      --sidebar-accent: rgba(255, 225, 105, 0.05);
+      --sidebar-accent-foreground: #ffe169;
+      --sidebar-border: rgba(255, 225, 105, 0.05);
+      --sidebar-ring: #ffe169;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+    body {
+      @apply bg-background text-foreground font-serif selection:bg-royal-gold selection:text-black;
+    }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-normal tracking-tight;
+  }
+}
+
+/* Hide Next.js error overlay portal */
+nextjs-portal {
+  display: none !important;
+}
+
+.glass {
+  @apply bg-card/30 backdrop-blur-xl border border-royal-gold/10 shadow-xl;
 }
 
 @layer base {

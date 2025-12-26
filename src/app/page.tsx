@@ -210,24 +210,24 @@ export default function Home() {
               <div className="relative z-10 space-y-8">
                 <div className="flex items-center justify-between">
                   <Badge className={`${
-                    match.status === 'live' ? 'bg-black text-royal-gold' : 'bg-black/10 text-black'
+                    match.status === 'live' ? 'bg-royal-gold text-black' : 'bg-white/10 text-white'
                   } rounded-full text-[10px] px-4 py-1.5 font-bold border-none tracking-widest shadow-lg`}>
                     {match.status.toUpperCase()}
                   </Badge>
                   <div className="flex -space-x-2">
                     {[1, 2, 3].map((_, i) => (
-                      <div key={i} className="w-7 h-7 rounded-full border-2 border-background bg-muted" />
+                      <div key={i} className="w-7 h-7 rounded-full border-2 border-background bg-white/10" />
                     ))}
-                    <div className="w-7 h-7 rounded-full border-2 border-background bg-black flex items-center justify-center text-[10px] font-bold text-royal-gold">+24</div>
+                    <div className="w-7 h-7 rounded-full border-2 border-background bg-royal-gold flex items-center justify-center text-[10px] font-bold text-black">+24</div>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-6">
-                    <div className="w-20 h-20 rounded-3xl bg-black/5 flex items-center justify-center border border-black/10 group-hover:scale-110 transition-transform duration-500 shadow-inner">
+                    <div className="w-20 h-20 rounded-3xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform duration-500 shadow-inner">
                     {match.status === 'live' ? (
-                      <Play size={32} className="text-black" fill="currentColor" />
+                      <Play size={32} className="text-royal-gold" fill="currentColor" />
                     ) : (
-                      <Swords size={32} className="text-black" />
+                      <Swords size={32} className="text-royal-gold" />
                     )}
                   </div>
                   <div className="space-y-1">
@@ -237,11 +237,11 @@ export default function Home() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-5">
-                  <div className="bg-black/[0.03] rounded-[2rem] p-6 border border-black/5 flex flex-col gap-1 hover:bg-black/[0.05] transition-colors">
+                  <div className="bg-white/[0.03] rounded-[2rem] p-6 border border-white/5 flex flex-col gap-1 hover:bg-white/[0.05] transition-colors">
                     <span className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest">Prize Pool</span>
                     <span className="text-2xl font-heading text-foreground">₹{match.tournament?.prize_pool}</span>
                   </div>
-                  <div className="bg-black/[0.03] rounded-[2rem] p-6 border border-black/5 flex flex-col gap-1 hover:bg-black/[0.05] transition-colors">
+                  <div className="bg-white/[0.03] rounded-[2rem] p-6 border border-white/5 flex flex-col gap-1 hover:bg-white/[0.05] transition-colors">
                     <span className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest">Entry Fee</span>
                     <span className="text-2xl font-heading text-foreground">₹{match.tournament?.entry_fee}</span>
                   </div>
