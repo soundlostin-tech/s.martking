@@ -89,9 +89,9 @@ function LiveContent() {
 
     if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-yale-blue">
-        <Signal className="w-12 h-12 animate-pulse text-light-coral mb-4" />
-        <p className="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em]">Syncing Feed...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background">
+        <Signal className="w-12 h-12 animate-pulse text-primary mb-4" />
+        <p className="text-[10px] font-bold text-foreground/40 uppercase tracking-[0.3em]">Syncing Feed...</p>
       </div>
     );
   }
@@ -104,89 +104,90 @@ function LiveContent() {
         {activeMatch ? 
           <>
             {/* Primary Feed - Cinematic Player */}
-            <section className="space-y-6">
-              <div className="relative aspect-video bg-dusk-blue rounded-[40px] overflow-hidden shadow-2xl shadow-black/40 border border-white/5 group">
-                <iframe 
-                  src={activeMatch.stream_url} 
-                  className="w-full h-full"
-                  allow="autoplay; encrypted-media"
-                />
-                
-                {/* HUD Overlays */}
-                <div className="absolute top-6 left-6 z-20 flex items-center gap-3">
-                  <div className="bg-red-500 text-white px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-2xl text-[10px] font-bold uppercase tracking-widest border border-white/20">
-                    <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-                    LIVE
+              <section className="space-y-6">
+                <div className="relative aspect-video bg-card rounded-[40px] overflow-hidden shadow-2xl shadow-black/40 border border-foreground/10 group">
+                  <iframe 
+                    src={activeMatch.stream_url} 
+                    className="w-full h-full"
+                    allow="autoplay; encrypted-media"
+                  />
+                  
+                  {/* HUD Overlays */}
+                  <div className="absolute top-6 left-6 z-20 flex items-center gap-3">
+                    <div className="bg-primary text-white px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-2xl text-[10px] font-bold uppercase tracking-widest border border-foreground/20">
+                      <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+                      LIVE
+                    </div>
+                    <div className="bg-black/40 backdrop-blur-xl text-white px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-2xl text-[10px] font-bold uppercase tracking-widest border border-foreground/10">
+                      <Eye size={14} className="text-primary" />
+                      {activeMatch.viewers_count.toLocaleString()}
+                    </div>
                   </div>
-                  <div className="bg-black/40 backdrop-blur-xl text-white px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-2xl text-[10px] font-bold uppercase tracking-widest border border-white/10">
-                    <Eye size={14} className="text-light-coral" />
-                    {activeMatch.viewers_count.toLocaleString()}
+
+                  <div className="absolute bottom-6 left-6 right-6 z-20 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                     <div className="bg-black/40 backdrop-blur-xl px-4 py-2 rounded-2xl border border-foreground/10 text-[10px] font-bold uppercase tracking-widest text-white/80">
+                       FEED #AX-{activeMatch.id.slice(0,4).toUpperCase()}
+                     </div>
+                     <button className="w-10 h-10 rounded-2xl bg-foreground/10 backdrop-blur-xl flex items-center justify-center text-white hover:bg-foreground/20 transition-all">
+                       <LayoutGrid size={18} />
+                     </button>
                   </div>
                 </div>
 
-                <div className="absolute bottom-6 left-6 right-6 z-20 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                   <div className="bg-black/40 backdrop-blur-xl px-4 py-2 rounded-2xl border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white/80">
-                     FEED #AX-{activeMatch.id.slice(0,4).toUpperCase()}
-                   </div>
-                   <button className="w-10 h-10 rounded-2xl bg-white/10 backdrop-blur-xl flex items-center justify-center text-white hover:bg-white/20 transition-all">
-                     <LayoutGrid size={18} />
-                   </button>
-                </div>
-              </div>
+                {/* Transmission Intelligence */}
+                <div className="bg-card/40 backdrop-blur-xl rounded-[40px] p-8 border border-foreground/10 shadow-2xl space-y-8">
+                  <div className="flex justify-between items-start">
+                    <div className="space-y-2">
+                      <h2 className="text-2xl font-heading text-foreground leading-tight">{activeMatch.title}</h2>
+                      <p className="text-[10px] font-bold text-foreground/30 uppercase tracking-[0.3em] flex items-center gap-2">
+                        <Trophy size={12} className="text-primary" /> {activeMatch.tournament?.title}
+                      </p>
+                    </div>
+                    <Badge className="bg-primary/20 text-primary border-none rounded-full text-[10px] px-4 py-1.5 font-bold tracking-widest">
+                      ROUND {activeMatch.current_round}
+                    </Badge>
+                  </div>
 
-              {/* Transmission Intelligence */}
-              <div className="bg-white/5 backdrop-blur-xl rounded-[40px] p-8 border border-white/10 shadow-2xl space-y-8">
-                <div className="flex justify-between items-start">
-                  <div className="space-y-2">
-                    <h2 className="text-2xl font-heading text-white leading-tight">{activeMatch.title}</h2>
-                    <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em] flex items-center gap-2">
-                      <Trophy size={12} className="text-light-coral" /> {activeMatch.tournament?.title}
-                    </p>
+                  {/* Tactical Grid */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-foreground/5 p-5 rounded-[28px] border border-foreground/5 flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-foreground/5 flex items-center justify-center text-primary shadow-inner">
+                        <MapIcon size={20} />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-bold text-foreground/20 uppercase tracking-widest">Sector</p>
+                        <p className="text-sm font-heading text-foreground">{activeMatch.map}</p>
+                      </div>
+                    </div>
+                    <div className="bg-foreground/5 p-5 rounded-[28px] border border-foreground/5 flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-foreground/5 flex items-center justify-center text-accent shadow-inner">
+                        <Activity size={20} />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-bold text-foreground/20 uppercase tracking-widest">Mode</p>
+                        <p className="text-sm font-heading text-foreground">{activeMatch.mode}</p>
+                      </div>
+                    </div>
                   </div>
-                  <Badge className="bg-light-coral/20 text-light-coral border-none rounded-full text-[10px] px-4 py-1.5 font-bold tracking-widest">
-                    ROUND {activeMatch.current_round}
-                  </Badge>
-                </div>
 
-                {/* Tactical Grid */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-white/5 p-5 rounded-[28px] border border-white/5 flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-light-coral shadow-inner">
-                      <MapIcon size={20} />
+                  {/* Dynamic Telemetry */}
+                  <div className="grid grid-cols-3 gap-2 pt-4 border-t border-foreground/5">
+                    <div className="text-center space-y-1">
+                      <p className="text-[28px] font-heading text-foreground">{activeMatch.live_stats?.teams_alive || 0}</p>
+                      <p className="text-[9px] font-bold text-foreground/20 uppercase tracking-widest">Warriors</p>
                     </div>
-                    <div>
-                      <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Sector</p>
-                      <p className="text-sm font-heading text-white">{activeMatch.map}</p>
+                    <div className="text-center space-y-1 border-x border-foreground/5">
+                      <p className="text-[28px] font-heading text-foreground">{activeMatch.live_stats?.total_kills || 0}</p>
+                      <p className="text-[9px] font-bold text-foreground/20 uppercase tracking-widest">Eliminations</p>
                     </div>
-                  </div>
-                  <div className="bg-white/5 p-5 rounded-[28px] border border-white/5 flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-accent shadow-inner">
-                      <Activity size={20} />
-                    </div>
-                    <div>
-                      <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Mode</p>
-                      <p className="text-sm font-heading text-white">{activeMatch.mode}</p>
+                    <div className="text-center space-y-1">
+                      <p className="text-[28px] font-heading text-foreground">{activeMatch.live_stats?.safe_zone_phase || 0}</p>
+                      <p className="text-[9px] font-bold text-foreground/20 uppercase tracking-widest">Sector P-{activeMatch.live_stats?.safe_zone_phase || 1}</p>
                     </div>
                   </div>
                 </div>
+              </section>
 
-                {/* Dynamic Telemetry */}
-                <div className="grid grid-cols-3 gap-2 pt-4 border-t border-white/5">
-                  <div className="text-center space-y-1">
-                    <p className="text-[28px] font-heading text-white">{activeMatch.live_stats?.teams_alive || 0}</p>
-                    <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Warriors</p>
-                  </div>
-                  <div className="text-center space-y-1 border-x border-white/5">
-                    <p className="text-[28px] font-heading text-white">{activeMatch.live_stats?.total_kills || 0}</p>
-                    <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Eliminations</p>
-                  </div>
-                  <div className="text-center space-y-1">
-                    <p className="text-[28px] font-heading text-white">{activeMatch.live_stats?.safe_zone_phase || 0}</p>
-                    <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Sector P-{activeMatch.live_stats?.safe_zone_phase || 1}</p>
-                  </div>
-                </div>
-              </div>
-            </section>
 
             {/* Alternative Relays */}
             {otherMatches.length > 0 && (
@@ -264,22 +265,23 @@ function LiveContent() {
   );
 }
 
-export default function Live() {
-  return (
-    <div className="min-h-screen bg-yale-blue bg-[radial-gradient(circle_at_50%_0%,_#355070_0%,_#304966_100%)] text-white">
-      <Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center bg-yale-blue">
-          <Loader2 className="w-8 h-8 animate-spin text-light-coral" />
+    export default function Live() {
+    return (
+      <div className="min-h-screen bg-background text-foreground">
+        <Suspense fallback={
+          <div className="min-h-screen flex items-center justify-center bg-background">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        }>
+          <LiveContent />
+        </Suspense>
+        <BottomNav />
+        {/* Background Glows */}
+        <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0 opacity-30">
+          <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary/20 blur-[120px] rounded-full" />
+          <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/10 blur-[120px] rounded-full" />
         </div>
-      }>
-        <LiveContent />
-      </Suspense>
-      <BottomNav />
-      {/* Background Glows */}
-      <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0 opacity-30">
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-light-coral/20 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/10 blur-[120px] rounded-full" />
       </div>
-    </div>
-  );
-}
+    );
+  }
+

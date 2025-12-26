@@ -234,7 +234,7 @@ export default function Home() {
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: i * 0.1 }}
-              className="flex-shrink-0 w-36 bg-white rounded-[32px] p-6 border border-primary/5 shadow-sm"
+              className="flex-shrink-0 w-36 bg-card rounded-[32px] p-6 border border-primary/5 shadow-sm"
             >
               <div className="w-10 h-10 rounded-2xl bg-secondary/10 flex items-center justify-center mb-4">
                 <stat.icon size={20} className="text-secondary" />
@@ -251,7 +251,7 @@ export default function Home() {
             <h2 className="text-2xl font-heading text-primary">Active <span className="italic font-serif opacity-60">Operations</span></h2>
             <p className="text-[10px] font-bold text-primary/20 uppercase tracking-[0.3em]">BATTLE SIGNALS DETECTED</p>
           </div>
-          <Link href="/matches" className="p-3 bg-white rounded-2xl text-primary/40 hover:text-secondary shadow-sm transition-all border border-primary/5">
+          <Link href="/matches" className="p-3 bg-card rounded-2xl text-primary/40 hover:text-secondary shadow-sm transition-all border border-primary/5">
             <LayoutGrid size={20} />
           </Link>
         </section>
@@ -266,7 +266,7 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
               whileTap={{ scale: 0.97 }}
-              className="bg-white rounded-[32px] p-6 border border-primary/5 shadow-sm hover:border-secondary/30 transition-all duration-500 group flex items-center gap-6"
+              className="bg-card rounded-[32px] p-6 border border-primary/5 shadow-sm hover:border-secondary/30 transition-all duration-500 group flex items-center gap-6"
             >
               <div className="relative w-24 h-24 rounded-3xl bg-primary/5 overflow-hidden flex-shrink-0 shadow-inner">
                  {match.status === 'live' ? (
@@ -312,7 +312,7 @@ export default function Home() {
               </div>
             </motion.div>
           )) : (
-            <div className="py-20 text-center flex flex-col items-center gap-4 bg-white rounded-[40px] border border-dashed border-primary/10 shadow-sm">
+            <div className="py-20 text-center flex flex-col items-center gap-4 bg-card rounded-[40px] border border-dashed border-primary/10 shadow-sm">
               <Signal size={48} strokeWidth={1} className="text-primary/10" />
               <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/20 italic">Scanning for Battle Signals...</p>
             </div>

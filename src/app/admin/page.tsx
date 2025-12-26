@@ -154,28 +154,29 @@ export default function AdminOverview() {
 
       <div className="px-6 pt-24 relative z-10 space-y-10 max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="space-y-1">
-            <h4 className="text-[10px] font-bold text-secondary uppercase tracking-[0.4em]">Intelligence Command</h4>
-            <h1 className="text-4xl md:text-5xl font-heading text-foreground">Arena <span className="italic font-serif opacity-60">Overview</span></h1>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="space-y-1">
+              <h4 className="text-[10px] font-bold text-secondary uppercase tracking-[0.4em]">Intelligence Command</h4>
+              <h1 className="text-4xl md:text-5xl font-heading text-foreground">Arena <span className="italic font-serif opacity-60">Overview</span></h1>
+            </div>
+            
+            <div className="flex bg-card p-1 rounded-[1.2rem] border border-primary/10 shadow-xl">
+              {["Today", "Week", "Month", "All"].map((range) => (
+                <button
+                  key={range}
+                  onClick={() => setTimeRange(range)}
+                  className={`px-6 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${
+                    timeRange === range 
+                      ? "bg-secondary text-white shadow-lg shadow-secondary/20" 
+                      : "text-foreground/40 hover:text-foreground hover:bg-primary/5"
+                  }`}
+                >
+                  {range}
+                </button>
+              ))}
+            </div>
           </div>
-          
-          <div className="flex bg-card p-1 rounded-[1.2rem] border border-white/5 shadow-xl">
-            {["Today", "Week", "Month", "All"].map((range) => (
-              <button
-                key={range}
-                onClick={() => setTimeRange(range)}
-                className={`px-6 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${
-                  timeRange === range 
-                    ? "bg-secondary text-white shadow-lg shadow-secondary/20" 
-                    : "text-foreground/40 hover:text-foreground hover:bg-white/5"
-                }`}
-              >
-                {range}
-              </button>
-            ))}
-          </div>
-        </div>
+
 
         {/* Summary KPIs */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -190,38 +191,40 @@ export default function AdminOverview() {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: i * 0.1 }}
-                className={`rounded-[2.5rem] p-8 border border-white/5 shadow-lg relative overflow-hidden group ${
-                  stat.primary ? "bg-secondary/20 border-secondary/30" : "bg-card"
-                }`}
-              >
-                <div className="flex justify-between items-start relative z-10">
-                  <div className="space-y-1">
-                    <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${stat.primary ? "text-secondary" : "text-foreground/40"}`}>
-                      {stat.label}
-                    </p>
-                    <h3 className="text-4xl font-heading text-foreground leading-none">{stat.value}</h3>
-                    {stat.growth && (
-                      <div className="flex items-center gap-1 text-[10px] font-bold mt-3 text-secondary">
-                        <TrendingUp size={12} strokeWidth={3} />
-                        {stat.growth}%
-                      </div>
-                    )}
-                    {stat.sub && (
-                      <p className="text-[9px] font-bold uppercase tracking-widest mt-3 text-foreground/20">{stat.sub}</p>
-                    )}
+                  className={`rounded-[2.5rem] p-8 border border-foreground/10 shadow-lg relative overflow-hidden group ${
+                    stat.primary ? "bg-secondary/20 border-secondary/30" : "bg-card"
+                  }`}
+                >
+                  <div className="flex justify-between items-start relative z-10">
+                    <div className="space-y-1">
+                      <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${stat.primary ? "text-secondary" : "text-foreground/40"}`}>
+                        {stat.label}
+                      </p>
+                      <h3 className="text-4xl font-heading text-foreground leading-none">{stat.value}</h3>
+                      {stat.growth && (
+                        <div className="flex items-center gap-1 text-[10px] font-bold mt-3 text-secondary">
+                          <TrendingUp size={12} strokeWidth={3} />
+                          {stat.growth}%
+                        </div>
+                      )}
+                      {stat.sub && (
+                        <p className="text-[9px] font-bold uppercase tracking-widest mt-3 text-foreground/20">{stat.sub}</p>
+                      )}
+                    </div>
+                    <div className={`p-4 rounded-2xl ${stat.primary ? "bg-secondary text-white shadow-lg shadow-secondary/20" : "bg-foreground/5 text-secondary"} group-hover:scale-110 transition-all duration-500`}>
+                      <stat.icon size={22} />
+                    </div>
                   </div>
-                  <div className={`p-4 rounded-2xl ${stat.primary ? "bg-secondary text-white shadow-lg shadow-secondary/20" : "bg-white/5 text-secondary"} group-hover:scale-110 transition-all duration-500`}>
-                    <stat.icon size={22} />
-                  </div>
-                </div>
-                <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-secondary/10" : "bg-white/5"}`} />
+                  <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-secondary/10" : "bg-foreground/5"}`} />
+
               </motion.div>
             ))}
         </div>
 
         {/* Analytics Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <Card className="rounded-[3rem] border-white/5 shadow-lg overflow-hidden bg-card p-8 space-y-8">
+            <Card className="rounded-[3rem] border-foreground/10 shadow-lg overflow-hidden bg-card p-8 space-y-8">
+
             <div className="flex items-center justify-between">
               <div className="space-y-1">
                 <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">FINANCIALS</h4>
@@ -270,7 +273,8 @@ export default function AdminOverview() {
             </div>
           </Card>
 
-          <Card className="rounded-[3rem] border-white/5 shadow-lg overflow-hidden bg-card p-8 space-y-8">
+            <Card className="rounded-[3rem] border-foreground/10 shadow-lg overflow-hidden bg-card p-8 space-y-8">
+
             <div className="space-y-1">
               <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">ENGAGEMENT</h4>
               <h3 className="text-2xl font-heading text-foreground font-normal">Warrior <span className="italic font-serif opacity-60">Activity</span></h3>
