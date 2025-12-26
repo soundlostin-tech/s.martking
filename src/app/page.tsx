@@ -1,19 +1,15 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
-import { PaperWrapper } from "@/components/layout/PaperWrapper";
-import { HandDrawnGrid, HandDrawnX, HandDrawnO } from "@/components/HandDrawnGame";
-import { Trophy } from "lucide-react";
-import Link from "next/link";
-import { useAuth } from "@/hooks/useAuth";
+import { HeroSection } from "@/components/layout/HeroSection";
 import { TopHeader } from "@/components/layout/TopHeader";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { Trophy, Users, Calendar, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
-  const { user } = useAuth(false);
-  const [step, setStep] = useState<'welcome' | 'chooses' | 'destiny' | 'board'>('welcome');
   const [featuredMatches, setFeaturedMatches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,7 +20,7 @@ export default function Home() {
         .select(`*, tournament:tournaments(title, entry_fee, prize_pool)`)
         .or('status.eq.live,status.eq.upcoming')
         .order('status', { ascending: false })
-        .limit(5);
+        .limit(3);
 
       setFeaturedMatches(matchesRes || []);
     } catch (error) {
@@ -39,126 +35,97 @@ export default function Home() {
   }, [fetchData]);
 
   return (
-    <div className="w-full">
+    <div className="min-h-screen pb-24">
       <TopHeader />
-      <PaperWrapper className="mt-20">
-        <div className="relative w-full h-full min-h-[450px] flex flex-col items-center justify-center text-center py-10">
-          
-          <AnimatePresence mode="wait">
-            {step === 'welcome' && (
-              <motion.div 
-                key="welcome"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.2 }}
-                className="flex flex-col items-center gap-8"
-              >
-                <h1 className="text-6xl mb-4">Smartking's Arena</h1>
-                <p className="text-2xl opacity-70">The ultimate battlefield awaits...</p>
-                <button 
-                  onClick={() => setStep('chooses')}
-                  className="btn-hand-drawn mt-8 px-10 py-4 bg-[#000033] text-white"
-                >
-                  Let's play!
-                </button>
-              </motion.div>
-            )}
+      
+      <main className="pt-24 px-6 space-y-12 max-w-4xl mx-auto">
+        <section className="text-center space-y-4">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-5xl font-bold tracking-tight text-primary"
+          >
+            Smartking's Arena
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-xl text-muted-foreground"
+          >
+            Dominate the battlefield. Win legendary rewards.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="pt-4"
+          >
+            <Link 
+              href="/matches" 
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 rounded-full font-semibold hover:opacity-90 transition-opacity"
+            >
+              Enter the Arena <ArrowRight size={20} />
+            </Link>
+          </motion.div>
+        </section>
 
-            {step === 'chooses' && (
-              <motion.div 
-                key="chooses"
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-                className="flex flex-col items-center gap-8"
+        <section className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold">Featured Battles</h2>
+            <Link href="/matches" className="text-sm font-medium text-jungle-teal hover:underline">
+              View All
+            </Link>
+          </div>
+
+          <div className="grid gap-4">
+            {loading ? (
+              [1, 2, 3].map((i) => (
+                <div key={i} className="h-32 bg-muted animate-pulse rounded-2xl" />
+              ))
+            ) : featuredMatches.map((match) => (
+              <Link 
+                key={match.id}
+                href={`/matches/${match.id}`}
+                className="group relative bg-card border border-border p-6 rounded-2xl hover:border-jungle-teal transition-all"
               >
-                <h2 className="text-5xl mb-4">Choose Your Path</h2>
-                <div className="flex gap-12">
-                  <button onClick={() => setStep('destiny')} className="flex flex-col items-center gap-4 group">
-                    <div className="w-24 h-24 border-2 border-dashed border-[#000033]/30 rounded-2xl flex items-center justify-center group-hover:border-[#000033] group-hover:rotate-6 transition-all">
-                      <HandDrawnX />
+                <div className="flex justify-between items-start">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
+                        match.status === 'live' ? 'bg-red-500 text-white' : 'bg-jungle-teal/10 text-jungle-teal'
+                      }`}>
+                        {match.status}
+                      </span>
+                      <span className="text-xs text-muted-foreground uppercase tracking-widest">{match.mode}</span>
                     </div>
-                    <span className="text-xl">Solo Warrior</span>
-                  </button>
-                  <button onClick={() => setStep('destiny')} className="flex flex-col items-center gap-4 group">
-                    <div className="w-24 h-24 border-2 border-dashed border-[#000033]/30 rounded-2xl flex items-center justify-center group-hover:border-[#000033] group-hover:-rotate-6 transition-all">
-                      <HandDrawnO />
-                    </div>
-                    <span className="text-xl">Arena Squad</span>
-                  </button>
-                </div>
-              </motion.div>
-            )}
-
-            {step === 'destiny' && (
-              <motion.div 
-                key="destiny"
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -50 }}
-                className="flex flex-col items-center gap-8"
-              >
-                <h2 className="text-5xl mb-4">Choose Your Destiny</h2>
-                <div className="flex gap-12">
-                  <button onClick={() => setStep('board')} className="btn-hand-drawn">Classic Mode</button>
-                  <button onClick={() => setStep('board')} className="btn-hand-drawn">Elite Mode</button>
-                </div>
-              </motion.div>
-            )}
-
-            {step === 'board' && (
-              <motion.div 
-                key="board"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="w-full flex flex-col gap-6"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <h2 className="text-4xl m-0">Active Operations</h2>
-                  <div className="text-xl -rotate-6 text-red-600 font-bold border-2 border-red-600 px-4 py-1 rounded">
-                    BATTLE ON!
+                    <h3 className="text-xl font-bold group-hover:text-jungle-teal transition-colors">{match.title}</h3>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-bold">₹{match.tournament?.prize_pool}</div>
+                    <div className="text-xs text-muted-foreground">Prize Pool</div>
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  {featuredMatches.map((match, i) => (
-                    <div 
-                      key={match.id}
-                      className="relative border-b-2 border-[#000033]/10 pb-4 flex items-center justify-between hover:bg-[#000033]/5 p-4 rounded-xl transition-all"
-                    >
-                      <div className="flex items-center gap-6">
-                        <div className="w-16 h-16 relative">
-                          <HandDrawnGrid />
-                          <div className="absolute inset-0 flex items-center justify-center text-[#000033]/40">
-                            {i % 2 === 0 ? <HandDrawnX /> : <HandDrawnO />}
-                          </div>
-                        </div>
-                        <div className="text-left">
-                          <h3 className="text-2xl m-0">{match.title}</h3>
-                          <p className="text-sm opacity-60 uppercase tracking-widest">{match.mode} • {match.map || 'Bermuda'}</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-3xl font-heading text-[#000033]">₹{match.tournament?.entry_fee}</div>
-                        <Link href={`/matches/${match.id}`} className="text-sm underline hover:text-[#000033]/60 transition-colors">Details</Link>
-                      </div>
+                <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
+                  <div className="flex gap-6">
+                    <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                      <Calendar size={14} />
+                      <span>{new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                     </div>
-                  ))}
+                    <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                      <Trophy size={14} />
+                      <span>₹{match.tournament?.entry_fee} Entry</span>
+                    </div>
+                  </div>
+                  <div className="text-sm font-bold text-jungle-teal">Join Now</div>
                 </div>
-
-                <Link href="/matches" className="btn-hand-drawn mx-auto mt-4 inline-block px-8 py-2 border-[#000033] text-[#000033]">
-                  View All Battles
-                </Link>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Global Paper Decoration */}
-          <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
-            <Trophy size={120} />
+              </Link>
+            ))}
           </div>
-        </div>
-      </PaperWrapper>
+        </section>
+      </main>
+
       <BottomNav />
     </div>
   );

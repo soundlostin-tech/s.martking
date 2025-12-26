@@ -1,155 +1,84 @@
-@import url('https://fonts.googleapis.com/css2?family=Waiting+for+the+Sunrise&family=Amatic+SC:wght@400;700&family=Dawning+of+a+New+Day&family=League+Script&family=Loved+by+the+King&display=swap');
-
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
+@theme {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-heading: 'Waiting for the Sunrise', cursive;
-  --font-handwritten: 'Amatic SC', cursive;
-  --font-script: 'Dawning of a New Day', cursive;
   
-  --color-ink-blue: #000033;
-  --color-paper-white: #ffffff;
-  --color-paper-line: #a0c4ff;
-  --color-paper-margin: #ffadad;
+  --color-background: #ffffff;
+  --color-foreground: #020617;
+  --color-card: #ffffff;
+  --color-card-foreground: #020617;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #020617;
+  --color-primary: #020617;
+  --color-primary-foreground: #f8fafc;
+  --color-secondary: #f1f5f9;
+  --color-secondary-foreground: #0f172a;
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  --color-accent: #f1f5f9;
+  --color-accent-foreground: #0f172a;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #f8fafc;
+  --color-border: #e2e8f0;
+  --color-input: #e2e8f0;
+  --color-ring: #020617;
+
+  --color-jungle-teal: #006d77;
+  --color-sea-green: #83c5be;
+  --color-lemon-lime: #e9ff70;
+  --color-yellow-green: #c7ef00;
+
+  --radius: 0.5rem;
 }
 
-:root {
-  --background: #f5f5f5;
-  --foreground: #000033;
-  --paper-bg: #ffffff;
-  --ink: #000033;
+@theme dark {
+  --color-background: #020617;
+  --color-foreground: #f8fafc;
+  --color-card: #020617;
+  --color-card-foreground: #f8fafc;
+  --color-popover: #020617;
+  --color-popover-foreground: #f8fafc;
+  --color-primary: #f8fafc;
+  --color-primary-foreground: #020617;
+  --color-secondary: #1e293b;
+  --color-secondary-foreground: #f8fafc;
+  --color-muted: #1e293b;
+  --color-muted-foreground: #94a3b8;
+  --color-accent: #1e293b;
+  --color-accent-foreground: #f8fafc;
+  --color-destructive: #7f1d1d;
+  --color-destructive-foreground: #f8fafc;
+  --color-border: #1e293b;
+  --color-input: #1e293b;
+  --color-ring: #cbd5e1;
 }
 
 @layer base {
+  * {
+    border-color: var(--color-border);
+  }
   body {
-    @apply bg-[#f5f5f5] text-[#000033] font-handwritten antialiased overflow-x-hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
+    @apply bg-background text-foreground antialiased;
   }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-heading text-[#000033] mb-4;
-  }
-
-  h1 { @apply text-[40px]; }
-  h2 { @apply text-[32px]; }
-  h3 { @apply text-[28px]; }
-}
-
-.paper-container {
-  @apply flex items-center justify-center w-full max-w-4xl mx-auto min-h-screen py-10;
-  perspective: 1000px;
-}
-
-.paper-card {
-  position: relative;
-  width: 100%;
-  max-width: 700px;
-  min-height: 500px;
-  background-color: #ffffff;
-  background-image: 
-    linear-gradient(90deg, transparent 79px, #ffadad 79px, #ffadad 81px, transparent 81px),
-    repeating-linear-gradient(#ffffff, #ffffff 30px, #a0c4ff 30px, #a0c4ff 31px);
-  padding: 60px 40px 60px 100px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  transform: rotate(-2deg);
-  transition: transform 0.3s ease;
-  border-radius: 2px;
-}
-
-.paper-card::before, .paper-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: white;
-  z-index: -1;
-  box-shadow: 2px 2px 10px rgba(0,0,0,0.05);
-  border-radius: 2px;
-}
-
-.paper-card::before {
-  transform: rotate(1.5deg);
-  width: 98%;
-  left: 1%;
-}
-
-.paper-card::after {
-  transform: rotate(-1deg);
-  width: 99%;
-  left: 0.5%;
-  box-shadow: 4px 4px 15px rgba(0,0,0,0.08);
-}
-
-.btn-hand-drawn {
-  @apply px-6 py-2 border-2 border-[#000033]/30 rounded-full font-handwritten text-xl transition-all duration-300 inline-flex items-center justify-center gap-2;
-  background: transparent;
-  cursor: pointer;
-  text-decoration: none;
-  color: #000033;
-}
-
-.btn-hand-drawn:hover {
-  @apply scale-105 rotate-2 shadow-md border-[#000033];
-  transform: translateY(-2px) rotate(2deg);
-}
-
-.btn-hand-drawn:active {
-  @apply scale-95 rotate-0;
-}
-
-.container-flex {
-  @apply flex flex-col gap-6;
-}
-
-.options-grid {
-  @apply grid grid-cols-1 sm:grid-cols-2 gap-4 w-full;
-}
-
-.fadeBounceIn {
-  animation: fadeBounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-@keyframes fadeBounceIn {
-  0% { opacity: 0; transform: scale(0.4); }
-  70% { opacity: 1; transform: scale(1.1); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-.fadeIn {
-  animation: fadeIn 0.6s ease-out forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.disable {
-  display: none !important;
 }
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-@keyframes dash {
-  to {
-    stroke-dashoffset: 0;
-  }
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-.animate-dash {
-  animation: dash 1s linear forwards;
+.shape-triangle {
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.bg-radial-gradient {
+  background: radial-gradient(circle at center, var(--tw-gradient-from) 0%, var(--tw-gradient-to) 100%);
 }

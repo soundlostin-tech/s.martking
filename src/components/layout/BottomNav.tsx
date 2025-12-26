@@ -17,8 +17,8 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-lg bg-white/90 backdrop-blur-sm border-2 border-[#000033]/20 rounded-3xl shadow-lg -rotate-1 px-4">
-      <div className="flex justify-around items-center h-16">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-t border-border px-4">
+      <div className="max-w-4xl mx-auto flex justify-around items-center h-16">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
@@ -29,29 +29,26 @@ export function BottomNav() {
               href={item.href}
               className="relative flex flex-col items-center justify-center flex-1 h-full outline-none group"
             >
-              <motion.div
-                whileTap={{ scale: 0.85 }}
-                className="relative flex flex-col items-center gap-0.5 transition-all duration-300"
-              >
-                <div className={`relative z-10 p-1 rounded-xl transition-all duration-300 ${
-                  isActive ? "text-[#000033] rotate-6 scale-125" : "text-[#000033]/30"
+              <div className="relative flex flex-col items-center gap-1 transition-all duration-300">
+                <div className={`transition-colors duration-300 ${
+                  isActive ? "text-jungle-teal" : "text-muted-foreground group-hover:text-primary"
                 }`}>
-                  <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+                  <Icon size={20} />
                 </div>
 
-                <span className={`text-[9px] font-handwritten font-bold uppercase tracking-wider transition-all duration-300 ${
-                  isActive ? "text-[#000033]" : "text-[#000033]/20"
+                <span className={`text-[10px] font-medium transition-colors duration-300 ${
+                  isActive ? "text-jungle-teal" : "text-muted-foreground group-hover:text-primary"
                 }`}>
                   {item.label}
                 </span>
 
                 {isActive && (
                   <motion.div 
-                    layoutId="nav-indicator"
-                    className="absolute -bottom-1 w-6 h-0.5 bg-[#000033]/30 rounded-full"
+                    layoutId="nav-indicator-bottom"
+                    className="absolute -bottom-2 w-8 h-1 bg-jungle-teal rounded-full"
                   />
                 )}
-              </motion.div>
+              </div>
             </Link>
           );
         })}

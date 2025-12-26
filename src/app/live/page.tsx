@@ -2,7 +2,6 @@
 
 import { BottomNav } from "@/components/layout/BottomNav";
 import { TopHeader } from "@/components/layout/TopHeader";
-import { PaperWrapper } from "@/components/layout/PaperWrapper";
 import { 
   Play, 
   Users, 
@@ -83,8 +82,8 @@ function LiveContent() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-40">
-        <Signal className="w-12 h-12 animate-pulse text-[#000033]/20 mb-4" />
-        <p className="text-xl opacity-40">Syncing Feed...</p>
+        <Loader2 className="w-12 h-12 animate-spin text-jungle-teal mb-4" />
+        <p className="text-xl text-muted-foreground">Syncing Live Feed...</p>
       </div>
     );
   }
@@ -94,47 +93,57 @@ function LiveContent() {
       {activeMatch ? (
         <>
           <section className="space-y-6">
-            <div className="relative aspect-video bg-[#000033]/5 rounded-3xl overflow-hidden border-2 border-[#000033]/10 shadow-lg -rotate-1">
+            <div className="relative aspect-video bg-black rounded-[2rem] overflow-hidden border border-border shadow-2xl">
               <iframe 
                 src={activeMatch.stream_url} 
                 className="w-full h-full"
                 allow="autoplay; encrypted-media"
               />
-              <div className="absolute top-4 left-4 flex gap-2">
-                <div className="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+              <div className="absolute top-6 left-6 flex gap-3">
+                <div className="bg-red-500 text-white px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 shadow-lg">
+                  <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
                   LIVE
                 </div>
-                <div className="bg-white/80 backdrop-blur-sm text-[#000033] px-3 py-1 rounded-full text-xs font-bold flex items-center gap-2 border border-[#000033]/10">
-                  <Eye size={12} />
-                  {activeMatch.viewers_count}
+                <div className="bg-background/80 backdrop-blur-md text-primary px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 border border-border shadow-lg">
+                  <Eye size={14} />
+                  {activeMatch.viewers_count.toLocaleString()}
                 </div>
               </div>
             </div>
 
-            <div className="border-2 border-[#000033]/10 rounded-3xl p-6 space-y-6 rotate-1">
+            <div className="bg-card border border-border rounded-3xl p-8 space-y-6 shadow-sm">
               <div className="flex justify-between items-start">
-                <div className="space-y-1">
-                  <h2 className="text-3xl m-0">{activeMatch.title}</h2>
-                  <p className="text-sm opacity-40 uppercase tracking-widest flex items-center gap-2">
-                    <Trophy size={12} /> {activeMatch.tournament?.title}
-                  </p>
+                <div className="space-y-2">
+                  <h2 className="text-3xl font-bold tracking-tight">{activeMatch.title}</h2>
+                  <div className="flex items-center gap-4">
+                    <p className="text-sm font-medium text-jungle-teal uppercase tracking-widest flex items-center gap-2">
+                      <Trophy size={14} /> {activeMatch.tournament?.title}
+                    </p>
+                    <div className="w-1 h-1 bg-border rounded-full" />
+                    <p className="text-sm text-muted-foreground flex items-center gap-2">
+                      <Users size={14} /> {activeMatch.mode}
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="border-2 border-[#000033]/5 p-4 rounded-2xl flex items-center gap-4">
-                  <MapIcon size={18} className="opacity-30" />
+              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center text-muted-foreground">
+                    <MapIcon size={20} />
+                  </div>
                   <div>
-                    <p className="text-[10px] opacity-30 uppercase tracking-widest m-0">Sector</p>
-                    <p className="text-xl m-0">{activeMatch.map}</p>
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Map Sector</p>
+                    <p className="font-bold">{activeMatch.map || 'Bermuda'}</p>
                   </div>
                 </div>
-                <div className="border-2 border-[#000033]/5 p-4 rounded-2xl flex items-center gap-4">
-                  <Activity size={18} className="opacity-30" />
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center text-muted-foreground">
+                    <Activity size={20} />
+                  </div>
                   <div>
-                    <p className="text-[10px] opacity-30 uppercase tracking-widest m-0">Mode</p>
-                    <p className="text-xl m-0">{activeMatch.mode}</p>
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Operation</p>
+                    <p className="font-bold">{activeMatch.mode}</p>
                   </div>
                 </div>
               </div>
@@ -143,26 +152,33 @@ function LiveContent() {
 
           {otherMatches.length > 0 && (
             <section className="space-y-6">
-              <h3 className="text-3xl -rotate-2">Other Relays</h3>
-              <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-bold flex items-center gap-2">
+                  <LayoutGrid size={20} className="text-jungle-teal" />
+                  Active Relays
+                </h3>
+              </div>
+              <div className="grid gap-4">
                 {otherMatches.map((match) => (
                   <motion.div 
                     key={match.id}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={{ x: 4 }}
                     onClick={() => {
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                       setActiveMatch(match);
                     }}
-                    className="border-2 border-[#000033]/10 p-4 rounded-2xl flex items-center gap-4 hover:bg-[#000033]/5 cursor-pointer transition-all"
+                    className="bg-card border border-border p-4 rounded-2xl flex items-center gap-4 hover:border-jungle-teal cursor-pointer transition-all"
                   >
-                    <div className="w-16 h-16 rounded-xl bg-[#000033]/5 flex items-center justify-center flex-shrink-0">
-                      <Play size={20} className="opacity-40" />
+                    <div className="relative w-24 aspect-video rounded-lg bg-muted overflow-hidden flex-shrink-0">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Play size={20} className="text-muted-foreground" />
+                      </div>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-xl m-0 truncate">{match.title}</h4>
-                      <p className="text-xs opacity-40 uppercase tracking-widest">{match.mode} • {match.viewers_count} watching</p>
+                      <h4 className="font-bold truncate">{match.title}</h4>
+                      <p className="text-xs text-muted-foreground uppercase tracking-widest">{match.viewers_count} watching</p>
                     </div>
-                    <ChevronRight size={20} className="opacity-20" />
+                    <ChevronRight size={20} className="text-muted-foreground/30" />
                   </motion.div>
                 ))}
               </div>
@@ -170,11 +186,11 @@ function LiveContent() {
           )}
         </>
       ) : (
-        <div className="py-24 text-center space-y-6 border-2 border-dashed border-[#000033]/10 rounded-3xl rotate-1">
-          <WifiOff size={48} className="mx-auto opacity-10" />
-          <div className="space-y-1">
-            <h3 className="text-3xl">Silent Arena</h3>
-            <p className="text-xl opacity-40">No live battles detected in this sector.</p>
+        <div className="py-32 text-center space-y-6 bg-muted/30 border border-dashed border-border rounded-[2rem]">
+          <WifiOff size={64} className="mx-auto text-muted-foreground/20" />
+          <div className="space-y-2">
+            <h3 className="text-2xl font-bold">Arena Silent</h3>
+            <p className="text-muted-foreground font-medium uppercase tracking-widest text-xs">No active operations detected</p>
           </div>
         </div>
       )}
@@ -184,17 +200,17 @@ function LiveContent() {
 
 export default function LivePage() {
   return (
-    <div className="w-full">
+    <div className="min-h-screen pb-24">
       <TopHeader />
-      <PaperWrapper className="mt-20">
+      <main className="pt-24 px-6 max-w-4xl mx-auto">
         <Suspense fallback={
           <div className="flex items-center justify-center py-40">
-            <Loader2 className="w-8 h-8 animate-spin text-[#000033]/10" />
+            <Loader2 className="w-8 h-8 animate-spin text-jungle-teal" />
           </div>
         }>
           <LiveContent />
         </Suspense>
-      </PaperWrapper>
+      </main>
       <BottomNav />
     </div>
   );

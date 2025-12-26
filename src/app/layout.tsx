@@ -1,5 +1,5 @@
 import "./globals.css";
-import { AnimatedBackground } from "@/components/layout/AnimatedBackground";
+import { GeometricBackground } from "@/components/layout/GeometricBackground";
 import { ClientLayout } from "@/components/layout/ClientLayout";
 import { Metadata } from "next";
 
@@ -15,8 +15,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased font-handwritten">
-        <AnimatedBackground />
+      <body className="antialiased">
+        <GeometricBackground />
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
