@@ -97,23 +97,55 @@
   --sidebar-ring: #007f5f;
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
+  @layer base {
+    * {
+      @apply border-border outline-ring/50;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html, body {
+      @apply bg-background text-foreground font-sans antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(0, 127, 95, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(212, 215, 0, 0.08) 0px, transparent 50%);
+      background-attachment: fixed;
+      touch-action: manipulation;
+      overscroll-behavior-y: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      @apply font-heading font-normal tracking-tight text-jungle-teal;
+    }
+    input, textarea, select {
+      @apply selection:bg-primary/20 selection:text-primary;
+      -webkit-user-select: text;
+      user-select: text;
+    }
   }
-  body {
-    @apply bg-background text-foreground font-sans antialiased selection:bg-primary/20 selection:text-primary;
-    background-image: 
-      radial-gradient(at 0% 0%, rgba(0, 127, 95, 0.08) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, rgba(212, 215, 0, 0.08) 0px, transparent 50%);
-    background-attachment: fixed;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-normal tracking-tight text-jungle-teal;
-  }
-}
 
-.mesh-bg {
+  /* Native Scrollbar Hiding */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Pull to refresh simulation */
+  .pull-to-refresh {
+    position: absolute;
+    top: -60px;
+    left: 0;
+    right: 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .mesh-bg {
   position: fixed;
   top: 0;
   left: 0;
