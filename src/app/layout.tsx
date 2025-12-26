@@ -28,21 +28,19 @@ const berkshire = Berkshire_Swash({
   subsets: ["latin"],
 });
 
-import { GeometricBackground } from "@/components/layout/GeometricBackground";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${berkshire.variable} font-serif antialiased bg-background text-foreground`}
-      >
-        <GeometricBackground />
-        <AnimatePresence mode="wait">
-          <motion.div
+    return (
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${berkshire.variable} font-serif antialiased bg-background text-foreground`}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, ease: "linear" }}
