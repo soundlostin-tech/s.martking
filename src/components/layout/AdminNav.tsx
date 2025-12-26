@@ -18,7 +18,7 @@ export function AdminNav() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-2xl bg-white/80 backdrop-blur-2xl border border-primary/10 shadow-[0_20px_50px_rgba(36,62,54,0.1)] rounded-[2.5rem] px-4 overflow-hidden">
+    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-2xl bg-card/80 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-[2.5rem] px-4 overflow-hidden">
       <div className="flex justify-around items-center h-22 py-2">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
@@ -38,14 +38,14 @@ export function AdminNav() {
                     }}
                     transition={{ type: "spring", stiffness: 400, damping: 25 }}
                     className={`relative z-10 p-2.5 rounded-2xl transition-colors ${
-                      isActive ? "text-white bg-secondary" : "text-primary/30 hover:text-primary/60"
+                      isActive ? "text-white bg-primary" : "text-foreground/30 hover:text-foreground/60"
                     }`}
                   >
                     <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
                   </motion.div>
   
                   <span className={`text-[9px] font-bold uppercase tracking-[0.2em] transition-colors ${
-                    isActive ? "text-secondary" : "text-primary/20"
+                    isActive ? "text-primary" : "text-foreground/20"
                   }`}>
                     {item.label}
                   </span>

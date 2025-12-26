@@ -157,7 +157,7 @@ export default function AdminUsers() {
   const getStatusBadge = (status: string) => {
     const baseClass = "text-[9px] font-bold px-3 py-1 rounded-full border-none shadow-sm";
     switch (status) {
-      case 'Active': return <Badge className={`${baseClass} bg-muted-teal text-white`}>ACTIVE</Badge>;
+      case 'Active': return <Badge className={`${baseClass} bg-light-coral text-white`}>ACTIVE</Badge>;
       case 'Suspended': return <Badge className={`${baseClass} bg-white/10 text-white/40`}>SUSPENDED</Badge>;
       case 'Banned': return <Badge className={`${baseClass} bg-black text-white`}>BANNED</Badge>;
       default: return <Badge className={`${baseClass} bg-white/5 text-white/40`}>{status?.toUpperCase() || 'UNKNOWN'}</Badge>;
@@ -166,22 +166,22 @@ export default function AdminUsers() {
 
   const getRoleBadge = (role: string) => {
     switch (role) {
-      case 'Admin': return <Badge className="bg-muted-teal/20 text-muted-teal border-none text-[8px] tracking-widest px-2">ADMIN</Badge>;
+      case 'Admin': return <Badge className="bg-light-coral/20 text-light-coral border-none text-[8px] tracking-widest px-2">ADMIN</Badge>;
       case 'Organizer': return <Badge className="bg-white/10 text-white border-none text-[8px] tracking-widest px-2">ORGANIZER</Badge>;
       default: return <Badge className="bg-white/5 text-white/40 border-none text-[8px] tracking-widest px-2">PLAYER</Badge>;
     }
   };
 
   return (
-    <main className="min-h-screen pb-32 bg-dark-slate-grey bg-[radial-gradient(circle_at_50%_0%,_#2d4d43_0%,_#243e36_100%)]">
+    <main className="min-h-screen pb-32 bg-yale-blue bg-[radial-gradient(circle_at_50%_0%,_#355070_0%,_#304966_100%)]">
       <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-20">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-muted-teal/10 rounded-full blur-[120px]" />
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-light-coral/10 rounded-full blur-[120px]" />
       </div>
 
       <div className="px-6 pt-24 relative z-10 space-y-10 max-w-6xl mx-auto">
         {/* Header */}
         <div className="space-y-1">
-          <h4 className="text-[10px] font-bold text-muted-teal uppercase tracking-[0.4em]">Registry Command</h4>
+          <h4 className="text-[10px] font-bold text-light-coral uppercase tracking-[0.4em]">Registry Command</h4>
           <h1 className="text-4xl font-heading text-white">Warrior <span className="italic font-serif text-white/60">Registry</span></h1>
         </div>
 
@@ -205,7 +205,7 @@ export default function AdminUsers() {
                   <h3 className="text-3xl font-heading text-white">{stat.value.toLocaleString()}</h3>
                   <p className="text-[9px] text-white/20 font-bold uppercase tracking-widest">{stat.sub}</p>
                 </div>
-                <div className="p-4 rounded-2xl bg-white/10 text-muted-teal group-hover:scale-110 transition-transform duration-500">
+                <div className="p-4 rounded-2xl bg-white/10 text-light-coral group-hover:scale-110 transition-transform duration-500">
                   <stat.icon size={24} />
                 </div>
               </div>
@@ -219,7 +219,7 @@ export default function AdminUsers() {
           <div className="relative flex-1">
             <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20" size={18} />
             <Input 
-              className="bg-white/5 border-none pl-14 rounded-2xl h-14 text-xs font-bold tracking-wide focus-visible:ring-muted-teal placeholder:text-white/20 text-white" 
+              className="bg-white/5 border-none pl-14 rounded-2xl h-14 text-xs font-bold tracking-wide focus-visible:ring-light-coral placeholder:text-white/20 text-white" 
               placeholder="SEARCH BY NAME, USERNAME, OR EMAIL..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -230,7 +230,7 @@ export default function AdminUsers() {
               <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-white/5 border-none font-bold text-[10px] tracking-widest text-white">
                 <SelectValue placeholder="ROLE" />
               </SelectTrigger>
-              <SelectContent className="rounded-2xl border-white/10 bg-[#0a4d4b] text-white">
+              <SelectContent className="rounded-2xl border-white/10 bg-dusk-blue text-white">
                 <SelectItem value="all">ALL ROLES</SelectItem>
                 <SelectItem value="Pro Player">PLAYER</SelectItem>
                 <SelectItem value="Organizer">ORGANIZER</SelectItem>
@@ -241,7 +241,7 @@ export default function AdminUsers() {
               <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-white/5 border-none font-bold text-[10px] tracking-widest text-white">
                 <SelectValue placeholder="STATUS" />
               </SelectTrigger>
-              <SelectContent className="rounded-2xl border-white/10 bg-[#0a4d4b] text-white">
+              <SelectContent className="rounded-2xl border-white/10 bg-dusk-blue text-white">
                 <SelectItem value="all">ALL STATUS</SelectItem>
                 <SelectItem value="Active">ACTIVE</SelectItem>
                 <SelectItem value="Inactive">INACTIVE</SelectItem>
@@ -277,7 +277,7 @@ export default function AdminUsers() {
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: idx * 0.05 }}
                       layout
-                      className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] p-6 flex items-center justify-between border border-white/10 hover:border-muted-teal/30 hover:bg-white/[0.08] transition-all duration-500 group cursor-pointer"
+                      className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] p-6 flex items-center justify-between border border-white/10 hover:border-light-coral/30 hover:bg-white/[0.08] transition-all duration-500 group cursor-pointer"
                       onClick={() => {
                         setSelectedUser(user);
                         setIsDetailOpen(true);
@@ -286,7 +286,7 @@ export default function AdminUsers() {
                       <div className="flex items-center gap-6">
                         <Avatar className="w-16 h-16 border-2 border-white/10 shadow-xl transition-transform duration-500 group-hover:scale-110">
                           <AvatarImage src={user.avatar_url} />
-                          <AvatarFallback className="bg-muted-teal text-white font-heading text-lg">
+                          <AvatarFallback className="bg-light-coral text-white font-heading text-lg">
                             {user.full_name?.substring(0, 2).toUpperCase() || "SK"}
                           </AvatarFallback>
                         </Avatar>
@@ -317,7 +317,7 @@ export default function AdminUsers() {
                                 <MoreVertical size={20} className="text-white/20" />
                               </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="rounded-[1.5rem] border-white/10 w-52 p-2 bg-[#0a4d4b] text-white shadow-2xl">
+                            <DropdownMenuContent align="end" className="rounded-[1.5rem] border-white/10 w-52 p-2 bg-dusk-blue text-white shadow-2xl">
                               <DropdownMenuLabel className="text-[9px] uppercase tracking-[0.2em] text-white/20 font-bold px-3 py-2">ACTIONS</DropdownMenuLabel>
                               <DropdownMenuItem 
                                 onClick={() => { setSelectedUser(user); setIsDetailOpen(true); }}
@@ -355,7 +355,7 @@ export default function AdminUsers() {
                   <div className="flex flex-col items-center justify-center py-32 bg-white/5 backdrop-blur-xl rounded-[3rem] border border-dashed border-white/10 text-center">
                     <Users size={64} strokeWidth={1} className="text-white/5 mb-6" />
                     <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20">No matching warriors found</p>
-                    <Button variant="link" onClick={() => { setSearch(""); setRoleFilter("all"); setStatusFilter("all"); }} className="text-muted-teal font-bold mt-4 text-[10px] tracking-widest uppercase">
+                    <Button variant="link" onClick={() => { setSearch(""); setRoleFilter("all"); setStatusFilter("all"); }} className="text-light-coral font-bold mt-4 text-[10px] tracking-widest uppercase">
                       CLEAR ALL FILTERS
                     </Button>
                   </div>
@@ -368,10 +368,10 @@ export default function AdminUsers() {
 
       {/* User Detail Sheet */}
       <Sheet open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-        <SheetContent className="bg-[#073b3a] border-white/10 w-full sm:max-w-xl p-0 overflow-y-auto no-scrollbar text-white">
+        <SheetContent className="bg-yale-blue border-white/10 w-full sm:max-w-xl p-0 overflow-y-auto no-scrollbar text-white">
           {selectedUser && (
             <div className="flex flex-col h-full">
-              <div className="p-10 bg-[#0a4d4b] border-b border-white/10 relative overflow-hidden">
+              <div className="p-10 bg-dusk-blue border-b border-white/10 relative overflow-hidden">
                 <SheetHeader className="relative z-10">
                   <div className="flex justify-between items-start mb-10">
                     {getStatusBadge(selectedUser.status)}
@@ -382,7 +382,7 @@ export default function AdminUsers() {
                   <div className="flex items-center gap-8">
                     <Avatar className="w-28 h-28 border-4 border-white/10 shadow-2xl">
                       <AvatarImage src={selectedUser.avatar_url} />
-                      <AvatarFallback className="bg-[#073b3a] text-white text-3xl font-heading">
+                      <AvatarFallback className="bg-yale-blue text-white text-3xl font-heading">
                         {selectedUser.full_name?.substring(0, 2).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
@@ -396,7 +396,7 @@ export default function AdminUsers() {
                     </div>
                   </div>
                 </SheetHeader>
-                <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-muted-teal/20 blur-[100px] rounded-full" />
+                <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-light-coral/20 blur-[100px] rounded-full" />
               </div>
 
               <div className="p-10 space-y-12 flex-1">
@@ -409,7 +409,7 @@ export default function AdminUsers() {
                     { label: "Balance", value: `₹${(selectedUser.balance || 0).toLocaleString()}`, icon: Wallet },
                   ].map((stat, i) => (
                     <div key={i} className="bg-white/5 p-6 rounded-[2rem] border border-white/10 flex flex-col gap-3">
-                      <div className="w-12 h-12 rounded-2xl bg-white/5 text-muted-teal flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-2xl bg-white/5 text-light-coral flex items-center justify-center">
                         <stat.icon size={24} />
                       </div>
                       <div className="space-y-0.5">
@@ -448,7 +448,7 @@ export default function AdminUsers() {
               </div>
 
               {/* Admin Actions Footer */}
-              <div className="p-10 bg-[#0a4d4b] border-t border-white/10 shadow-2xl">
+              <div className="p-10 bg-dusk-blue border-t border-white/10 shadow-2xl">
                 <div className="grid grid-cols-2 gap-4">
                   <Button 
                     variant="outline"
@@ -461,15 +461,15 @@ export default function AdminUsers() {
                     <DropdownMenuTrigger asChild>
                       <Button 
                         disabled={updatingId !== null}
-                        className="h-16 rounded-[2rem] bg-muted-teal hover:bg-muted-teal/80 text-white font-bold uppercase tracking-[0.2em] text-[10px] gap-3 shadow-2xl shadow-muted-teal/20 border-none"
+                        className="h-16 rounded-[2rem] bg-light-coral hover:bg-light-coral/80 text-white font-bold uppercase tracking-[0.2em] text-[10px] gap-3 shadow-2xl shadow-light-coral/20 border-none"
                       >
                         {updatingId === selectedUser.id ? <Loader2 className="animate-spin" size={20} /> : <ShieldCheck size={20} />}
                         MANAGE ACCESS
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-64 rounded-[2rem] p-3 border-white/10 shadow-2xl bg-[#0a4d4b] text-white">
+                    <DropdownMenuContent align="end" className="w-64 rounded-[2rem] p-3 border-white/10 shadow-2xl bg-dusk-blue text-white">
                       <DropdownMenuItem onClick={() => handleUpdateUser(selectedUser.id, { status: 'Active' })} className="rounded-xl py-4 px-4 text-[10px] font-bold tracking-widest uppercase hover:bg-white/10">
-                        <CheckCircle2 size={16} className="mr-3 text-muted-teal" /> MARK AS ACTIVE
+                        <CheckCircle2 size={16} className="mr-3 text-light-coral" /> MARK AS ACTIVE
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleUpdateUser(selectedUser.id, { status: 'Suspended' })} className="rounded-xl py-4 px-4 text-[10px] font-bold tracking-widest uppercase hover:bg-white/10">
                         <UserMinus size={16} className="mr-3 text-white/40" /> SUSPEND ACCESS

@@ -87,10 +87,10 @@ function LiveContent() {
     };
   }, [fetchLiveMatches]);
 
-  if (loading) {
+    if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#073b3a]">
-        <Signal className="w-12 h-12 animate-pulse text-moss-green mb-4" />
+      <div className="min-h-screen flex flex-col items-center justify-center bg-yale-blue">
+        <Signal className="w-12 h-12 animate-pulse text-light-coral mb-4" />
         <p className="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em]">Syncing Feed...</p>
       </div>
     );
@@ -105,7 +105,7 @@ function LiveContent() {
           <>
             {/* Primary Feed - Cinematic Player */}
             <section className="space-y-6">
-              <div className="relative aspect-video bg-[#0a4d4b] rounded-[40px] overflow-hidden shadow-2xl shadow-black/40 border border-white/5 group">
+              <div className="relative aspect-video bg-dusk-blue rounded-[40px] overflow-hidden shadow-2xl shadow-black/40 border border-white/5 group">
                 <iframe 
                   src={activeMatch.stream_url} 
                   className="w-full h-full"
@@ -119,7 +119,7 @@ function LiveContent() {
                     LIVE
                   </div>
                   <div className="bg-black/40 backdrop-blur-xl text-white px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-2xl text-[10px] font-bold uppercase tracking-widest border border-white/10">
-                    <Eye size={14} className="text-moss-green" />
+                    <Eye size={14} className="text-light-coral" />
                     {activeMatch.viewers_count.toLocaleString()}
                   </div>
                 </div>
@@ -140,10 +140,10 @@ function LiveContent() {
                   <div className="space-y-2">
                     <h2 className="text-2xl font-heading text-white leading-tight">{activeMatch.title}</h2>
                     <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em] flex items-center gap-2">
-                      <Trophy size={12} className="text-moss-green" /> {activeMatch.tournament?.title}
+                      <Trophy size={12} className="text-light-coral" /> {activeMatch.tournament?.title}
                     </p>
                   </div>
-                  <Badge className="bg-moss-green/20 text-moss-green border-none rounded-full text-[10px] px-4 py-1.5 font-bold tracking-widest">
+                  <Badge className="bg-light-coral/20 text-light-coral border-none rounded-full text-[10px] px-4 py-1.5 font-bold tracking-widest">
                     ROUND {activeMatch.current_round}
                   </Badge>
                 </div>
@@ -151,7 +151,7 @@ function LiveContent() {
                 {/* Tactical Grid */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-white/5 p-5 rounded-[28px] border border-white/5 flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-moss-green shadow-inner">
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-light-coral shadow-inner">
                       <MapIcon size={20} />
                     </div>
                     <div>
@@ -196,9 +196,9 @@ function LiveContent() {
                     <h3 className="text-lg font-heading text-white">Alternative <span className="italic font-serif opacity-60">Relays</span></h3>
                     <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest">SCANNING LIVE SIGNALS</p>
                   </div>
-                  <div className="flex items-center gap-2 bg-moss-green/10 px-3 py-1.5 rounded-full border border-moss-green/20">
-                    <div className="w-1.5 h-1.5 bg-moss-green rounded-full animate-pulse" />
-                    <span className="text-[9px] font-bold text-moss-green uppercase tracking-widest">{otherMatches.length} RELAYS</span>
+                  <div className="flex items-center gap-2 bg-light-coral/10 px-3 py-1.5 rounded-full border border-light-coral/20">
+                    <div className="w-1.5 h-1.5 bg-light-coral rounded-full animate-pulse" />
+                    <span className="text-[9px] font-bold text-light-coral uppercase tracking-widest">{otherMatches.length} RELAYS</span>
                   </div>
                 </div>
                 
@@ -211,7 +211,7 @@ function LiveContent() {
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                         setActiveMatch(match);
                       }}
-                      className="bg-white/5 backdrop-blur-xl p-4 rounded-[32px] border border-white/5 shadow-xl flex items-center gap-5 hover:border-moss-green/30 transition-all duration-500 cursor-pointer group"
+                      className="bg-white/5 backdrop-blur-xl p-4 rounded-[32px] border border-white/5 shadow-xl flex items-center gap-5 hover:border-light-coral/30 transition-all duration-500 cursor-pointer group"
                     >
                       <div className="relative w-20 h-20 rounded-[24px] overflow-hidden bg-black flex-shrink-0 shadow-inner">
                          <iframe 
@@ -223,9 +223,9 @@ function LiveContent() {
                         </div>
                       </div>
                       <div className="flex-1 min-w-0 space-y-1.5">
-                        <h4 className="font-heading text-white truncate group-hover:text-moss-green transition-colors">{match.title}</h4>
+                        <h4 className="font-heading text-white truncate group-hover:text-light-coral transition-colors">{match.title}</h4>
                         <div className="flex items-center gap-4">
-                          <span className="text-[9px] font-bold text-moss-green px-3 py-1 bg-moss-green/10 rounded-full uppercase tracking-widest">
+                          <span className="text-[9px] font-bold text-light-coral px-3 py-1 bg-light-coral/10 rounded-full uppercase tracking-widest">
                             {match.mode}
                           </span>
                           <span className="text-[9px] flex items-center gap-1.5 text-white/20 font-bold uppercase tracking-widest">
@@ -234,7 +234,7 @@ function LiveContent() {
                           </span>
                         </div>
                       </div>
-                      <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-white/20 group-hover:bg-moss-green group-hover:text-white transition-all">
+                      <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-white/20 group-hover:bg-light-coral group-hover:text-white transition-all">
                         <ChevronRight size={20} strokeWidth={3} />
                       </div>
                     </motion.div>
@@ -242,7 +242,7 @@ function LiveContent() {
                 </div>
               </section>
             )}
-          </>
+          <>
         ) : (
           <div className="py-24 text-center space-y-8 mt-12 bg-white/5 backdrop-blur-xl rounded-[50px] border border-dashed border-white/10">
             <div className="w-24 h-24 bg-white/5 rounded-[32px] flex items-center justify-center mx-auto text-white/10 shadow-inner">
@@ -253,7 +253,7 @@ function LiveContent() {
               <p className="text-[11px] text-white/30 font-bold uppercase tracking-[0.2em] leading-loose">No active combat signals detected in the current sector.</p>
             </div>
             <div className="px-10">
-              <button className="w-full py-5 bg-moss-green text-white rounded-3xl text-[11px] font-bold uppercase tracking-[0.3em] shadow-2xl shadow-moss-green/30 hover:scale-[1.02] transition-all">
+              <button className="w-full py-5 bg-light-coral text-white rounded-3xl text-[11px] font-bold uppercase tracking-[0.3em] shadow-2xl shadow-light-coral/30 hover:scale-[1.02] transition-all">
                 INITIALIZE RECON
               </button>
             </div>
@@ -266,10 +266,10 @@ function LiveContent() {
 
 export default function Live() {
   return (
-    <div className="min-h-screen bg-dark-slate-grey bg-[radial-gradient(circle_at_50%_0%,_#2d4d43_0%,_#243e36_100%)] text-white">
+    <div className="min-h-screen bg-yale-blue bg-[radial-gradient(circle_at_50%_0%,_#355070_0%,_#304966_100%)] text-white">
       <Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center bg-[#073b3a]">
-          <Loader2 className="w-8 h-8 animate-spin text-moss-green" />
+        <div className="min-h-screen flex items-center justify-center bg-yale-blue">
+          <Loader2 className="w-8 h-8 animate-spin text-light-coral" />
         </div>
       }>
         <LiveContent />
@@ -277,7 +277,7 @@ export default function Live() {
       <BottomNav />
       {/* Background Glows */}
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0 opacity-30">
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-moss-green/20 blur-[120px] rounded-full" />
+        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-light-coral/20 blur-[120px] rounded-full" />
         <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/10 blur-[120px] rounded-full" />
       </div>
     </div>
