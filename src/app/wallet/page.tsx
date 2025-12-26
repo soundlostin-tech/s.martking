@@ -187,7 +187,13 @@ export default function WalletPage() {
         <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
       </div>
 
-      <div className="px-6 pt-24 relative z-10 space-y-8 max-w-2xl mx-auto">
+      {/* Header */}
+      <div className="px-6 pt-12 pb-6 bg-white/40 backdrop-blur-xl border-b border-white/20 sticky top-0 z-30 shadow-xl">
+        <h1 className="text-3xl font-heading text-black">Iron Vault</h1>
+        <p className="text-sm text-zinc-500 font-serif">Manage your spoils, recharge your balance, and track transactions.</p>
+      </div>
+
+      <div className="px-6 pt-8 relative z-10 space-y-8 max-w-2xl mx-auto">
         {/* Wallet Summary Card */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}

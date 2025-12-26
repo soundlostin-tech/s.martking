@@ -122,7 +122,13 @@ export default function MatchesPage() {
         <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
       </div>
 
-            <div className="px-6 pt-24 relative z-20 space-y-10 max-w-2xl mx-auto">
+      {/* Header */}
+      <div className="px-6 pt-12 pb-6 bg-white/40 backdrop-blur-xl border-b border-white/20 sticky top-0 z-30 shadow-xl">
+        <h1 className="text-3xl font-heading text-black">Arena Battles</h1>
+        <p className="text-sm text-zinc-500 font-serif">Engage in high-stakes tournaments and claim your glory.</p>
+      </div>
+
+      <div className="px-6 pt-8 relative z-20 space-y-10 max-w-2xl mx-auto">
               {/* Filter Controls */}
               <div className="flex bg-white/60 backdrop-blur-xl p-2 rounded-full border border-primary/10 overflow-x-auto no-scrollbar gap-2 shadow-2xl">
                 {filters.map((filter) => (

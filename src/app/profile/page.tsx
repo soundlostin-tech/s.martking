@@ -1,6 +1,5 @@
 "use client";
 
-import { HeroSection } from "@/components/layout/HeroSection";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -136,13 +135,13 @@ export default function Profile() {
               <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
             </div>
 
-          <HeroSection 
-            title="Agent Identity" 
-            subtitle="Customize your profile and track your battle statistics."
-            className="bg-transparent relative z-10"
-          />
+      {/* Header */}
+      <div className="px-6 pt-12 pb-6 bg-white/40 backdrop-blur-xl border-b border-white/20 sticky top-0 z-30 shadow-xl">
+        <h1 className="text-3xl font-heading text-black">Agent Identity</h1>
+        <p className="text-sm text-zinc-500 font-serif">Customize your profile and track your battle statistics.</p>
+      </div>
 
-          <div className="px-6 -mt-24 relative z-10 space-y-8 max-w-4xl mx-auto">
+      <div className="px-6 mt-8 relative z-10 space-y-8 max-w-4xl mx-auto">
               {/* Profile Card - Mobile App Style */}
               <motion.div 
                 initial={{ opacity: 0, y: 30 }}
