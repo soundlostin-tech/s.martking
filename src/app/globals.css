@@ -50,10 +50,10 @@
   --radius-xl: calc(var(--radius) + 4px);
 
   /* User Defined Theme Colors */
-  --color-dark-teal: #073b3a;
-  --color-dark-emerald: #0b6e4f;
-  --color-medium-jungle: #08a045;
-  --color-moss-green: #6bbf59;
+  --color-mint-cream: #f1f7ed;
+  --color-dark-slate-grey: #243e36;
+  --color-muted-teal: #7ca982;
+  --color-frosted-mint: #e0eec6;
 
   --color-background: var(--background);
   --color-primary: var(--primary);
@@ -63,37 +63,37 @@
 
 :root {
   --radius: 2rem;
-  --background: #073b3a;
-  --foreground: #ffffff;
-  --card: rgba(11, 110, 79, 0.25);
-  --card-foreground: #ffffff;
-  --popover: #073b3a;
-  --popover-foreground: #ffffff;
-  --primary: #0b6e4f;
-  --primary-foreground: #ffffff;
-  --secondary: #08a045;
-  --secondary-foreground: #ffffff;
-  --muted: rgba(107, 191, 89, 0.15);
-  --muted-foreground: #6bbf59;
-  --accent: #6bbf59;
-  --accent-foreground: #073b3a;
+  --background: #243e36;
+  --foreground: #f1f7ed;
+  --card: rgba(36, 62, 54, 0.4);
+  --card-foreground: #f1f7ed;
+  --popover: #243e36;
+  --popover-foreground: #f1f7ed;
+  --primary: #7ca982;
+  --primary-foreground: #243e36;
+  --secondary: #e0eec6;
+  --secondary-foreground: #243e36;
+  --muted: rgba(124, 169, 130, 0.15);
+  --muted-foreground: #7ca982;
+  --accent: #e0eec6;
+  --accent-foreground: #243e36;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: rgba(107, 191, 89, 0.3);
-  --input: rgba(107, 191, 89, 0.3);
-  --ring: #08a045;
-  --chart-1: #073b3a;
-  --chart-2: #0b6e4f;
-  --chart-3: #08a045;
-  --chart-4: #6bbf59;
+  --border: rgba(124, 169, 130, 0.3);
+  --input: rgba(124, 169, 130, 0.3);
+  --ring: #7ca982;
+  --chart-1: #243e36;
+  --chart-2: #7ca982;
+  --chart-3: #e0eec6;
+  --chart-4: #f1f7ed;
   --chart-5: #ffffff;
-  --sidebar: #073b3a;
-  --sidebar-foreground: #ffffff;
-  --sidebar-primary: #0b6e4f;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: rgba(107, 191, 89, 0.15);
-  --sidebar-accent-foreground: #6bbf59;
-  --sidebar-border: rgba(107, 191, 89, 0.3);
-  --sidebar-ring: #08a045;
+  --sidebar: #243e36;
+  --sidebar-foreground: #f1f7ed;
+  --sidebar-primary: #7ca982;
+  --sidebar-primary-foreground: #243e36;
+  --sidebar-accent: rgba(124, 169, 130, 0.15);
+  --sidebar-accent-foreground: #7ca982;
+  --sidebar-border: rgba(124, 169, 130, 0.3);
+  --sidebar-ring: #7ca982;
 }
 
   @layer base {
@@ -104,8 +104,8 @@
     html, body {
       @apply bg-background text-foreground font-sans antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden;
       background-image: 
-        radial-gradient(at 0% 0%, rgba(11, 110, 79, 0.2) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(107, 191, 89, 0.2) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(124, 169, 130, 0.2) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(224, 238, 198, 0.2) 0px, transparent 50%);
       background-attachment: fixed;
       touch-action: manipulation;
       overscroll-behavior-y: none;
@@ -113,7 +113,7 @@
       user-select: none;
     }
     h1, h2, h3, h4, h5, h6 {
-      @apply font-heading font-normal tracking-tight text-moss-green;
+      @apply font-heading font-normal tracking-tight text-frosted-mint;
     }
     input, textarea, select {
       @apply selection:bg-primary/20 selection:text-primary;
@@ -180,7 +180,7 @@
 }
 
 .glass {
-  @apply bg-dark-emerald/20 backdrop-blur-2xl border border-white/10 shadow-2xl;
+  @apply bg-muted-teal/10 backdrop-blur-2xl border border-white/10 shadow-2xl;
 }
 
 @keyframes fadeIn {

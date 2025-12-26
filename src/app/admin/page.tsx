@@ -137,7 +137,7 @@ export default function AdminOverview() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#073b3a]">
         <div className="space-y-4 text-center">
-          <Activity className="w-12 h-12 animate-pulse text-moss-green mx-auto" />
+          <Activity className="w-12 h-12 animate-pulse text-muted-teal mx-auto" />
           <p className="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em]">Establishing Uplink...</p>
         </div>
       </div>
@@ -145,10 +145,10 @@ export default function AdminOverview() {
   }
 
   return (
-    <main className="min-h-screen pb-32 bg-[#073b3a] bg-[radial-gradient(circle_at_50%_0%,_#0a4d4b_0%,_#073b3a_100%)]">
+    <main className="min-h-screen pb-32 bg-dark-slate-grey bg-[radial-gradient(circle_at_50%_0%,_#2d4d43_0%,_#243e36_100%)]">
       {/* Background Decor */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-20">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-moss-green/10 rounded-full blur-[120px]" />
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-muted-teal/10 rounded-full blur-[120px]" />
         <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px]" />
       </div>
 
@@ -156,7 +156,7 @@ export default function AdminOverview() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-1">
-            <h4 className="text-[10px] font-bold text-moss-green uppercase tracking-[0.4em]">Intelligence Command</h4>
+            <h4 className="text-[10px] font-bold text-muted-teal uppercase tracking-[0.4em]">Intelligence Command</h4>
             <h1 className="text-4xl md:text-5xl font-heading text-white">Arena <span className="italic font-serif text-white/60">Overview</span></h1>
           </div>
           
@@ -167,7 +167,7 @@ export default function AdminOverview() {
                 onClick={() => setTimeRange(range)}
                 className={`px-6 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${
                   timeRange === range 
-                    ? "bg-moss-green text-white shadow-[0_0_20px_rgba(107,191,89,0.3)]" 
+                    ? "bg-muted-teal text-white shadow-[0_0_20px_rgba(107,191,89,0.3)]" 
                     : "text-white/40 hover:text-white hover:bg-white/5"
                 }`}
               >
@@ -191,17 +191,17 @@ export default function AdminOverview() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: i * 0.1 }}
                 className={`rounded-[2.5rem] p-8 border border-white/10 shadow-2xl relative overflow-hidden group ${
-                  stat.primary ? "bg-moss-green/20 backdrop-blur-xl border-moss-green/30" : "bg-white/5 backdrop-blur-xl"
+                  stat.primary ? "bg-muted-teal/20 backdrop-blur-xl border-muted-teal/30" : "bg-white/5 backdrop-blur-xl"
                 }`}
               >
                 <div className="flex justify-between items-start relative z-10">
                   <div className="space-y-1">
-                    <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${stat.primary ? "text-moss-green" : "text-white/40"}`}>
+                    <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${stat.primary ? "text-muted-teal" : "text-white/40"}`}>
                       {stat.label}
                     </p>
                     <h3 className="text-4xl font-heading text-white leading-none">{stat.value}</h3>
                     {stat.growth && (
-                      <div className="flex items-center gap-1 text-[10px] font-bold mt-3 text-moss-green">
+                      <div className="flex items-center gap-1 text-[10px] font-bold mt-3 text-muted-teal">
                         <TrendingUp size={12} strokeWidth={3} />
                         {stat.growth}%
                       </div>
@@ -210,11 +210,11 @@ export default function AdminOverview() {
                       <p className="text-[9px] font-bold uppercase tracking-widest mt-3 text-white/20">{stat.sub}</p>
                     )}
                   </div>
-                  <div className={`p-4 rounded-2xl ${stat.primary ? "bg-moss-green text-white shadow-[0_0_20px_rgba(107,191,89,0.3)]" : "bg-white/10 text-moss-green"} group-hover:scale-110 transition-all duration-500`}>
+                  <div className={`p-4 rounded-2xl ${stat.primary ? "bg-muted-teal text-white shadow-[0_0_20px_rgba(107,191,89,0.3)]" : "bg-white/10 text-muted-teal"} group-hover:scale-110 transition-all duration-500`}>
                     <stat.icon size={22} />
                   </div>
                 </div>
-                <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-moss-green/20" : "bg-white/5"}`} />
+                <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-muted-teal/20" : "bg-white/5"}`} />
               </motion.div>
             ))}
         </div>
@@ -224,10 +224,10 @@ export default function AdminOverview() {
           <Card className="rounded-[3rem] border-white/10 shadow-2xl overflow-hidden bg-white/5 backdrop-blur-xl p-8 space-y-8">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-moss-green">FINANCIALS</h4>
+                <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-teal">FINANCIALS</h4>
                 <h3 className="text-2xl font-heading text-white font-normal">Revenue <span className="italic font-serif text-white/60">Performance</span></h3>
               </div>
-              <Badge className="bg-moss-green/20 text-moss-green rounded-full text-[9px] px-3 py-1 font-bold border border-moss-green/20">LIVE DATA</Badge>
+              <Badge className="bg-muted-teal/20 text-muted-teal rounded-full text-[9px] px-3 py-1 font-bold border border-muted-teal/20">LIVE DATA</Badge>
             </div>
             <div className="h-[280px]">
               <ResponsiveContainer width="100%" height="100%">
@@ -272,7 +272,7 @@ export default function AdminOverview() {
 
           <Card className="rounded-[3rem] border-white/10 shadow-2xl overflow-hidden bg-white/5 backdrop-blur-xl p-8 space-y-8">
             <div className="space-y-1">
-              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-moss-green">ENGAGEMENT</h4>
+              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-teal">ENGAGEMENT</h4>
               <h3 className="text-2xl font-heading text-white font-normal">Warrior <span className="italic font-serif text-white/60">Activity</span></h3>
             </div>
             <div className="h-[280px]">
@@ -318,7 +318,7 @@ export default function AdminOverview() {
                 <h3 className="text-2xl font-heading text-white">Live <span className="italic font-serif text-white/60">Deployments</span></h3>
                 <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em]">RECENT ARENA ACTIVITY</p>
               </div>
-              <Link href="/admin/tournaments" className="group flex items-center gap-2 text-[10px] font-bold text-moss-green uppercase tracking-widest hover:text-white transition-colors pb-1">
+              <Link href="/admin/tournaments" className="group flex items-center gap-2 text-[10px] font-bold text-muted-teal uppercase tracking-widest hover:text-white transition-colors pb-1">
                 COMMAND CENTER <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
@@ -332,7 +332,7 @@ export default function AdminOverview() {
                     className="bg-white/5 backdrop-blur-xl p-6 rounded-[2rem] border border-white/10 shadow-xl flex items-center justify-between group cursor-pointer"
                   >
                     <div className="flex items-center gap-5">
-                      <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-white/20 group-hover:bg-moss-green/10 group-hover:text-moss-green transition-all duration-500">
+                      <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-white/20 group-hover:bg-muted-teal/10 group-hover:text-muted-teal transition-all duration-500">
                         <Trophy size={24} />
                       </div>
                       <div className="space-y-1">
@@ -344,7 +344,7 @@ export default function AdminOverview() {
                       </div>
                     </div>
                     <Badge className={`border-none text-[8px] px-3 py-1 font-bold tracking-widest rounded-full ${
-                      t.status === 'active' ? 'bg-moss-green text-white' : 'bg-white/10 text-white/40'
+                      t.status === 'active' ? 'bg-muted-teal text-white' : 'bg-white/10 text-white/40'
                     }`}>
                       {t.status.toUpperCase()}
                     </Badge>
@@ -373,7 +373,7 @@ export default function AdminOverview() {
                     key={activity.id} 
                     className={`flex items-start gap-4 p-6 ${index !== activities.length - 1 ? 'border-b border-white/5' : ''} hover:bg-white/[0.02] transition-colors group`}
                   >
-                    <div className="mt-1 p-3 rounded-xl bg-white/5 text-white/20 group-hover:text-moss-green transition-colors">
+                    <div className="mt-1 p-3 rounded-xl bg-white/5 text-white/20 group-hover:text-muted-teal transition-colors">
                       <activity.icon size={18} />
                     </div>
                     <div className="flex-1 space-y-1.5">
@@ -388,7 +388,7 @@ export default function AdminOverview() {
                   </div>
                 ))}
               </div>
-              <button className="w-full py-6 bg-white/[0.02] text-[9px] font-bold uppercase tracking-[0.4em] text-white/20 hover:text-moss-green hover:bg-white/[0.04] transition-all border-t border-white/5">
+              <button className="w-full py-6 bg-white/[0.02] text-[9px] font-bold uppercase tracking-[0.4em] text-white/20 hover:text-muted-teal hover:bg-white/[0.04] transition-all border-t border-white/5">
                 ACCESS SYSTEM ARCHIVES
               </button>
             </div>

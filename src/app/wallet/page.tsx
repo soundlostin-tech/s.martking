@@ -162,7 +162,7 @@ export default function WalletPage() {
   if (authLoading) return null;
 
   return (
-    <div className="min-h-screen bg-[#073b3a] bg-[radial-gradient(circle_at_50%_0%,_#0a4d4b_0%,_#073b3a_100%)] text-white">
+    <div className="min-h-screen bg-dark-slate-grey bg-[radial-gradient(circle_at_50%_0%,_#2d4d43_0%,_#243e36_100%)] text-white">
       <main className="pb-32 relative z-10">
         <TopHeader />
 
@@ -172,7 +172,7 @@ export default function WalletPage() {
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="relative h-64 rounded-[40px] bg-moss-green overflow-hidden shadow-2xl shadow-moss-green/20 p-10 flex flex-col justify-between group"
+              className="relative h-64 rounded-[40px] bg-muted-teal overflow-hidden shadow-2xl shadow-muted-teal/20 p-10 flex flex-col justify-between group"
             >
               <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:opacity-20 transition-opacity">
                 <WalletIcon size={160} className="text-white" strokeWidth={1} />
@@ -211,7 +211,7 @@ export default function WalletPage() {
               onClick={() => setIsDepositOpen(true)}
               className="bg-white/5 backdrop-blur-xl rounded-[32px] py-8 flex flex-col items-center gap-3 border border-white/10 shadow-2xl hover:bg-white/[0.08] transition-all"
             >
-              <div className="w-12 h-12 rounded-2xl bg-moss-green/20 flex items-center justify-center text-moss-green shadow-inner">
+              <div className="w-12 h-12 rounded-2xl bg-muted-teal/20 flex items-center justify-center text-muted-teal shadow-inner">
                 <Plus size={24} strokeWidth={3} />
               </div>
               <span className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em]">Add Funds</span>
@@ -241,7 +241,7 @@ export default function WalletPage() {
             <div className="space-y-4">
               {loading ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-4 bg-white/5 rounded-[40px] border border-white/5">
-                  <Loader2 className="w-8 h-8 animate-spin text-moss-green" />
+                  <Loader2 className="w-8 h-8 animate-spin text-muted-teal" />
                   <p className="text-[10px] text-white/20 font-bold uppercase tracking-widest">Syncing Ledger...</p>
                 </div>
               ) : transactions.length > 0 ? (
@@ -255,7 +255,7 @@ export default function WalletPage() {
                   >
                     <div className="flex items-center gap-5">
                       <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner ${
-                        ['deposit', 'prize'].includes(tx.type) ? 'bg-moss-green/10 text-moss-green' : 'bg-white/5 text-white/20'
+                        ['deposit', 'prize'].includes(tx.type) ? 'bg-muted-teal/10 text-muted-teal' : 'bg-white/5 text-white/20'
                       }`}>
                         {tx.type === 'deposit' ? <Plus size={20} strokeWidth={3} /> : tx.type === 'withdrawal' ? <ArrowDownLeft size={20} strokeWidth={3} /> : <TrendingUp size={20} strokeWidth={3} />}
                       </div>
@@ -266,7 +266,7 @@ export default function WalletPage() {
                             <Clock size={10} /> {new Date(tx.created_at).toLocaleDateString()}
                           </span>
                           <Badge variant="outline" className={`border-none rounded-full text-[8px] px-2 py-0 h-4 font-bold tracking-tighter ${
-                            tx.status === 'completed' ? 'bg-moss-green/10 text-moss-green' : 'bg-white/10 text-white/40'
+                            tx.status === 'completed' ? 'bg-muted-teal/10 text-muted-teal' : 'bg-white/10 text-white/40'
                           }`}>
                             {tx.status.toUpperCase()}
                           </Badge>
@@ -275,7 +275,7 @@ export default function WalletPage() {
                     </div>
                     <div className="text-right">
                       <p className={`text-xl font-heading ${
-                        ['deposit', 'prize'].includes(tx.type) ? 'text-moss-green' : 'text-white/40'
+                        ['deposit', 'prize'].includes(tx.type) ? 'text-muted-teal' : 'text-white/40'
                       }`}>
                         {['deposit', 'prize'].includes(tx.type) ? '+' : '-'}₹{tx.amount}
                       </p>
@@ -299,7 +299,7 @@ export default function WalletPage() {
           <div className="bg-[#0a4d4b] p-10 relative overflow-hidden">
             <DialogTitle className="text-3xl font-heading text-white mb-2">Fund <span className="italic opacity-60">Arena</span></DialogTitle>
             <DialogDescription className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em]">Inject operational capital for match deployment.</DialogDescription>
-            <div className="absolute top-[-20%] right-[-10%] w-48 h-48 bg-moss-green/20 blur-[60px] rounded-full" />
+            <div className="absolute top-[-20%] right-[-10%] w-48 h-48 bg-muted-teal/20 blur-[60px] rounded-full" />
           </div>
           <div className="p-10 space-y-8">
             <div className="space-y-3">
@@ -307,7 +307,7 @@ export default function WalletPage() {
               <Input 
                 type="number" 
                 placeholder="Enter amount" 
-                className="h-16 rounded-2xl border-none bg-white/5 text-2xl font-heading px-8 focus-visible:ring-moss-green text-white placeholder:text-white/10"
+                className="h-16 rounded-2xl border-none bg-white/5 text-2xl font-heading px-8 focus-visible:ring-muted-teal text-white placeholder:text-white/10"
                 value={depositAmount}
                 onChange={(e) => setDepositAmount(e.target.value)}
               />
@@ -315,7 +315,7 @@ export default function WalletPage() {
             <button 
               onClick={handleDeposit}
               disabled={processing}
-              className="w-full h-16 bg-moss-green text-white rounded-[2rem] text-[11px] font-bold uppercase tracking-[0.3em] shadow-2xl shadow-moss-green/20 active:scale-95 transition-all"
+              className="w-full h-16 bg-muted-teal text-white rounded-[2rem] text-[11px] font-bold uppercase tracking-[0.3em] shadow-2xl shadow-muted-teal/20 active:scale-95 transition-all"
             >
               {processing ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "CONFIRM DEPLOYMENT"}
             </button>
@@ -355,7 +355,7 @@ export default function WalletPage() {
       <BottomNav />
       {/* Background Glows */}
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0 opacity-20">
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-moss-green/10 blur-[120px] rounded-full" />
+        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-muted-teal/10 blur-[120px] rounded-full" />
         <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/5 blur-[120px] rounded-full" />
       </div>
     </div>

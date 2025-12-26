@@ -266,7 +266,7 @@ function LiveContent() {
 
 export default function Live() {
   return (
-    <div className="min-h-screen bg-[#073b3a] bg-[radial-gradient(circle_at_50%_0%,_#0a4d4b_0%,_#073b3a_100%)] text-white">
+    <div className="min-h-screen bg-dark-slate-grey bg-[radial-gradient(circle_at_50%_0%,_#2d4d43_0%,_#243e36_100%)] text-white">
       <Suspense fallback={
         <div className="min-h-screen flex items-center justify-center bg-[#073b3a]">
           <Loader2 className="w-8 h-8 animate-spin text-moss-green" />

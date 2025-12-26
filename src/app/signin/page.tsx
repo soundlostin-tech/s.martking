@@ -68,10 +68,10 @@ export default function Signin() {
   };
 
   return (
-    <main className="min-h-screen bg-[#073b3a] bg-[radial-gradient(circle_at_50%_0%,_#0a4d4b_0%,_#073b3a_100%)] flex items-center justify-center p-6 relative overflow-hidden">
+    <main className="min-h-screen bg-dark-slate-grey bg-[radial-gradient(circle_at_50%_0%,_#2d4d43_0%,_#243e36_100%)] flex items-center justify-center p-6 relative overflow-hidden">
       {/* Background Decor */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-20">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-moss-green/10 rounded-full blur-[120px]" />
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-muted-teal/10 rounded-full blur-[120px]" />
         <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px]" />
       </div>
 
@@ -83,17 +83,17 @@ export default function Signin() {
       >
         <div className="bg-[#0a4d4b] p-10 border-b border-white/10 relative overflow-hidden">
           <div className="relative z-10 flex flex-col items-center text-center space-y-4">
-            <div className="w-16 h-16 bg-moss-green text-white rounded-2xl flex items-center justify-center shadow-xl shadow-moss-green/20 mb-2">
+            <div className="w-16 h-16 bg-muted-teal text-white rounded-2xl flex items-center justify-center shadow-xl shadow-muted-teal/20 mb-2">
               <Swords size={32} />
             </div>
             <div className="space-y-1">
-              <h4 className="text-[10px] font-bold text-moss-green uppercase tracking-[0.4em]">Combat Uplink</h4>
+              <h4 className="text-[10px] font-bold text-muted-teal uppercase tracking-[0.4em]">Combat Uplink</h4>
               <h1 className="text-4xl font-heading text-white leading-tight">
                 Welcome <span className="italic font-serif text-white/60">Back.</span>
               </h1>
             </div>
           </div>
-          <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-moss-green/20 blur-[80px] rounded-full" />
+          <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-muted-teal/20 blur-[80px] rounded-full" />
         </div>
 
         <div className="p-10 md:p-12 space-y-10">
@@ -104,7 +104,7 @@ export default function Signin() {
                 id="email" 
                 type="email" 
                 placeholder="warrior@arena.com" 
-                className={`h-16 px-8 rounded-[2rem] border-none bg-white/5 shadow-inner text-white font-bold text-xs tracking-wide focus-visible:ring-moss-green placeholder:text-white/10 ${errors.email ? 'ring-2 ring-red-500/50' : ''}`}
+                className={`h-16 px-8 rounded-[2rem] border-none bg-white/5 shadow-inner text-white font-bold text-xs tracking-wide focus-visible:ring-muted-teal placeholder:text-white/10 ${errors.email ? 'ring-2 ring-red-500/50' : ''}`}
                 value={formData.email}
                 onChange={(e) => {
                   setFormData({ ...formData, email: e.target.value });
@@ -117,14 +117,14 @@ export default function Signin() {
             <div className="space-y-3">
               <div className="flex justify-between items-center px-4">
                 <Label htmlFor="password" className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">Access Protocol</Label>
-                <button type="button" className="text-[10px] text-moss-green/60 hover:text-moss-green font-bold uppercase tracking-widest transition-colors">Recover Keys?</button>
+                <button type="button" className="text-[10px] text-muted-teal/60 hover:text-muted-teal font-bold uppercase tracking-widest transition-colors">Recover Keys?</button>
               </div>
               <div className="relative">
                 <Input 
                   id="password" 
                   type={showPassword ? "text" : "password"} 
                   placeholder="••••••••" 
-                  className={`h-16 px-8 pr-16 rounded-[2rem] border-none bg-white/5 shadow-inner text-white font-bold text-xs tracking-wide focus-visible:ring-moss-green placeholder:text-white/10 ${errors.password ? 'ring-2 ring-red-500/50' : ''}`}
+                  className={`h-16 px-8 pr-16 rounded-[2rem] border-none bg-white/5 shadow-inner text-white font-bold text-xs tracking-wide focus-visible:ring-muted-teal placeholder:text-white/10 ${errors.password ? 'ring-2 ring-red-500/50' : ''}`}
                   value={formData.password}
                   onChange={(e) => {
                     setFormData({ ...formData, password: e.target.value });
@@ -144,7 +144,7 @@ export default function Signin() {
 
             <Button 
               type="submit" 
-              className="w-full h-16 rounded-[2rem] bg-moss-green hover:bg-moss-green/90 text-white font-bold text-[11px] uppercase tracking-[0.3em] shadow-2xl shadow-moss-green/20 mt-4 border-none" 
+              className="w-full h-16 rounded-[2rem] bg-muted-teal hover:bg-muted-teal/90 text-white font-bold text-[11px] uppercase tracking-[0.3em] shadow-2xl shadow-muted-teal/20 mt-4 border-none" 
               disabled={loading}
             >
               {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "ESTABLISH UPLINK"}
@@ -154,7 +154,7 @@ export default function Signin() {
           <div className="pt-4 text-center">
             <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em]">
               NEW TO THE ARENA?{" "}
-              <Link href="/signup" className="text-moss-green hover:text-white transition-colors">
+              <Link href="/signup" className="text-muted-teal hover:text-white transition-colors">
                 CREATE IDENTITY
               </Link>
             </p>
@@ -164,11 +164,11 @@ export default function Signin() {
         {/* Security Badges */}
         <div className="bg-white/[0.02] p-6 flex items-center justify-center gap-8 border-t border-white/5">
           <div className="flex items-center gap-2">
-            <ShieldCheck size={14} className="text-moss-green" />
+            <ShieldCheck size={14} className="text-muted-teal" />
             <span className="text-[8px] font-bold text-white/20 uppercase tracking-widest">ENCRYPTED</span>
           </div>
           <div className="flex items-center gap-2">
-            <Zap size={14} className="text-moss-green" />
+            <Zap size={14} className="text-muted-teal" />
             <span className="text-[8px] font-bold text-white/20 uppercase tracking-widest">FAST UPLINK</span>
           </div>
         </div>

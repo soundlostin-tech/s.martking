@@ -169,9 +169,9 @@ export default function AdminTransactions() {
   const getTypeBadge = (type: string) => {
     const baseClass = "text-[9px] font-bold px-3 py-1 rounded-full border-none shadow-sm";
     switch (type) {
-      case 'deposit': return <Badge className={`${baseClass} bg-moss-green/20 text-moss-green`}>DEPOSIT</Badge>;
+      case 'deposit': return <Badge className={`${baseClass} bg-muted-teal/20 text-muted-teal`}>DEPOSIT</Badge>;
       case 'withdrawal': return <Badge className={`${baseClass} bg-white/10 text-white/60`}>WITHDRAWAL</Badge>;
-      case 'prize': return <Badge className={`${baseClass} bg-moss-green text-white`}>PRIZE</Badge>;
+      case 'prize': return <Badge className={`${baseClass} bg-muted-teal text-white`}>PRIZE</Badge>;
       case 'entry_fee': return <Badge className={`${baseClass} bg-white/5 text-white/40`}>ENTRY FEE</Badge>;
       default: return <Badge className={`${baseClass} bg-white/5 text-white/40`}>{type.replace('_', ' ').toUpperCase()}</Badge>;
     }
@@ -180,7 +180,7 @@ export default function AdminTransactions() {
   const getStatusBadge = (status: string) => {
     const baseClass = "text-[9px] font-bold px-3 py-1 rounded-full border-none shadow-sm";
     switch (status) {
-      case 'completed': return <Badge className={`${baseClass} bg-moss-green text-white`}>COMPLETED</Badge>;
+      case 'completed': return <Badge className={`${baseClass} bg-muted-teal text-white`}>COMPLETED</Badge>;
       case 'pending': return <Badge className={`${baseClass} bg-white/20 text-white`}>PENDING</Badge>;
       case 'failed': return <Badge className={`${baseClass} bg-red-500/20 text-red-400`}>FAILED</Badge>;
       default: return <Badge className={`${baseClass} bg-white/5 text-white/40`}>{status.toUpperCase()}</Badge>;
@@ -188,15 +188,15 @@ export default function AdminTransactions() {
   };
 
   return (
-    <main className="min-h-screen pb-32 bg-[#073b3a] bg-[radial-gradient(circle_at_50%_0%,_#0a4d4b_0%,_#073b3a_100%)]">
+    <main className="min-h-screen pb-32 bg-dark-slate-grey bg-[radial-gradient(circle_at_50%_0%,_#2d4d43_0%,_#243e36_100%)]">
       <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-20">
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-moss-green/10 rounded-full blur-[120px]" />
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-muted-teal/10 rounded-full blur-[120px]" />
       </div>
 
       <div className="px-6 pt-24 relative z-10 space-y-10 max-w-6xl mx-auto">
         {/* Header */}
         <div className="space-y-1">
-          <h4 className="text-[10px] font-bold text-moss-green uppercase tracking-[0.4em]">Financial Command</h4>
+          <h4 className="text-[10px] font-bold text-muted-teal uppercase tracking-[0.4em]">Financial Command</h4>
           <h1 className="text-4xl font-heading text-white">Capital <span className="italic font-serif text-white/60">Flow</span></h1>
         </div>
 
@@ -213,19 +213,19 @@ export default function AdminTransactions() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: i * 0.1 }}
               className={`rounded-[2.5rem] p-8 border border-white/10 shadow-2xl relative overflow-hidden group ${
-                stat.primary ? "bg-moss-green/20 backdrop-blur-xl border-moss-green/30" : "bg-white/5 backdrop-blur-xl"
+                stat.primary ? "bg-muted-teal/20 backdrop-blur-xl border-muted-teal/30" : "bg-white/5 backdrop-blur-xl"
               }`}
             >
               <div className="flex justify-between items-start relative z-10">
                 <div className="space-y-1">
-                  <p className={`text-[10px] uppercase font-bold tracking-[0.2em] ${stat.primary ? "text-moss-green" : "text-white/40"}`}>{stat.label}</p>
+                  <p className={`text-[10px] uppercase font-bold tracking-[0.2em] ${stat.primary ? "text-muted-teal" : "text-white/40"}`}>{stat.label}</p>
                   <h3 className="text-3xl font-heading text-white">₹{stat.value.toLocaleString()}</h3>
                 </div>
-                <div className={`p-4 rounded-2xl ${stat.primary ? "bg-moss-green text-white shadow-[0_0_20px_rgba(107,191,89,0.3)]" : "bg-white/10 text-moss-green"} group-hover:scale-110 transition-transform duration-500`}>
+                <div className={`p-4 rounded-2xl ${stat.primary ? "bg-muted-teal text-white shadow-[0_0_20px_rgba(107,191,89,0.3)]" : "bg-white/10 text-muted-teal"} group-hover:scale-110 transition-transform duration-500`}>
                   <stat.icon size={24} />
                 </div>
               </div>
-              <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-moss-green/20" : "bg-white/5"}`} />
+              <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-muted-teal/20" : "bg-white/5"}`} />
             </motion.div>
           ))}
         </div>
@@ -235,7 +235,7 @@ export default function AdminTransactions() {
           <div className="relative flex-1">
             <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20" size={18} />
             <Input 
-              className="bg-white/5 border-none pl-14 rounded-2xl h-14 text-xs font-bold tracking-wide focus-visible:ring-moss-green placeholder:text-white/20 text-white" 
+              className="bg-white/5 border-none pl-14 rounded-2xl h-14 text-xs font-bold tracking-wide focus-visible:ring-muted-teal placeholder:text-white/20 text-white" 
               placeholder="SEARCH BY ID OR PLAYER NAME..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -278,7 +278,7 @@ export default function AdminTransactions() {
             <Button 
               variant="ghost" 
               size="sm" 
-              className="text-[10px] font-bold text-white/40 hover:text-moss-green uppercase tracking-[0.2em]"
+              className="text-[10px] font-bold text-white/40 hover:text-muted-teal uppercase tracking-[0.2em]"
               onClick={() => toast.info("Exporting data feature coming soon")}
             >
               DOWNLOAD CSV <Download size={14} className="ml-1" />
@@ -305,10 +305,10 @@ export default function AdminTransactions() {
                         setSelectedTx(tx);
                         setIsDetailOpen(true);
                       }}
-                      className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] p-6 flex flex-col md:flex-row justify-between md:items-center border border-white/10 hover:border-moss-green/30 hover:bg-white/[0.08] transition-all duration-500 group cursor-pointer"
+                      className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] p-6 flex flex-col md:flex-row justify-between md:items-center border border-white/10 hover:border-muted-teal/30 hover:bg-white/[0.08] transition-all duration-500 group cursor-pointer"
                     >
                       <div className="flex items-center gap-6">
-                        <div className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center transition-transform duration-500 group-hover:scale-110 bg-white/5 text-white/20 group-hover:text-moss-green`}>
+                        <div className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center transition-transform duration-500 group-hover:scale-110 bg-white/5 text-white/20 group-hover:text-muted-teal`}>
                           {['deposit', 'prize'].includes(tx.type) ? <ArrowUpRight size={28} /> : <ArrowDownLeft size={28} />}
                         </div>
                         <div className="space-y-1.5">
@@ -327,12 +327,12 @@ export default function AdminTransactions() {
 
                       <div className="flex items-center justify-between md:justify-end gap-10 mt-6 md:mt-0">
                         <div className="text-right">
-                          <p className={`text-2xl font-heading ${['deposit', 'prize'].includes(tx.type) ? "text-moss-green" : "text-white/40"}`}>
+                          <p className={`text-2xl font-heading ${['deposit', 'prize'].includes(tx.type) ? "text-muted-teal" : "text-white/40"}`}>
                             {['deposit', 'prize'].includes(tx.type) ? "+" : "-"}₹{Number(tx.amount).toLocaleString()}
                           </p>
                           <p className="text-[10px] text-white/20 font-bold uppercase tracking-widest">ID: {tx.id.slice(0, 8)}</p>
                         </div>
-                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-white/20 group-hover:bg-moss-green group-hover:text-white transition-all">
+                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-white/20 group-hover:bg-muted-teal group-hover:text-white transition-all">
                           <ChevronRight size={20} strokeWidth={3} />
                         </div>
                       </div>
@@ -342,7 +342,7 @@ export default function AdminTransactions() {
                   <div className="flex flex-col items-center justify-center py-32 bg-white/5 backdrop-blur-xl rounded-[3rem] border border-dashed border-white/10">
                     <AlertCircle size={64} strokeWidth={1} className="text-white/5 mb-6" />
                     <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20">No matching signals found</p>
-                    <Button variant="link" onClick={() => { setSearch(""); setTypeFilter("all"); setStatusFilter("all"); }} className="text-moss-green font-bold mt-4 text-[10px] tracking-widest uppercase">
+                    <Button variant="link" onClick={() => { setSearch(""); setTypeFilter("all"); setStatusFilter("all"); }} className="text-muted-teal font-bold mt-4 text-[10px] tracking-widest uppercase">
                       CLEAR ALL FILTERS
                     </Button>
                   </div>
@@ -372,7 +372,7 @@ export default function AdminTransactions() {
                     <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] font-mono">#{selectedTx.id}</p>
                   </div>
                 </SheetHeader>
-                <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-moss-green/20 blur-[100px] rounded-full" />
+                <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-muted-teal/20 blur-[100px] rounded-full" />
               </div>
 
               <div className="p-10 space-y-12 flex-1">
@@ -432,7 +432,7 @@ export default function AdminTransactions() {
                     </Button>
                     <Button 
                       disabled={processingId !== null}
-                      className="h-16 rounded-[2rem] bg-moss-green hover:bg-moss-green/80 text-white font-bold uppercase tracking-[0.2em] text-[10px] gap-3 shadow-2xl shadow-moss-green/20 border-none"
+                      className="h-16 rounded-[2rem] bg-muted-teal hover:bg-muted-teal/80 text-white font-bold uppercase tracking-[0.2em] text-[10px] gap-3 shadow-2xl shadow-muted-teal/20 border-none"
                       onClick={() => handleUpdateStatus(selectedTx.id, selectedTx.user_id, selectedTx.amount, 'completed')}
                     >
                       {processingId === selectedTx.id ? <Loader2 className="animate-spin" /> : <CheckCircle2 size={20} />} APPROVE PAYOUT

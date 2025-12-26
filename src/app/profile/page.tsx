@@ -115,13 +115,13 @@ export default function Profile() {
   if (authLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#073b3a]">
-        <Activity className="w-12 h-12 animate-pulse text-moss-green" />
+        <Activity className="w-12 h-12 animate-pulse text-muted-teal" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#073b3a] bg-[radial-gradient(circle_at_50%_0%,_#0a4d4b_0%,_#073b3a_100%)] text-white">
+    <div className="min-h-screen bg-dark-slate-grey bg-[radial-gradient(circle_at_50%_0%,_#2d4d43_0%,_#243e36_100%)] text-white">
       <main className="pb-32 relative z-10">
         <TopHeader />
 
@@ -131,7 +131,7 @@ export default function Profile() {
             <div className="relative mb-8">
               <motion.div 
                 whileTap={{ scale: 0.95 }}
-                className="w-36 h-36 rounded-[48px] p-1.5 bg-gradient-to-tr from-moss-green to-accent shadow-2xl shadow-moss-green/20"
+                className="w-36 h-36 rounded-[48px] p-1.5 bg-gradient-to-tr from-muted-teal to-accent shadow-2xl shadow-muted-teal/20"
               >
                 <div className="w-full h-full rounded-[44px] bg-[#073b3a] p-1">
                   <Avatar className="w-full h-full rounded-[40px] border-none shadow-inner">
@@ -144,7 +144,7 @@ export default function Profile() {
               </motion.div>
               <button 
                 onClick={() => setIsEditing(true)}
-                className="absolute bottom-0 right-0 w-12 h-12 bg-moss-green text-white rounded-2xl shadow-2xl flex items-center justify-center active:scale-90 transition-all border-4 border-[#073b3a]"
+                className="absolute bottom-0 right-0 w-12 h-12 bg-muted-teal text-white rounded-2xl shadow-2xl flex items-center justify-center active:scale-90 transition-all border-4 border-[#073b3a]"
               >
                 <Edit2 size={20} strokeWidth={3} />
               </button>
@@ -153,7 +153,7 @@ export default function Profile() {
             <div className="space-y-2">
               <h2 className="text-3xl font-heading text-white">{profile?.full_name || "Initiate Warrior"}</h2>
               <div className="flex items-center justify-center gap-3">
-                <Badge variant="outline" className="border-white/10 bg-white/5 text-[9px] font-bold tracking-[0.3em] text-moss-green px-4 py-1 rounded-full uppercase">
+                <Badge variant="outline" className="border-white/10 bg-white/5 text-[9px] font-bold tracking-[0.3em] text-muted-teal px-4 py-1 rounded-full uppercase">
                   LEVEL 42 PRO
                 </Badge>
                 <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">@{profile?.username || user?.email?.split('@')[0]}</p>
@@ -164,9 +164,9 @@ export default function Profile() {
           {/* Stats Grid - Performance Matrix */}
           <section className="grid grid-cols-2 gap-6">
             {[
-              { label: "Elite Wins", value: Math.floor((profile?.matches_played || 0) * (parseFloat(profile?.win_rate || "0") / 100)), icon: Award, color: "moss-green" },
+              { label: "Elite Wins", value: Math.floor((profile?.matches_played || 0) * (parseFloat(profile?.win_rate || "0") / 100)), icon: Award, color: "muted-teal" },
               { label: "Win Rate", value: `${profile?.win_rate || 0}%`, icon: TrendingUp, color: "accent" },
-              { label: "Earnings", value: `₹${(wallet?.lifetime_earnings || 0).toLocaleString()}`, icon: Trophy, color: "moss-green" },
+              { label: "Earnings", value: `₹${(wallet?.lifetime_earnings || 0).toLocaleString()}`, icon: Trophy, color: "muted-teal" },
               { label: "Matches", value: profile?.matches_played || 0, icon: Gamepad2, color: "white/20" },
             ].map((stat, i) => (
               <motion.div 
@@ -191,9 +191,9 @@ export default function Profile() {
           <section className="bg-white/5 backdrop-blur-xl rounded-[40px] overflow-hidden border border-white/10 shadow-2xl">
             <div className="p-4 space-y-2">
               {[
-                { label: "Operational Parameters", icon: Settings, href: "#", color: "text-moss-green" },
+                { label: "Operational Parameters", icon: Settings, href: "#", color: "text-muted-teal" },
                 { label: "Signal Notifications", icon: Bell, href: "#", color: "text-accent" },
-                { label: "Finance Archives", icon: CreditCard, href: "/wallet", color: "text-moss-green" },
+                { label: "Finance Archives", icon: CreditCard, href: "/wallet", color: "text-muted-teal" },
                 { label: "Security Clearance", icon: ShieldCheck, href: "#", color: "text-accent" },
               ].map((item, i) => (
                 <button 
@@ -256,38 +256,38 @@ export default function Profile() {
                 <form onSubmit={handleUpdateProfile} className="relative z-10 space-y-8">
                   <div className="space-y-6">
                     <div className="space-y-3">
-                      <label className="text-[10px] font-bold text-moss-green uppercase tracking-[0.3em] ml-2">Display Designation</label>
+                      <label className="text-[10px] font-bold text-muted-teal uppercase tracking-[0.3em] ml-2">Display Designation</label>
                       <Input 
                         value={formData.full_name} 
                         onChange={(e) => setFormData({ ...formData, full_name: e.target.value })} 
-                        className="h-16 rounded-2xl border-none bg-white/5 font-bold px-8 text-white focus-visible:ring-moss-green text-sm"
+                        className="h-16 rounded-2xl border-none bg-white/5 font-bold px-8 text-white focus-visible:ring-muted-teal text-sm"
                         placeholder="Your Name"
                       />
                     </div>
                     <div className="space-y-3">
-                      <label className="text-[10px] font-bold text-moss-green uppercase tracking-[0.3em] ml-2">Arena Alias</label>
+                      <label className="text-[10px] font-bold text-muted-teal uppercase tracking-[0.3em] ml-2">Arena Alias</label>
                       <Input 
                         value={formData.username} 
                         onChange={(e) => setFormData({ ...formData, username: e.target.value })} 
-                        className="h-16 rounded-2xl border-none bg-white/5 font-bold px-8 text-white focus-visible:ring-moss-green text-sm"
+                        className="h-16 rounded-2xl border-none bg-white/5 font-bold px-8 text-white focus-visible:ring-muted-teal text-sm"
                         placeholder="Username"
                       />
                     </div>
                     <div className="space-y-3">
-                      <label className="text-[10px] font-bold text-moss-green uppercase tracking-[0.3em] ml-2">Signal Connection (Phone)</label>
+                      <label className="text-[10px] font-bold text-muted-teal uppercase tracking-[0.3em] ml-2">Signal Connection (Phone)</label>
                       <Input 
                         value={formData.phone} 
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })} 
-                        className="h-16 rounded-2xl border-none bg-white/5 font-bold px-8 text-white focus-visible:ring-moss-green text-sm"
+                        className="h-16 rounded-2xl border-none bg-white/5 font-bold px-8 text-white focus-visible:ring-muted-teal text-sm"
                         placeholder="+91"
                       />
                     </div>
                     <div className="space-y-3">
-                      <label className="text-[10px] font-bold text-moss-green uppercase tracking-[0.3em] ml-2">Visual Proxy (URL)</label>
+                      <label className="text-[10px] font-bold text-muted-teal uppercase tracking-[0.3em] ml-2">Visual Proxy (URL)</label>
                       <Input 
                         value={formData.avatar_url} 
                         onChange={(e) => setFormData({ ...formData, avatar_url: e.target.value })} 
-                        className="h-16 rounded-2xl border-none bg-white/5 font-bold px-8 text-white focus-visible:ring-moss-green text-sm"
+                        className="h-16 rounded-2xl border-none bg-white/5 font-bold px-8 text-white focus-visible:ring-muted-teal text-sm"
                         placeholder="https://..."
                       />
                     </div>
@@ -296,14 +296,14 @@ export default function Profile() {
                   <button 
                     type="submit" 
                     disabled={saving}
-                    className="w-full h-16 bg-moss-green text-white rounded-3xl text-[11px] font-bold uppercase tracking-[0.3em] shadow-2xl shadow-moss-green/20 active:scale-95 transition-all"
+                    className="w-full h-16 bg-muted-teal text-white rounded-3xl text-[11px] font-bold uppercase tracking-[0.3em] shadow-2xl shadow-muted-teal/20 active:scale-95 transition-all"
                   >
                     {saving ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "COMMIT CHANGES"}
                   </button>
                 </form>
                 
                 {/* Visual Glow */}
-                <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-moss-green/20 blur-[100px] rounded-full pointer-events-none" />
+                <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-muted-teal/20 blur-[100px] rounded-full pointer-events-none" />
               </motion.div>
             </motion.div>
           )}
@@ -313,7 +313,7 @@ export default function Profile() {
       <BottomNav />
       {/* Background Glows */}
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0 opacity-30">
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-moss-green/20 blur-[120px] rounded-full" />
+        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-muted-teal/20 blur-[120px] rounded-full" />
         <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/10 blur-[120px] rounded-full" />
       </div>
     </div>

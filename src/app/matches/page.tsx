@@ -100,7 +100,7 @@ export default function MatchesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#073b3a] bg-[radial-gradient(circle_at_50%_0%,_#0a4d4b_0%,_#073b3a_100%)] text-white">
+    <div className="min-h-screen bg-dark-slate-grey bg-[radial-gradient(circle_at_50%_0%,_#2d4d43_0%,_#243e36_100%)] text-white">
       <main className="pb-32 relative z-10">
         <TopHeader />
 
@@ -113,7 +113,7 @@ export default function MatchesPage() {
               placeholder="SEARCH ARENA SECTORS..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white/5 border-none rounded-[24px] py-5 pl-14 pr-6 text-xs font-bold tracking-widest focus:ring-2 focus:ring-moss-green/20 transition-all placeholder:text-white/20 uppercase"
+              className="w-full bg-white/5 border-none rounded-[24px] py-5 pl-14 pr-6 text-xs font-bold tracking-widest focus:ring-2 focus:ring-muted-teal/20 transition-all placeholder:text-white/20 uppercase"
             />
           </div>
 
@@ -125,7 +125,7 @@ export default function MatchesPage() {
                 onClick={() => setActiveFilter(filter)}
                 className={`px-8 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap border ${
                   activeFilter === filter 
-                    ? "bg-moss-green text-white border-moss-green shadow-lg shadow-moss-green/20" 
+                    ? "bg-muted-teal text-white border-muted-teal shadow-lg shadow-muted-teal/20" 
                     : "bg-white/5 text-white/40 border-white/5 hover:bg-white/10"
                 }`}
               >
@@ -139,7 +139,7 @@ export default function MatchesPage() {
         <section className="px-6 pt-8 space-y-6 max-w-2xl mx-auto">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-32 gap-6 bg-white/5 backdrop-blur-xl rounded-[40px] border border-white/10">
-              <Loader2 className="w-12 h-12 animate-spin text-moss-green" />
+              <Loader2 className="w-12 h-12 animate-spin text-muted-teal" />
               <p className="text-[10px] text-white/20 font-bold uppercase tracking-[0.3em]">Accessing Arena Database...</p>
             </div>
           ) : matches.length > 0 ? (
@@ -159,12 +159,12 @@ export default function MatchesPage() {
                       <div className={`w-16 h-16 rounded-[24px] flex items-center justify-center transition-all duration-500 ${
                         match.status === 'live' 
                           ? 'bg-red-500/20 text-red-400 group-hover:bg-red-500 group-hover:text-white' 
-                          : 'bg-moss-green/20 text-moss-green group-hover:bg-moss-green group-hover:text-white'
+                          : 'bg-muted-teal/20 text-muted-teal group-hover:bg-muted-teal group-hover:text-white'
                       } shadow-inner`}>
                         {match.status === 'live' ? <Play size={28} fill="currentColor" className="translate-x-0.5" /> : <Swords size={28} />}
                       </div>
                       <div className="min-w-0 space-y-1.5">
-                        <h3 className="font-heading text-xl text-white truncate group-hover:text-moss-green transition-colors">{match.title}</h3>
+                        <h3 className="font-heading text-xl text-white truncate group-hover:text-muted-teal transition-colors">{match.title}</h3>
                         <div className="flex items-center gap-3">
                           <Badge variant="outline" className="border-white/10 bg-white/5 text-[8px] font-bold tracking-widest text-white/40 px-3 py-0.5">
                             {match.mode.toUpperCase()}
@@ -184,7 +184,7 @@ export default function MatchesPage() {
 
                   <div className="grid grid-cols-2 gap-4 mb-10">
                     <div className="bg-white/5 rounded-[28px] p-5 border border-white/5 flex items-center gap-5 group-hover:bg-white/10 transition-colors">
-                      <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-moss-green">
+                      <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-muted-teal">
                         <Calendar size={18} />
                       </div>
                       <div>
@@ -209,7 +209,7 @@ export default function MatchesPage() {
                     <div className="flex flex-col gap-1">
                       <p className="text-[9px] font-bold text-white/20 uppercase tracking-[0.3em]">PRIZE POOL</p>
                       <div className="flex items-center gap-2">
-                        <Trophy size={18} className="text-moss-green" />
+                        <Trophy size={18} className="text-muted-teal" />
                         <span className="text-2xl font-heading text-white">₹{match.tournament?.prize_pool.toLocaleString() || 0}</span>
                       </div>
                     </div>
@@ -219,7 +219,7 @@ export default function MatchesPage() {
                         whileTap={{ scale: 0.95 }}
                         onClick={() => handleJoinMatch(match.tournament_id, match.id)}
                         disabled={joining === match.id}
-                        className="bg-moss-green text-white px-10 py-4 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-2xl shadow-moss-green/30 flex items-center gap-3 hover:bg-moss-green/80 transition-all border-none"
+                        className="bg-muted-teal text-white px-10 py-4 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-2xl shadow-muted-teal/30 flex items-center gap-3 hover:bg-muted-teal/80 transition-all border-none"
                       >
                         {joining === match.id ? <Loader2 size={16} className="animate-spin" /> : (
                           <>DEPLOY ₹{match.tournament?.entry_fee} <ChevronRight size={14} strokeWidth={3} /></>
@@ -233,7 +233,7 @@ export default function MatchesPage() {
                   </div>
                   
                   {/* Visual background glows */}
-                  <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-moss-green/5 blur-[100px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                  <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-muted-teal/5 blur-[100px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                 </motion.div>
               ))}
             </AnimatePresence>
@@ -263,7 +263,7 @@ export default function MatchesPage() {
       <BottomNav />
       {/* Background Glows */}
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0 opacity-20">
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-moss-green/10 blur-[120px] rounded-full" />
+        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-muted-teal/10 blur-[120px] rounded-full" />
         <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/5 blur-[120px] rounded-full" />
       </div>
     </div>

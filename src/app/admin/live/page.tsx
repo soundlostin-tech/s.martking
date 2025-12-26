@@ -164,7 +164,7 @@ export default function AdminLive() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#073b3a]">
         <div className="space-y-4 text-center">
-          <Signal className="w-12 h-12 animate-pulse text-moss-green mx-auto" />
+          <Signal className="w-12 h-12 animate-pulse text-muted-teal mx-auto" />
           <p className="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em]">Acquiring Live Signal...</p>
         </div>
       </div>
@@ -172,21 +172,21 @@ export default function AdminLive() {
   }
 
   return (
-    <main className="min-h-screen pb-32 bg-[#073b3a] bg-[radial-gradient(circle_at_50%_0%,_#0a4d4b_0%,_#073b3a_100%)]">
+    <main className="min-h-screen pb-32 bg-dark-slate-grey bg-[radial-gradient(circle_at_50%_0%,_#2d4d43_0%,_#243e36_100%)]">
       <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-20">
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-moss-green/10 rounded-full blur-[120px]" />
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-muted-teal/10 rounded-full blur-[120px]" />
       </div>
 
       <div className="px-6 pt-24 relative z-10 space-y-10 max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-1">
-            <h4 className="text-[10px] font-bold text-moss-green uppercase tracking-[0.4em]">Combat Oversight</h4>
+            <h4 className="text-[10px] font-bold text-muted-teal uppercase tracking-[0.4em]">Combat Oversight</h4>
             <h1 className="text-4xl font-heading text-white">Live <span className="italic font-serif text-white/60">Control</span></h1>
           </div>
           <div className="flex items-center gap-3 bg-white/5 backdrop-blur-xl p-4 rounded-2xl border border-white/10 shadow-2xl">
-            <div className="w-2 h-2 rounded-full bg-moss-green animate-pulse" />
-            <p className="text-[9px] font-bold text-moss-green uppercase tracking-widest">System Feed Operational</p>
+            <div className="w-2 h-2 rounded-full bg-muted-teal animate-pulse" />
+            <p className="text-[9px] font-bold text-muted-teal uppercase tracking-widest">System Feed Operational</p>
           </div>
         </div>
 
@@ -202,20 +202,20 @@ export default function AdminLive() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: i * 0.1 }}
               className={`rounded-[2.5rem] p-8 border border-white/10 shadow-2xl relative overflow-hidden group ${
-                stat.primary ? "bg-moss-green/20 backdrop-blur-xl border-moss-green/30" : "bg-white/5 backdrop-blur-xl"
+                stat.primary ? "bg-muted-teal/20 backdrop-blur-xl border-muted-teal/30" : "bg-white/5 backdrop-blur-xl"
               }`}
             >
               <div className="flex justify-between items-start relative z-10">
                 <div className="space-y-1">
-                  <p className={`text-[10px] uppercase font-bold tracking-[0.2em] ${stat.primary ? "text-moss-green" : "text-white/40"}`}>{stat.label}</p>
+                  <p className={`text-[10px] uppercase font-bold tracking-[0.2em] ${stat.primary ? "text-muted-teal" : "text-white/40"}`}>{stat.label}</p>
                   <h3 className="text-4xl font-heading text-white">{stat.value}</h3>
                   <p className="text-[9px] text-white/20 font-bold uppercase tracking-widest mt-2">REAL-TIME TELEMETRY</p>
                 </div>
-                <div className={`p-4 rounded-2xl ${stat.primary ? "bg-moss-green text-white shadow-[0_0_20px_rgba(107,191,89,0.3)]" : "bg-white/10 text-moss-green"} group-hover:scale-110 transition-transform duration-500`}>
+                <div className={`p-4 rounded-2xl ${stat.primary ? "bg-muted-teal text-white shadow-[0_0_20px_rgba(107,191,89,0.3)]" : "bg-white/10 text-muted-teal"} group-hover:scale-110 transition-transform duration-500`}>
                   <stat.icon size={24} />
                 </div>
               </div>
-              <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-moss-green/20" : "bg-white/5"}`} />
+              <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-muted-teal/20" : "bg-white/5"}`} />
             </motion.div>
           ))}
         </div>
@@ -237,16 +237,16 @@ export default function AdminLive() {
                 onClick={() => setSelectedTournament(t.id)}
                 className={`flex-shrink-0 w-80 p-8 rounded-[2.5rem] border transition-all duration-500 cursor-pointer relative overflow-hidden group ${
                   selectedTournament === t.id 
-                    ? 'bg-moss-green/20 border-moss-green/50 shadow-2xl' 
+                    ? 'bg-muted-teal/20 border-muted-teal/50 shadow-2xl' 
                     : 'bg-white/5 border-white/10 opacity-60 hover:opacity-100'
                 }`}
               >
                 <div className="relative z-10 space-y-6">
                   <div className="flex justify-between items-start">
-                    <div className={`p-3 rounded-2xl transition-colors duration-500 ${selectedTournament === t.id ? 'bg-moss-green text-white' : 'bg-white/10 text-white/20'}`}>
+                    <div className={`p-3 rounded-2xl transition-colors duration-500 ${selectedTournament === t.id ? 'bg-muted-teal text-white' : 'bg-white/10 text-white/20'}`}>
                       <Trophy size={20} />
                     </div>
-                    <Badge className={`border-none font-bold text-[8px] tracking-[0.2em] px-3 py-1 rounded-full ${selectedTournament === t.id ? 'bg-moss-green text-white' : 'bg-white/10 text-white/40'}`}>
+                    <Badge className={`border-none font-bold text-[8px] tracking-[0.2em] px-3 py-1 rounded-full ${selectedTournament === t.id ? 'bg-muted-teal text-white' : 'bg-white/10 text-white/40'}`}>
                       ACTIVE
                     </Badge>
                   </div>
@@ -276,7 +276,7 @@ export default function AdminLive() {
                     <button 
                       onClick={(e) => { e.stopPropagation(); updateTournamentStatus(t.id, 'completed'); }}
                       className={`flex-1 py-3 rounded-xl text-[9px] font-bold uppercase tracking-[0.2em] transition-all ${
-                        selectedTournament === t.id ? 'bg-moss-green text-white hover:bg-moss-green/80 shadow-lg shadow-moss-green/20' : 'bg-white/[0.02] text-white/20'
+                        selectedTournament === t.id ? 'bg-muted-teal text-white hover:bg-muted-teal/80 shadow-lg shadow-muted-teal/20' : 'bg-white/[0.02] text-white/20'
                       }`}
                     >
                       End
@@ -285,7 +285,7 @@ export default function AdminLive() {
                 </div>
                 {selectedTournament === t.id && (
                   <div className="absolute inset-0 opacity-20 pointer-events-none">
-                    <div className="absolute top-[-20%] right-[-10%] w-full h-full bg-moss-green blur-[80px] rounded-full" />
+                    <div className="absolute top-[-20%] right-[-10%] w-full h-full bg-muted-teal blur-[80px] rounded-full" />
                   </div>
                 )}
               </motion.div>
@@ -323,7 +323,7 @@ export default function AdminLive() {
                           <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+10}`} alt="warrior" />
                         </div>
                       ))}
-                      <div className="w-12 h-12 rounded-full border-4 border-[#073b3a] bg-moss-green flex items-center justify-center text-[10px] font-bold text-white shadow-xl">
+                      <div className="w-12 h-12 rounded-full border-4 border-[#073b3a] bg-muted-teal flex items-center justify-center text-[10px] font-bold text-white shadow-xl">
                         +{currentTournament.players_count! > 4 ? currentTournament.players_count! - 4 : 0}
                       </div>
                     </div>
@@ -337,7 +337,7 @@ export default function AdminLive() {
                       { label: "System Viewers", value: statsSummary?.totalViewers.toLocaleString() || 0, icon: Eye },
                     ].map((stat, i) => (
                       <div key={i} className="p-6 bg-white/5 rounded-[2rem] border border-white/10 flex items-center gap-6 shadow-2xl">
-                        <div className="w-14 h-14 rounded-2xl bg-white/5 text-moss-green flex items-center justify-center">
+                        <div className="w-14 h-14 rounded-2xl bg-white/5 text-muted-teal flex items-center justify-center">
                           <stat.icon size={22} />
                         </div>
                         <div className="space-y-0.5">
@@ -351,23 +351,23 @@ export default function AdminLive() {
                   {/* Live Matches List */}
                   <div className="space-y-8">
                     <div className="flex items-center gap-3 px-2">
-                      <div className="w-2 h-2 rounded-full bg-moss-green animate-pulse" />
+                      <div className="w-2 h-2 rounded-full bg-muted-teal animate-pulse" />
                       <h3 className="text-[10px] font-bold text-white uppercase tracking-[0.3em]">ONGOING BATTLES</h3>
                     </div>
                     <div className="grid grid-cols-1 gap-6">
                       {tournamentMatches.map((m) => (
                         <div 
                           key={m.id}
-                          className="p-8 bg-white/5 rounded-[2.5rem] border border-white/10 hover:border-moss-green/30 transition-all duration-500 group flex flex-col md:flex-row md:items-center justify-between gap-8 shadow-2xl"
+                          className="p-8 bg-white/5 rounded-[2.5rem] border border-white/10 hover:border-muted-teal/30 transition-all duration-500 group flex flex-col md:flex-row md:items-center justify-between gap-8 shadow-2xl"
                         >
                           <div className="flex items-center gap-8">
-                            <div className="w-20 h-20 bg-white/5 rounded-[2rem] flex items-center justify-center text-white/20 group-hover:text-moss-green group-hover:bg-moss-green/10 transition-all duration-500 shadow-inner border border-white/5">
+                            <div className="w-20 h-20 bg-white/5 rounded-[2rem] flex items-center justify-center text-white/20 group-hover:text-muted-teal group-hover:bg-muted-teal/10 transition-all duration-500 shadow-inner border border-white/5">
                               <Gamepad2 size={32} />
                             </div>
                             <div className="space-y-1.5">
                               <div className="flex items-center gap-3">
                                 <h4 className="text-xl font-heading text-white">{m.title}</h4>
-                                <Badge className="bg-moss-green text-white border-none px-3 py-1 text-[8px] font-bold tracking-widest rounded-full shadow-lg shadow-moss-green/20">
+                                <Badge className="bg-muted-teal text-white border-none px-3 py-1 text-[8px] font-bold tracking-widest rounded-full shadow-lg shadow-muted-teal/20">
                                   ROUND {m.current_round}
                                 </Badge>
                               </div>
@@ -391,7 +391,7 @@ export default function AdminLive() {
                               </div>
                             </div>
                             <button 
-                              className="px-8 py-4 bg-moss-green text-white rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-moss-green/80 transition-all shadow-2xl shadow-moss-green/20 flex items-center gap-2"
+                              className="px-8 py-4 bg-muted-teal text-white rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-muted-teal/80 transition-all shadow-2xl shadow-muted-teal/20 flex items-center gap-2"
                               onClick={() => window.location.href = `/live?match=${m.id}`}
                             >
                               ENTER FEED <ChevronRight size={14} strokeWidth={3} />
@@ -409,7 +409,7 @@ export default function AdminLive() {
                   </div>
                 </div>
                 {/* Visual Glows */}
-                <div className="absolute top-[-20%] left-[-10%] w-full h-full bg-moss-green/10 blur-[100px] rounded-full pointer-events-none" />
+                <div className="absolute top-[-20%] left-[-10%] w-full h-full bg-muted-teal/10 blur-[100px] rounded-full pointer-events-none" />
               </div>
             </motion.section>
           )}
