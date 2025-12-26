@@ -7,11 +7,10 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { 
-  IndianRupee, Trophy, Swords, ChevronRight, Calendar, 
-  ArrowRight, Star, Users, Play, Target, Zap, Plus,
-  TrendingUp, Award, Clock
+  Trophy, Swords, ChevronRight, 
+  Users, Play, TrendingUp, Award, Plus,
+  Sparkles, Timer, Zap
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { StoryViewer } from "@/components/StoryViewer";
 import { StoryUpload } from "@/components/StoryUpload";
 import { TopHeader } from "@/components/layout/TopHeader";
@@ -68,41 +67,44 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <main className="pb-24 overflow-x-hidden">
+    <div className="min-h-screen bg-background">
+      <main className="pb-32">
         <TopHeader />
 
         {/* Stories - Native App Pattern */}
-        <section className="pt-8 pb-4">
-          <div className="flex gap-4 overflow-x-auto no-scrollbar px-6">
+        <section className="py-6 overflow-hidden">
+          <div className="flex gap-5 overflow-x-auto no-scrollbar px-6 items-center">
             {user && (
               <div className="flex-shrink-0 flex flex-col items-center gap-2">
-                <div 
+                <motion.div 
+                  whileTap={{ scale: 0.9 }}
                   onClick={() => {
                     const myStories = stories.filter(s => s.user_id === user.id);
                     if (myStories.length > 0) openStory(user.id);
                     else setIsUploadOpen(true);
                   }}
-                  className={`relative w-[72px] h-[72px] rounded-full p-[2px] flex items-center justify-center border-2 ${
+                  className={`relative w-[68px] h-[68px] rounded-[22px] p-[2px] flex items-center justify-center ${
                     stories.some(s => s.user_id === user.id) 
-                      ? 'border-primary' 
-                      : 'border-dashed border-foreground/10'
+                      ? 'bg-gradient-to-tr from-primary to-accent' 
+                      : 'border-2 border-dashed border-foreground/10'
                   }`}
                 >
-                  <div className="w-full h-full rounded-full bg-muted flex items-center justify-center overflow-hidden">
-                    {user.user_metadata?.avatar_url ? (
-                      <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover" />
-                    ) : (
-                      <span className="text-lg font-bold text-foreground/20">{user.email?.[0].toUpperCase()}</span>
-                    )}
+                  <div className="w-full h-full rounded-[20px] bg-background p-0.5">
+                    <div className="w-full h-full rounded-[18px] bg-muted flex items-center justify-center overflow-hidden">
+                      {user.user_metadata?.avatar_url ? (
+                        <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-xl font-bold text-foreground/20">{user.email?.[0].toUpperCase()}</span>
+                      )}
+                    </div>
                   </div>
                   {!stories.some(s => s.user_id === user.id) && (
-                    <div className="absolute bottom-0 right-0 w-6 h-6 bg-primary rounded-full border-2 border-white flex items-center justify-center text-white shadow-md">
-                      <Plus size={14} />
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-lg border-2 border-white flex items-center justify-center text-white shadow-lg">
+                      <Plus size={14} strokeWidth={3} />
                     </div>
                   )}
-                </div>
-                <span className="text-[9px] font-bold text-foreground/40 uppercase tracking-tighter">Your Story</span>
+                </motion.div>
+                <span className="text-[10px] font-bold text-foreground/30 uppercase tracking-tighter">You</span>
               </div>
             )}
 
@@ -114,18 +116,27 @@ export default function Home() {
                   onClick={() => hasStory && openStory(profile.id)}
                   className="flex-shrink-0 flex flex-col items-center gap-2"
                 >
-                  <div className={`w-[72px] h-[72px] rounded-full p-[2.5px] border-2 ${
-                    hasStory ? 'border-primary' : 'border-transparent bg-foreground/[0.03]'
-                  }`}>
-                    <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden border border-foreground/5">
-                      {profile.avatar_url ? (
-                        <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
-                      ) : (
-                        <span className="text-lg font-bold text-foreground/10">{profile.full_name?.[0]}</span>
-                      )}
+                  <motion.div 
+                    whileTap={{ scale: 0.9 }}
+                    className={`w-[68px] h-[68px] rounded-[22px] p-[2px] ${
+                      hasStory 
+                        ? 'bg-gradient-to-tr from-primary to-accent' 
+                        : 'bg-foreground/[0.03]'
+                    }`}
+                  >
+                    <div className="w-full h-full rounded-[20px] bg-background p-0.5">
+                      <div className="w-full h-full rounded-[18px] bg-white flex items-center justify-center overflow-hidden border border-foreground/[0.03]">
+                        {profile.avatar_url ? (
+                          <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="text-xl font-bold text-foreground/10">{profile.full_name?.[0]}</span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <span className={`text-[9px] font-bold uppercase tracking-tighter ${hasStory ? 'text-foreground' : 'text-foreground/30'}`}>
+                  </motion.div>
+                  <span className={`text-[10px] font-bold uppercase tracking-tighter transition-colors ${
+                    hasStory ? 'text-foreground' : 'text-foreground/30'
+                  }`}>
                     {profile.full_name?.split(' ')[0]}
                   </span>
                 </div>
@@ -134,89 +145,121 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Native Section Header */}
-        <section className="px-6 pt-8 pb-4 flex items-center justify-between">
-          <div>
-            <h2 className="text-xl font-heading text-foreground">Active Battles</h2>
-            <p className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest">Jump into the action</p>
+        {/* Featured Hero - Native Banner Style */}
+        <section className="px-6 mb-8">
+          <div className="relative h-44 rounded-[32px] overflow-hidden bg-primary shadow-xl shadow-primary/20">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-accent opacity-90" />
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&q=80')] bg-cover bg-center mix-blend-overlay opacity-50" />
+            
+            <div className="relative h-full p-8 flex flex-col justify-center">
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles size={16} className="text-white/80" />
+                <span className="text-[10px] font-bold text-white/70 uppercase tracking-[0.2em]">Mega Tournament</span>
+              </div>
+              <h2 className="text-3xl font-heading text-white leading-tight">Win ₹50,000<br/>Weekly Pool</h2>
+              <div className="mt-4 flex items-center gap-3">
+                <button className="px-6 py-2 bg-white text-primary rounded-full text-[10px] font-bold uppercase tracking-wider">Join Now</button>
+                <div className="flex items-center gap-1 text-white/60">
+                  <Users size={12} />
+                  <span className="text-[10px] font-bold">1.2k joined</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <Link href="/matches" className="text-[11px] font-bold text-primary px-3 py-1 bg-primary/5 rounded-full active:opacity-50 transition-opacity">
+        </section>
+
+        {/* Quick Stats Grid - Native Mini Cards */}
+        <section className="px-6 mb-10 overflow-x-auto no-scrollbar flex gap-4">
+          <div className="flex-shrink-0 w-32 bg-white rounded-[24px] p-4 border border-foreground/[0.04] shadow-sm">
+            <div className="w-8 h-8 rounded-xl bg-accent/10 flex items-center justify-center mb-3">
+              <Trophy size={16} className="text-accent" />
+            </div>
+            <p className="text-[9px] font-bold text-foreground/30 uppercase tracking-widest mb-0.5">Wins</p>
+            <h4 className="text-xl font-bold text-foreground">124</h4>
+          </div>
+          <div className="flex-shrink-0 w-32 bg-white rounded-[24px] p-4 border border-foreground/[0.04] shadow-sm">
+            <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
+              <Zap size={16} className="text-primary" />
+            </div>
+            <p className="text-[9px] font-bold text-foreground/30 uppercase tracking-widest mb-0.5">Rank</p>
+            <h4 className="text-xl font-bold text-foreground">#42</h4>
+          </div>
+          <div className="flex-shrink-0 w-32 bg-white rounded-[24px] p-4 border border-foreground/[0.04] shadow-sm">
+            <div className="w-8 h-8 rounded-xl bg-secondary/10 flex items-center justify-center mb-3">
+              <TrendingUp size={16} className="text-secondary" />
+            </div>
+            <p className="text-[9px] font-bold text-foreground/30 uppercase tracking-widest mb-0.5">Growth</p>
+            <h4 className="text-xl font-bold text-foreground">+12%</h4>
+          </div>
+        </section>
+
+        {/* Native Section Header */}
+        <section className="px-6 pb-4 flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-heading text-foreground">Active Arena</h2>
+            <p className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest">Ongoing Battles</p>
+          </div>
+          <Link href="/matches" className="text-[10px] font-bold text-primary px-3 py-1 bg-primary/5 rounded-full active:opacity-50 transition-opacity uppercase tracking-wider">
             View All
           </Link>
         </section>
 
-        {/* Vertical Feed of Match Cards - Native Mobile Style */}
+        {/* List of Match Cards - Polished Native Style */}
         <section className="px-6 space-y-4">
           {featuredMatches.map((match, i) => (
             <motion.div
               key={match.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
-              whileTap={{ scale: 0.98 }}
-              className="bg-white rounded-3xl p-5 border border-foreground/[0.04] shadow-sm active:shadow-md transition-all flex items-center gap-4"
+              whileTap={{ scale: 0.96 }}
+              className="bg-white rounded-[28px] p-4 border border-foreground/[0.04] shadow-sm active:shadow-lg transition-all flex items-center gap-4"
             >
-              <div className="w-16 h-16 rounded-2xl bg-primary/5 flex items-center justify-center flex-shrink-0">
-                {match.status === 'live' ? (
-                  <div className="relative">
-                    <Play size={24} className="text-primary" fill="currentColor" />
-                    <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-accent rounded-full border-2 border-white animate-pulse" />
+              <div className="relative w-20 h-20 rounded-2xl bg-muted overflow-hidden flex-shrink-0">
+                 {match.status === 'live' ? (
+                  <div className="absolute inset-0 bg-primary/5 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                      <Play size={20} className="text-primary translate-x-0.5" fill="currentColor" />
+                    </div>
                   </div>
                 ) : (
-                  <Swords size={24} className="text-primary" />
+                  <div className="absolute inset-0 bg-foreground/5 flex items-center justify-center">
+                    <Swords size={24} className="text-foreground/20" />
+                  </div>
                 )}
+                <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded-md bg-white/90 backdrop-blur-md border border-white/50 shadow-sm flex items-center gap-1">
+                  <div className={`w-1 h-1 rounded-full ${match.status === 'live' ? 'bg-red-500 animate-pulse' : 'bg-foreground/30'}`} />
+                  <span className="text-[8px] font-bold uppercase tracking-tighter text-foreground/60">{match.status}</span>
+                </div>
               </div>
               
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded-md ${
-                    match.status === 'live' ? 'bg-primary text-white' : 'bg-foreground/5 text-foreground/40'
-                  }`}>
-                    {match.status}
-                  </span>
-                  <span className="text-[10px] text-foreground/30 font-bold">• {match.mode}</span>
-                </div>
-                <h3 className="text-base font-bold text-foreground truncate">{match.title}</h3>
-                <div className="flex items-center gap-3 mt-2">
-                  <div className="flex items-center gap-1">
-                    <Trophy size={12} className="text-accent" />
-                    <span className="text-xs font-bold text-foreground/60">₹{match.tournament?.prize_pool}</span>
+                <p className="text-[9px] font-bold text-foreground/30 uppercase tracking-[0.1em] mb-1">{match.mode} • Round 2</p>
+                <h3 className="text-base font-bold text-foreground truncate mb-2">{match.title}</h3>
+                
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-4 h-4 rounded-full bg-accent/20 flex items-center justify-center">
+                      <Trophy size={10} className="text-accent" />
+                    </div>
+                    <span className="text-[11px] font-bold text-foreground/70">₹{match.tournament?.prize_pool}</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Users size={12} className="text-foreground/20" />
-                    <span className="text-xs font-bold text-foreground/60">24/48</span>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-4 h-4 rounded-full bg-foreground/5 flex items-center justify-center">
+                      <Users size={10} className="text-foreground/40" />
+                    </div>
+                    <span className="text-[11px] font-bold text-foreground/40">24/48</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-col items-end gap-2">
-                <span className="text-[10px] font-bold text-foreground/20">ENTRY</span>
-                <span className="text-sm font-bold text-foreground">₹{match.tournament?.entry_fee}</span>
+              <div className="flex flex-col items-end justify-center gap-1 pl-2">
+                <span className="text-[8px] font-bold text-foreground/20 uppercase tracking-[0.2em]">Join</span>
+                <span className="text-lg font-bold text-primary">₹{match.tournament?.entry_fee}</span>
               </div>
             </motion.div>
           ))}
-        </section>
-
-        {/* Quick Actions Grid - Native App Pattern */}
-        <section className="px-6 pt-12">
-          <h2 className="text-xl font-heading text-foreground mb-4">Quick Stats</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white rounded-3xl p-6 border border-foreground/[0.04] shadow-sm">
-              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center mb-4">
-                <TrendingUp size={20} className="text-accent" />
-              </div>
-              <span className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest block mb-1">Total Wins</span>
-              <span className="text-2xl font-bold text-foreground">124</span>
-            </div>
-            <div className="bg-white rounded-3xl p-6 border border-foreground/[0.04] shadow-sm">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                <Award size={20} className="text-primary" />
-              </div>
-              <span className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest block mb-1">Pro Rank</span>
-              <span className="text-2xl font-bold text-foreground">#42</span>
-            </div>
-          </div>
         </section>
 
       </main>

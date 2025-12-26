@@ -1,18 +1,18 @@
 "use client";
 
 import { BottomNav } from "@/components/layout/BottomNav";
+import { TopHeader } from "@/components/layout/TopHeader";
 import { 
   ArrowUpRight, 
   ArrowDownLeft, 
-  History, 
   Plus, 
   Loader2, 
   Wallet as WalletIcon, 
-  Banknote, 
+  ChevronRight,
+  TrendingUp,
   CreditCard,
-  CheckCircle2,
-  AlertCircle,
-  ChevronRight
+  History,
+  Zap
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
@@ -21,11 +21,6 @@ import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-
-const txTypes = ["All", "Prize", "Deposit", "Withdrawal", "Bonus", "Fee"];
-const txStatuses = ["All", "Pending", "Completed", "Failed"];
 
 export default function WalletPage() {
   const { user, loading: authLoading } = useAuth();
@@ -34,21 +29,17 @@ export default function WalletPage() {
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
   
-  const [activeType, setActiveType] = useState("All");
-  const [activeStatus, setActiveStatus] = useState("All");
-
   const [isDepositOpen, setIsDepositOpen] = useState(false);
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
   
   const [depositAmount, setDepositAmount] = useState("");
   const [withdrawAmount, setWithdrawAmount] = useState("");
-  const [payoutMethod, setPayoutMethod] = useState("upi");
 
   useEffect(() => {
     if (user) {
       fetchWalletData();
     }
-  }, [user, activeType, activeStatus]);
+  }, [user]);
 
   const fetchWalletData = async () => {
     setLoading(true);
@@ -62,25 +53,17 @@ export default function WalletPage() {
       if (walletError) throw walletError;
       setWallet(walletData);
 
-      let query = supabase
+      const { data: txData, error: txError } = await supabase
         .from("transactions")
         .select("*")
         .eq("user_id", user!.id)
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .limit(20);
 
-      if (activeType !== "All") {
-        query = query.eq("type", activeType.toLowerCase());
-      }
-      if (activeStatus !== "All") {
-        query = query.eq("status", activeStatus.toLowerCase());
-      }
-
-      const { data: txData, error: txError } = await query;
       if (txError) throw txError;
       setTransactions(txData || []);
     } catch (error) {
       console.error("Error fetching wallet data:", error);
-      toast.error("Failed to sync wallet data");
     } finally {
       setLoading(false);
     }
@@ -100,7 +83,7 @@ export default function WalletPage() {
         amount,
         type: "deposit",
         status: "completed",
-        description: "Wallet Recharge",
+        description: "Recharge",
       });
 
       if (txError) throw txError;
@@ -115,12 +98,12 @@ export default function WalletPage() {
       
       if (walletError) throw walletError;
 
-      toast.success(`₹${amount} added successfully!`);
+      toast.success(`₹${amount} added!`);
       setIsDepositOpen(false);
       setDepositAmount("");
       fetchWalletData();
     } catch (error: any) {
-      toast.error(error.message || "Failed to process deposit");
+      toast.error("Failed to process deposit");
     } finally {
       setProcessing(false);
     }
@@ -129,7 +112,7 @@ export default function WalletPage() {
   const handleWithdraw = async () => {
     const amount = Number(withdrawAmount);
     if (!amount || amount < 100) {
-      toast.error(`Minimum withdrawal is ₹100`);
+      toast.error(`Min withdrawal ₹100`);
       return;
     }
     if (amount > (wallet?.balance || 0)) {
@@ -144,8 +127,7 @@ export default function WalletPage() {
         amount,
         type: "withdrawal",
         status: "pending",
-        description: `Withdrawal via ${payoutMethod.toUpperCase()}`,
-        metadata: { payout_method: payoutMethod }
+        description: `Withdrawal`,
       });
 
       if (txError) throw txError;
@@ -161,230 +143,197 @@ export default function WalletPage() {
       
       if (walletError) throw walletError;
 
-      toast.success(`Withdrawal request for ₹${amount} submitted!`);
+      toast.success(`Withdrawal requested!`);
       setIsWithdrawOpen(false);
       setWithdrawAmount("");
       fetchWalletData();
     } catch (error: any) {
-      toast.error(error.message || "Failed to process withdrawal");
+      toast.error("Failed to process withdrawal");
     } finally {
       setProcessing(false);
     }
   };
 
-  if (authLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <Loader2 className="w-8 h-8 animate-spin text-foreground" />
-      </div>
-    );
-  }
+  return (
+    <div className="min-h-screen bg-background">
+      <main className="pb-32">
+        <TopHeader />
 
-    return (
-    <main className="min-h-screen pb-32 bg-background relative overflow-x-hidden">
-      <div className="mesh-bg">
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] animate-blob" />
-        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
-      </div>
+        <div className="px-6 pt-8 space-y-8 max-w-lg mx-auto">
+          {/* Main Balance Card - Native App Style */}
+          <section>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="relative h-56 rounded-[40px] bg-primary overflow-hidden shadow-2xl shadow-primary/20 p-8 flex flex-col justify-between"
+            >
+              <div className="absolute top-0 right-0 p-8 opacity-20">
+                <WalletIcon size={120} className="text-white" />
+              </div>
+              
+              <div className="relative z-10">
+                <p className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] mb-1">Available Balance</p>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl font-bold text-white/50">₹</span>
+                  <h2 className="text-5xl font-bold text-white tracking-tighter">
+                    {(wallet?.balance || 0).toLocaleString()}
+                  </h2>
+                </div>
+              </div>
 
-      {/* Header */}
-      <div className="px-6 pt-12 pb-6 bg-white/40 backdrop-blur-xl border-b border-white/20 sticky top-0 z-30 shadow-xl">
-        <h1 className="text-3xl font-heading text-black">Iron Vault</h1>
-        <p className="text-sm text-zinc-500 font-serif">Manage your spoils, recharge your balance, and track transactions.</p>
-      </div>
+              <div className="relative z-10 grid grid-cols-2 gap-4 pt-6 border-t border-white/10">
+                <div>
+                  <p className="text-[8px] font-bold text-white/30 uppercase tracking-widest mb-1">Earnings</p>
+                  <p className="text-lg font-bold text-white">₹{(wallet?.lifetime_earnings || 0).toLocaleString()}</p>
+                </div>
+                <div>
+                  <p className="text-[8px] font-bold text-white/30 uppercase tracking-widest mb-1">Pending</p>
+                  <p className="text-lg font-bold text-white/60">₹{(wallet?.pending_withdrawals || 0).toLocaleString()}</p>
+                </div>
+              </div>
+            </motion.div>
+          </section>
 
-      <div className="px-6 pt-8 relative z-10 space-y-8 max-w-2xl mx-auto">
-        {/* Wallet Summary Card */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-white/60 backdrop-blur-xl border border-primary/10 rounded-[3rem] p-8 md:p-12 shadow-2xl relative overflow-hidden"
-        >
-          <div className="relative z-10 space-y-8">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-[10px] font-bold text-primary/40 uppercase tracking-[0.2em] mb-2">Available Balance</p>
-                <h2 className="text-5xl md:text-6xl font-heading text-primary tracking-tighter flex items-center gap-2">
-                  <span className="text-3xl text-primary/30">₹</span>
-                  {(wallet?.balance || 0).toLocaleString()}
-                </h2>
-              </div>
-              <div className="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center shadow-xl">
-                <WalletIcon size={28} />
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-8 pt-8 border-t border-primary/5">
-              <div className="space-y-1">
-                <p className="text-[10px] text-primary/40 font-bold uppercase tracking-wider">Earnings</p>
-                <p className="font-heading text-2xl text-foreground">₹{(wallet?.lifetime_earnings || 0).toLocaleString()}</p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-[10px] text-primary/40 font-bold uppercase tracking-wider">Pending</p>
-                <p className="font-heading text-2xl text-foreground/40 italic">₹{(wallet?.pending_withdrawals || 0).toLocaleString()}</p>
-              </div>
-            </div>
-          </div>
-            {/* Subtle background details inside card */}
-            <div className="absolute top-[-20%] right-[-20%] w-[60%] h-[60%] bg-primary/10 blur-[80px] rounded-full" />
-          </motion.div>
-    
-          {/* Action Buttons */}
-          <div className="grid grid-cols-2 gap-4">
-            <button 
-              className="h-20 flex items-center justify-center gap-3 bg-white/60 backdrop-blur-xl border border-primary/10 rounded-full font-serif text-lg text-primary shadow-xl hover:bg-white/80 transition-all active:scale-95"
+          {/* Quick Actions - Native Grid */}
+          <section className="grid grid-cols-2 gap-4">
+            <motion.button 
+              whileTap={{ scale: 0.95 }}
               onClick={() => setIsDepositOpen(true)}
+              className="bg-white rounded-[32px] py-6 flex flex-col items-center gap-2 border border-foreground/[0.04] shadow-sm active:shadow-md transition-all"
             >
-              <Plus size={20} />
-              Add Funds
-            </button>
-            <button 
-              className="h-20 flex items-center justify-center gap-3 bg-primary text-white rounded-full font-serif text-lg shadow-xl hover:bg-primary/90 transition-all active:scale-95"
-              onClick={() => setIsWithdrawOpen(true)}
-            >
-              <ArrowDownLeft size={20} />
-              Withdraw
-            </button>
-          </div>
-  
-        {/* Transaction History Section */}
-        <div className="space-y-6">
-          <div className="flex justify-between items-center px-2">
-            <h3 className="text-2xl font-heading text-foreground">Ledger</h3>
-            <div className="flex gap-2">
-              <Select value={activeType} onValueChange={setActiveType}>
-                <SelectTrigger className="w-[120px] h-10 text-[10px] font-bold rounded-full border-primary/10 bg-white/60 backdrop-blur-xl shadow-lg">
-                  <SelectValue placeholder="Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {txTypes.map(t => <SelectItem key={t} value={t} className="text-xs">{t}</SelectItem>)}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-  
-          <div className="space-y-4">
-            {loading ? (
-              <div className="py-20 flex flex-col items-center gap-4">
-                <Loader2 className="w-8 h-8 animate-spin text-primary/30" />
-                <p className="text-xs text-muted-foreground font-serif italic">Updating records...</p>
+              <div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
+                <Plus size={20} />
               </div>
-            ) : transactions.length > 0 ? (
-              <AnimatePresence mode="popLayout">
-                {transactions.map((tx, i) => (
+              <span className="text-[10px] font-bold text-foreground/40 uppercase tracking-wider">Deposit</span>
+            </motion.button>
+            <motion.button 
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsWithdrawOpen(true)}
+              className="bg-white rounded-[32px] py-6 flex flex-col items-center gap-2 border border-foreground/[0.04] shadow-sm active:shadow-md transition-all"
+            >
+              <div className="w-10 h-10 rounded-2xl bg-accent/10 flex items-center justify-center text-accent">
+                <ArrowDownLeft size={20} />
+              </div>
+              <span className="text-[10px] font-bold text-foreground/40 uppercase tracking-wider">Withdraw</span>
+            </motion.button>
+          </section>
+
+          {/* Transaction History - Native List */}
+          <section className="space-y-4">
+            <div className="flex items-center justify-between px-2">
+              <h3 className="text-lg font-bold text-foreground">Activity</h3>
+              <History size={16} className="text-foreground/20" />
+            </div>
+
+            <div className="space-y-3">
+              {loading ? (
+                <div className="flex justify-center py-12">
+                  <Loader2 className="w-6 h-6 animate-spin text-primary/30" />
+                </div>
+              ) : transactions.length > 0 ? (
+                transactions.map((tx, i) => (
                   <motion.div 
                     key={tx.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className="bg-white/60 backdrop-blur-xl rounded-[2rem] p-5 flex justify-between items-center border border-primary/5 shadow-xl group hover:shadow-2xl transition-all"
+                    className="bg-white p-4 rounded-[28px] flex items-center justify-between border border-foreground/[0.04] shadow-sm"
                   >
                     <div className="flex items-center gap-4">
-                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
-                        tx.type === 'deposit' || tx.type === 'prize' ? 'bg-primary/5 text-primary' : 'bg-muted/50 text-muted-foreground'
+                      <div className={`w-10 h-10 rounded-2xl flex items-center justify-center ${
+                        tx.type === 'deposit' || tx.type === 'prize' ? 'bg-primary/5 text-primary' : 'bg-foreground/[0.03] text-foreground/40'
                       }`}>
-                        {tx.type === 'deposit' ? <Plus size={20} /> : tx.type === 'withdrawal' ? <ArrowDownLeft size={20} /> : <Banknote size={20} />}
+                        {tx.type === 'deposit' ? <Plus size={18} /> : tx.type === 'withdrawal' ? <ArrowDownLeft size={18} /> : <TrendingUp size={18} />}
                       </div>
                       <div>
-                        <h4 className="font-serif text-sm font-bold text-foreground capitalize leading-tight">{tx.description || tx.type}</h4>
-                        <p className="text-[10px] text-foreground/30 font-bold uppercase tracking-wider mt-1">
+                        <h4 className="text-sm font-bold text-foreground capitalize leading-none mb-1">{tx.description || tx.type}</h4>
+                        <p className="text-[9px] font-bold text-foreground/20 uppercase tracking-wider">
                           {new Date(tx.created_at).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className={`font-heading text-xl ${
+                      <p className={`text-base font-bold ${
                         tx.type === 'deposit' || tx.type === 'prize' ? 'text-primary' : 'text-foreground/40'
                       }`}>
-                        {tx.type === 'deposit' || tx.type === 'prize' ? '+' : '-'}₹{Number(tx.amount).toLocaleString()}
+                        {tx.type === 'deposit' || tx.type === 'prize' ? '+' : '-'}₹{tx.amount}
                       </p>
-                      <Badge className={`px-2 py-0 h-4 text-[8px] font-black uppercase ${
-                        tx.status === 'completed' ? 'bg-primary/10 text-primary' : 'bg-muted/50 text-muted-foreground'
-                      } border-none rounded-full`}>
+                      <span className={`text-[8px] font-bold uppercase tracking-widest ${
+                        tx.status === 'completed' ? 'text-primary/40' : 'text-accent'
+                      }`}>
                         {tx.status}
-                      </Badge>
+                      </span>
                     </div>
                   </motion.div>
-                ))}
-              </AnimatePresence>
-            ) : (
-              <div className="bg-white/60 backdrop-blur-xl p-16 rounded-[3rem] border border-primary/10 text-center space-y-4 shadow-xl">
-                <div className="w-20 h-20 bg-primary/5 rounded-full flex items-center justify-center mx-auto text-primary/20">
-                  <History size={36} />
+                ))
+              ) : (
+                <div className="text-center py-12 bg-white rounded-[32px] border border-foreground/[0.04]">
+                  <p className="text-xs text-foreground/20 font-bold uppercase tracking-widest">No transactions yet</p>
                 </div>
-                <h3 className="text-lg font-heading text-foreground">No Records</h3>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          </section>
         </div>
-      </div>
-  
-      {/* Modals Styled Glassy */}
+      </main>
+
+      {/* Styled Modals */}
       <Dialog open={isDepositOpen} onOpenChange={setIsDepositOpen}>
-        <DialogContent className="rounded-[3rem] border-none shadow-2xl p-0 overflow-hidden bg-white/90 backdrop-blur-xl max-w-[90vw] sm:max-w-[420px]">
-          <div className="bg-primary p-10 text-white relative overflow-hidden">
-            <DialogHeader>
-              <DialogTitle className="text-3xl font-heading">Vault Recharge</DialogTitle>
-              <DialogDescription className="text-white/60 font-serif italic">Fortify your balance with a quick recharge.</DialogDescription>
-            </DialogHeader>
-            <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 blur-[40px] rounded-full" />
+        <DialogContent className="p-0 border-none bg-background rounded-[40px] overflow-hidden max-w-[90vw] sm:max-w-[400px]">
+          <div className="bg-primary p-8 text-white">
+            <DialogTitle className="text-2xl font-bold">Add Funds</DialogTitle>
+            <DialogDescription className="text-white/60 text-xs font-medium">Recharge your arena balance instantly.</DialogDescription>
           </div>
-          <div className="p-10 space-y-8">
-            <div className="space-y-4">
-              <label className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest ml-2">Amount (₹)</label>
+          <div className="p-8 space-y-6">
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-foreground/20 uppercase tracking-widest ml-1">Amount (₹)</label>
               <Input 
                 type="number" 
-                placeholder="500" 
-                className="h-20 px-8 rounded-[2rem] border-primary/10 bg-white/50 shadow-inner text-3xl font-heading text-primary focus:ring-primary"
+                placeholder="Enter amount" 
+                className="h-14 rounded-2xl border-foreground/[0.06] bg-foreground/[0.02] text-xl font-bold px-6"
                 value={depositAmount}
                 onChange={(e) => setDepositAmount(e.target.value)}
               />
             </div>
-              <button 
-                className="w-full h-20 bg-primary text-white rounded-full font-serif text-lg shadow-2xl hover:bg-primary/90 transition-all active:scale-95 flex items-center justify-center gap-3"
-                onClick={handleDeposit}
-                disabled={processing}
-              >
-                {processing ? <Loader2 className="w-6 h-6 animate-spin" /> : "Confirm Recharge"}
-              </button>
+            <button 
+              onClick={handleDeposit}
+              disabled={processing}
+              className="w-full py-4 bg-primary text-white rounded-2xl text-xs font-bold uppercase tracking-[0.2em] shadow-lg shadow-primary/20 active:scale-95 transition-all"
+            >
+              {processing ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Confirm Deposit"}
+            </button>
           </div>
         </DialogContent>
       </Dialog>
-  
+
       <Dialog open={isWithdrawOpen} onOpenChange={setIsWithdrawOpen}>
-        <DialogContent className="rounded-[3rem] border-none shadow-2xl p-0 overflow-hidden bg-white/90 backdrop-blur-xl max-w-[90vw] sm:max-w-[420px]">
-          <div className="bg-primary p-10 text-white relative overflow-hidden">
-            <DialogHeader>
-              <DialogTitle className="text-3xl font-heading">Secure Payout</DialogTitle>
-              <DialogDescription className="text-white/60 font-serif italic">Transfer your dominance into real rewards.</DialogDescription>
-            </DialogHeader>
-            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-white/10 blur-[40px] rounded-full" />
+        <DialogContent className="p-0 border-none bg-background rounded-[40px] overflow-hidden max-w-[90vw] sm:max-w-[400px]">
+          <div className="bg-accent p-8 text-foreground">
+            <DialogTitle className="text-2xl font-bold">Withdraw</DialogTitle>
+            <DialogDescription className="text-foreground/40 text-xs font-medium">Transfer your winnings to your account.</DialogDescription>
           </div>
-          <div className="p-10 space-y-8">
-            <div className="space-y-4">
-              <label className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest ml-2">Withdraw Amount</label>
+          <div className="p-8 space-y-6">
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-foreground/20 uppercase tracking-widest ml-1">Amount (₹)</label>
               <Input 
                 type="number" 
-                placeholder="₹100 min" 
-                className="h-20 px-8 rounded-[2rem] border-primary/10 bg-white/50 shadow-inner text-3xl font-heading text-primary focus:ring-primary"
+                placeholder="Min ₹100" 
+                className="h-14 rounded-2xl border-foreground/[0.06] bg-foreground/[0.02] text-xl font-bold px-6"
                 value={withdrawAmount}
                 onChange={(e) => setWithdrawAmount(e.target.value)}
               />
-              <p className="text-[10px] text-foreground/40 text-center font-bold">Limit: ₹{(wallet?.balance || 0).toLocaleString()} available</p>
             </div>
-              <button 
-                className="w-full h-20 bg-primary text-white rounded-full font-serif text-lg shadow-2xl hover:bg-primary/90 transition-all active:scale-95 flex items-center justify-center gap-3"
-                onClick={handleWithdraw}
-                disabled={processing}
-              >
-                {processing ? <Loader2 className="w-6 h-6 animate-spin" /> : "Initiate Transfer"}
-              </button>
+            <button 
+              onClick={handleWithdraw}
+              disabled={processing}
+              className="w-full py-4 bg-accent text-foreground rounded-2xl text-xs font-bold uppercase tracking-[0.2em] shadow-lg shadow-accent/20 active:scale-95 transition-all"
+            >
+              {processing ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Request Payout"}
+            </button>
           </div>
         </DialogContent>
       </Dialog>
 
-
       <BottomNav />
-    </main>
+    </div>
   );
 }
