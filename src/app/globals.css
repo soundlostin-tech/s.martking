@@ -60,79 +60,97 @@
 
 :root {
   --radius: 1.5rem;
-  --background: #000000; /* black */
-    --foreground: #ffe169; /* royal-gold */
-    --card: rgba(26, 26, 26, 0.8);
-    --card-foreground: #ffe169;
-    --popover: rgba(26, 26, 26, 0.9);
-    --popover-foreground: #ffe169;
-    --primary: #ffe169; /* royal-gold */
-    --primary-foreground: #000000;
-    --secondary: #1a1a1a;
-    --secondary-foreground: #ffe169;
-    --muted: #1a1a1a;
-    --muted-foreground: rgba(255, 225, 105, 0.6);
-      --accent: #926c15; /* golden-earth */
-      --accent-foreground: #ffe169;
-      --destructive: oklch(0.577 0.245 27.325);
-      --border: rgba(255, 225, 105, 0.1);
-      --input: rgba(255, 225, 105, 0.1);
-      --ring: #ffe169;
-      --chart-1: #ffe169;
-      --chart-2: #dbb42c;
-      --chart-3: #b69121;
-      --chart-4: #926c15;
-      --chart-5: #76520e;
-      --sidebar: #000000;
-      --sidebar-foreground: #ffe169;
-      --sidebar-primary: #ffe169;
-      --sidebar-primary-foreground: #000000;
-      --sidebar-accent: rgba(255, 225, 105, 0.05);
-      --sidebar-accent-foreground: #ffe169;
-      --sidebar-border: rgba(255, 225, 105, 0.05);
-      --sidebar-ring: #ffe169;
+  --background: #fdfcf0; /* Cream background */
+  --foreground: #1a1a1a; /* Dark charcoal for text */
+  --card: rgba(255, 255, 255, 0.6);
+  --card-foreground: #1a1a1a;
+  --popover: rgba(255, 255, 255, 0.9);
+  --popover-foreground: #1a1a1a;
+  --primary: #b69121; /* Dark Goldenrod */
+  --primary-foreground: #ffffff;
+  --secondary: #f5f3e1;
+  --secondary-foreground: #1a1a1a;
+  --muted: #f5f3e1;
+  --muted-foreground: rgba(26, 26, 26, 0.6);
+  --accent: #926c15; /* golden-earth */
+  --accent-foreground: #ffffff;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: rgba(182, 145, 33, 0.2);
+  --input: rgba(182, 145, 33, 0.1);
+  --ring: #b69121;
+  --chart-1: #ffe169;
+  --chart-2: #dbb42c;
+  --chart-3: #b69121;
+  --chart-4: #926c15;
+  --chart-5: #76520e;
+  --sidebar: #fdfcf0;
+  --sidebar-foreground: #1a1a1a;
+  --sidebar-primary: #b69121;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(182, 145, 33, 0.05);
+  --sidebar-accent-foreground: #1a1a1a;
+  --sidebar-border: rgba(182, 145, 33, 0.1);
+  --sidebar-ring: #b69121;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-    body {
-      @apply bg-background text-foreground font-serif selection:bg-royal-gold selection:text-black;
-    }
+  body {
+    @apply bg-background text-foreground font-serif selection:bg-royal-gold selection:text-black;
+    background-image: 
+      radial-gradient(at 0% 0%, hsla(48, 95%, 85%, 1) 0px, transparent 50%),
+      radial-gradient(at 50% 0%, hsla(45, 93%, 90%, 1) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(48, 95%, 85%, 1) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsla(48, 95%, 85%, 1) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, hsla(48, 95%, 85%, 1) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-normal tracking-tight;
   }
 }
 
-/* Hide Next.js error overlay portal */
-nextjs-portal {
-  display: none !important;
+.mesh-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  background-color: var(--background);
+}
+
+.mesh-bg::before {
+  content: "";
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  top: -25%;
+  left: -25%;
+  background: radial-gradient(circle at center, transparent 0%, var(--background) 70%),
+              url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(10%, -10%) scale(1.2); }
+  66% { transform: translate(-5%, 5%) scale(0.8); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+.animate-blob {
+  animation: float 20s infinite alternate ease-in-out;
+  filter: blur(80px);
+  opacity: 0.5;
 }
 
 .glass {
-  @apply bg-card/30 backdrop-blur-xl border border-royal-gold/10 shadow-xl;
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-    body {
-      @apply bg-background text-foreground font-serif selection:bg-black selection:text-royal-gold;
-    }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-normal tracking-tight;
-  }
-}
-
-/* Hide Next.js error overlay portal */
-nextjs-portal {
-  display: none !important;
-}
-
-.glass {
-  @apply bg-background/30 backdrop-blur-xl border border-dark-goldenrod/20 shadow-xl;
+  @apply bg-white/40 backdrop-blur-xl border border-dark-goldenrod/20 shadow-xl;
 }
 
 @keyframes fadeIn {

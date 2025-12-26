@@ -16,44 +16,45 @@ const navItems = [
 export function BottomNav() {
   const pathname = usePathname();
 
-  return (
-    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-lg bg-card/80 backdrop-blur-xl border border-royal-gold/10 shadow-[0_20px_50px_rgba(255,225,105,0.05)] rounded-[2.5rem] px-4 overflow-hidden">
-      <div className="flex justify-around items-center h-22 py-2">
-        {navItems.map((item) => {
-          const isActive = pathname === item.href;
-          const Icon = item.icon;
-          
-          return (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="relative flex flex-col items-center justify-center flex-1 h-full outline-none"
-            >
-              <div className="relative flex flex-col items-center gap-1.5 transition-all duration-300 py-3">
-                  <motion.div
-                    animate={{ 
-                      scale: isActive ? 1.15 : 1,
-                      y: isActive ? -2 : 0 
-                    }}
-                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                      className={`relative z-10 transition-colors ${
-                        isActive ? "text-foreground" : "text-foreground/30 hover:text-foreground/60"
-                      }`}
-                  >
-                    <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
-                  </motion.div>
-
-                  <span className={`text-[9px] font-bold uppercase tracking-[0.2em] transition-colors ${
-                    isActive ? "text-foreground" : "text-foreground/20"
-                  }`}>
-                    {item.label}
-                  </span>
-              </div>
-              
-            </Link>
-          );
-        })}
+    return (
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-lg bg-white/70 backdrop-blur-2xl border border-primary/10 shadow-[0_20px_50px_rgba(182,145,33,0.1)] rounded-[2.5rem] px-4 overflow-hidden">
+        <div className="flex justify-around items-center h-22 py-2">
+          {navItems.map((item) => {
+            const isActive = pathname === item.href;
+            const Icon = item.icon;
+            
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="relative flex flex-col items-center justify-center flex-1 h-full outline-none"
+              >
+                <div className="relative flex flex-col items-center gap-1.5 transition-all duration-300 py-3">
+                    <motion.div
+                      animate={{ 
+                        scale: isActive ? 1.15 : 1,
+                        y: isActive ? -2 : 0 
+                      }}
+                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                        className={`relative z-10 transition-colors ${
+                          isActive ? "text-primary" : "text-foreground/20 hover:text-foreground/40"
+                        }`}
+                    >
+                      <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
+                    </motion.div>
+  
+                    <span className={`text-[9px] font-bold uppercase tracking-[0.2em] transition-colors ${
+                      isActive ? "text-primary" : "text-foreground/10"
+                    }`}>
+                      {item.label}
+                    </span>
+                </div>
+                
+              </Link>
+            );
+          })}
+        </div>
       </div>
-    </div>
-  );
+    );
+
 }

@@ -99,10 +99,10 @@ export default function MatchesPage() {
     }
   };
 
-  const getStatusColor = (status: string) => {
+    const getStatusColor = (status: string) => {
     switch (status) {
-      case "live": return "bg-destructive text-destructive-foreground";
-      case "upcoming": return "bg-primary text-primary-foreground";
+      case "live": return "bg-destructive/10 text-destructive";
+      case "upcoming": return "bg-primary text-white";
       case "completed": return "bg-muted text-muted-foreground";
       default: return "bg-muted text-muted-foreground";
     }
@@ -111,30 +111,35 @@ export default function MatchesPage() {
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <Loader2 className="w-8 h-8 animate-spin text-foreground" />
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen pb-32 bg-background">
+    <main className="min-h-screen pb-32 bg-background relative overflow-x-hidden">
+      <div className="mesh-bg">
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-royal-gold/20 rounded-full blur-[120px] animate-blob" />
+        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-dark-goldenrod/10 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
+      </div>
+
       <HeroSection 
         title="Battle Arena" 
         subtitle="The stage is set. Claim your glory in the upcoming tournaments."
-        className="bg-background"
+        className="bg-transparent relative z-10"
       />
 
             <div className="px-6 -mt-12 relative z-20 space-y-10 max-w-2xl mx-auto">
               {/* Filter Controls */}
-              <div className="flex bg-card/50 backdrop-blur-xl p-2 rounded-full border border-royal-gold/10 overflow-x-auto no-scrollbar gap-2 shadow-2xl">
+              <div className="flex bg-white/60 backdrop-blur-xl p-2 rounded-full border border-primary/10 overflow-x-auto no-scrollbar gap-2 shadow-2xl">
                 {filters.map((filter) => (
                   <button
                     key={filter}
                     onClick={() => setActiveFilter(filter)}
                     className={`px-8 py-4 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap ${
                       activeFilter === filter 
-                        ? "bg-primary text-primary-foreground shadow-2xl scale-105" 
-                        : "text-foreground/40 hover:text-foreground hover:bg-white/5"
+                        ? "bg-primary text-white shadow-2xl scale-105" 
+                        : "text-foreground/40 hover:text-foreground hover:bg-white/40"
                     }`}
                   >
                     {filter}
@@ -144,13 +149,13 @@ export default function MatchesPage() {
   
               {/* Search Bar */}
               <div className="relative group">
-                <Search className="absolute left-8 top-1/2 -translate-y-1/2 text-foreground/20 group-focus-within:text-foreground transition-all group-focus-within:scale-110" size={20} />
+                <Search className="absolute left-8 top-1/2 -translate-y-1/2 text-primary/30 group-focus-within:text-primary transition-all group-focus-within:scale-110" size={20} />
                 <input 
                   type="text" 
                   placeholder="Search tournament..." 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-card border border-royal-gold/10 rounded-[2.5rem] py-8 pl-20 pr-10 text-xs focus:outline-none focus:ring-8 focus:ring-royal-gold/5 transition-all shadow-2xl font-bold uppercase tracking-[0.2em] placeholder:text-foreground/10"
+                  className="w-full bg-white/60 backdrop-blur-xl border border-primary/10 rounded-[2.5rem] py-8 pl-20 pr-10 text-xs focus:outline-none focus:ring-8 focus:ring-primary/5 transition-all shadow-2xl font-bold uppercase tracking-[0.2em] placeholder:text-foreground/20"
                 />
               </div>
 
@@ -159,7 +164,7 @@ export default function MatchesPage() {
           <div className="grid grid-cols-1 gap-8">
             {loading ? (
               <div className="flex flex-col items-center justify-center py-20 gap-4">
-                <Loader2 className="w-10 h-10 animate-spin text-muted" />
+                <Loader2 className="w-10 h-10 animate-spin text-primary/30" />
                 <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Awaiting orders...</p>
               </div>
             ) : matches.length > 0 ? (
@@ -171,10 +176,10 @@ export default function MatchesPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ delay: index * 0.05 }}
-                    className="bg-black rounded-[2.5rem] p-8 shadow-2xl overflow-hidden group relative"
+                    className="bg-white/60 backdrop-blur-xl rounded-[2.5rem] p-8 shadow-2xl overflow-hidden group relative border border-primary/5"
                   >
                     {/* Radial Glows */}
-                    <div className="absolute inset-0 opacity-20 pointer-events-none">
+                    <div className="absolute inset-0 opacity-10 pointer-events-none">
                       <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-mustard blur-[120px] rounded-full" />
                       <div className="absolute bottom-[-20%] right-[-10%] w-[80%] h-[80%] bg-dark-goldenrod blur-[120px] rounded-full" />
                     </div>
@@ -182,14 +187,14 @@ export default function MatchesPage() {
                     <div className="relative z-10">
                       <div className="flex justify-between items-start mb-8">
                         <div className="flex items-center gap-5">
-                          <div className={`w-16 h-16 rounded-2xl flex items-center justify-center border border-royal-gold/5 ${
-                            match.status === 'live' ? 'bg-destructive/10 text-destructive' : 'bg-royal-gold/5 text-royal-gold'
+                          <div className={`w-16 h-16 rounded-2xl flex items-center justify-center border border-primary/5 ${
+                            match.status === 'live' ? 'bg-destructive/10 text-destructive' : 'bg-primary/5 text-primary'
                           }`}>
                             {match.status === 'live' ? <Play size={28} fill="currentColor" /> : <Swords size={28} />}
                           </div>
                           <div className="space-y-1">
-                            <h3 className="font-heading text-2xl leading-tight text-royal-gold">{match.title}</h3>
-                            <p className="text-[10px] text-royal-gold/40 font-bold uppercase tracking-[0.3em]">{match.tournament?.title}</p>
+                            <h3 className="font-heading text-2xl leading-tight text-primary">{match.title}</h3>
+                            <p className="text-[10px] text-foreground/30 font-bold uppercase tracking-[0.3em]">{match.tournament?.title}</p>
                           </div>
                         </div>
                         <Badge className={`${getStatusColor(match.status)} rounded-full text-[10px] px-4 py-1.5 font-bold border-none tracking-widest`}>
@@ -198,34 +203,34 @@ export default function MatchesPage() {
                       </div>
 
                       <div className="grid grid-cols-2 gap-5 mb-8">
-                        <div className="bg-royal-gold/5 rounded-3xl p-5 border border-royal-gold/5">
-                          <div className="flex items-center gap-3 text-royal-gold/40 mb-3">
+                        <div className="bg-primary/[0.03] rounded-3xl p-5 border border-primary/5">
+                          <div className="flex items-center gap-3 text-foreground/30 mb-3">
                             <Calendar size={14} />
                             <span className="text-[10px] font-bold uppercase tracking-widest">Schedule</span>
                           </div>
-                          <p className="text-sm font-serif italic text-royal-gold/90">
+                          <p className="text-sm font-serif italic text-foreground/80">
                             {match.start_time ? new Date(match.start_time).toLocaleDateString() : 'TBD'} @ {match.start_time ? new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'TBD'}
                           </p>
                         </div>
-                        <div className="bg-royal-gold/5 rounded-3xl p-5 border border-royal-gold/5">
-                          <div className="flex items-center gap-3 text-royal-gold/40 mb-3">
+                        <div className="bg-primary/[0.03] rounded-3xl p-5 border border-primary/5">
+                          <div className="flex items-center gap-3 text-foreground/30 mb-3">
                             <Users size={14} />
                             <span className="text-[10px] font-bold uppercase tracking-widest">Configuration</span>
                           </div>
-                          <p className="text-sm font-serif italic text-royal-gold/90">{match.mode} • {match.map || 'Bermuda'}</p>
+                          <p className="text-sm font-serif italic text-foreground/80">{match.mode} • {match.map || 'Bermuda'}</p>
                         </div>
                       </div>
 
-                      <div className="pt-8 border-t border-royal-gold/5 flex items-center justify-between gap-5">
+                      <div className="pt-8 border-t border-primary/5 flex items-center justify-between gap-5">
                         {match.status === "upcoming" ? (
                           <>
-                            <button className="flex-1 py-5 px-8 rounded-2xl text-[10px] font-bold uppercase tracking-widest text-royal-gold/40 hover:text-royal-gold transition-colors border border-royal-gold/5">
+                            <button className="flex-1 py-5 px-8 rounded-2xl text-[10px] font-bold uppercase tracking-widest text-foreground/30 hover:text-primary transition-colors border border-primary/5">
                               Details
                             </button>
                             <button 
                               onClick={() => handleJoinMatch(match.tournament_id, match.id)}
                               disabled={joining === match.id}
-                              className="flex-[2] bg-royal-gold text-black py-5 px-8 rounded-2xl text-[11px] font-bold uppercase tracking-widest hover:bg-mustard transition-all shadow-xl flex items-center justify-center gap-3"
+                              className="flex-[2] bg-primary text-white py-5 px-8 rounded-2xl text-[11px] font-bold uppercase tracking-widest hover:bg-golden-earth transition-all shadow-xl flex items-center justify-center gap-3"
                             >
                               {joining === match.id ? <Loader2 className="w-4 h-4 animate-spin" /> : "RESERVE SLOT"}
                             </button>
@@ -233,7 +238,7 @@ export default function MatchesPage() {
                         ) : (
                           <Link href={match.status === 'live' ? `/live?matchId=${match.id}` : '#'} className="w-full">
                             <button className={`w-full py-5 px-8 rounded-2xl text-[11px] font-bold uppercase tracking-widest transition-all shadow-xl flex items-center justify-center gap-3 ${
-                              match.status === 'live' ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-destructive/20' : 'bg-royal-gold/5 text-royal-gold/40'
+                              match.status === 'live' ? 'bg-destructive text-white hover:bg-destructive/90 shadow-destructive/20' : 'bg-primary/5 text-foreground/30'
                             }`}>
                               {match.status === 'live' ? <><Play size={18} fill="currentColor" /> WATCH ARENA</> : "VIEW RESULTS"}
                             </button>
@@ -248,10 +253,10 @@ export default function MatchesPage() {
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="bg-card p-20 rounded-[3.5rem] border border-royal-gold/10 text-center space-y-8 shadow-2xl"
+                  className="bg-white/60 backdrop-blur-xl p-20 rounded-[3.5rem] border border-primary/10 text-center space-y-8 shadow-2xl"
                 >
-                  <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mx-auto">
-                    <Swords size={48} className="text-royal-gold/20" />
+                  <div className="w-24 h-24 bg-primary/5 rounded-full flex items-center justify-center mx-auto">
+                    <Swords size={48} className="text-primary/20" />
                   </div>
                   <div className="space-y-3">
                     <h3 className="text-3xl font-heading text-foreground uppercase tracking-tight">Arena is Quiet</h3>
@@ -267,6 +272,7 @@ export default function MatchesPage() {
               )}
           </div>
         </div>
+
 
       <BottomNav />
     </main>
