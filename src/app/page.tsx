@@ -98,11 +98,11 @@ export default function Home() {
                 }}
                 className={`relative p-1 rounded-full cursor-pointer transition-transform hover:scale-110 ${
                   stories.some(s => s.user_id === user.id) 
-                    ? 'bg-gradient-to-tr from-olive-bark via-dark-goldenrod to-royal-gold p-[2px]' 
+                    ? 'bg-gradient-to-tr from-black via-dark-goldenrod to-royal-gold p-[2px]' 
                     : 'bg-muted'
                 }`}
               >
-                <div className="w-20 h-20 rounded-full bg-olive-bark border border-royal-gold/10 flex items-center justify-center overflow-hidden shadow-2xl">
+                <div className="w-20 h-20 rounded-full bg-black border border-royal-gold/10 flex items-center justify-center overflow-hidden shadow-2xl">
                   {user.user_metadata?.avatar_url ? (
                     <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover opacity-80" />
                   ) : (
@@ -112,8 +112,8 @@ export default function Home() {
                   <div className="absolute inset-0 bg-gradient-to-b from-royal-gold/5 to-transparent pointer-events-none" />
                 </div>
                   {!stories.some(s => s.user_id === user.id) && (
-                    <div className="absolute bottom-1 right-1 w-6 h-6 bg-royal-gold border-2 border-olive-bark rounded-full flex items-center justify-center shadow-lg">
-                      <Plus size={14} className="text-olive-bark" />
+                    <div className="absolute bottom-1 right-1 w-6 h-6 bg-royal-gold border-2 border-black rounded-full flex items-center justify-center shadow-lg">
+                      <Plus size={14} className="text-black" />
                     </div>
                   )}
               </div>
@@ -135,9 +135,9 @@ export default function Home() {
                   className={`flex-shrink-0 flex flex-col items-center gap-3 group ${hasStory ? 'cursor-pointer' : ''}`}
                 >
                   <div className={`relative p-[2px] rounded-full transition-transform group-hover:scale-110 ${
-                    hasStory ? 'bg-gradient-to-tr from-olive-bark via-dark-goldenrod to-royal-gold' : 'bg-transparent border border-muted'
+                    hasStory ? 'bg-gradient-to-tr from-black via-dark-goldenrod to-royal-gold' : 'bg-transparent border border-muted'
                   }`}>
-                    <div className="w-20 h-20 rounded-full bg-olive-bark border border-royal-gold/10 flex items-center justify-center overflow-hidden shadow-2xl">
+                    <div className="w-20 h-20 rounded-full bg-black border border-royal-gold/10 flex items-center justify-center overflow-hidden shadow-2xl">
                       {profile.avatar_url ? (
                         <img src={profile.avatar_url} alt={profile.full_name} className="w-full h-full object-cover opacity-80" />
                       ) : (
@@ -146,7 +146,7 @@ export default function Home() {
                       <div className="absolute inset-0 bg-gradient-to-b from-royal-gold/5 to-transparent pointer-events-none" />
                     </div>
                     {profile.status === 'Active' && (
-                      <div className="absolute bottom-1 right-1 w-5 h-5 bg-royal-gold border-2 border-olive-bark rounded-full shadow-md" />
+                      <div className="absolute bottom-1 right-1 w-5 h-5 bg-royal-gold border-2 border-black rounded-full shadow-md" />
                     )}
                   </div>
                   <span className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-colors ${
@@ -185,7 +185,7 @@ export default function Home() {
             </div>
           </div>
           <Link href="/matches">
-            <button className="group flex items-center gap-3 px-8 py-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground hover:scale-105 transition-all shadow-xl shadow-olive-bark/10 border border-royal-gold/10">
+            <button className="group flex items-center gap-3 px-8 py-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground hover:scale-105 transition-all shadow-xl shadow-black/10 border border-royal-gold/10">
               BROWSE ALL <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </Link>
@@ -199,7 +199,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="group relative bg-background/50 rounded-[2.5rem] p-10 shadow-2xl overflow-hidden hover:-translate-y-2 transition-all duration-500 border border-olive-bark/5"
+              className="group relative bg-background/50 rounded-[2.5rem] p-10 shadow-2xl overflow-hidden hover:-translate-y-2 transition-all duration-500 border border-black/5"
             >
               {/* Radial Glow Effects */}
               <div className="absolute inset-0 opacity-20 pointer-events-none">
@@ -210,7 +210,7 @@ export default function Home() {
               <div className="relative z-10 space-y-8">
                 <div className="flex items-center justify-between">
                   <Badge className={`${
-                    match.status === 'live' ? 'bg-olive-bark text-royal-gold' : 'bg-olive-bark/10 text-olive-bark'
+                    match.status === 'live' ? 'bg-black text-royal-gold' : 'bg-black/10 text-black'
                   } rounded-full text-[10px] px-4 py-1.5 font-bold border-none tracking-widest shadow-lg`}>
                     {match.status.toUpperCase()}
                   </Badge>
@@ -218,16 +218,16 @@ export default function Home() {
                     {[1, 2, 3].map((_, i) => (
                       <div key={i} className="w-7 h-7 rounded-full border-2 border-background bg-muted" />
                     ))}
-                    <div className="w-7 h-7 rounded-full border-2 border-background bg-olive-bark flex items-center justify-center text-[10px] font-bold text-royal-gold">+24</div>
+                    <div className="w-7 h-7 rounded-full border-2 border-background bg-black flex items-center justify-center text-[10px] font-bold text-royal-gold">+24</div>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-6">
-                    <div className="w-20 h-20 rounded-3xl bg-olive-bark/5 flex items-center justify-center border border-olive-bark/10 group-hover:scale-110 transition-transform duration-500 shadow-inner">
+                    <div className="w-20 h-20 rounded-3xl bg-black/5 flex items-center justify-center border border-black/10 group-hover:scale-110 transition-transform duration-500 shadow-inner">
                     {match.status === 'live' ? (
-                      <Play size={32} className="text-olive-bark" fill="currentColor" />
+                      <Play size={32} className="text-black" fill="currentColor" />
                     ) : (
-                      <Swords size={32} className="text-olive-bark" />
+                      <Swords size={32} className="text-black" />
                     )}
                   </div>
                   <div className="space-y-1">
@@ -237,17 +237,17 @@ export default function Home() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-5">
-                  <div className="bg-olive-bark/[0.03] rounded-[2rem] p-6 border border-olive-bark/5 flex flex-col gap-1 hover:bg-olive-bark/[0.05] transition-colors">
+                  <div className="bg-black/[0.03] rounded-[2rem] p-6 border border-black/5 flex flex-col gap-1 hover:bg-black/[0.05] transition-colors">
                     <span className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest">Prize Pool</span>
                     <span className="text-2xl font-heading text-foreground">₹{match.tournament?.prize_pool}</span>
                   </div>
-                  <div className="bg-olive-bark/[0.03] rounded-[2rem] p-6 border border-olive-bark/5 flex flex-col gap-1 hover:bg-olive-bark/[0.05] transition-colors">
+                  <div className="bg-black/[0.03] rounded-[2rem] p-6 border border-black/5 flex flex-col gap-1 hover:bg-black/[0.05] transition-colors">
                     <span className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest">Entry Fee</span>
                     <span className="text-2xl font-heading text-foreground">₹{match.tournament?.entry_fee}</span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-6 border-t border-olive-bark/10">
+                <div className="flex items-center justify-between pt-6 border-t border-black/10">
                   <div className="flex items-center gap-3 text-foreground/40">
                     <Users size={16} />
                     <span className="text-xs font-serif italic">{match.mode} • {match.map || 'Bermuda'}</span>
@@ -269,7 +269,7 @@ export default function Home() {
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          className="relative overflow-hidden rounded-[3rem] bg-olive-bark p-12 text-center space-y-8 shadow-2xl"
+          className="relative overflow-hidden rounded-[3rem] bg-black p-12 text-center space-y-8 shadow-2xl"
         >
           <div className="absolute inset-0 opacity-20 pointer-events-none">
             <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-royal-gold blur-[100px] rounded-full" />
@@ -283,7 +283,7 @@ export default function Home() {
             </div>
             <h2 className="text-4xl md:text-5xl font-heading text-royal-gold">The Pro Arena <br /> <span className="italic">Championship</span></h2>
             <p className="text-lg font-serif text-royal-gold/60 max-w-md mx-auto">Registration opens in 48 hours. Only the top 64 warriors will be selected.</p>
-            <button className="px-10 py-5 bg-royal-gold text-olive-bark rounded-full font-serif text-lg hover:scale-105 active:scale-95 transition-all shadow-xl">
+            <button className="px-10 py-5 bg-royal-gold text-black rounded-full font-serif text-lg hover:scale-105 active:scale-95 transition-all shadow-xl">
               Get Notified
             </button>
           </div>

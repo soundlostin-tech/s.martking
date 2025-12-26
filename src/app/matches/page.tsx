@@ -126,7 +126,7 @@ export default function MatchesPage() {
 
           <div className="px-6 -mt-12 relative z-20 space-y-10 max-w-2xl mx-auto">
             {/* Filter Controls */}
-            <div className="flex bg-olive-bark/5 backdrop-blur-xl p-2 rounded-full border border-olive-bark/5 overflow-x-auto no-scrollbar gap-2 shadow-2xl shadow-olive-bark/5">
+            <div className="flex bg-black/5 backdrop-blur-xl p-2 rounded-full border border-black/5 overflow-x-auto no-scrollbar gap-2 shadow-2xl shadow-black/5">
               {filters.map((filter) => (
                 <button
                   key={filter}
@@ -150,7 +150,7 @@ export default function MatchesPage() {
                 placeholder="Search tournament..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-background border border-olive-bark/5 rounded-[2.5rem] py-8 pl-20 pr-10 text-xs focus:outline-none focus:ring-8 focus:ring-olive-bark/[0.02] transition-all shadow-2xl shadow-olive-bark/5 font-bold uppercase tracking-[0.2em] placeholder:text-foreground/10"
+                className="w-full bg-background border border-black/5 rounded-[2.5rem] py-8 pl-20 pr-10 text-xs focus:outline-none focus:ring-8 focus:ring-black/[0.02] transition-all shadow-2xl shadow-black/5 font-bold uppercase tracking-[0.2em] placeholder:text-foreground/10"
               />
             </div>
 
@@ -171,7 +171,7 @@ export default function MatchesPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ delay: index * 0.05 }}
-                    className="bg-olive-bark rounded-[2.5rem] p-8 shadow-2xl overflow-hidden group relative"
+                    className="bg-black rounded-[2.5rem] p-8 shadow-2xl overflow-hidden group relative"
                   >
                     {/* Radial Glows */}
                     <div className="absolute inset-0 opacity-20 pointer-events-none">
@@ -225,7 +225,7 @@ export default function MatchesPage() {
                             <button 
                               onClick={() => handleJoinMatch(match.tournament_id, match.id)}
                               disabled={joining === match.id}
-                              className="flex-[2] bg-royal-gold text-olive-bark py-5 px-8 rounded-2xl text-[11px] font-bold uppercase tracking-widest hover:bg-mustard transition-all shadow-xl flex items-center justify-center gap-3"
+                              className="flex-[2] bg-royal-gold text-black py-5 px-8 rounded-2xl text-[11px] font-bold uppercase tracking-widest hover:bg-mustard transition-all shadow-xl flex items-center justify-center gap-3"
                             >
                               {joining === match.id ? <Loader2 className="w-4 h-4 animate-spin" /> : "RESERVE SLOT"}
                             </button>
@@ -248,7 +248,7 @@ export default function MatchesPage() {
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="bg-background p-20 rounded-[3.5rem] border border-olive-bark/5 text-center space-y-8 shadow-2xl shadow-olive-bark/5"
+                className="bg-background p-20 rounded-[3.5rem] border border-black/5 text-center space-y-8 shadow-2xl shadow-black/5"
               >
                 <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mx-auto">
                   <Swords size={48} className="text-muted-foreground/30" />
