@@ -194,85 +194,86 @@ export default function WalletPage() {
             </motion.div>
           </section>
 
-          {/* Quick Actions - Native Grid */}
-          <section className="grid grid-cols-2 gap-4">
-            <motion.button 
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsDepositOpen(true)}
-              className="bg-white rounded-[32px] py-6 flex flex-col items-center gap-2 border border-foreground/[0.04] shadow-sm active:shadow-md transition-all"
-            >
-              <div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
-                <Plus size={20} />
-              </div>
-              <span className="text-[10px] font-bold text-foreground/40 uppercase tracking-wider">Deposit</span>
-            </motion.button>
-            <motion.button 
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsWithdrawOpen(true)}
-              className="bg-white rounded-[32px] py-6 flex flex-col items-center gap-2 border border-foreground/[0.04] shadow-sm active:shadow-md transition-all"
-            >
-              <div className="w-10 h-10 rounded-2xl bg-accent/10 flex items-center justify-center text-accent">
-                <ArrowDownLeft size={20} />
-              </div>
-              <span className="text-[10px] font-bold text-foreground/40 uppercase tracking-wider">Withdraw</span>
-            </motion.button>
-          </section>
-
-          {/* Transaction History - Native List */}
-          <section className="space-y-4">
-            <div className="flex items-center justify-between px-2">
-              <h3 className="text-lg font-bold text-foreground">Activity</h3>
-              <History size={16} className="text-foreground/20" />
-            </div>
-
-            <div className="space-y-3">
-              {loading ? (
-                <div className="flex justify-center py-12">
-                  <Loader2 className="w-6 h-6 animate-spin text-primary/30" />
+            {/* Quick Actions - Native Grid */}
+            <section className="grid grid-cols-2 gap-4">
+              <motion.button 
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsDepositOpen(true)}
+                className="bg-card backdrop-blur-md rounded-[32px] py-6 flex flex-col items-center gap-2 border border-white/10 shadow-sm active:shadow-md transition-all"
+              >
+                <div className="w-10 h-10 rounded-2xl bg-primary/20 flex items-center justify-center text-primary">
+                  <Plus size={20} />
                 </div>
-              ) : transactions.length > 0 ? (
-                transactions.map((tx, i) => (
-                  <motion.div 
-                    key={tx.id}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                    className="bg-white p-4 rounded-[28px] flex items-center justify-between border border-foreground/[0.04] shadow-sm"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className={`w-10 h-10 rounded-2xl flex items-center justify-center ${
-                        tx.type === 'deposit' || tx.type === 'prize' ? 'bg-primary/5 text-primary' : 'bg-foreground/[0.03] text-foreground/40'
-                      }`}>
-                        {tx.type === 'deposit' ? <Plus size={18} /> : tx.type === 'withdrawal' ? <ArrowDownLeft size={18} /> : <TrendingUp size={18} />}
+                <span className="text-[10px] font-bold text-foreground/40 uppercase tracking-wider">Deposit</span>
+              </motion.button>
+              <motion.button 
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsWithdrawOpen(true)}
+                className="bg-card backdrop-blur-md rounded-[32px] py-6 flex flex-col items-center gap-2 border border-white/10 shadow-sm active:shadow-md transition-all"
+              >
+                <div className="w-10 h-10 rounded-2xl bg-accent/20 flex items-center justify-center text-accent">
+                  <ArrowDownLeft size={20} />
+                </div>
+                <span className="text-[10px] font-bold text-foreground/40 uppercase tracking-wider">Withdraw</span>
+              </motion.button>
+            </section>
+
+            {/* Transaction History - Native List */}
+            <section className="space-y-4">
+              <div className="flex items-center justify-between px-2">
+                <h3 className="text-lg font-bold text-foreground">Activity</h3>
+                <History size={16} className="text-foreground/20" />
+              </div>
+
+              <div className="space-y-3">
+                {loading ? (
+                  <div className="flex justify-center py-12">
+                    <Loader2 className="w-6 h-6 animate-spin text-primary/30" />
+                  </div>
+                ) : transactions.length > 0 ? (
+                  transactions.map((tx, i) => (
+                    <motion.div 
+                      key={tx.id}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="bg-card backdrop-blur-md p-4 rounded-[28px] flex items-center justify-between border border-white/10 shadow-sm"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className={`w-10 h-10 rounded-2xl flex items-center justify-center ${
+                          tx.type === 'deposit' || tx.type === 'prize' ? 'bg-primary/20 text-primary' : 'bg-white/5 text-foreground/40'
+                        }`}>
+                          {tx.type === 'deposit' ? <Plus size={18} /> : tx.type === 'withdrawal' ? <ArrowDownLeft size={18} /> : <TrendingUp size={18} />}
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-bold text-foreground capitalize leading-none mb-1">{tx.description || tx.type}</h4>
+                          <p className="text-[9px] font-bold text-foreground/30 uppercase tracking-wider">
+                            {new Date(tx.created_at).toLocaleDateString()}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-foreground capitalize leading-none mb-1">{tx.description || tx.type}</h4>
-                        <p className="text-[9px] font-bold text-foreground/20 uppercase tracking-wider">
-                          {new Date(tx.created_at).toLocaleDateString()}
+                      <div className="text-right">
+                        <p className={`text-base font-bold ${
+                          tx.type === 'deposit' || tx.type === 'prize' ? 'text-primary' : 'text-foreground/40'
+                        }`}>
+                          {tx.type === 'deposit' || tx.type === 'prize' ? '+' : '-'}₹{tx.amount}
                         </p>
+                        <span className={`text-[8px] font-bold uppercase tracking-widest ${
+                          tx.status === 'completed' ? 'text-primary/40' : 'text-accent'
+                        }`}>
+                          {tx.status}
+                        </span>
                       </div>
-                    </div>
-                    <div className="text-right">
-                      <p className={`text-base font-bold ${
-                        tx.type === 'deposit' || tx.type === 'prize' ? 'text-primary' : 'text-foreground/40'
-                      }`}>
-                        {tx.type === 'deposit' || tx.type === 'prize' ? '+' : '-'}₹{tx.amount}
-                      </p>
-                      <span className={`text-[8px] font-bold uppercase tracking-widest ${
-                        tx.status === 'completed' ? 'text-primary/40' : 'text-accent'
-                      }`}>
-                        {tx.status}
-                      </span>
-                    </div>
-                  </motion.div>
-                ))
-              ) : (
-                <div className="text-center py-12 bg-white rounded-[32px] border border-foreground/[0.04]">
-                  <p className="text-xs text-foreground/20 font-bold uppercase tracking-widest">No transactions yet</p>
-                </div>
-              )}
-            </div>
-          </section>
+                    </motion.div>
+                  ))
+                ) : (
+                  <div className="text-center py-12 bg-card backdrop-blur-md rounded-[32px] border border-white/10">
+                    <p className="text-xs text-foreground/20 font-bold uppercase tracking-widest">No transactions yet</p>
+                  </div>
+                )}
+              </div>
+            </section>
+
         </div>
       </main>
 

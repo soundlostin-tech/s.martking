@@ -115,8 +115,8 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <main className="pb-32">
+    <div className="min-h-screen bg-background text-foreground">
+      <main className="pb-32 relative z-10">
         <TopHeader />
 
         <div className="px-6 pt-8 space-y-8 max-w-lg mx-auto">
@@ -138,74 +138,74 @@ export default function Profile() {
               </motion.div>
               <button 
                 onClick={() => setIsEditing(true)}
-                className="absolute bottom-0 right-0 w-10 h-10 bg-white rounded-2xl shadow-xl flex items-center justify-center text-primary border border-foreground/[0.04] active:scale-90 transition-all"
+                className="absolute bottom-0 right-0 w-10 h-10 bg-accent text-accent-foreground rounded-2xl shadow-xl flex items-center justify-center active:scale-90 transition-all border border-white/20"
               >
                 <Edit2 size={18} />
               </button>
             </div>
             
             <h2 className="text-2xl font-bold text-foreground mb-1">{profile?.full_name || "New Player"}</h2>
-            <p className="text-[10px] font-bold text-foreground/30 uppercase tracking-[0.2em]">{user?.email}</p>
+            <p className="text-[10px] font-bold text-moss-green uppercase tracking-[0.2em]">{user?.email}</p>
           </section>
 
           {/* Stats Grid - Native Mini Cards */}
           <section className="grid grid-cols-2 gap-4">
-            <div className="bg-white p-6 rounded-[32px] border border-foreground/[0.04] shadow-sm">
+            <div className="bg-card backdrop-blur-md p-6 rounded-[32px] border border-white/10 shadow-sm">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                <div className="w-8 h-8 rounded-xl bg-primary/20 flex items-center justify-center text-primary">
                   <Swords size={16} />
                 </div>
-                <span className="text-[9px] font-bold text-foreground/30 uppercase tracking-widest">Matches</span>
+                <span className="text-[9px] font-bold text-foreground/40 uppercase tracking-widest">Matches</span>
               </div>
               <h4 className="text-2xl font-bold text-foreground">{profile?.matches_played || 0}</h4>
             </div>
-            <div className="bg-white p-6 rounded-[32px] border border-foreground/[0.04] shadow-sm">
+            <div className="bg-card backdrop-blur-md p-6 rounded-[32px] border border-white/10 shadow-sm">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-xl bg-accent/10 flex items-center justify-center text-accent">
+                <div className="w-8 h-8 rounded-xl bg-accent/20 flex items-center justify-center text-accent">
                   <Trophy size={16} />
                 </div>
-                <span className="text-[9px] font-bold text-foreground/30 uppercase tracking-widest">Wins</span>
+                <span className="text-[9px] font-bold text-foreground/40 uppercase tracking-widest">Wins</span>
               </div>
               <h4 className="text-2xl font-bold text-foreground">{profile?.win_rate || 0}%</h4>
             </div>
           </section>
 
           {/* Profile Menu - Native List Pattern */}
-          <section className="bg-white rounded-[40px] overflow-hidden border border-foreground/[0.04] shadow-sm">
+          <section className="bg-card backdrop-blur-md rounded-[40px] overflow-hidden border border-white/10 shadow-sm">
             <div className="p-4 space-y-1">
               {[
-                { label: "Account Settings", icon: Settings, href: "#", color: "text-blue-500" },
-                { label: "Notification", icon: Bell, href: "#", color: "text-orange-500" },
-                { label: "Payment Methods", icon: CreditCard, href: "/wallet", color: "text-emerald-500" },
-                { label: "Security", icon: ShieldCheck, href: "#", color: "text-indigo-500" },
+                { label: "Account Settings", icon: Settings, href: "#", color: "text-blue-400" },
+                { label: "Notification", icon: Bell, href: "#", color: "text-orange-400" },
+                { label: "Payment Methods", icon: CreditCard, href: "/wallet", color: "text-accent" },
+                { label: "Security", icon: ShieldCheck, href: "#", color: "text-indigo-400" },
               ].map((item, i) => (
                 <button 
                   key={i}
-                  className="w-full flex items-center justify-between p-4 hover:bg-foreground/[0.02] active:bg-foreground/[0.04] transition-all rounded-[24px] group"
+                  className="w-full flex items-center justify-between p-4 hover:bg-white/[0.05] active:bg-white/[0.1] transition-all rounded-[24px] group text-left"
                 >
                   <div className="flex items-center gap-4">
-                    <div className={`w-10 h-10 rounded-2xl bg-foreground/[0.02] flex items-center justify-center ${item.color}`}>
+                    <div className={`w-10 h-10 rounded-2xl bg-white/[0.03] flex items-center justify-center ${item.color}`}>
                       <item.icon size={20} />
                     </div>
-                    <span className="text-sm font-bold text-foreground/80">{item.label}</span>
+                    <span className="text-sm font-bold text-foreground/90">{item.label}</span>
                   </div>
-                  <ChevronRight size={18} className="text-foreground/10 group-active:translate-x-1 transition-all" />
+                  <ChevronRight size={18} className="text-foreground/20 group-active:translate-x-1 transition-all" />
                 </button>
               ))}
               
-              <div className="h-[1px] bg-foreground/[0.04] my-2 mx-4" />
+              <div className="h-[1px] bg-white/[0.05] my-2 mx-4" />
               
               <button 
                 onClick={handleLogout}
-                className="w-full flex items-center justify-between p-4 hover:bg-red-50 active:bg-red-100 transition-all rounded-[24px] group"
+                className="w-full flex items-center justify-between p-4 hover:bg-red-500/10 active:bg-red-500/20 transition-all rounded-[24px] group text-left"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-2xl bg-red-50 flex items-center justify-center text-red-500">
+                  <div className="w-10 h-10 rounded-2xl bg-red-500/10 flex items-center justify-center text-red-400">
                     <LogOut size={20} />
                   </div>
-                  <span className="text-sm font-bold text-red-500/80">Sign Out</span>
+                  <span className="text-sm font-bold text-red-400">Sign Out</span>
                 </div>
-                <ChevronRight size={18} className="text-red-500/20 group-active:translate-x-1 transition-all" />
+                <ChevronRight size={18} className="text-red-400/30 group-active:translate-x-1 transition-all" />
               </button>
             </div>
           </section>
@@ -217,46 +217,46 @@ export default function Profile() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-end sm:items-center justify-center p-4"
+                className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-md flex items-end sm:items-center justify-center p-4"
               >
                 <motion.div 
                   initial={{ y: "100%" }}
                   animate={{ y: 0 }}
                   exit={{ y: "100%" }}
-                  className="bg-white w-full max-w-md rounded-t-[40px] sm:rounded-[40px] p-8 space-y-8 shadow-2xl"
+                  className="bg-card border border-white/10 w-full max-w-md rounded-t-[40px] sm:rounded-[40px] p-8 space-y-8 shadow-2xl"
                 >
                   <div className="flex items-center justify-between">
                     <h3 className="text-xl font-bold text-foreground">Edit Profile</h3>
-                    <button onClick={() => setIsEditing(false)} className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+                    <button onClick={() => setIsEditing(false)} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-foreground">
                       <X size={20} />
                     </button>
                   </div>
 
                   <form onSubmit={handleUpdateProfile} className="space-y-6">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-foreground/20 uppercase tracking-widest ml-1">Full Name</label>
+                      <label className="text-[10px] font-bold text-moss-green uppercase tracking-widest ml-1">Full Name</label>
                       <Input 
                         value={formData.full_name} 
                         onChange={(e) => setFormData({ ...formData, full_name: e.target.value })} 
-                        className="h-14 rounded-2xl border-foreground/[0.06] bg-foreground/[0.02] font-bold px-6"
+                        className="h-14 rounded-2xl border-white/10 bg-white/5 font-bold px-6 text-foreground"
                         placeholder="Your Name"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-foreground/20 uppercase tracking-widest ml-1">Phone Number</label>
+                      <label className="text-[10px] font-bold text-moss-green uppercase tracking-widest ml-1">Phone Number</label>
                       <Input 
                         value={formData.phone} 
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })} 
-                        className="h-14 rounded-2xl border-foreground/[0.06] bg-foreground/[0.02] font-bold px-6"
+                        className="h-14 rounded-2xl border-white/10 bg-white/5 font-bold px-6 text-foreground"
                         placeholder="+91"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-foreground/20 uppercase tracking-widest ml-1">Avatar URL</label>
+                      <label className="text-[10px] font-bold text-moss-green uppercase tracking-widest ml-1">Avatar URL</label>
                       <Input 
                         value={formData.avatar_url} 
                         onChange={(e) => setFormData({ ...formData, avatar_url: e.target.value })} 
-                        className="h-14 rounded-2xl border-foreground/[0.06] bg-foreground/[0.02] font-bold px-6"
+                        className="h-14 rounded-2xl border-white/10 bg-white/5 font-bold px-6 text-foreground"
                         placeholder="https://..."
                       />
                     </div>

@@ -124,15 +124,16 @@ export default function Home() {
                         : 'bg-foreground/[0.03]'
                     }`}
                   >
-                    <div className="w-full h-full rounded-[20px] bg-background p-0.5">
-                      <div className="w-full h-full rounded-[18px] bg-white flex items-center justify-center overflow-hidden border border-foreground/[0.03]">
-                        {profile.avatar_url ? (
-                          <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
-                        ) : (
-                          <span className="text-xl font-bold text-foreground/10">{profile.full_name?.[0]}</span>
-                        )}
+                      <div className="w-full h-full rounded-[20px] bg-background p-0.5">
+                        <div className="w-full h-full rounded-[18px] bg-card flex items-center justify-center overflow-hidden border border-white/5">
+                          {profile.avatar_url ? (
+                            <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="text-xl font-bold text-foreground/10">{profile.full_name?.[0]}</span>
+                          )}
+                        </div>
                       </div>
-                    </div>
+
                   </motion.div>
                   <span className={`text-[10px] font-bold uppercase tracking-tighter transition-colors ${
                     hasStory ? 'text-foreground' : 'text-foreground/30'

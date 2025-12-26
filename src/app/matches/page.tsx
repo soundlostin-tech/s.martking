@@ -126,104 +126,105 @@ export default function MatchesPage() {
           </div>
         </section>
 
-        {/* Match List - Polished Native Style */}
-        <section className="px-6 pt-6 space-y-4 max-w-lg mx-auto">
-          {loading ? (
-            <div className="flex flex-col items-center justify-center py-20 gap-3">
-              <Loader2 className="w-8 h-8 animate-spin text-primary/30" />
-              <p className="text-[10px] text-foreground/30 font-bold uppercase tracking-widest">Scanning Arena...</p>
-            </div>
-          ) : matches.length > 0 ? (
-            <AnimatePresence mode="popLayout">
-              {matches.map((match, i) => (
-                <motion.div
-                  key={match.id}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ delay: i * 0.05 }}
-                  className="bg-white rounded-[32px] p-5 border border-foreground/[0.04] shadow-sm relative overflow-hidden"
-                >
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="flex items-center gap-4">
-                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
-                        match.status === 'live' ? 'bg-red-50 text-red-500' : 'bg-primary/5 text-primary'
+          {/* Match List - Polished Native Style */}
+          <section className="px-6 pt-6 space-y-4 max-w-lg mx-auto">
+            {loading ? (
+              <div className="flex flex-col items-center justify-center py-20 gap-3">
+                <Loader2 className="w-8 h-8 animate-spin text-primary/30" />
+                <p className="text-[10px] text-foreground/30 font-bold uppercase tracking-widest">Scanning Arena...</p>
+              </div>
+            ) : matches.length > 0 ? (
+              <AnimatePresence mode="popLayout">
+                {matches.map((match, i) => (
+                  <motion.div
+                    key={match.id}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ delay: i * 0.05 }}
+                    className="bg-card backdrop-blur-md rounded-[32px] p-5 border border-white/10 shadow-sm relative overflow-hidden"
+                  >
+                    <div className="flex justify-between items-start mb-6">
+                      <div className="flex items-center gap-4">
+                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
+                          match.status === 'live' ? 'bg-red-500/10 text-red-400' : 'bg-primary/20 text-primary'
+                        }`}>
+                          {match.status === 'live' ? <Play size={20} fill="currentColor" /> : <Swords size={20} />}
+                        </div>
+                        <div className="min-w-0">
+                          <h3 className="font-bold text-base text-foreground truncate">{match.title}</h3>
+                          <p className="text-[9px] text-foreground/30 font-bold uppercase tracking-widest">{match.tournament?.title}</p>
+                        </div>
+                      </div>
+                      <div className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider ${
+                        match.status === 'live' ? 'bg-red-500 text-white animate-pulse' : 'bg-white/5 text-foreground/40'
                       }`}>
-                        {match.status === 'live' ? <Play size={20} fill="currentColor" /> : <Swords size={20} />}
-                      </div>
-                      <div className="min-w-0">
-                        <h3 className="font-bold text-base text-foreground truncate">{match.title}</h3>
-                        <p className="text-[9px] text-foreground/30 font-bold uppercase tracking-widest">{match.tournament?.title}</p>
+                        {match.status}
                       </div>
                     </div>
-                    <div className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider ${
-                      match.status === 'live' ? 'bg-red-500 text-white animate-pulse' : 'bg-foreground/[0.03] text-foreground/40'
-                    }`}>
-                      {match.status}
-                    </div>
-                  </div>
 
-                  <div className="grid grid-cols-2 gap-3 mb-6">
-                    <div className="bg-foreground/[0.02] rounded-2xl p-3 flex items-center gap-3">
-                      <Calendar size={14} className="text-foreground/20" />
-                      <div>
-                        <p className="text-[8px] font-bold text-foreground/20 uppercase">Start Time</p>
-                        <p className="text-[10px] font-bold text-foreground/60">
-                          {match.start_time ? new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'TBD'}
-                        </p>
+                    <div className="grid grid-cols-2 gap-3 mb-6">
+                      <div className="bg-white/5 rounded-2xl p-3 flex items-center gap-3">
+                        <Calendar size={14} className="text-foreground/20" />
+                        <div>
+                          <p className="text-[8px] font-bold text-foreground/20 uppercase">Start Time</p>
+                          <p className="text-[10px] font-bold text-foreground/60">
+                            {match.start_time ? new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'TBD'}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="bg-white/5 rounded-2xl p-3 flex items-center gap-3">
+                        <Users size={14} className="text-foreground/20" />
+                        <div>
+                          <p className="text-[8px] font-bold text-foreground/20 uppercase">Slots</p>
+                          <p className="text-[10px] font-bold text-foreground/60">24 / 48 Joined</p>
+                        </div>
                       </div>
                     </div>
-                    <div className="bg-foreground/[0.02] rounded-2xl p-3 flex items-center gap-3">
-                      <Users size={14} className="text-foreground/20" />
-                      <div>
-                        <p className="text-[8px] font-bold text-foreground/20 uppercase">Slots</p>
-                        <p className="text-[10px] font-bold text-foreground/60">24 / 48 Joined</p>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-foreground/[0.04]">
-                    <div className="flex items-center gap-1.5">
-                      <Trophy size={14} className="text-accent" />
-                      <span className="text-sm font-bold text-foreground">₹{match.tournament?.prize_pool || 0}</span>
+                    <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                      <div className="flex items-center gap-1.5">
+                        <Trophy size={14} className="text-accent" />
+                        <span className="text-sm font-bold text-foreground">₹{match.tournament?.prize_pool || 0}</span>
+                      </div>
+                      
+                      {match.status === "upcoming" ? (
+                        <motion.button 
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => handleJoinMatch(match.tournament_id, match.id)}
+                          disabled={joining === match.id}
+                          className="bg-primary text-white px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider shadow-lg shadow-primary/20 flex items-center gap-2"
+                        >
+                          {joining === match.id ? <Loader2 size={12} className="animate-spin" /> : "Join ₹" + match.tournament?.entry_fee}
+                        </motion.button>
+                      ) : (
+                        <Link href={match.status === 'live' ? `/live` : '#'} className="bg-foreground text-background px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider shadow-lg shadow-foreground/20">
+                          {match.status === 'live' ? "Watch Live" : "View Result"}
+                        </Link>
+                      )}
                     </div>
-                    
-                    {match.status === "upcoming" ? (
-                      <motion.button 
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => handleJoinMatch(match.tournament_id, match.id)}
-                        disabled={joining === match.id}
-                        className="bg-primary text-white px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider shadow-lg shadow-primary/20 flex items-center gap-2"
-                      >
-                        {joining === match.id ? <Loader2 size={12} className="animate-spin" /> : "Join ₹" + match.tournament?.entry_fee}
-                      </motion.button>
-                    ) : (
-                      <Link href={match.status === 'live' ? `/live` : '#'} className="bg-foreground text-white px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider shadow-lg shadow-foreground/20">
-                        {match.status === 'live' ? "Watch Live" : "View Result"}
-                      </Link>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          ) : (
-            <div className="bg-white p-12 rounded-[40px] border border-foreground/[0.04] text-center space-y-6 shadow-sm mt-8">
-              <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto text-foreground/10">
-                <Swords size={40} />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            ) : (
+              <div className="bg-card backdrop-blur-md p-12 rounded-[40px] border border-white/10 text-center space-y-6 shadow-sm mt-8">
+                <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto text-foreground/10">
+                  <Swords size={40} />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-foreground">Arena Empty</h3>
+                  <p className="text-xs text-foreground/40 font-medium">No matches found for this category. Try adjusting your filters.</p>
+                </div>
+                <button 
+                  onClick={() => { setActiveFilter("All"); setSearchQuery(""); }}
+                  className="w-full py-4 bg-white/5 text-foreground/60 rounded-2xl text-[10px] font-bold uppercase tracking-widest"
+                >
+                  Reset Filters
+                </button>
               </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-foreground">Arena Empty</h3>
-                <p className="text-xs text-foreground/40 font-medium">No matches found for this category. Try adjusting your filters.</p>
-              </div>
-              <button 
-                onClick={() => { setActiveFilter("All"); setSearchQuery(""); }}
-                className="w-full py-4 bg-foreground/[0.03] text-foreground/60 rounded-2xl text-[10px] font-bold uppercase tracking-widest"
-              >
-                Reset Filters
-              </button>
-            </div>
-          )}
-        </section>
+            )}
+          </section>
+
       </main>
 
       <BottomNav />
