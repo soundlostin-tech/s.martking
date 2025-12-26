@@ -71,20 +71,20 @@ export default function AdminOverview() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { count: tournamentsCount } = await supabase
+        const { data: tournamentsData } = await supabase
           .from("tournaments")
-          .select("*", { count: 'exact', head: true });
+          .select("id");
         
-        const { count: usersCount } = await supabase
+        const { data: usersData } = await supabase
           .from("profiles")
-          .select("*", { count: 'exact', head: true });
+          .select("id");
 
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         
-        const { count: activeCount } = await supabase
+        const { data: activeParticipants } = await supabase
           .from("participants")
-          .select("user_id", { count: 'exact', head: true })
+          .select("user_id")
           .gte("joined_at", today.toISOString());
 
         const { data: revenueData } = await supabase
@@ -96,9 +96,9 @@ export default function AdminOverview() {
 
         setStats(prev => ({
           ...prev,
-          totalTournaments: tournamentsCount || 0,
-          totalUsers: usersCount || 0,
-          activeToday: activeCount || 0,
+          totalTournaments: tournamentsData?.length || 0,
+          totalUsers: usersData?.length || 0,
+          activeToday: activeParticipants?.length || 0,
           totalRevenue: totalRevenue,
         }));
 
