@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
-import { Crown, Loader2, Eye, EyeOff, Star } from "lucide-react";
+import { Crown, Loader2, Eye, EyeOff, Star, Swords } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
@@ -88,53 +88,55 @@ export default function Signup() {
   };
 
   return (
-    <main className="min-h-screen bg-zinc-100 flex items-center justify-center p-6 relative overflow-hidden py-20">
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-zinc-200/50 blur-[120px] rounded-full" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-zinc-200/50 blur-[120px] rounded-full" />
+    <main className="min-h-screen bg-background flex items-center justify-center p-6 relative overflow-hidden py-20">
+      <div className="mesh-bg">
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] animate-blob" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
+      </div>
 
-      <div className="relative max-w-lg w-full bg-white/30 backdrop-blur-xl border border-zinc-200/0 shadow-2xl rounded-[3rem] px-8 py-12 md:px-12 animate-fadeIn">
+      <div className="relative max-w-lg w-full bg-white/60 backdrop-blur-xl border border-primary/10 shadow-2xl rounded-[3rem] px-8 py-12 md:px-12 animate-fadeIn">
         <div className="flex flex-col space-y-8">
           <div className="text-center space-y-4">
             <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 bg-black text-white rounded-2xl flex items-center justify-center shadow-xl">
+              <div className="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center shadow-xl">
                 <Star size={32} />
               </div>
             </div>
-            <h1 className="text-4xl font-heading text-black leading-tight tracking-tight">
+            <h1 className="text-4xl font-heading text-primary leading-tight tracking-tight">
               Create <span className="italic">Identity.</span>
             </h1>
-            <p className="text-lg font-serif text-zinc-600">
+            <p className="text-lg font-serif text-foreground/60 italic">
               Join the elite circle of warriors.
             </p>
           </div>
 
           <form className="space-y-5" onSubmit={handleSignup}>
             <div className="space-y-1">
-              <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-4">Agent Name</Label>
+              <Label className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest ml-4">Agent Name</Label>
               <Input 
                 placeholder="Full Name" 
-                className="h-14 px-8 rounded-full border-zinc-200 bg-white/60 shadow-lg font-serif"
+                className="h-14 px-8 rounded-full border-primary/5 bg-white/50 shadow-lg font-serif"
                 value={formData.fullname}
                 onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
               />
             </div>
 
             <div className="space-y-1">
-              <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-4">Email Address</Label>
+              <Label className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest ml-4">Email Address</Label>
               <Input 
                 type="email" 
                 placeholder="warrior@arena.com" 
-                className="h-14 px-8 rounded-full border-zinc-200 bg-white/60 shadow-lg font-serif"
+                className="h-14 px-8 rounded-full border-primary/5 bg-white/50 shadow-lg font-serif"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
             </div>
 
             <div className="space-y-1">
-              <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-4">Phone Number</Label>
+              <Label className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest ml-4">Phone Number</Label>
               <div className="flex gap-2">
                 <Select value={countryCode} onValueChange={setCountryCode}>
-                  <SelectTrigger className="w-[100px] h-14 rounded-full border-zinc-200 bg-white/60 shadow-lg">
+                  <SelectTrigger className="w-[100px] h-14 rounded-full border-primary/5 bg-white/50 shadow-lg">
                     <SelectValue placeholder="+91" />
                   </SelectTrigger>
                   <SelectContent>
@@ -144,7 +146,7 @@ export default function Signup() {
                 </Select>
                 <Input 
                   placeholder="9876543210" 
-                  className="h-14 px-8 rounded-full border-zinc-200 bg-white/60 shadow-lg font-serif flex-1"
+                  className="h-14 px-8 rounded-full border-primary/5 bg-white/50 shadow-lg font-serif flex-1"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 />
@@ -153,21 +155,21 @@ export default function Signup() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-4">Password</Label>
+                <Label className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest ml-4">Password</Label>
                 <Input 
                   type="password" 
                   placeholder="••••••" 
-                  className="h-14 px-8 rounded-full border-zinc-200 bg-white/60 shadow-lg font-serif"
+                  className="h-14 px-8 rounded-full border-primary/5 bg-white/50 shadow-lg font-serif"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 />
               </div>
               <div className="space-y-1">
-                <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-4">Confirm</Label>
+                <Label className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest ml-4">Confirm</Label>
                 <Input 
                   type="password" 
                   placeholder="••••••" 
-                  className="h-14 px-8 rounded-full border-zinc-200 bg-white/60 shadow-lg font-serif"
+                  className="h-14 px-8 rounded-full border-primary/5 bg-white/50 shadow-lg font-serif"
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                 />
@@ -177,23 +179,23 @@ export default function Signup() {
             <div className="flex items-center space-x-3 px-4">
               <Checkbox 
                 id="terms" 
-                className="w-5 h-5 rounded-md border-zinc-300" 
+                className="w-5 h-5 rounded-md border-primary/20" 
                 checked={formData.terms}
                 onCheckedChange={(checked) => setFormData({ ...formData, terms: checked as boolean })}
               />
-              <label htmlFor="terms" className="text-xs font-serif text-zinc-500">
-                I accept the <span className="text-black font-bold">Terms of Engagement</span>
+              <label htmlFor="terms" className="text-xs font-serif text-foreground/50 italic">
+                I accept the <span className="text-primary font-bold">Terms of Engagement</span>
               </label>
             </div>
 
-            <PillButton type="submit" className="w-full h-16 text-lg font-serif shadow-2xl mt-4" disabled={loading}>
+            <PillButton type="submit" className="w-full h-16 text-lg font-serif shadow-2xl mt-4 bg-primary hover:bg-primary/90 text-white" disabled={loading}>
               {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Enlist Now"}
             </PillButton>
           </form>
 
-          <p className="text-center text-sm font-serif text-zinc-500">
+          <p className="text-center text-sm font-serif text-foreground/50 italic">
             Already enlisted?{" "}
-            <Link href="/signin" className="text-black font-bold underline underline-offset-4 decoration-black/10 hover:decoration-black">
+            <Link href="/signin" className="text-primary font-bold underline underline-offset-4 decoration-primary/10 hover:decoration-primary">
               Sign in
             </Link>
           </p>

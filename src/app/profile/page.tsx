@@ -212,7 +212,7 @@ export default function Profile() {
                     className="bg-white/60 backdrop-blur-xl rounded-[3rem] p-12 shadow-2xl space-y-10 relative overflow-hidden border border-primary/10"
                   >
                     <div className="absolute inset-0 opacity-10 pointer-events-none">
-                      <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-mustard blur-[100px] rounded-full" />
+                      <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-accent blur-[100px] rounded-full" />
                     </div>
   
                     <div className="relative z-10">
@@ -249,7 +249,7 @@ export default function Profile() {
                       <button 
                         type="submit" 
                         disabled={saving}
-                        className="w-full h-20 bg-primary text-white rounded-full font-serif text-xl shadow-2xl hover:bg-golden-earth transition-all flex items-center justify-center gap-3 mt-12"
+                        className="w-full h-20 bg-primary text-white rounded-full font-serif text-xl shadow-2xl hover:bg-primary transition-all flex items-center justify-center gap-3 mt-12"
                       >
                         {saving ? <Loader2 className="w-6 h-6 animate-spin" /> : <><Save size={22} /> Update Agent</>}
                       </button>
