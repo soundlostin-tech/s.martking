@@ -61,7 +61,7 @@
   --radius: 2rem;
   --background: #f1f7ed;
   --foreground: #243e36;
-  --card: rgba(124, 169, 130, 0.1);
+  --card: #ffffff;
   --card-foreground: #243e36;
   --popover: #f1f7ed;
   --popover-foreground: #243e36;
@@ -69,13 +69,13 @@
   --primary-foreground: #f1f7ed;
   --secondary: #e0eec6;
   --secondary-foreground: #243e36;
-  --muted: rgba(36, 62, 54, 0.05);
+  --muted: #f8faf7;
   --muted-foreground: #7ca982;
-  --accent: #243e36;
-  --accent-foreground: #f1f7ed;
+  --accent: #e0eec6;
+  --accent-foreground: #243e36;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: rgba(36, 62, 54, 0.1);
-  --input: rgba(36, 62, 54, 0.1);
+  --border: rgba(36, 62, 54, 0.08);
+  --input: rgba(36, 62, 54, 0.08);
   --ring: #7ca982;
   --chart-1: #243e36;
   --chart-2: #7ca982;
@@ -92,6 +92,28 @@
   --sidebar-ring: #7ca982;
 }
 
+.dark {
+  --background: #f1f7ed;
+  --foreground: #243e36;
+  --card: #ffffff;
+  --card-foreground: #243e36;
+  --popover: #f1f7ed;
+  --popover-foreground: #243e36;
+  --primary: #7ca982;
+  --primary-foreground: #f1f7ed;
+  --secondary: #e0eec6;
+  --secondary-foreground: #243e36;
+  --muted: #f8faf7;
+  --muted-foreground: #7ca982;
+  --accent: #e0eec6;
+  --accent-foreground: #243e36;
+  --border: rgba(36, 62, 54, 0.08);
+  --input: rgba(36, 62, 54, 0.08);
+  --ring: #7ca982;
+  --sidebar: #f1f7ed;
+  --sidebar-foreground: #243e36;
+}
+
   @layer base {
     * {
       @apply border-border outline-ring/50;
@@ -100,8 +122,8 @@
     html, body {
       @apply bg-background text-foreground font-sans antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden;
       background-image: 
-        radial-gradient(at 0% 0%, rgba(124, 169, 130, 0.1) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(224, 238, 198, 0.1) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(124, 169, 130, 0.05) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(224, 238, 198, 0.05) 0px, transparent 50%);
       background-attachment: fixed;
       touch-action: manipulation;
       overscroll-behavior-y: none;

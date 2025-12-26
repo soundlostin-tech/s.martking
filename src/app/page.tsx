@@ -167,28 +167,28 @@ export default function Home() {
 
         {/* Dynamic Hero Banner */}
         <section className="px-6 mb-10">
-          <div className="relative h-56 rounded-[40px] overflow-hidden shadow-2xl shadow-dark-slate-grey/10 group cursor-pointer active:scale-[0.98] transition-all duration-500">
-            <div className="absolute inset-0 bg-dark-slate-grey group-hover:bg-dark-slate-grey/90 transition-colors duration-700" />
+          <div className="relative h-56 rounded-[40px] overflow-hidden shadow-2xl shadow-dark-slate-grey/5 group cursor-pointer active:scale-[0.98] transition-all duration-500">
+            <div className="absolute inset-0 bg-dark-slate-grey group-hover:bg-dark-slate-grey/95 transition-colors duration-700" />
             
             {/* Ambient FX */}
-            <div className="absolute inset-0 overflow-hidden opacity-60">
+            <div className="absolute inset-0 overflow-hidden opacity-40">
               <motion.div
                 animate={{
                   scale: [1, 1.2, 1],
                   rotate: [0, 90, 0],
-                  opacity: [0.3, 0.6, 0.3],
+                  opacity: [0.2, 0.4, 0.2],
                 }}
                 transition={{ duration: 15, repeat: Infinity }}
-                className="absolute -top-20 -left-20 w-64 h-64 bg-muted-teal/20 blur-[80px] rounded-full"
+                className="absolute -top-20 -left-20 w-64 h-64 bg-muted-teal/10 blur-[80px] rounded-full"
               />
               <motion.div
                 animate={{
                   scale: [1, 1.3, 1],
                   x: [0, -50, 0],
-                  opacity: [0.2, 0.4, 0.2],
+                  opacity: [0.1, 0.3, 0.1],
                 }}
                 transition={{ duration: 12, repeat: Infinity }}
-                className="absolute -bottom-20 -right-20 w-80 h-80 bg-frosted-mint/20 blur-[100px] rounded-full"
+                className="absolute -bottom-20 -right-20 w-80 h-80 bg-frosted-mint/10 blur-[100px] rounded-full"
               />
             </div>
             
@@ -198,17 +198,17 @@ export default function Home() {
                 <span className="text-[10px] font-bold text-muted-teal uppercase tracking-[0.4em]">ELITE DEPLOYMENT ACTIVE</span>
               </div>
               <h2 className="text-4xl font-heading text-mint-cream leading-[1.1] tracking-tight">Win ₹1,00,000<br/>Mega Pool</h2>
-              <p className="text-[11px] text-mint-cream/40 font-bold uppercase tracking-[0.2em] mt-4 flex items-center gap-2">
+              <p className="text-[11px] text-mint-cream/60 font-bold uppercase tracking-[0.2em] mt-4 flex items-center gap-2">
                 <Users size={14} className="text-muted-teal" /> 2,450 WARRIORS REGISTERED
               </p>
               
               <div className="mt-8 flex items-center gap-4">
-                <button className="px-8 py-3.5 bg-muted-teal text-mint-cream rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-2xl shadow-muted-teal/30 hover:bg-muted-teal/80 transition-all">
+                <button className="px-8 py-3.5 bg-muted-teal text-mint-cream rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-2xl shadow-muted-teal/20 hover:bg-muted-teal/80 transition-all">
                   INITIALIZE ENTRY
                 </button>
                 <div className="flex -space-x-3">
                   {[1,2,3].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full border-4 border-dark-slate-grey bg-white/10 overflow-hidden shadow-xl">
+                    <div key={i} className="w-10 h-10 rounded-full border-4 border-dark-slate-grey bg-white/5 overflow-hidden shadow-xl">
                       <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+50}`} alt="" />
                     </div>
                   ))}
@@ -216,7 +216,7 @@ export default function Home() {
               </div>
             </div>
             
-            <div className="absolute right-10 top-1/2 -translate-y-1/2 opacity-10 group-hover:opacity-20 transition-opacity text-mint-cream">
+            <div className="absolute right-10 top-1/2 -translate-y-1/2 opacity-5 group-hover:opacity-10 transition-opacity text-mint-cream">
               <Trophy size={160} strokeWidth={1} />
             </div>
           </div>
@@ -234,12 +234,12 @@ export default function Home() {
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: i * 0.1 }}
-              className="flex-shrink-0 w-36 bg-card backdrop-blur-xl rounded-[32px] p-6 border border-border shadow-2xl shadow-dark-slate-grey/5"
+              className="flex-shrink-0 w-36 bg-white rounded-[32px] p-6 border border-dark-slate-grey/5 shadow-xl shadow-dark-slate-grey/[0.02]"
             >
               <div className={`w-10 h-10 rounded-2xl bg-${stat.color === 'dark-slate-grey' ? 'dark-slate-grey' : 'muted-teal'}/10 flex items-center justify-center mb-4`}>
                 <stat.icon size={20} className={stat.color === 'dark-slate-grey' ? 'text-dark-slate-grey' : 'text-muted-teal'} />
               </div>
-              <p className="text-[9px] font-bold text-dark-slate-grey/30 uppercase tracking-widest mb-1">{stat.label}</p>
+              <p className="text-[9px] font-bold text-dark-slate-grey/40 uppercase tracking-widest mb-1">{stat.label}</p>
               <h4 className="text-2xl font-heading text-dark-slate-grey">{stat.value}</h4>
             </motion.div>
           ))}
@@ -248,8 +248,8 @@ export default function Home() {
         {/* Section Header */}
         <section className="px-8 pb-6 flex items-center justify-between">
           <div className="space-y-1">
-            <h2 className="text-2xl font-heading text-dark-slate-grey">Active <span className="italic font-serif opacity-60">Operations</span></h2>
-            <p className="text-[10px] font-bold text-dark-slate-grey/20 uppercase tracking-[0.3em]">BATTLE SIGNALS DETECTED</p>
+            <h2 className="text-2xl font-heading text-dark-slate-grey">Active <span className="italic font-serif opacity-40">Operations</span></h2>
+            <p className="text-[10px] font-bold text-dark-slate-grey/30 uppercase tracking-[0.3em]">BATTLE SIGNALS DETECTED</p>
           </div>
           <Link href="/matches" className="p-3 bg-dark-slate-grey/5 rounded-2xl text-dark-slate-grey/40 hover:text-muted-teal transition-all">
             <LayoutGrid size={20} />
@@ -266,7 +266,7 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
               whileTap={{ scale: 0.97 }}
-              className="bg-card backdrop-blur-xl rounded-[32px] p-6 border border-border shadow-2xl shadow-dark-slate-grey/5 hover:border-muted-teal/30 transition-all duration-500 group flex items-center gap-6"
+              className="bg-white rounded-[32px] p-6 border border-dark-slate-grey/5 shadow-xl shadow-dark-slate-grey/[0.02] hover:border-muted-teal/30 transition-all duration-500 group flex items-center gap-6"
             >
               <div className="relative w-24 h-24 rounded-3xl bg-dark-slate-grey/5 overflow-hidden flex-shrink-0 shadow-inner">
                  {match.status === 'live' ? (
@@ -276,18 +276,18 @@ export default function Home() {
                     </div>
                   </div>
                 ) : (
-                  <div className="absolute inset-0 flex items-center justify-center opacity-20 text-dark-slate-grey">
+                  <div className="absolute inset-0 flex items-center justify-center opacity-10 text-dark-slate-grey">
                     <Swords size={32} />
                   </div>
                 )}
-                <div className="absolute bottom-2 left-2 right-2 px-2 py-1 rounded-xl bg-background/80 backdrop-blur-md border border-dark-slate-grey/5 flex items-center justify-center gap-1.5">
+                <div className="absolute bottom-2 left-2 right-2 px-2 py-1 rounded-xl bg-white/90 backdrop-blur-md border border-dark-slate-grey/5 flex items-center justify-center gap-1.5">
                   <div className={`w-1 h-1 rounded-full ${match.status === 'live' ? 'bg-red-500 animate-pulse' : 'bg-muted-teal'}`} />
                   <span className="text-[8px] font-bold uppercase tracking-tighter text-dark-slate-grey/80">{match.status}</span>
                 </div>
               </div>
               
               <div className="flex-1 min-w-0 space-y-2">
-                <p className="text-[10px] font-bold text-dark-slate-grey/30 uppercase tracking-[0.2em]">{match.mode} • {match.map || 'Bermuda'}</p>
+                <p className="text-[10px] font-bold text-dark-slate-grey/40 uppercase tracking-[0.2em]">{match.mode} • {match.map || 'Bermuda'}</p>
                 <h3 className="text-xl font-heading text-dark-slate-grey truncate group-hover:text-muted-teal transition-colors">{match.title}</h3>
                 
                 <div className="flex items-center gap-5 pt-1">
@@ -295,26 +295,26 @@ export default function Home() {
                     <div className="w-5 h-5 rounded-lg bg-muted-teal/10 flex items-center justify-center">
                       <Trophy size={12} className="text-muted-teal" />
                     </div>
-                    <span className="text-[11px] font-bold text-dark-slate-grey/60">₹{match.tournament?.prize_pool.toLocaleString()}</span>
+                    <span className="text-[11px] font-bold text-dark-slate-grey/70">₹{match.tournament?.prize_pool.toLocaleString()}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-lg bg-dark-slate-grey/5 flex items-center justify-center">
-                      <Users size={12} className="text-dark-slate-grey/30" />
+                      <Users size={12} className="text-dark-slate-grey/40" />
                     </div>
-                    <span className="text-[11px] font-bold text-dark-slate-grey/40">{match.live_stats?.players_alive || 48} / {match.tournament?.slots || 100}</span>
+                    <span className="text-[11px] font-bold text-dark-slate-grey/50">{match.live_stats?.players_alive || 48} / {match.tournament?.slots || 100}</span>
                   </div>
                 </div>
               </div>
 
               <div className="flex flex-col items-end justify-center gap-1 pl-4 border-l border-dark-slate-grey/5">
-                <span className="text-[9px] font-bold text-dark-slate-grey/20 uppercase tracking-[0.3em]">ENTRY</span>
+                <span className="text-[9px] font-bold text-dark-slate-grey/30 uppercase tracking-[0.3em]">ENTRY</span>
                 <span className="text-2xl font-heading text-muted-teal">₹{match.tournament?.entry_fee}</span>
               </div>
             </motion.div>
           )) : (
-            <div className="py-20 text-center flex flex-col items-center gap-4 bg-card backdrop-blur-xl rounded-[40px] border border-dashed border-dark-slate-grey/10">
-              <Signal size={48} strokeWidth={1} className="text-dark-slate-grey/10" />
-              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-dark-slate-grey/20 italic">Scanning for Battle Signals...</p>
+            <div className="py-20 text-center flex flex-col items-center gap-4 bg-white rounded-[40px] border border-dashed border-dark-slate-grey/10">
+              <Signal size={48} strokeWidth={1} className="text-dark-slate-grey/5" />
+              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-dark-slate-grey/30 italic">Scanning for Battle Signals...</p>
             </div>
           )}
         </section>
@@ -338,8 +338,8 @@ export default function Home() {
       
       {/* Visual background glows */}
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-muted-teal/5 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-frosted-mint/10 blur-[120px] rounded-full" />
+        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-muted-teal/[0.03] blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-frosted-mint/[0.05] blur-[120px] rounded-full" />
       </div>
     </div>
   );
