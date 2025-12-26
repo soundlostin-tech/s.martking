@@ -83,8 +83,8 @@ export default function Home() {
     return (
     <main className="min-h-screen w-full bg-background pb-32 overflow-x-hidden relative">
       <div className="mesh-bg">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-royal-gold/20 rounded-full blur-[120px] animate-blob" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-dark-goldenrod/10 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] animate-blob" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
       </div>
       
       <TopHeader />
@@ -103,18 +103,18 @@ export default function Home() {
                 }}
                 className={`relative p-1 rounded-full cursor-pointer transition-transform hover:scale-110 ${
                   stories.some(s => s.user_id === user.id) 
-                    ? 'bg-gradient-to-tr from-white via-dark-goldenrod to-royal-gold p-[2px]' 
+                    ? 'bg-gradient-to-tr from-white via-primary to-accent p-[2px]' 
                     : 'bg-muted'
                 }`}
               >
-                <div className="w-20 h-20 rounded-full bg-white border border-dark-goldenrod/10 flex items-center justify-center overflow-hidden shadow-2xl">
+                <div className="w-20 h-20 rounded-full bg-white border border-primary/10 flex items-center justify-center overflow-hidden shadow-2xl">
                   {user.user_metadata?.avatar_url ? (
                     <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover" />
                   ) : (
                     <div className="text-2xl font-heading text-primary/30">{user.email?.[0].toUpperCase()}</div>
                   )}
                   {/* Subtle inner glow */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-royal-gold/10 to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none" />
                 </div>
                   {!stories.some(s => s.user_id === user.id) && (
                     <div className="absolute bottom-1 right-1 w-6 h-6 bg-primary border-2 border-white rounded-full flex items-center justify-center shadow-lg">
@@ -140,15 +140,15 @@ export default function Home() {
                   className={`flex-shrink-0 flex flex-col items-center gap-3 group ${hasStory ? 'cursor-pointer' : ''}`}
                 >
                   <div className={`relative p-[2px] rounded-full transition-transform group-hover:scale-110 ${
-                    hasStory ? 'bg-gradient-to-tr from-white via-dark-goldenrod to-royal-gold' : 'bg-transparent border border-muted'
+                    hasStory ? 'bg-gradient-to-tr from-white via-primary to-accent' : 'bg-transparent border border-muted'
                   }`}>
-                    <div className="w-20 h-20 rounded-full bg-white border border-dark-goldenrod/10 flex items-center justify-center overflow-hidden shadow-2xl">
+                    <div className="w-20 h-20 rounded-full bg-white border border-primary/10 flex items-center justify-center overflow-hidden shadow-2xl">
                       {profile.avatar_url ? (
                         <img src={profile.avatar_url} alt={profile.full_name} className="w-full h-full object-cover" />
                       ) : (
                         <div className="text-2xl font-heading text-primary/30">{profile.full_name?.[0]}</div>
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-b from-royal-gold/10 to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none" />
                     </div>
                     {profile.status === 'Active' && (
                       <div className="absolute bottom-1 right-1 w-5 h-5 bg-primary border-2 border-white rounded-full shadow-md" />
@@ -185,7 +185,7 @@ export default function Home() {
           <div className="space-y-2">
             <h2 className="text-4xl font-heading text-foreground tracking-tight">Active <span className="italic font-serif opacity-60">Battles</span></h2>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(182,145,33,0.4)]" />
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(79,70,229,0.4)]" />
               <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Live tournaments in progress</p>
             </div>
           </div>
@@ -208,8 +208,8 @@ export default function Home() {
             >
               {/* Radial Glow Effects */}
               <div className="absolute inset-0 opacity-20 pointer-events-none">
-                <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-mustard blur-[120px] rounded-full" />
-                <div className="absolute bottom-[-20%] right-[-10%] w-[80%] h-[80%] bg-dark-goldenrod blur-[120px] rounded-full" />
+                <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-primary blur-[120px] rounded-full" />
+                <div className="absolute bottom-[-20%] right-[-10%] w-[80%] h-[80%] bg-accent blur-[120px] rounded-full" />
               </div>
 
               <div className="relative z-10 space-y-8">
@@ -258,7 +258,7 @@ export default function Home() {
                     <span className="text-xs font-serif italic">{match.mode} • {match.map || 'Bermuda'}</span>
                   </div>
                   <Link href={match.status === 'live' ? `/live?matchId=${match.id}` : '/matches'} className="w-full max-w-[140px]">
-                    <button className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-primary text-white text-[11px] font-bold hover:bg-golden-earth transition-all shadow-xl active:scale-95">
+                    <button className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-primary text-white text-[11px] font-bold hover:bg-primary/90 transition-all shadow-xl active:scale-95">
                       {match.status === 'live' ? 'WATCH LIVE' : 'JOIN NOW'}
                     </button>
                   </Link>
@@ -277,8 +277,8 @@ export default function Home() {
           className="relative overflow-hidden rounded-[3rem] bg-white/80 backdrop-blur-2xl p-12 text-center space-y-8 shadow-2xl border border-primary/20"
         >
           <div className="absolute inset-0 opacity-30 pointer-events-none">
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-royal-gold blur-[100px] rounded-full" />
-            <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-dark-goldenrod blur-[100px] rounded-full" />
+            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-primary blur-[100px] rounded-full" />
+            <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-accent blur-[100px] rounded-full" />
           </div>
 
           <div className="relative z-10 space-y-6">

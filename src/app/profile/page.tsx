@@ -131,10 +131,10 @@ export default function Profile() {
 
     return (
         <main className="min-h-screen pb-32 bg-background relative overflow-x-hidden">
-          <div className="mesh-bg">
-            <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-royal-gold/20 rounded-full blur-[120px] animate-blob" />
-            <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-dark-goldenrod/10 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
-          </div>
+            <div className="mesh-bg">
+              <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] animate-blob" />
+              <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
+            </div>
 
           <HeroSection 
             title="Agent Profile" 
@@ -143,17 +143,17 @@ export default function Profile() {
           />
 
           <div className="px-6 -mt-16 relative z-10 space-y-8 max-w-2xl mx-auto">
-            {/* Profile Card */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-white/60 backdrop-blur-xl border border-primary/10 rounded-[3rem] p-10 md:p-14 shadow-2xl relative overflow-hidden flex flex-col items-center text-center"
-            >
-              {/* Radial Glows */}
-              <div className="absolute inset-0 opacity-10 pointer-events-none">
-                <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-mustard blur-[120px] rounded-full" />
-                <div className="absolute bottom-[-20%] right-[-10%] w-[80%] h-[80%] bg-dark-goldenrod blur-[120px] rounded-full" />
-              </div>
+              {/* Profile Card */}
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-white/60 backdrop-blur-xl border border-primary/10 rounded-[3rem] p-10 md:p-14 shadow-2xl relative overflow-hidden flex flex-col items-center text-center"
+              >
+                {/* Radial Glows */}
+                <div className="absolute inset-0 opacity-10 pointer-events-none">
+                  <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-primary blur-[120px] rounded-full" />
+                  <div className="absolute bottom-[-20%] right-[-10%] w-[80%] h-[80%] bg-accent blur-[120px] rounded-full" />
+                </div>
 
               <div className="relative mb-8 group">
                 <div className="absolute inset-0 bg-primary/10 blur-2xl rounded-full scale-110 group-hover:scale-125 transition-transform" />
@@ -193,7 +193,7 @@ export default function Profile() {
                 </button>
                 <button 
                   onClick={handleLogout}
-                  className="h-20 flex items-center justify-center gap-3 bg-primary text-white rounded-full font-serif text-lg shadow-2xl hover:bg-golden-earth transition-all active:scale-95"
+                  className="h-20 flex items-center justify-center gap-3 bg-primary text-white rounded-full font-serif text-lg shadow-2xl hover:bg-primary/90 transition-all active:scale-95"
                 >
                   <LogOut size={20} />
                   Sign Out

@@ -119,8 +119,8 @@ export default function MatchesPage() {
   return (
     <main className="min-h-screen pb-32 bg-background relative overflow-x-hidden">
       <div className="mesh-bg">
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-royal-gold/20 rounded-full blur-[120px] animate-blob" />
-        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-dark-goldenrod/10 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] animate-blob" />
+        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
       </div>
 
       <HeroSection 
@@ -178,11 +178,11 @@ export default function MatchesPage() {
                     transition={{ delay: index * 0.05 }}
                     className="bg-white/60 backdrop-blur-xl rounded-[2.5rem] p-8 shadow-2xl overflow-hidden group relative border border-primary/5"
                   >
-                    {/* Radial Glows */}
-                    <div className="absolute inset-0 opacity-10 pointer-events-none">
-                      <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-mustard blur-[120px] rounded-full" />
-                      <div className="absolute bottom-[-20%] right-[-10%] w-[80%] h-[80%] bg-dark-goldenrod blur-[120px] rounded-full" />
-                    </div>
+                      {/* Radial Glows */}
+                      <div className="absolute inset-0 opacity-10 pointer-events-none">
+                        <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-primary blur-[120px] rounded-full" />
+                        <div className="absolute bottom-[-20%] right-[-10%] w-[80%] h-[80%] bg-accent blur-[120px] rounded-full" />
+                      </div>
 
                     <div className="relative z-10">
                       <div className="flex justify-between items-start mb-8">
@@ -227,13 +227,13 @@ export default function MatchesPage() {
                             <button className="flex-1 py-5 px-8 rounded-2xl text-[10px] font-bold uppercase tracking-widest text-foreground/30 hover:text-primary transition-colors border border-primary/5">
                               Details
                             </button>
-                            <button 
-                              onClick={() => handleJoinMatch(match.tournament_id, match.id)}
-                              disabled={joining === match.id}
-                              className="flex-[2] bg-primary text-white py-5 px-8 rounded-2xl text-[11px] font-bold uppercase tracking-widest hover:bg-golden-earth transition-all shadow-xl flex items-center justify-center gap-3"
-                            >
-                              {joining === match.id ? <Loader2 className="w-4 h-4 animate-spin" /> : "RESERVE SLOT"}
-                            </button>
+                              <button 
+                                onClick={() => handleJoinMatch(match.tournament_id, match.id)}
+                                disabled={joining === match.id}
+                                className="flex-[2] bg-primary text-white py-5 px-8 rounded-2xl text-[11px] font-bold uppercase tracking-widest hover:bg-primary/90 transition-all shadow-xl flex items-center justify-center gap-3"
+                              >
+                                {joining === match.id ? <Loader2 className="w-4 h-4 animate-spin" /> : "RESERVE SLOT"}
+                              </button>
                           </>
                         ) : (
                           <Link href={match.status === 'live' ? `/live?matchId=${match.id}` : '#'} className="w-full">

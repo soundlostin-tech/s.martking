@@ -184,8 +184,8 @@ export default function WalletPage() {
     return (
     <main className="min-h-screen pb-32 bg-background relative overflow-x-hidden">
       <div className="mesh-bg">
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-royal-gold/20 rounded-full blur-[120px] animate-blob" />
-        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-dark-goldenrod/10 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] animate-blob" />
+        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
       </div>
 
       <HeroSection 
@@ -226,27 +226,27 @@ export default function WalletPage() {
               </div>
             </div>
           </div>
-          {/* Subtle background details inside card */}
-          <div className="absolute top-[-20%] right-[-20%] w-[60%] h-[60%] bg-royal-gold/10 blur-[80px] rounded-full" />
-        </motion.div>
-  
-        {/* Action Buttons */}
-        <div className="grid grid-cols-2 gap-4">
-          <button 
-            className="h-20 flex items-center justify-center gap-3 bg-white/60 backdrop-blur-xl border border-primary/10 rounded-full font-serif text-lg text-primary shadow-xl hover:bg-white/80 transition-all active:scale-95"
-            onClick={() => setIsDepositOpen(true)}
-          >
-            <Plus size={20} />
-            Add Funds
-          </button>
-          <button 
-            className="h-20 flex items-center justify-center gap-3 bg-primary text-white rounded-full font-serif text-lg shadow-xl hover:bg-golden-earth transition-all active:scale-95"
-            onClick={() => setIsWithdrawOpen(true)}
-          >
-            <ArrowDownLeft size={20} />
-            Withdraw
-          </button>
-        </div>
+            {/* Subtle background details inside card */}
+            <div className="absolute top-[-20%] right-[-20%] w-[60%] h-[60%] bg-primary/10 blur-[80px] rounded-full" />
+          </motion.div>
+    
+          {/* Action Buttons */}
+          <div className="grid grid-cols-2 gap-4">
+            <button 
+              className="h-20 flex items-center justify-center gap-3 bg-white/60 backdrop-blur-xl border border-primary/10 rounded-full font-serif text-lg text-primary shadow-xl hover:bg-white/80 transition-all active:scale-95"
+              onClick={() => setIsDepositOpen(true)}
+            >
+              <Plus size={20} />
+              Add Funds
+            </button>
+            <button 
+              className="h-20 flex items-center justify-center gap-3 bg-primary text-white rounded-full font-serif text-lg shadow-xl hover:bg-primary/90 transition-all active:scale-95"
+              onClick={() => setIsWithdrawOpen(true)}
+            >
+              <ArrowDownLeft size={20} />
+              Withdraw
+            </button>
+          </div>
   
         {/* Transaction History Section */}
         <div className="space-y-6">
@@ -341,13 +341,13 @@ export default function WalletPage() {
                 onChange={(e) => setDepositAmount(e.target.value)}
               />
             </div>
-            <button 
-              className="w-full h-20 bg-primary text-white rounded-full font-serif text-lg shadow-2xl hover:bg-golden-earth transition-all active:scale-95 flex items-center justify-center gap-3"
-              onClick={handleDeposit}
-              disabled={processing}
-            >
-              {processing ? <Loader2 className="w-6 h-6 animate-spin" /> : "Confirm Recharge"}
-            </button>
+              <button 
+                className="w-full h-20 bg-primary text-white rounded-full font-serif text-lg shadow-2xl hover:bg-primary/90 transition-all active:scale-95 flex items-center justify-center gap-3"
+                onClick={handleDeposit}
+                disabled={processing}
+              >
+                {processing ? <Loader2 className="w-6 h-6 animate-spin" /> : "Confirm Recharge"}
+              </button>
           </div>
         </DialogContent>
       </Dialog>
@@ -373,13 +373,13 @@ export default function WalletPage() {
               />
               <p className="text-[10px] text-foreground/40 text-center font-bold">Limit: ₹{(wallet?.balance || 0).toLocaleString()} available</p>
             </div>
-            <button 
-              className="w-full h-20 bg-primary text-white rounded-full font-serif text-lg shadow-2xl hover:bg-golden-earth transition-all active:scale-95 flex items-center justify-center gap-3"
-              onClick={handleWithdraw}
-              disabled={processing}
-            >
-              {processing ? <Loader2 className="w-6 h-6 animate-spin" /> : "Initiate Transfer"}
-            </button>
+              <button 
+                className="w-full h-20 bg-primary text-white rounded-full font-serif text-lg shadow-2xl hover:bg-primary/90 transition-all active:scale-95 flex items-center justify-center gap-3"
+                onClick={handleWithdraw}
+                disabled={processing}
+              >
+                {processing ? <Loader2 className="w-6 h-6 animate-spin" /> : "Initiate Transfer"}
+              </button>
           </div>
         </DialogContent>
       </Dialog>

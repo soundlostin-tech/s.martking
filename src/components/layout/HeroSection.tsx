@@ -13,8 +13,8 @@ export function HeroSection({ title, subtitle, children, className }: HeroSectio
   return (
     <div className={`relative overflow-hidden bg-background px-6 pt-24 pb-20 ${className}`}>
       {/* Subtle background detail */}
-      <div className="absolute top-0 right-0 w-80 h-80 bg-mustard/20 blur-[120px] rounded-full -mr-40 -mt-40" />
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-dark-goldenrod/10 blur-[100px] rounded-full -ml-32 -mb-32" />
+      <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 blur-[120px] rounded-full -mr-40 -mt-40" />
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 blur-[100px] rounded-full -ml-32 -mb-32" />
       
       <div className="relative z-10 flex flex-col gap-4 max-w-4xl mx-auto text-center">
         <motion.h1 
