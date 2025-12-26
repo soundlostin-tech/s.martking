@@ -1,21 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { PillButton } from "@/components/ui/PillButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
-import { Crown, Eye, EyeOff, Loader2, Star, Swords } from "lucide-react";
+import { Eye, EyeOff, Loader2, Swords, ShieldCheck, Zap } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -70,58 +68,63 @@ export default function Signin() {
   };
 
   return (
-    <main className="min-h-screen bg-background flex items-center justify-center p-6 relative overflow-hidden">
-      <div className="mesh-bg">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] animate-blob" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
+    <main className="min-h-screen bg-[#073b3a] bg-[radial-gradient(circle_at_50%_0%,_#0a4d4b_0%,_#073b3a_100%)] flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-20">
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-moss-green/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px]" />
       </div>
 
       {/* Auth Card */}
-      <div className="relative max-w-lg w-full bg-white/60 backdrop-blur-xl border border-primary/10 shadow-2xl rounded-[3rem] px-8 py-12 md:px-12 md:py-16 animate-fadeIn">
-        <div className="flex flex-col space-y-8">
-          {/* Header */}
-          <div className="text-center space-y-4">
-            <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center shadow-xl">
-                <Swords size={32} />
-              </div>
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="relative max-w-lg w-full bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-[3rem] overflow-hidden animate-fadeIn"
+      >
+        <div className="bg-[#0a4d4b] p-10 border-b border-white/10 relative overflow-hidden">
+          <div className="relative z-10 flex flex-col items-center text-center space-y-4">
+            <div className="w-16 h-16 bg-moss-green text-white rounded-2xl flex items-center justify-center shadow-xl shadow-moss-green/20 mb-2">
+              <Swords size={32} />
             </div>
-            <h1 className="text-4xl font-heading text-primary leading-tight tracking-tight">
-              Welcome <span className="italic">Back.</span>
-            </h1>
-            <p className="text-lg font-serif text-foreground/60 italic">
-              Sign in to continue your dominance.
-            </p>
+            <div className="space-y-1">
+              <h4 className="text-[10px] font-bold text-moss-green uppercase tracking-[0.4em]">Combat Uplink</h4>
+              <h1 className="text-4xl font-heading text-white leading-tight">
+                Welcome <span className="italic font-serif text-white/60">Back.</span>
+              </h1>
+            </div>
           </div>
+          <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-moss-green/20 blur-[80px] rounded-full" />
+        </div>
 
-          <form className="space-y-6" onSubmit={handleSignin}>
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest ml-4">Email Address</Label>
+        <div className="p-10 md:p-12 space-y-10">
+          <form className="space-y-8" onSubmit={handleSignin}>
+            <div className="space-y-3">
+              <Label htmlFor="email" className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em] ml-4">Deployment Email</Label>
               <Input 
                 id="email" 
                 type="email" 
                 placeholder="warrior@arena.com" 
-                className={`h-16 px-8 rounded-full border-primary/5 bg-white/50 shadow-lg text-foreground font-serif ${errors.email ? 'border-destructive' : ''}`}
+                className={`h-16 px-8 rounded-[2rem] border-none bg-white/5 shadow-inner text-white font-bold text-xs tracking-wide focus-visible:ring-moss-green placeholder:text-white/10 ${errors.email ? 'ring-2 ring-red-500/50' : ''}`}
                 value={formData.email}
                 onChange={(e) => {
                   setFormData({ ...formData, email: e.target.value });
                   if (errors.email) setErrors({ ...errors, email: "" });
                 }}
               />
-              {errors.email && <p className="text-[10px] text-destructive px-6 mt-1">{errors.email}</p>}
+              {errors.email && <p className="text-[10px] text-red-400 px-6 mt-1 font-bold">{errors.email}</p>}
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-3">
               <div className="flex justify-between items-center px-4">
-                <Label htmlFor="password" className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest">Password</Label>
-                <button type="button" className="text-[10px] text-primary/40 hover:text-primary font-bold uppercase tracking-wider transition-colors">Forgot?</button>
+                <Label htmlFor="password" className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">Access Protocol</Label>
+                <button type="button" className="text-[10px] text-moss-green/60 hover:text-moss-green font-bold uppercase tracking-widest transition-colors">Recover Keys?</button>
               </div>
               <div className="relative">
                 <Input 
                   id="password" 
                   type={showPassword ? "text" : "password"} 
                   placeholder="••••••••" 
-                  className={`h-16 px-8 pr-16 rounded-full border-primary/5 bg-white/50 shadow-lg text-foreground font-serif ${errors.password ? 'border-destructive' : ''}`}
+                  className={`h-16 px-8 pr-16 rounded-[2rem] border-none bg-white/5 shadow-inner text-white font-bold text-xs tracking-wide focus-visible:ring-moss-green placeholder:text-white/10 ${errors.password ? 'ring-2 ring-red-500/50' : ''}`}
                   value={formData.password}
                   onChange={(e) => {
                     setFormData({ ...formData, password: e.target.value });
@@ -131,27 +134,45 @@ export default function Signin() {
                 <button 
                   type="button" 
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-6 top-1/2 -translate-y-1/2 text-foreground/20 hover:text-primary transition-colors"
+                  className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 hover:text-white transition-colors"
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              {errors.password && <p className="text-[10px] text-destructive px-6 mt-1">{errors.password}</p>}
+              {errors.password && <p className="text-[10px] text-red-400 px-6 mt-1 font-bold">{errors.password}</p>}
             </div>
 
-            <PillButton type="submit" className="w-full h-16 text-lg font-serif shadow-2xl bg-primary hover:bg-primary/90 text-white" disabled={loading}>
-              {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Enter the Arena"}
-            </PillButton>
+            <Button 
+              type="submit" 
+              className="w-full h-16 rounded-[2rem] bg-moss-green hover:bg-moss-green/90 text-white font-bold text-[11px] uppercase tracking-[0.3em] shadow-2xl shadow-moss-green/20 mt-4 border-none" 
+              disabled={loading}
+            >
+              {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "ESTABLISH UPLINK"}
+            </Button>
           </form>
 
-          <p className="text-center text-sm font-serif text-foreground/50 italic">
-            New to the arena?{" "}
-            <Link href="/signup" className="text-primary font-bold underline underline-offset-4 decoration-primary/10 hover:decoration-primary">
-              Create identity
-            </Link>
-          </p>
+          <div className="pt-4 text-center">
+            <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em]">
+              NEW TO THE ARENA?{" "}
+              <Link href="/signup" className="text-moss-green hover:text-white transition-colors">
+                CREATE IDENTITY
+              </Link>
+            </p>
+          </div>
         </div>
-      </div>
+
+        {/* Security Badges */}
+        <div className="bg-white/[0.02] p-6 flex items-center justify-center gap-8 border-t border-white/5">
+          <div className="flex items-center gap-2">
+            <ShieldCheck size={14} className="text-moss-green" />
+            <span className="text-[8px] font-bold text-white/20 uppercase tracking-widest">ENCRYPTED</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Zap size={14} className="text-moss-green" />
+            <span className="text-[8px] font-bold text-white/20 uppercase tracking-widest">FAST UPLINK</span>
+          </div>
+        </div>
+      </motion.div>
     </main>
   );
 }

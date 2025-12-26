@@ -11,7 +11,7 @@ import {
   Users, Play, TrendingUp, Award, Plus,
   Sparkles, Timer, Zap, Map as MapIcon,
   Activity, Star, IndianRupee, Bell,
-  Search, ShieldCheck
+  Search, ShieldCheck, LayoutGrid, Signal
 } from "lucide-react";
 import { StoryViewer } from "@/components/StoryViewer";
 import { StoryUpload } from "@/components/StoryUpload";

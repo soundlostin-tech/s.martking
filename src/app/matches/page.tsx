@@ -3,7 +3,7 @@
 import { BottomNav } from "@/components/layout/BottomNav";
 import { TopHeader } from "@/components/layout/TopHeader";
 import { useState, useEffect, useCallback } from "react";
-import { Swords, Search, Loader2, Play, Trophy, Calendar, Users, Filter, Zap, Target, Signal, IndianRupee, ChevronRight, LayoutGrid } from "lucide-react";
+import { Swords, Search, Loader2, Play, Trophy, Calendar, Users, Filter, Zap, Target, Signal, IndianRupee, ChevronRight, LayoutGrid, Radio } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";

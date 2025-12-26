@@ -1,8 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { HeroSection } from "@/components/layout/HeroSection";
-import { PillButton } from "@/components/ui/PillButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -14,11 +12,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
-import { Crown, Loader2, Eye, EyeOff, Star, Swords } from "lucide-react";
+import { Crown, Loader2, Eye, EyeOff, Star, Swords, ShieldCheck, Zap } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 export default function Signup() {
   const [loading, setLoading] = useState(false);
@@ -88,65 +87,72 @@ export default function Signup() {
   };
 
   return (
-    <main className="min-h-screen bg-background flex items-center justify-center p-6 relative overflow-hidden py-20">
-      <div className="mesh-bg">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] animate-blob" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] animate-blob [animation-delay:2s]" />
+    <main className="min-h-screen bg-[#073b3a] bg-[radial-gradient(circle_at_50%_0%,_#0a4d4b_0%,_#073b3a_100%)] flex items-center justify-center p-6 relative overflow-hidden py-24">
+      {/* Background Decor */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-20">
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-moss-green/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px]" />
       </div>
 
-      <div className="relative max-w-lg w-full bg-white/60 backdrop-blur-xl border border-primary/10 shadow-2xl rounded-[3rem] px-8 py-12 md:px-12 animate-fadeIn">
-        <div className="flex flex-col space-y-8">
-          <div className="text-center space-y-4">
-            <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center shadow-xl">
-                <Star size={32} />
-              </div>
+      {/* Auth Card */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="relative max-w-lg w-full bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-[3rem] overflow-hidden animate-fadeIn"
+      >
+        <div className="bg-[#0a4d4b] p-10 border-b border-white/10 relative overflow-hidden">
+          <div className="relative z-10 flex flex-col items-center text-center space-y-4">
+            <div className="w-16 h-16 bg-moss-green text-white rounded-2xl flex items-center justify-center shadow-xl shadow-moss-green/20 mb-2">
+              <Star size={32} />
             </div>
-            <h1 className="text-4xl font-heading text-primary leading-tight tracking-tight">
-              Create <span className="italic">Identity.</span>
-            </h1>
-            <p className="text-lg font-serif text-foreground/60 italic">
-              Join the elite circle of warriors.
-            </p>
-          </div>
-
-          <form className="space-y-5" onSubmit={handleSignup}>
             <div className="space-y-1">
-              <Label className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest ml-4">Agent Name</Label>
+              <h4 className="text-[10px] font-bold text-moss-green uppercase tracking-[0.4em]">Warrior Enrollment</h4>
+              <h1 className="text-4xl font-heading text-white leading-tight">
+                Create <span className="italic font-serif text-white/60">Identity.</span>
+              </h1>
+            </div>
+          </div>
+          <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-moss-green/20 blur-[80px] rounded-full" />
+        </div>
+
+        <div className="p-10 md:p-12 space-y-8">
+          <form className="space-y-6" onSubmit={handleSignup}>
+            <div className="space-y-2">
+              <Label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em] ml-4">Agent Name</Label>
               <Input 
-                placeholder="Full Name" 
-                className="h-14 px-8 rounded-full border-primary/5 bg-white/50 shadow-lg font-serif"
+                placeholder="FULL NAME" 
+                className="h-14 px-8 rounded-[2rem] border-none bg-white/5 shadow-inner text-white font-bold text-xs tracking-wide focus-visible:ring-moss-green placeholder:text-white/10"
                 value={formData.fullname}
                 onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
               />
             </div>
 
-            <div className="space-y-1">
-              <Label className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest ml-4">Email Address</Label>
+            <div className="space-y-2">
+              <Label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em] ml-4">Deployment Email</Label>
               <Input 
                 type="email" 
-                placeholder="warrior@arena.com" 
-                className="h-14 px-8 rounded-full border-primary/5 bg-white/50 shadow-lg font-serif"
+                placeholder="WARRIOR@ARENA.COM" 
+                className="h-14 px-8 rounded-[2rem] border-none bg-white/5 shadow-inner text-white font-bold text-xs tracking-wide focus-visible:ring-moss-green placeholder:text-white/10"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
             </div>
 
-            <div className="space-y-1">
-              <Label className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest ml-4">Phone Number</Label>
-              <div className="flex gap-2">
+            <div className="space-y-2">
+              <Label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em] ml-4">Signal Connection</Label>
+              <div className="flex gap-3">
                 <Select value={countryCode} onValueChange={setCountryCode}>
-                  <SelectTrigger className="w-[100px] h-14 rounded-full border-primary/5 bg-white/50 shadow-lg">
+                  <SelectTrigger className="w-[100px] h-14 rounded-[2rem] border-none bg-white/5 font-bold text-xs text-white">
                     <SelectValue placeholder="+91" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-[#0a4d4b] border-white/10 text-white rounded-2xl">
                     <SelectItem value="+91">+91</SelectItem>
                     <SelectItem value="+1">+1</SelectItem>
                   </SelectContent>
                 </Select>
                 <Input 
                   placeholder="9876543210" 
-                  className="h-14 px-8 rounded-full border-primary/5 bg-white/50 shadow-lg font-serif flex-1"
+                  className="h-14 px-8 rounded-[2rem] border-none bg-white/5 shadow-inner text-white font-bold text-xs tracking-wide focus-visible:ring-moss-green placeholder:text-white/10 flex-1"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 />
@@ -154,53 +160,71 @@ export default function Signup() {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-1">
-                <Label className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest ml-4">Password</Label>
+              <div className="space-y-2">
+                <Label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em] ml-4">Access Protocol</Label>
                 <Input 
                   type="password" 
                   placeholder="••••••" 
-                  className="h-14 px-8 rounded-full border-primary/5 bg-white/50 shadow-lg font-serif"
+                  className="h-14 px-8 rounded-[2rem] border-none bg-white/5 shadow-inner text-white font-bold text-xs tracking-wide focus-visible:ring-moss-green placeholder:text-white/10"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 />
               </div>
-              <div className="space-y-1">
-                <Label className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest ml-4">Confirm</Label>
+              <div className="space-y-2">
+                <Label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em] ml-4">Confirm Keys</Label>
                 <Input 
                   type="password" 
                   placeholder="••••••" 
-                  className="h-14 px-8 rounded-full border-primary/5 bg-white/50 shadow-lg font-serif"
+                  className="h-14 px-8 rounded-[2rem] border-none bg-white/5 shadow-inner text-white font-bold text-xs tracking-wide focus-visible:ring-moss-green placeholder:text-white/10"
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                 />
               </div>
             </div>
 
-            <div className="flex items-center space-x-3 px-4">
+            <div className="flex items-center space-x-3 px-4 py-2">
               <Checkbox 
                 id="terms" 
-                className="w-5 h-5 rounded-md border-primary/20" 
+                className="w-5 h-5 rounded-md border-white/10 bg-white/5 data-[state=checked]:bg-moss-green data-[state=checked]:text-white" 
                 checked={formData.terms}
                 onCheckedChange={(checked) => setFormData({ ...formData, terms: checked as boolean })}
               />
-              <label htmlFor="terms" className="text-xs font-serif text-foreground/50 italic">
-                I accept the <span className="text-primary font-bold">Terms of Engagement</span>
+              <label htmlFor="terms" className="text-[10px] font-bold text-white/40 uppercase tracking-widest cursor-pointer">
+                I ACCEPT THE <span className="text-moss-green">TERMS OF ENGAGEMENT</span>
               </label>
             </div>
 
-            <PillButton type="submit" className="w-full h-16 text-lg font-serif shadow-2xl mt-4 bg-primary hover:bg-primary/90 text-white" disabled={loading}>
-              {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Enlist Now"}
-            </PillButton>
+            <Button 
+              type="submit" 
+              className="w-full h-16 rounded-[2rem] bg-moss-green hover:bg-moss-green/90 text-white font-bold text-[11px] uppercase tracking-[0.3em] shadow-2xl shadow-moss-green/20 mt-2 border-none" 
+              disabled={loading}
+            >
+              {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "ENLIST IN ARENA"}
+            </Button>
           </form>
 
-          <p className="text-center text-sm font-serif text-foreground/50 italic">
-            Already enlisted?{" "}
-            <Link href="/signin" className="text-primary font-bold underline underline-offset-4 decoration-primary/10 hover:decoration-primary">
-              Sign in
-            </Link>
-          </p>
+          <div className="pt-2 text-center">
+            <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em]">
+              ALREADY ENLISTED?{" "}
+              <Link href="/signin" className="text-moss-green hover:text-white transition-colors">
+                SIGN IN
+              </Link>
+            </p>
+          </div>
         </div>
-      </div>
+
+        {/* Security Badges */}
+        <div className="bg-white/[0.02] p-6 flex items-center justify-center gap-8 border-t border-white/5">
+          <div className="flex items-center gap-2">
+            <ShieldCheck size={14} className="text-moss-green" />
+            <span className="text-[8px] font-bold text-white/20 uppercase tracking-widest">ENCRYPTED</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Zap size={14} className="text-moss-green" />
+            <span className="text-[8px] font-bold text-white/20 uppercase tracking-widest">FAST UPLINK</span>
+          </div>
+        </div>
+      </motion.div>
     </main>
   );
 }
