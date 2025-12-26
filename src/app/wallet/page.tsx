@@ -161,203 +161,203 @@ export default function WalletPage() {
 
   if (authLoading) return null;
 
-  return (
-    <div className="min-h-screen bg-dark-slate-grey bg-[radial-gradient(circle_at_50%_0%,_#2d4d43_0%,_#243e36_100%)] text-white">
-      <main className="pb-32 relative z-10">
-        <TopHeader />
-
-        <div className="px-6 pt-8 space-y-10 max-w-2xl mx-auto">
-          {/* Main Balance Card - High-End Aesthetic */}
-          <section>
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="relative h-64 rounded-[40px] bg-muted-teal overflow-hidden shadow-2xl shadow-muted-teal/20 p-10 flex flex-col justify-between group"
-            >
-              <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:opacity-20 transition-opacity">
-                <WalletIcon size={160} className="text-white" strokeWidth={1} />
-              </div>
-              
-              <div className="relative z-10">
-                <p className="text-[10px] font-bold text-[#073b3a]/60 uppercase tracking-[0.4em] mb-2">OPERATIONAL CAPITAL</p>
-                <div className="flex items-baseline gap-3">
-                  <span className="text-3xl font-heading text-[#073b3a]/40">₹</span>
-                  <h2 className="text-6xl font-heading text-[#073b3a] tracking-tight">
-                    {(wallet?.balance || 0).toLocaleString()}
-                  </h2>
+    return (
+      <div className="min-h-screen bg-background text-foreground">
+        <main className="pb-32 relative z-10">
+          <TopHeader />
+  
+          <div className="px-6 pt-8 space-y-10 max-w-2xl mx-auto">
+            {/* Main Balance Card - High-End Aesthetic */}
+            <section>
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="relative h-64 rounded-[40px] bg-muted-teal overflow-hidden shadow-2xl shadow-muted-teal/20 p-10 flex flex-col justify-between group"
+              >
+                <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:opacity-20 transition-opacity">
+                  <WalletIcon size={160} className="text-white" strokeWidth={1} />
                 </div>
-              </div>
-
-              <div className="relative z-10 grid grid-cols-2 gap-8 pt-8 border-t border-[#073b3a]/10">
-                <div>
-                  <p className="text-[9px] font-bold text-[#073b3a]/40 uppercase tracking-widest mb-1">Lifetime Earnings</p>
-                  <p className="text-2xl font-heading text-[#073b3a]">₹{(wallet?.lifetime_earnings || 0).toLocaleString()}</p>
+                
+                <div className="relative z-10">
+                  <p className="text-[10px] font-bold text-dark-slate-grey/60 uppercase tracking-[0.4em] mb-2">OPERATIONAL CAPITAL</p>
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-3xl font-heading text-dark-slate-grey/40">₹</span>
+                    <h2 className="text-6xl font-heading text-dark-slate-grey tracking-tight">
+                      {(wallet?.balance || 0).toLocaleString()}
+                    </h2>
+                  </div>
                 </div>
-                <div className="text-right md:text-left">
-                  <p className="text-[9px] font-bold text-[#073b3a]/40 uppercase tracking-widest mb-1">Pending Extract</p>
-                  <p className="text-2xl font-heading text-[#073b3a]/60">₹{(wallet?.pending_withdrawals || 0).toLocaleString()}</p>
+  
+                <div className="relative z-10 grid grid-cols-2 gap-8 pt-8 border-t border-dark-slate-grey/10">
+                  <div>
+                    <p className="text-[9px] font-bold text-dark-slate-grey/40 uppercase tracking-widest mb-1">Lifetime Earnings</p>
+                    <p className="text-2xl font-heading text-dark-slate-grey">₹{(wallet?.lifetime_earnings || 0).toLocaleString()}</p>
+                  </div>
+                  <div className="text-right md:text-left">
+                    <p className="text-[9px] font-bold text-dark-slate-grey/40 uppercase tracking-widest mb-1">Pending Extract</p>
+                    <p className="text-2xl font-heading text-dark-slate-grey/60">₹{(wallet?.pending_withdrawals || 0).toLocaleString()}</p>
+                  </div>
                 </div>
-              </div>
-              
-              {/* Visual Glow */}
-              <div className="absolute top-[-50%] right-[-20%] w-full h-full bg-white/20 blur-[100px] rounded-full pointer-events-none" />
-            </motion.div>
-          </section>
-
-          {/* Quick Actions */}
-          <section className="grid grid-cols-2 gap-6">
-            <motion.button 
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsDepositOpen(true)}
-              className="bg-white/5 backdrop-blur-xl rounded-[32px] py-8 flex flex-col items-center gap-3 border border-white/10 shadow-2xl hover:bg-white/[0.08] transition-all"
-            >
-              <div className="w-12 h-12 rounded-2xl bg-muted-teal/20 flex items-center justify-center text-muted-teal shadow-inner">
-                <Plus size={24} strokeWidth={3} />
-              </div>
-              <span className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em]">Add Funds</span>
-            </motion.button>
-            <motion.button 
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsWithdrawOpen(true)}
-              className="bg-white/5 backdrop-blur-xl rounded-[32px] py-8 flex flex-col items-center gap-3 border border-white/10 shadow-2xl hover:bg-white/[0.08] transition-all"
-            >
-              <div className="w-12 h-12 rounded-2xl bg-accent/20 flex items-center justify-center text-accent shadow-inner">
-                <ArrowDownLeft size={24} strokeWidth={3} />
-              </div>
-              <span className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em]">Withdraw</span>
-            </motion.button>
-          </section>
-
-          {/* Activity Section */}
-          <section className="space-y-6">
-            <div className="flex items-center justify-between px-2">
-              <div className="space-y-1">
-                <h3 className="text-xl font-heading text-white tracking-wide">Financial <span className="italic font-serif opacity-60">Logs</span></h3>
-                <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest">TRANSACTION HISTORY</p>
-              </div>
-              <Activity size={20} className="text-white/10" />
-            </div>
-
-            <div className="space-y-4">
-              {loading ? (
-                <div className="flex flex-col items-center justify-center py-20 gap-4 bg-white/5 rounded-[40px] border border-white/5">
-                  <Loader2 className="w-8 h-8 animate-spin text-muted-teal" />
-                  <p className="text-[10px] text-white/20 font-bold uppercase tracking-widest">Syncing Ledger...</p>
+                
+                {/* Visual Glow */}
+                <div className="absolute top-[-50%] right-[-20%] w-full h-full bg-white/20 blur-[100px] rounded-full pointer-events-none" />
+              </motion.div>
+            </section>
+  
+            {/* Quick Actions */}
+            <section className="grid grid-cols-2 gap-6">
+              <motion.button 
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsDepositOpen(true)}
+                className="bg-card backdrop-blur-xl rounded-[32px] py-8 flex flex-col items-center gap-3 border border-border shadow-2xl shadow-dark-slate-grey/5 hover:bg-dark-slate-grey/[0.08] transition-all"
+              >
+                <div className="w-12 h-12 rounded-2xl bg-muted-teal/20 flex items-center justify-center text-muted-teal shadow-inner">
+                  <Plus size={24} strokeWidth={3} />
                 </div>
-              ) : transactions.length > 0 ? (
-                transactions.map((tx, i) => (
-                  <motion.div 
-                    key={tx.id}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                    className="bg-white/5 backdrop-blur-xl p-5 rounded-[32px] flex items-center justify-between border border-white/5 shadow-xl hover:border-white/10 transition-all"
-                  >
-                    <div className="flex items-center gap-5">
-                      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner ${
-                        ['deposit', 'prize'].includes(tx.type) ? 'bg-muted-teal/10 text-muted-teal' : 'bg-white/5 text-white/20'
-                      }`}>
-                        {tx.type === 'deposit' ? <Plus size={20} strokeWidth={3} /> : tx.type === 'withdrawal' ? <ArrowDownLeft size={20} strokeWidth={3} /> : <TrendingUp size={20} strokeWidth={3} />}
-                      </div>
-                      <div>
-                        <h4 className="text-[13px] font-bold text-white capitalize mb-1">{tx.description || tx.type}</h4>
-                        <div className="flex items-center gap-3">
-                          <span className="text-[9px] font-bold text-white/20 uppercase tracking-widest flex items-center gap-1.5">
-                            <Clock size={10} /> {new Date(tx.created_at).toLocaleDateString()}
-                          </span>
-                          <Badge variant="outline" className={`border-none rounded-full text-[8px] px-2 py-0 h-4 font-bold tracking-tighter ${
-                            tx.status === 'completed' ? 'bg-muted-teal/10 text-muted-teal' : 'bg-white/10 text-white/40'
-                          }`}>
-                            {tx.status.toUpperCase()}
-                          </Badge>
+                <span className="text-[10px] font-bold text-dark-slate-grey/40 uppercase tracking-[0.2em]">Add Funds</span>
+              </motion.button>
+              <motion.button 
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsWithdrawOpen(true)}
+                className="bg-card backdrop-blur-xl rounded-[32px] py-8 flex flex-col items-center gap-3 border border-border shadow-2xl shadow-dark-slate-grey/5 hover:bg-dark-slate-grey/[0.08] transition-all"
+              >
+                <div className="w-12 h-12 rounded-2xl bg-dark-slate-grey/10 flex items-center justify-center text-dark-slate-grey/40 shadow-inner">
+                  <ArrowDownLeft size={24} strokeWidth={3} />
+                </div>
+                <span className="text-[10px] font-bold text-dark-slate-grey/40 uppercase tracking-[0.2em]">Withdraw</span>
+              </motion.button>
+            </section>
+  
+            {/* Activity Section */}
+            <section className="space-y-6">
+              <div className="flex items-center justify-between px-2">
+                <div className="space-y-1">
+                  <h3 className="text-xl font-heading text-dark-slate-grey tracking-wide">Financial <span className="italic font-serif opacity-60">Logs</span></h3>
+                  <p className="text-[10px] font-bold text-dark-slate-grey/20 uppercase tracking-widest">TRANSACTION HISTORY</p>
+                </div>
+                <Activity size={20} className="text-dark-slate-grey/10" />
+              </div>
+  
+              <div className="space-y-4">
+                {loading ? (
+                  <div className="flex flex-col items-center justify-center py-20 gap-4 bg-card rounded-[40px] border border-border">
+                    <Loader2 className="w-8 h-8 animate-spin text-muted-teal" />
+                    <p className="text-[10px] text-dark-slate-grey/20 font-bold uppercase tracking-widest">Syncing Ledger...</p>
+                  </div>
+                ) : transactions.length > 0 ? (
+                  transactions.map((tx, i) => (
+                    <motion.div 
+                      key={tx.id}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="bg-card backdrop-blur-xl p-5 rounded-[32px] flex items-center justify-between border border-border shadow-xl hover:border-dark-slate-grey/10 transition-all shadow-dark-slate-grey/5"
+                    >
+                      <div className="flex items-center gap-5">
+                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner ${
+                          ['deposit', 'prize'].includes(tx.type) ? 'bg-muted-teal/10 text-muted-teal' : 'bg-dark-slate-grey/5 text-dark-slate-grey/20'
+                        }`}>
+                          {tx.type === 'deposit' ? <Plus size={20} strokeWidth={3} /> : tx.type === 'withdrawal' ? <ArrowDownLeft size={20} strokeWidth={3} /> : <TrendingUp size={20} strokeWidth={3} />}
+                        </div>
+                        <div>
+                          <h4 className="text-[13px] font-bold text-dark-slate-grey capitalize mb-1">{tx.description || tx.type}</h4>
+                          <div className="flex items-center gap-3">
+                            <span className="text-[9px] font-bold text-dark-slate-grey/20 uppercase tracking-widest flex items-center gap-1.5">
+                              <Clock size={10} /> {new Date(tx.created_at).toLocaleDateString()}
+                            </span>
+                            <Badge variant="outline" className={`border-none rounded-full text-[8px] px-2 py-0 h-4 font-bold tracking-tighter ${
+                              tx.status === 'completed' ? 'bg-muted-teal/10 text-muted-teal' : 'bg-dark-slate-grey/10 text-dark-slate-grey/40'
+                            }`}>
+                              {tx.status.toUpperCase()}
+                            </Badge>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="text-right">
-                      <p className={`text-xl font-heading ${
-                        ['deposit', 'prize'].includes(tx.type) ? 'text-muted-teal' : 'text-white/40'
-                      }`}>
-                        {['deposit', 'prize'].includes(tx.type) ? '+' : '-'}₹{tx.amount}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))
-              ) : (
-                <div className="text-center py-20 bg-white/5 backdrop-blur-xl rounded-[40px] border border-dashed border-white/10 space-y-4">
-                  <AlertCircle size={40} className="text-white/5 mx-auto" />
-                  <p className="text-[10px] text-white/20 font-bold uppercase tracking-[0.3em]">Operational Ledger Empty</p>
-                </div>
-              )}
+                      <div className="text-right">
+                        <p className={`text-xl font-heading ${
+                          ['deposit', 'prize'].includes(tx.type) ? 'text-muted-teal' : 'text-dark-slate-grey/40'
+                        }`}>
+                          {['deposit', 'prize'].includes(tx.type) ? '+' : '-'}₹{tx.amount}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))
+                ) : (
+                  <div className="text-center py-20 bg-card backdrop-blur-xl rounded-[40px] border border-dashed border-border space-y-4 shadow-dark-slate-grey/5">
+                    <AlertCircle size={40} className="text-dark-slate-grey/5 mx-auto" />
+                    <p className="text-[10px] text-dark-slate-grey/20 font-bold uppercase tracking-[0.3em]">Operational Ledger Empty</p>
+                  </div>
+                )}
+              </div>
+            </section>
+          </div>
+        </main>
+  
+        {/* Styled Modals */}
+        <Dialog open={isDepositOpen} onOpenChange={setIsDepositOpen}>
+          <DialogContent className="p-0 border-none bg-background rounded-[40px] overflow-hidden max-w-[90vw] sm:max-w-[400px] shadow-2xl">
+            <div className="bg-dark-slate-grey p-10 relative overflow-hidden">
+              <DialogTitle className="text-3xl font-heading text-mint-cream mb-2">Fund <span className="italic opacity-60">Arena</span></DialogTitle>
+              <DialogDescription className="text-mint-cream/40 text-[10px] font-bold uppercase tracking-[0.2em]">Inject operational capital for match deployment.</DialogDescription>
+              <div className="absolute top-[-20%] right-[-10%] w-48 h-48 bg-muted-teal/20 blur-[60px] rounded-full" />
             </div>
-          </section>
+            <div className="p-10 space-y-8">
+              <div className="space-y-3">
+                <label className="text-[10px] font-bold text-dark-slate-grey/20 uppercase tracking-[0.3em] ml-2">AMOUNT (₹)</label>
+                <Input 
+                  type="number" 
+                  placeholder="Enter amount" 
+                  className="h-16 rounded-2xl border-none bg-dark-slate-grey/5 text-2xl font-heading px-8 focus-visible:ring-muted-teal text-dark-slate-grey placeholder:text-dark-slate-grey/10"
+                  value={depositAmount}
+                  onChange={(e) => setDepositAmount(e.target.value)}
+                />
+              </div>
+              <button 
+                onClick={handleDeposit}
+                disabled={processing}
+                className="w-full h-16 bg-muted-teal text-white rounded-[2rem] text-[11px] font-bold uppercase tracking-[0.3em] shadow-2xl shadow-muted-teal/20 active:scale-95 transition-all border-none"
+              >
+                {processing ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "CONFIRM DEPLOYMENT"}
+              </button>
+            </div>
+          </DialogContent>
+        </Dialog>
+  
+        <Dialog open={isWithdrawOpen} onOpenChange={setIsWithdrawOpen}>
+          <DialogContent className="p-0 border-none bg-background rounded-[40px] overflow-hidden max-w-[90vw] sm:max-w-[400px] shadow-2xl">
+            <div className="bg-dark-slate-grey p-10 relative overflow-hidden">
+              <DialogTitle className="text-3xl font-heading text-mint-cream mb-2">Funds <span className="italic opacity-60">Extraction</span></DialogTitle>
+              <DialogDescription className="text-mint-cream/40 text-[10px] font-bold uppercase tracking-[0.2em]">Initiate withdrawal of match winnings.</DialogDescription>
+              <div className="absolute top-[-20%] right-[-10%] w-48 h-48 bg-muted-teal/20 blur-[60px] rounded-full" />
+            </div>
+            <div className="p-10 space-y-8">
+              <div className="space-y-3">
+                <label className="text-[10px] font-bold text-dark-slate-grey/20 uppercase tracking-[0.3em] ml-2">AMOUNT (₹)</label>
+                <Input 
+                  type="number" 
+                  placeholder="Min ₹100" 
+                  className="h-16 rounded-2xl border-none bg-dark-slate-grey/5 text-2xl font-heading px-8 focus-visible:ring-dark-slate-grey text-dark-slate-grey placeholder:text-dark-slate-grey/10"
+                  value={withdrawAmount}
+                  onChange={(e) => setWithdrawAmount(e.target.value)}
+                />
+              </div>
+              <button 
+                onClick={handleWithdraw}
+                disabled={processing}
+                className="w-full h-16 bg-dark-slate-grey text-white rounded-[2rem] text-[11px] font-bold uppercase tracking-[0.3em] shadow-2xl shadow-dark-slate-grey/20 active:scale-95 transition-all border-none"
+              >
+                {processing ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "INITIATE EXTRACTION"}
+              </button>
+            </div>
+          </DialogContent>
+        </Dialog>
+  
+        <BottomNav />
+        {/* Background Glows */}
+        <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0 opacity-20">
+          <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-muted-teal/10 blur-[120px] rounded-full" />
+          <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-frosted-mint/10 blur-[120px] rounded-full" />
         </div>
-      </main>
-
-      {/* Styled Modals */}
-      <Dialog open={isDepositOpen} onOpenChange={setIsDepositOpen}>
-        <DialogContent className="p-0 border-none bg-[#073b3a] rounded-[40px] overflow-hidden max-w-[90vw] sm:max-w-[400px] shadow-2xl">
-          <div className="bg-[#0a4d4b] p-10 relative overflow-hidden">
-            <DialogTitle className="text-3xl font-heading text-white mb-2">Fund <span className="italic opacity-60">Arena</span></DialogTitle>
-            <DialogDescription className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em]">Inject operational capital for match deployment.</DialogDescription>
-            <div className="absolute top-[-20%] right-[-10%] w-48 h-48 bg-muted-teal/20 blur-[60px] rounded-full" />
-          </div>
-          <div className="p-10 space-y-8">
-            <div className="space-y-3">
-              <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em] ml-2">AMOUNT (₹)</label>
-              <Input 
-                type="number" 
-                placeholder="Enter amount" 
-                className="h-16 rounded-2xl border-none bg-white/5 text-2xl font-heading px-8 focus-visible:ring-muted-teal text-white placeholder:text-white/10"
-                value={depositAmount}
-                onChange={(e) => setDepositAmount(e.target.value)}
-              />
-            </div>
-            <button 
-              onClick={handleDeposit}
-              disabled={processing}
-              className="w-full h-16 bg-muted-teal text-white rounded-[2rem] text-[11px] font-bold uppercase tracking-[0.3em] shadow-2xl shadow-muted-teal/20 active:scale-95 transition-all"
-            >
-              {processing ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "CONFIRM DEPLOYMENT"}
-            </button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={isWithdrawOpen} onOpenChange={setIsWithdrawOpen}>
-        <DialogContent className="p-0 border-none bg-[#073b3a] rounded-[40px] overflow-hidden max-w-[90vw] sm:max-w-[400px] shadow-2xl">
-          <div className="bg-[#0a4d4b] p-10 relative overflow-hidden">
-            <DialogTitle className="text-3xl font-heading text-white mb-2">Funds <span className="italic opacity-60">Extraction</span></DialogTitle>
-            <DialogDescription className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em]">Initiate withdrawal of match winnings.</DialogDescription>
-            <div className="absolute top-[-20%] right-[-10%] w-48 h-48 bg-accent/20 blur-[60px] rounded-full" />
-          </div>
-          <div className="p-10 space-y-8">
-            <div className="space-y-3">
-              <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em] ml-2">AMOUNT (₹)</label>
-              <Input 
-                type="number" 
-                placeholder="Min ₹100" 
-                className="h-16 rounded-2xl border-none bg-white/5 text-2xl font-heading px-8 focus-visible:ring-accent text-white placeholder:text-white/10"
-                value={withdrawAmount}
-                onChange={(e) => setWithdrawAmount(e.target.value)}
-              />
-            </div>
-            <button 
-              onClick={handleWithdraw}
-              disabled={processing}
-              className="w-full h-16 bg-accent text-white rounded-[2rem] text-[11px] font-bold uppercase tracking-[0.3em] shadow-2xl shadow-accent/20 active:scale-95 transition-all"
-            >
-              {processing ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "INITIATE EXTRACTION"}
-            </button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      <BottomNav />
-      {/* Background Glows */}
-      <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0 opacity-20">
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-muted-teal/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/5 blur-[120px] rounded-full" />
       </div>
-    </div>
-  );
+    );
 }

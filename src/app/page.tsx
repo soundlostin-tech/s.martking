@@ -87,7 +87,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-dark-slate-grey bg-[radial-gradient(circle_at_50%_0%,_#2d4d43_0%,_#243e36_100%)] text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <main className="pb-32 relative z-10">
         <TopHeader />
 
@@ -105,26 +105,26 @@ export default function Home() {
                   }}
                   className={`relative w-[72px] h-[72px] rounded-[24px] p-[2.5px] flex items-center justify-center transition-all duration-500 ${
                     stories.some(s => s.user_id === user.id) 
-                      ? 'bg-gradient-to-tr from-muted-teal to-accent shadow-lg shadow-muted-teal/20' 
-                      : 'border-2 border-dashed border-white/10 hover:border-white/20'
+                      ? 'bg-gradient-to-tr from-muted-teal to-dark-slate-grey shadow-lg shadow-muted-teal/20' 
+                      : 'border-2 border-dashed border-dark-slate-grey/10 hover:border-dark-slate-grey/20'
                   }`}
                 >
-                  <div className="w-full h-full rounded-[21px] bg-[#243e36] p-0.5">
-                    <div className="w-full h-full rounded-[19px] bg-white/5 flex items-center justify-center overflow-hidden">
+                  <div className="w-full h-full rounded-[21px] bg-background p-0.5">
+                    <div className="w-full h-full rounded-[19px] bg-dark-slate-grey/5 flex items-center justify-center overflow-hidden">
                       {user.user_metadata?.avatar_url ? (
                         <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover" />
                       ) : (
-                        <span className="text-xl font-heading text-white/20">{user.email?.[0].toUpperCase()}</span>
+                        <span className="text-xl font-heading text-dark-slate-grey/20">{user.email?.[0].toUpperCase()}</span>
                       )}
                     </div>
                   </div>
                   {!stories.some(s => s.user_id === user.id) && (
-                    <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-muted-teal rounded-xl border-[3px] border-[#243e36] flex items-center justify-center text-white shadow-xl">
+                    <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-muted-teal rounded-xl border-[3px] border-background flex items-center justify-center text-white shadow-xl">
                       <Plus size={16} strokeWidth={4} />
                     </div>
                   )}
                 </motion.div>
-                <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest">YOU</span>
+                <span className="text-[10px] font-bold text-dark-slate-grey/40 uppercase tracking-widest">YOU</span>
               </div>
             )}
 
@@ -140,22 +140,22 @@ export default function Home() {
                     whileTap={{ scale: 0.9 }}
                     className={`w-[72px] h-[72px] rounded-[24px] p-[2.5px] transition-all duration-500 ${
                       hasStory 
-                        ? 'bg-gradient-to-tr from-muted-teal to-accent shadow-lg shadow-muted-teal/20' 
-                        : 'bg-white/5'
+                        ? 'bg-gradient-to-tr from-muted-teal to-dark-slate-grey shadow-lg shadow-muted-teal/20' 
+                        : 'bg-dark-slate-grey/5'
                     }`}
                   >
-                      <div className="w-full h-full rounded-[21px] bg-[#243e36] p-0.5">
-                        <div className="w-full h-full rounded-[19px] bg-white/5 flex items-center justify-center overflow-hidden">
+                      <div className="w-full h-full rounded-[21px] bg-background p-0.5">
+                        <div className="w-full h-full rounded-[19px] bg-dark-slate-grey/5 flex items-center justify-center overflow-hidden">
                           {profile.avatar_url ? (
                             <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
                           ) : (
-                            <span className="text-xl font-heading text-white/10">{profile.full_name?.[0].toUpperCase()}</span>
+                            <span className="text-xl font-heading text-dark-slate-grey/10">{profile.full_name?.[0].toUpperCase()}</span>
                           )}
                         </div>
                       </div>
                   </motion.div>
                   <span className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${
-                    hasStory ? 'text-white' : 'text-white/20'
+                    hasStory ? 'text-dark-slate-grey' : 'text-dark-slate-grey/20'
                   }`}>
                     {profile.full_name?.split(' ')[0].toUpperCase()}
                   </span>
@@ -167,8 +167,8 @@ export default function Home() {
 
         {/* Dynamic Hero Banner */}
         <section className="px-6 mb-10">
-          <div className="relative h-56 rounded-[40px] overflow-hidden shadow-2xl shadow-black/40 group cursor-pointer active:scale-[0.98] transition-all duration-500">
-            <div className="absolute inset-0 bg-[#2d4d43] group-hover:bg-[#345a4f] transition-colors duration-700" />
+          <div className="relative h-56 rounded-[40px] overflow-hidden shadow-2xl shadow-dark-slate-grey/10 group cursor-pointer active:scale-[0.98] transition-all duration-500">
+            <div className="absolute inset-0 bg-dark-slate-grey group-hover:bg-dark-slate-grey/90 transition-colors duration-700" />
             
             {/* Ambient FX */}
             <div className="absolute inset-0 overflow-hidden opacity-60">
@@ -188,7 +188,7 @@ export default function Home() {
                   opacity: [0.2, 0.4, 0.2],
                 }}
                 transition={{ duration: 12, repeat: Infinity }}
-                className="absolute -bottom-20 -right-20 w-80 h-80 bg-accent/20 blur-[100px] rounded-full"
+                className="absolute -bottom-20 -right-20 w-80 h-80 bg-frosted-mint/20 blur-[100px] rounded-full"
               />
             </div>
             
@@ -197,18 +197,18 @@ export default function Home() {
                 <div className="w-2 h-2 rounded-full bg-muted-teal animate-pulse" />
                 <span className="text-[10px] font-bold text-muted-teal uppercase tracking-[0.4em]">ELITE DEPLOYMENT ACTIVE</span>
               </div>
-              <h2 className="text-4xl font-heading text-white leading-[1.1] tracking-tight">Win ₹1,00,000<br/>Mega Pool</h2>
-              <p className="text-[11px] text-white/40 font-bold uppercase tracking-[0.2em] mt-4 flex items-center gap-2">
+              <h2 className="text-4xl font-heading text-mint-cream leading-[1.1] tracking-tight">Win ₹1,00,000<br/>Mega Pool</h2>
+              <p className="text-[11px] text-mint-cream/40 font-bold uppercase tracking-[0.2em] mt-4 flex items-center gap-2">
                 <Users size={14} className="text-muted-teal" /> 2,450 WARRIORS REGISTERED
               </p>
               
               <div className="mt-8 flex items-center gap-4">
-                <button className="px-8 py-3.5 bg-muted-teal text-white rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-2xl shadow-muted-teal/30 hover:bg-muted-teal/80 transition-all">
+                <button className="px-8 py-3.5 bg-muted-teal text-mint-cream rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-2xl shadow-muted-teal/30 hover:bg-muted-teal/80 transition-all">
                   INITIALIZE ENTRY
                 </button>
                 <div className="flex -space-x-3">
                   {[1,2,3].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full border-4 border-[#2d4d43] bg-white/10 overflow-hidden shadow-xl">
+                    <div key={i} className="w-10 h-10 rounded-full border-4 border-dark-slate-grey bg-white/10 overflow-hidden shadow-xl">
                       <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+50}`} alt="" />
                     </div>
                   ))}
@@ -216,7 +216,7 @@ export default function Home() {
               </div>
             </div>
             
-            <div className="absolute right-10 top-1/2 -translate-y-1/2 opacity-10 group-hover:opacity-20 transition-opacity">
+            <div className="absolute right-10 top-1/2 -translate-y-1/2 opacity-10 group-hover:opacity-20 transition-opacity text-mint-cream">
               <Trophy size={160} strokeWidth={1} />
             </div>
           </div>
@@ -226,7 +226,7 @@ export default function Home() {
         <section className="px-6 mb-12 overflow-x-auto no-scrollbar flex gap-5">
           {[
             { label: "Elite Wins", value: userStats.wins, icon: Trophy, color: "muted-teal" },
-            { label: "Global Rank", value: userStats.rank, icon: Zap, color: "accent" },
+            { label: "Global Rank", value: userStats.rank, icon: Zap, color: "dark-slate-grey" },
             { label: "Engagement", value: userStats.growth, icon: TrendingUp, color: "muted-teal" },
           ].map((stat, i) => (
             <motion.div 
@@ -234,13 +234,13 @@ export default function Home() {
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: i * 0.1 }}
-              className="flex-shrink-0 w-36 bg-white/5 backdrop-blur-xl rounded-[32px] p-6 border border-white/10 shadow-2xl"
+              className="flex-shrink-0 w-36 bg-card backdrop-blur-xl rounded-[32px] p-6 border border-border shadow-2xl shadow-dark-slate-grey/5"
             >
-              <div className={`w-10 h-10 rounded-2xl bg-${stat.color}/10 flex items-center justify-center mb-4`}>
-                <stat.icon size={20} className={`text-${stat.color}`} />
+              <div className={`w-10 h-10 rounded-2xl bg-${stat.color === 'dark-slate-grey' ? 'dark-slate-grey' : 'muted-teal'}/10 flex items-center justify-center mb-4`}>
+                <stat.icon size={20} className={stat.color === 'dark-slate-grey' ? 'text-dark-slate-grey' : 'text-muted-teal'} />
               </div>
-              <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest mb-1">{stat.label}</p>
-              <h4 className="text-2xl font-heading text-white">{stat.value}</h4>
+              <p className="text-[9px] font-bold text-dark-slate-grey/30 uppercase tracking-widest mb-1">{stat.label}</p>
+              <h4 className="text-2xl font-heading text-dark-slate-grey">{stat.value}</h4>
             </motion.div>
           ))}
         </section>
@@ -248,10 +248,10 @@ export default function Home() {
         {/* Section Header */}
         <section className="px-8 pb-6 flex items-center justify-between">
           <div className="space-y-1">
-            <h2 className="text-2xl font-heading text-white">Active <span className="italic font-serif opacity-60">Operations</span></h2>
-            <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">BATTLE SIGNALS DETECTED</p>
+            <h2 className="text-2xl font-heading text-dark-slate-grey">Active <span className="italic font-serif opacity-60">Operations</span></h2>
+            <p className="text-[10px] font-bold text-dark-slate-grey/20 uppercase tracking-[0.3em]">BATTLE SIGNALS DETECTED</p>
           </div>
-          <Link href="/matches" className="p-3 bg-white/5 rounded-2xl text-white/40 hover:text-muted-teal transition-all">
+          <Link href="/matches" className="p-3 bg-dark-slate-grey/5 rounded-2xl text-dark-slate-grey/40 hover:text-muted-teal transition-all">
             <LayoutGrid size={20} />
           </Link>
         </section>
@@ -266,9 +266,9 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
               whileTap={{ scale: 0.97 }}
-              className="bg-white/5 backdrop-blur-xl rounded-[32px] p-6 border border-white/10 shadow-2xl hover:border-muted-teal/30 transition-all duration-500 group flex items-center gap-6"
+              className="bg-card backdrop-blur-xl rounded-[32px] p-6 border border-border shadow-2xl shadow-dark-slate-grey/5 hover:border-muted-teal/30 transition-all duration-500 group flex items-center gap-6"
             >
-              <div className="relative w-24 h-24 rounded-3xl bg-[#2d4d43] overflow-hidden flex-shrink-0 shadow-inner">
+              <div className="relative w-24 h-24 rounded-3xl bg-dark-slate-grey/5 overflow-hidden flex-shrink-0 shadow-inner">
                  {match.status === 'live' ? (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-12 h-12 rounded-full bg-muted-teal/20 flex items-center justify-center animate-pulse">
@@ -276,45 +276,45 @@ export default function Home() {
                     </div>
                   </div>
                 ) : (
-                  <div className="absolute inset-0 flex items-center justify-center opacity-20">
+                  <div className="absolute inset-0 flex items-center justify-center opacity-20 text-dark-slate-grey">
                     <Swords size={32} />
                   </div>
                 )}
-                <div className="absolute bottom-2 left-2 right-2 px-2 py-1 rounded-xl bg-black/40 backdrop-blur-md border border-white/5 flex items-center justify-center gap-1.5">
+                <div className="absolute bottom-2 left-2 right-2 px-2 py-1 rounded-xl bg-background/80 backdrop-blur-md border border-dark-slate-grey/5 flex items-center justify-center gap-1.5">
                   <div className={`w-1 h-1 rounded-full ${match.status === 'live' ? 'bg-red-500 animate-pulse' : 'bg-muted-teal'}`} />
-                  <span className="text-[8px] font-bold uppercase tracking-tighter text-white/80">{match.status}</span>
+                  <span className="text-[8px] font-bold uppercase tracking-tighter text-dark-slate-grey/80">{match.status}</span>
                 </div>
               </div>
               
               <div className="flex-1 min-w-0 space-y-2">
-                <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em]">{match.mode} • {match.map || 'Bermuda'}</p>
-                <h3 className="text-xl font-heading text-white truncate group-hover:text-muted-teal transition-colors">{match.title}</h3>
+                <p className="text-[10px] font-bold text-dark-slate-grey/30 uppercase tracking-[0.2em]">{match.mode} • {match.map || 'Bermuda'}</p>
+                <h3 className="text-xl font-heading text-dark-slate-grey truncate group-hover:text-muted-teal transition-colors">{match.title}</h3>
                 
                 <div className="flex items-center gap-5 pt-1">
                   <div className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-lg bg-muted-teal/10 flex items-center justify-center">
                       <Trophy size={12} className="text-muted-teal" />
                     </div>
-                    <span className="text-[11px] font-bold text-white/60">₹{match.tournament?.prize_pool.toLocaleString()}</span>
+                    <span className="text-[11px] font-bold text-dark-slate-grey/60">₹{match.tournament?.prize_pool.toLocaleString()}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded-lg bg-white/5 flex items-center justify-center">
-                      <Users size={12} className="text-white/30" />
+                    <div className="w-5 h-5 rounded-lg bg-dark-slate-grey/5 flex items-center justify-center">
+                      <Users size={12} className="text-dark-slate-grey/30" />
                     </div>
-                    <span className="text-[11px] font-bold text-white/40">{match.live_stats?.players_alive || 48} / {match.tournament?.slots || 100}</span>
+                    <span className="text-[11px] font-bold text-dark-slate-grey/40">{match.live_stats?.players_alive || 48} / {match.tournament?.slots || 100}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-col items-end justify-center gap-1 pl-4 border-l border-white/5">
-                <span className="text-[9px] font-bold text-white/20 uppercase tracking-[0.3em]">ENTRY</span>
+              <div className="flex flex-col items-end justify-center gap-1 pl-4 border-l border-dark-slate-grey/5">
+                <span className="text-[9px] font-bold text-dark-slate-grey/20 uppercase tracking-[0.3em]">ENTRY</span>
                 <span className="text-2xl font-heading text-muted-teal">₹{match.tournament?.entry_fee}</span>
               </div>
             </motion.div>
           )) : (
-            <div className="py-20 text-center flex flex-col items-center gap-4 bg-white/5 backdrop-blur-xl rounded-[40px] border border-dashed border-white/10">
-              <Signal size={48} strokeWidth={1} className="text-white/10" />
-              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/20 italic">Scanning for Battle Signals...</p>
+            <div className="py-20 text-center flex flex-col items-center gap-4 bg-card backdrop-blur-xl rounded-[40px] border border-dashed border-dark-slate-grey/10">
+              <Signal size={48} strokeWidth={1} className="text-dark-slate-grey/10" />
+              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-dark-slate-grey/20 italic">Scanning for Battle Signals...</p>
             </div>
           )}
         </section>
@@ -338,8 +338,8 @@ export default function Home() {
       
       {/* Visual background glows */}
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-muted-teal/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/5 blur-[120px] rounded-full" />
+        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-muted-teal/5 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-frosted-mint/10 blur-[120px] rounded-full" />
       </div>
     </div>
   );

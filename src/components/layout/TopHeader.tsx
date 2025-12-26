@@ -22,13 +22,14 @@ export function TopHeader() {
         >
           <Search size={20} />
         </motion.button>
-        <motion.button 
-          whileTap={{ scale: 0.9 }}
-          className="relative w-10 h-10 rounded-full bg-foreground/[0.03] flex items-center justify-center text-foreground/60"
-        >
-          <Bell size={20} />
-            <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-accent rounded-full border-2 border-background" />
-        </motion.button>
+          <motion.button 
+            whileTap={{ scale: 0.9 }}
+            className="relative w-10 h-10 rounded-full bg-foreground/[0.03] flex items-center justify-center text-foreground/60"
+          >
+            <Bell size={20} />
+              <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-primary rounded-full border-2 border-background" />
+          </motion.button>
+
       </div>
     </header>
   );
