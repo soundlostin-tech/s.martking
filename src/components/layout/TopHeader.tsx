@@ -42,7 +42,7 @@ export function TopHeader() {
   }, [user]);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-xl border-b border-evergreen/5 px-6 py-4">
+    <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-xl border-b border-olive-bark/5 px-6 py-4">
       <div className="max-w-4xl mx-auto flex items-center justify-between">
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
@@ -64,15 +64,15 @@ export function TopHeader() {
                   animate={{ opacity: 1, scale: 1 }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex items-center bg-evergreen rounded-[1.25rem] px-4 py-2 shadow-xl shadow-evergreen/10 hover:shadow-evergreen/20 transition-all cursor-pointer group"
+                  className="flex items-center bg-olive-bark rounded-[1.25rem] px-4 py-2 shadow-xl shadow-olive-bark/10 hover:shadow-olive-bark/20 transition-all cursor-pointer group"
                 >
                   <Link href="/wallet" className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-frosted-mint flex items-center justify-center text-evergreen shadow-lg group-hover:scale-110 transition-transform">
+                    <div className="w-8 h-8 rounded-full bg-royal-gold flex items-center justify-center text-olive-bark shadow-lg group-hover:scale-110 transition-transform">
                       <Wallet size={14} />
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[8px] font-bold text-frosted-mint/40 uppercase tracking-widest leading-none">Balance</span>
-                      <span className="text-sm font-heading text-frosted-mint leading-none mt-1">₹{balance?.toLocaleString() ?? '0'}</span>
+                      <span className="text-[8px] font-bold text-royal-gold/40 uppercase tracking-widest leading-none">Balance</span>
+                      <span className="text-sm font-heading text-royal-gold leading-none mt-1">₹{balance?.toLocaleString() ?? '0'}</span>
                     </div>
                   </Link>
                 </motion.div>

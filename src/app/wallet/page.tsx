@@ -194,7 +194,7 @@ export default function WalletPage() {
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-background/40 backdrop-blur-xl border border-evergreen/20 rounded-[3rem] p-8 md:p-12 shadow-2xl relative overflow-hidden"
+          className="bg-background/40 backdrop-blur-xl border border-olive-bark/20 rounded-[3rem] p-8 md:p-12 shadow-2xl relative overflow-hidden"
         >
           <div className="relative z-10 space-y-8">
             <div className="flex justify-between items-start">
@@ -210,7 +210,7 @@ export default function WalletPage() {
               </div>
             </div>
             
-            <div className="grid grid-cols-2 gap-8 pt-8 border-t border-evergreen/5">
+            <div className="grid grid-cols-2 gap-8 pt-8 border-t border-olive-bark/5">
               <div className="space-y-1">
                 <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Earnings</p>
                 <p className="font-heading text-2xl text-foreground">₹{(wallet?.lifetime_earnings || 0).toLocaleString()}</p>
@@ -222,20 +222,20 @@ export default function WalletPage() {
             </div>
           </div>
           {/* Subtle background details inside card */}
-          <div className="absolute top-[-20%] right-[-20%] w-[60%] h-[60%] bg-sea-green/10 blur-[80px] rounded-full" />
+          <div className="absolute top-[-20%] right-[-20%] w-[60%] h-[60%] bg-dark-goldenrod/10 blur-[80px] rounded-full" />
         </motion.div>
 
         {/* Action Buttons */}
         <div className="grid grid-cols-2 gap-4">
           <button 
-            className="h-20 flex items-center justify-center gap-3 bg-background/40 backdrop-blur-xl border border-evergreen/20 rounded-full font-serif text-lg text-foreground shadow-xl hover:bg-background/60 transition-all active:scale-95"
+            className="h-20 flex items-center justify-center gap-3 bg-background/40 backdrop-blur-xl border border-olive-bark/20 rounded-full font-serif text-lg text-foreground shadow-xl hover:bg-background/60 transition-all active:scale-95"
             onClick={() => setIsDepositOpen(true)}
           >
             <Plus size={20} />
             Add Funds
           </button>
           <button 
-            className="h-20 flex items-center justify-center gap-3 bg-primary text-primary-foreground rounded-full font-serif text-lg shadow-xl hover:bg-pine-teal/90 transition-all active:scale-95"
+            className="h-20 flex items-center justify-center gap-3 bg-primary text-primary-foreground rounded-full font-serif text-lg shadow-xl hover:bg-golden-earth/90 transition-all active:scale-95"
             onClick={() => setIsWithdrawOpen(true)}
           >
             <ArrowDownLeft size={20} />
@@ -249,7 +249,7 @@ export default function WalletPage() {
             <h3 className="text-2xl font-heading text-foreground">Ledger</h3>
             <div className="flex gap-2">
               <Select value={activeType} onValueChange={setActiveType}>
-                <SelectTrigger className="w-[100px] h-10 text-[10px] font-bold rounded-full border-evergreen/20 bg-background/40 backdrop-blur-xl shadow-lg">
+                <SelectTrigger className="w-[100px] h-10 text-[10px] font-bold rounded-full border-olive-bark/20 bg-background/40 backdrop-blur-xl shadow-lg">
                   <SelectValue placeholder="Type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -273,7 +273,7 @@ export default function WalletPage() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className="bg-background/40 backdrop-blur-xl rounded-[2rem] p-5 flex justify-between items-center border border-evergreen/20 shadow-xl group hover:shadow-2xl transition-all"
+                    className="bg-background/40 backdrop-blur-xl rounded-[2rem] p-5 flex justify-between items-center border border-olive-bark/20 shadow-xl group hover:shadow-2xl transition-all"
                   >
                     <div className="flex items-center gap-4">
                       <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
@@ -304,7 +304,7 @@ export default function WalletPage() {
                 ))}
               </AnimatePresence>
             ) : (
-              <div className="bg-background/40 backdrop-blur-xl p-16 rounded-[3rem] border border-evergreen/10 text-center space-y-4 shadow-xl">
+              <div className="bg-background/40 backdrop-blur-xl p-16 rounded-[3rem] border border-olive-bark/10 text-center space-y-4 shadow-xl">
                 <div className="w-20 h-20 bg-secondary rounded-full flex items-center justify-center mx-auto text-muted-foreground/30">
                   <History size={36} />
                 </div>
@@ -323,7 +323,7 @@ export default function WalletPage() {
               <DialogTitle className="text-3xl font-heading">Vault Recharge</DialogTitle>
               <DialogDescription className="text-primary-foreground/60 font-serif">Fortify your balance with a quick recharge.</DialogDescription>
             </DialogHeader>
-            <div className="absolute -top-10 -right-10 w-40 h-40 bg-frosted-mint/5 blur-[40px] rounded-full" />
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-royal-gold/5 blur-[40px] rounded-full" />
           </div>
           <div className="p-10 space-y-8">
             <div className="space-y-4">
@@ -331,13 +331,13 @@ export default function WalletPage() {
               <Input 
                 type="number" 
                 placeholder="500" 
-                className="h-20 px-8 rounded-[2rem] border-evergreen/20 bg-background shadow-xl text-3xl font-heading text-foreground focus:ring-primary"
+                className="h-20 px-8 rounded-[2rem] border-olive-bark/20 bg-background shadow-xl text-3xl font-heading text-foreground focus:ring-primary"
                 value={depositAmount}
                 onChange={(e) => setDepositAmount(e.target.value)}
               />
             </div>
             <button 
-              className="w-full h-20 bg-primary text-primary-foreground rounded-full font-serif text-lg shadow-2xl hover:bg-pine-teal/90 transition-all active:scale-95 flex items-center justify-center gap-3"
+              className="w-full h-20 bg-primary text-primary-foreground rounded-full font-serif text-lg shadow-2xl hover:bg-golden-earth/90 transition-all active:scale-95 flex items-center justify-center gap-3"
               onClick={handleDeposit}
               disabled={processing}
             >
@@ -354,7 +354,7 @@ export default function WalletPage() {
               <DialogTitle className="text-3xl font-heading">Secure Payout</DialogTitle>
               <DialogDescription className="text-primary-foreground/60 font-serif">Transfer your dominance into real rewards.</DialogDescription>
             </DialogHeader>
-            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-frosted-mint/5 blur-[40px] rounded-full" />
+            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-royal-gold/5 blur-[40px] rounded-full" />
           </div>
           <div className="p-10 space-y-8">
             <div className="space-y-4">
@@ -362,14 +362,14 @@ export default function WalletPage() {
               <Input 
                 type="number" 
                 placeholder="₹100 min" 
-                className="h-20 px-8 rounded-[2rem] border-evergreen/20 bg-background shadow-xl text-3xl font-heading text-foreground focus:ring-primary"
+                className="h-20 px-8 rounded-[2rem] border-olive-bark/20 bg-background shadow-xl text-3xl font-heading text-foreground focus:ring-primary"
                 value={withdrawAmount}
                 onChange={(e) => setWithdrawAmount(e.target.value)}
               />
               <p className="text-[10px] text-muted-foreground text-center font-bold">Limit: ₹{(wallet?.balance || 0).toLocaleString()} available</p>
             </div>
             <button 
-              className="w-full h-20 bg-primary text-primary-foreground rounded-full font-serif text-lg shadow-2xl hover:bg-pine-teal/90 transition-all active:scale-95 flex items-center justify-center gap-3"
+              className="w-full h-20 bg-primary text-primary-foreground rounded-full font-serif text-lg shadow-2xl hover:bg-golden-earth/90 transition-all active:scale-95 flex items-center justify-center gap-3"
               onClick={handleWithdraw}
               disabled={processing}
             >

@@ -12,15 +12,16 @@
   --font-serif: var(--font-playfair);
   --font-berkshire: var(--font-berkshire);
   
-  --color-frosted-mint: #d8f3dc;
-  --color-celadon: #b7e4c7;
-  --color-celadon-2: #95d5b2;
-  --color-mint-leaf: #74c69d;
-  --color-mint-leaf-2: #52b788;
-  --color-sea-green: #40916c;
-  --color-dark-emerald: #2d6a4f;
-  --color-pine-teal: #1b4332;
-  --color-evergreen: #081c15;
+  --color-royal-gold: #ffe169;
+  --color-mustard: #fad643;
+  --color-saffron: #edc531;
+  --color-metallic-gold: #dbb42c;
+  --color-golden-bronze: #c9a227;
+  --color-dark-goldenrod: #b69121;
+  --color-dark-goldenrod-2: #a47e1b;
+  --color-golden-earth: #926c15;
+  --color-olive-bark: #805b10;
+  --color-olive-bark-2: #76520e;
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -59,37 +60,37 @@
 
 :root {
   --radius: 1.5rem;
-  --background: #d8f3dc; /* frosted-mint */
-  --foreground: #081c15; /* evergreen */
-  --card: rgba(216, 243, 220, 0.3);
-  --card-foreground: #081c15;
-  --popover: rgba(216, 243, 220, 0.4);
-  --popover-foreground: #081c15;
-    --primary: #1b4332; /* pine-teal */
-    --primary-foreground: #d8f3dc;
-    --secondary: #b7e4c7; /* celadon */
-    --secondary-foreground: #1b4332;
-    --muted: #95d5b2; /* celadon-2 */
-    --muted-foreground: #2d6a4f; /* dark-emerald */
-    --accent: #74c69d; /* mint-leaf */
-    --accent-foreground: #081c15;
+  --background: #ffe169; /* royal-gold */
+  --foreground: #805b10; /* olive-bark */
+  --card: rgba(255, 225, 105, 0.3);
+  --card-foreground: #805b10;
+  --popover: rgba(255, 225, 105, 0.4);
+  --popover-foreground: #805b10;
+    --primary: #926c15; /* golden-earth */
+    --primary-foreground: #ffe169;
+    --secondary: #fad643; /* mustard */
+    --secondary-foreground: #926c15;
+    --muted: #edc531; /* saffron */
+    --muted-foreground: #a47e1b; /* dark-goldenrod-2 */
+    --accent: #dbb42c; /* metallic-gold */
+    --accent-foreground: #805b10;
     --destructive: oklch(0.577 0.245 27.325);
-    --border: rgba(27, 67, 50, 0.1);
-    --input: rgba(27, 67, 50, 0.1);
-    --ring: #1b4332;
-    --chart-1: #1b4332;
-    --chart-2: #2d6a4f;
-    --chart-3: #40916c;
-    --chart-4: #52b788;
-    --chart-5: #74c69d;
-    --sidebar: rgba(216, 243, 220, 0.4);
-    --sidebar-foreground: #081c15;
-    --sidebar-primary: #1b4332;
-    --sidebar-primary-foreground: #d8f3dc;
-    --sidebar-accent: rgba(27, 67, 50, 0.05);
-    --sidebar-accent-foreground: #081c15;
-    --sidebar-border: rgba(27, 67, 50, 0.05);
-    --sidebar-ring: #1b4332;
+    --border: rgba(146, 108, 21, 0.1);
+    --input: rgba(146, 108, 21, 0.1);
+    --ring: #926c15;
+    --chart-1: #926c15;
+    --chart-2: #a47e1b;
+    --chart-3: #b69121;
+    --chart-4: #c9a227;
+    --chart-5: #dbb42c;
+    --sidebar: rgba(255, 225, 105, 0.4);
+    --sidebar-foreground: #805b10;
+    --sidebar-primary: #926c15;
+    --sidebar-primary-foreground: #ffe169;
+    --sidebar-accent: rgba(146, 108, 21, 0.05);
+    --sidebar-accent-foreground: #805b10;
+    --sidebar-border: rgba(146, 108, 21, 0.05);
+    --sidebar-ring: #926c15;
 }
 
 @layer base {
@@ -97,7 +98,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground font-serif selection:bg-evergreen selection:text-frosted-mint;
+    @apply bg-background text-foreground font-serif selection:bg-olive-bark selection:text-royal-gold;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-normal tracking-tight;
@@ -110,7 +111,7 @@ nextjs-portal {
 }
 
 .glass {
-  @apply bg-background/30 backdrop-blur-xl border border-sea-green/20 shadow-xl;
+  @apply bg-background/30 backdrop-blur-xl border border-dark-goldenrod/20 shadow-xl;
 }
 
 @keyframes fadeIn {
