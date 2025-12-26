@@ -76,105 +76,108 @@ export function StoryViewer({ stories, initialIndex, isOpen, onClose }: StoryVie
 
   return (
     <AnimatePresence>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm"
-        >
-          <div className="relative w-full max-w-md bg-zinc-900 overflow-hidden rounded-3xl shadow-2xl">
-            {/* Progress Bars */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="fixed inset-0 z-[100] bg-background/95 flex items-center justify-center p-4 backdrop-blur-md"
+          >
+            <div className="relative w-full max-w-md bg-white overflow-hidden rounded-[40px] shadow-2xl border border-primary/5">
+              {/* Progress Bars */}
 
-          <div className="absolute top-4 left-4 right-4 z-20 flex gap-1">
-            {stories.map((_, index) => (
-              <div key={index} className="h-1 flex-1 bg-white/20 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-white transition-all duration-50"
-                  style={{ 
-                    width: index === currentIndex ? `${progress}%` : index < currentIndex ? '100%' : '0%' 
-                  }}
-                />
+            <div className="absolute top-4 left-4 right-4 z-20 flex gap-1.5">
+              {stories.map((_, index) => (
+                <div key={index} className="h-1 flex-1 bg-primary/10 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-secondary transition-all duration-50"
+                    style={{ 
+                      width: index === currentIndex ? `${progress}%` : index < currentIndex ? '100%' : '0%' 
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Header */}
+            <div className="absolute top-8 left-4 right-4 z-20 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl border-2 border-secondary/20 overflow-hidden bg-primary/5">
+                    {currentStory.user.avatar_url ? (
+                    <img src={currentStory.user.avatar_url} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-primary font-bold">
+                      {currentStory.user.full_name[0]}
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-primary font-bold text-sm">{currentStory.user.full_name}</span>
+                  <span className="text-[10px] text-primary/40 font-bold uppercase tracking-widest">LIVE NOW</span>
+                </div>
               </div>
-            ))}
-          </div>
+              <button 
+                onClick={onClose}
+                className="p-2 rounded-2xl bg-primary/5 hover:bg-primary/10 text-primary/60 transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
 
-          {/* Header */}
-          <div className="absolute top-8 left-4 right-4 z-20 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full border border-white overflow-hidden bg-zinc-800">
-                  {currentStory.user.avatar_url ? (
-                  <img src={currentStory.user.avatar_url} alt="" className="w-full h-full object-cover" />
+              {/* Content */}
+              <div className="w-full flex items-center justify-center bg-primary/5 min-h-[60vh]">
+                {currentStory.media_type === 'image' ? (
+                  <img 
+                    src={currentStory.media_url} 
+                    alt={currentStory.caption} 
+                    className="w-full h-auto max-h-[70vh] object-contain block"
+                  />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-white font-bold">
-                    {currentStory.user.full_name[0]}
-                  </div>
+                  <video 
+                    src={currentStory.media_url} 
+                    autoPlay 
+                    muted 
+                    playsInline 
+                    loop
+                    className="w-full h-auto max-h-[70vh] object-contain block"
+                  />
                 )}
               </div>
-              <span className="text-white font-bold text-sm shadow-sm">{currentStory.user.full_name}</span>
-            </div>
-            <button 
-              onClick={onClose}
-              className="p-2 rounded-full bg-black/20 hover:bg-black/40 text-white transition-colors"
-            >
-              <X size={24} />
-            </button>
-          </div>
 
-            {/* Content */}
-            <div className="w-full flex items-center justify-center bg-zinc-900">
-              {currentStory.media_type === 'image' ? (
-                <img 
-                  src={currentStory.media_url} 
-                  alt={currentStory.caption} 
-                  className="w-full h-auto max-h-[80vh] object-contain block"
-                />
-              ) : (
-                <video 
-                  src={currentStory.media_url} 
-                  autoPlay 
-                  muted 
-                  playsInline 
-                  loop
-                  className="w-full h-auto max-h-[80vh] object-contain block"
-                />
-              )}
+
+            {/* Caption */}
+            {currentStory.caption && (
+              <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-white via-white/90 to-transparent text-center">
+                <p className="text-primary text-xl font-serif italic">{currentStory.caption}</p>
+              </div>
+            )}
+
+            {/* Navigation Controls */}
+            <div className="absolute inset-0 z-10 flex">
+              <div className="w-1/3 h-full cursor-pointer" onClick={handlePrev} />
+              <div className="w-2/3 h-full cursor-pointer" onClick={handleNext} />
             </div>
 
-
-          {/* Caption */}
-          {currentStory.caption && (
-            <div className="absolute bottom-12 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent text-center">
-              <p className="text-white text-lg font-serif">{currentStory.caption}</p>
+            {/* Desktop Navigation Buttons */}
+            <div className="hidden md:flex absolute inset-y-0 -left-20 items-center">
+              <button 
+                onClick={handlePrev}
+                disabled={currentIndex === 0}
+                className="p-4 rounded-3xl bg-white border border-primary/5 shadow-xl text-primary/40 hover:text-secondary disabled:opacity-0 transition-all"
+              >
+                <ChevronLeft size={24} />
+              </button>
             </div>
-          )}
-
-          {/* Navigation Controls */}
-          <div className="absolute inset-0 z-10 flex">
-            <div className="w-1/2 h-full cursor-pointer" onClick={handlePrev} />
-            <div className="w-1/2 h-full cursor-pointer" onClick={handleNext} />
+            <div className="hidden md:flex absolute inset-y-0 -right-20 items-center">
+              <button 
+                onClick={handleNext}
+                disabled={currentIndex === stories.length - 1}
+                className="p-4 rounded-3xl bg-white border border-primary/5 shadow-xl text-primary/40 hover:text-secondary disabled:opacity-0 transition-all"
+              >
+                <ChevronRight size={24} />
+              </button>
+            </div>
           </div>
-
-          {/* Desktop Navigation Buttons */}
-          <div className="hidden md:flex absolute inset-y-0 -left-16 items-center">
-            <button 
-              onClick={handlePrev}
-              disabled={currentIndex === 0}
-              className="p-3 rounded-full bg-white/10 hover:bg-white/20 text-white disabled:opacity-0 transition-all"
-            >
-              <ChevronLeft size={32} />
-            </button>
-          </div>
-          <div className="hidden md:flex absolute inset-y-0 -right-16 items-center">
-            <button 
-              onClick={handleNext}
-              disabled={currentIndex === stories.length - 1}
-              className="p-3 rounded-full bg-white/10 hover:bg-white/20 text-white disabled:opacity-0 transition-all"
-            >
-              <ChevronRight size={32} />
-            </button>
-          </div>
-        </div>
-      </motion.div>
+        </motion.div>
     </AnimatePresence>
   );
 }

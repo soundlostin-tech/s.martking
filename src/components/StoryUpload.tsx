@@ -84,46 +84,49 @@ export function StoryUpload({ isOpen, onClose, onSuccess }: StoryUploadProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[110] bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm"
+        className="fixed inset-0 z-[110] bg-primary/20 flex items-center justify-center p-4 backdrop-blur-md"
       >
         <motion.div
           initial={{ scale: 0.9, y: 20 }}
           animate={{ scale: 1, y: 0 }}
-          className="bg-white rounded-[2rem] w-full max-w-md overflow-hidden shadow-2xl"
+          className="bg-white rounded-[2.5rem] w-full max-w-md overflow-hidden shadow-2xl border border-primary/5"
         >
-          <div className="p-6 border-b border-zinc-100 flex items-center justify-between">
-            <h3 className="text-xl font-heading text-black">New Story</h3>
-            <button onClick={onClose} className="p-2 hover:bg-zinc-100 rounded-full transition-colors">
+          <div className="p-8 border-b border-primary/5 flex items-center justify-between bg-background/50">
+            <div>
+              <h3 className="text-2xl font-heading text-primary">New Story</h3>
+              <p className="text-[10px] font-bold text-primary/30 uppercase tracking-[0.2em] mt-1">Deploy Content to Arena</p>
+            </div>
+            <button onClick={onClose} className="p-3 hover:bg-primary/5 rounded-2xl transition-all text-primary/40">
               <X size={20} />
             </button>
           </div>
 
-          <div className="p-6 space-y-6">
+          <div className="p-8 space-y-8">
             {!preview ? (
-              <div className="relative">
+              <div className="relative group">
                 <input
                   type="file"
                   accept="image/*,video/*"
                   onChange={handleFileChange}
-                  className="absolute inset-0 opacity-0 cursor-pointer"
+                  className="absolute inset-0 opacity-0 cursor-pointer z-10"
                 />
-                <div className="border-2 border-dashed border-zinc-200 rounded-3xl p-12 flex flex-col items-center justify-center gap-4 hover:border-black/20 transition-colors">
-                  <div className="w-16 h-16 rounded-full bg-zinc-50 flex items-center justify-center">
-                    <Camera size={32} className="text-zinc-400" />
+                <div className="border-2 border-dashed border-primary/10 rounded-[32px] p-12 flex flex-col items-center justify-center gap-6 group-hover:border-secondary/30 transition-all duration-500 bg-primary/5">
+                  <div className="w-20 h-20 rounded-3xl bg-white flex items-center justify-center shadow-sm text-secondary group-hover:scale-110 transition-transform duration-500">
+                    <Camera size={32} strokeWidth={1.5} />
                   </div>
                   <div className="text-center">
-                    <p className="font-bold text-black">Click to upload</p>
-                    <p className="text-sm text-zinc-400">Image or Video (max 10MB)</p>
+                    <p className="font-heading text-lg text-primary">Initialize Upload</p>
+                    <p className="text-[10px] font-bold text-primary/30 uppercase tracking-widest mt-1">Image or Video (max 10MB)</p>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="space-y-4">
-                <div className="relative rounded-3xl overflow-hidden bg-zinc-100 flex items-center justify-center">
+              <div className="space-y-6">
+                <div className="relative rounded-[32px] overflow-hidden bg-primary/5 border border-primary/5 aspect-square flex items-center justify-center shadow-inner">
                   {file?.type.startsWith('video') ? (
                     <video 
                       src={preview} 
-                      className="w-full h-auto max-h-[500px] object-contain block" 
+                      className="w-full h-full object-cover block" 
                       autoPlay 
                       muted 
                       loop 
@@ -132,23 +135,23 @@ export function StoryUpload({ isOpen, onClose, onSuccess }: StoryUploadProps) {
                     <img 
                       src={preview} 
                       alt="Preview" 
-                      className="w-full h-auto max-h-[500px] object-contain block" 
+                      className="w-full h-full object-cover block" 
                     />
                   )}
                   <button 
                     onClick={() => { setFile(null); setPreview(null); }}
-                    className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors z-10"
+                    className="absolute top-4 right-4 p-3 bg-white/90 backdrop-blur-md text-primary/60 rounded-2xl hover:bg-white hover:text-secondary transition-all z-10 shadow-xl"
                   >
-                    <X size={16} />
+                    <X size={16} strokeWidth={3} />
                   </button>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Caption</label>
+                <div className="space-y-3">
+                  <label className="text-[10px] font-bold text-primary/30 uppercase tracking-[0.2em] ml-1">Content Caption</label>
                   <textarea
                     value={caption}
                     onChange={(e) => setCaption(e.target.value)}
-                    placeholder="Add a caption..."
-                    className="w-full px-4 py-3 rounded-2xl border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-black/5 resize-none h-24"
+                    placeholder="Describe your achievement..."
+                    className="w-full px-6 py-5 rounded-[24px] bg-primary/5 border border-primary/5 focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:bg-white transition-all resize-none h-28 text-primary font-serif italic text-lg"
                   />
                 </div>
               </div>
@@ -157,17 +160,17 @@ export function StoryUpload({ isOpen, onClose, onSuccess }: StoryUploadProps) {
             <button
               onClick={handleUpload}
               disabled={!file || uploading}
-              className="w-full py-4 bg-black text-white rounded-2xl font-bold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-zinc-800 transition-colors"
+              className="w-full py-5 bg-primary text-white rounded-[24px] font-bold uppercase tracking-[0.2em] text-[11px] flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 active:scale-[0.98]"
             >
               {uploading ? (
                 <>
-                  <Loader2 size={20} className="animate-spin" />
-                  POSTING...
+                  <Loader2 size={18} className="animate-spin" />
+                  STABILIZING LINK...
                 </>
               ) : (
                 <>
-                  <Upload size={20} />
-                  POST STORY
+                  <Upload size={18} />
+                  DEPLOY STORY
                 </>
               )}
             </button>
