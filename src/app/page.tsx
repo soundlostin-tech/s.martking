@@ -149,7 +149,48 @@ export default function Home() {
         <section className="px-6 mb-8">
           <div className="relative h-44 rounded-[32px] overflow-hidden bg-primary shadow-xl shadow-primary/20">
             <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-accent opacity-90" />
-            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&q=80')] bg-cover bg-center mix-blend-overlay opacity-50" />
+            
+            {/* Animated Background Elements */}
+            <div className="absolute inset-0 overflow-hidden opacity-40">
+              <motion.div
+                animate={{
+                  scale: [1, 1.2, 1],
+                  x: [0, 100, 0],
+                  y: [0, 50, 0],
+                }}
+                transition={{
+                  duration: 8,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+                className="absolute -top-10 -left-10 w-40 h-40 bg-white/20 blur-[60px] rounded-full"
+              />
+              <motion.div
+                animate={{
+                  scale: [1, 1.3, 1],
+                  x: [0, -80, 0],
+                  y: [0, -40, 0],
+                }}
+                transition={{
+                  duration: 10,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+                className="absolute -bottom-10 -right-10 w-48 h-48 bg-accent/30 blur-[70px] rounded-full"
+              />
+              <motion.div
+                animate={{
+                  opacity: [0.2, 0.5, 0.2],
+                  scale: [0.8, 1.1, 0.8],
+                }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white/10 blur-[80px] rounded-full"
+              />
+            </div>
             
             <div className="relative h-full p-8 flex flex-col justify-center">
               <div className="flex items-center gap-2 mb-2">
