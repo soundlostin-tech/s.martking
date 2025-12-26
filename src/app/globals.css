@@ -19,46 +19,51 @@
 }
 
 :root {
-  --background: #f0f0f0;
+  --background: #f5f5f5;
   --foreground: #000033;
   --paper-bg: #ffffff;
   --ink: #000033;
 }
 
 @layer base {
-  * {
-    @apply border-ink-blue/10 outline-ink-blue/20;
-  }
   body {
-    @apply bg-[#f0f0f0] text-ink-blue font-handwritten antialiased overflow-x-hidden;
+    @apply bg-[#f5f5f5] text-[#000033] font-handwritten antialiased overflow-x-hidden;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
     margin: 0;
+    padding: 20px;
   }
-  h1, h2, h3 {
-    @apply font-heading text-ink-blue;
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading text-[#000033] mb-4;
   }
+
+  h1 { @apply text-[40px]; }
+  h2 { @apply text-[32px]; }
+  h3 { @apply text-[28px]; }
 }
 
 .paper-container {
+  @apply flex items-center justify-center w-full max-w-4xl mx-auto min-h-screen py-10;
   perspective: 1000px;
-  padding: 2rem;
 }
 
 .paper-card {
   position: relative;
-  width: 700px;
+  width: 100%;
+  max-width: 700px;
   min-height: 500px;
-  background-color: var(--paper-bg);
+  background-color: #ffffff;
   background-image: 
-    linear-gradient(90deg, transparent 79px, var(--color-paper-margin) 79px, var(--color-paper-margin) 81px, transparent 81px),
-    repeating-linear-gradient(var(--paper-bg), var(--paper-bg) 30px, var(--color-paper-line) 30px, var(--color-paper-line) 31px);
-  padding: 40px 40px 40px 100px;
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
-  transform: rotate(-3deg);
+    linear-gradient(90deg, transparent 79px, #ffadad 79px, #ffadad 81px, transparent 81px),
+    repeating-linear-gradient(#ffffff, #ffffff 30px, #a0c4ff 30px, #a0c4ff 31px);
+  padding: 60px 40px 60px 100px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transform: rotate(-2deg);
   transition: transform 0.3s ease;
+  border-radius: 2px;
 }
 
 .paper-card::before, .paper-card::after {
@@ -70,27 +75,73 @@
   height: 100%;
   background: white;
   z-index: -1;
-  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.05);
+  border-radius: 2px;
 }
 
 .paper-card::before {
-  transform: rotate(2deg);
+  transform: rotate(1.5deg);
+  width: 98%;
+  left: 1%;
 }
 
 .paper-card::after {
   transform: rotate(-1deg);
-  box-shadow: 4px 4px 15px rgba(0,0,0,0.1);
+  width: 99%;
+  left: 0.5%;
+  box-shadow: 4px 4px 15px rgba(0,0,0,0.08);
 }
 
-.hand-drawn-btn {
-  @apply px-6 py-2 border-2 border-ink-blue/30 rounded-full font-handwritten text-xl transition-all duration-300;
+.btn-hand-drawn {
+  @apply px-6 py-2 border-2 border-[#000033]/30 rounded-full font-handwritten text-xl transition-all duration-300 inline-flex items-center justify-center gap-2;
   background: transparent;
   cursor: pointer;
+  text-decoration: none;
+  color: #000033;
 }
 
-.hand-drawn-btn:hover {
-  @apply scale-110 rotate-3 shadow-lg;
-  border-color: var(--color-ink-blue);
+.btn-hand-drawn:hover {
+  @apply scale-105 rotate-2 shadow-md border-[#000033];
+  transform: translateY(-2px) rotate(2deg);
+}
+
+.btn-hand-drawn:active {
+  @apply scale-95 rotate-0;
+}
+
+.container-flex {
+  @apply flex flex-col gap-6;
+}
+
+.options-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-4 w-full;
+}
+
+.fadeBounceIn {
+  animation: fadeBounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes fadeBounceIn {
+  0% { opacity: 0; transform: scale(0.4); }
+  70% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.fadeIn {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.disable {
+  display: none !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 @keyframes dash {
@@ -102,27 +153,3 @@
 .animate-dash {
   animation: dash 1s linear forwards;
 }
-
-@keyframes fadeBounceIn {
-  0% { opacity: 0; transform: scale(0.4); }
-  70% { opacity: 1; transform: scale(1.4); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-.fadeBounceIn {
-  animation: fadeBounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-.fadeIn {
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-

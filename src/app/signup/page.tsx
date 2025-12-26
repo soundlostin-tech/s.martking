@@ -12,16 +12,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
-import { Crown, Loader2, Eye, EyeOff, Star, Swords, ShieldCheck, Zap } from "lucide-react";
+import { Loader2, Star, ShieldCheck, Zap } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { PaperWrapper } from "@/components/layout/PaperWrapper";
 
 export default function Signup() {
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const [countryCode, setCountryCode] = useState("+91");
   const [formData, setFormData] = useState({
     fullname: "",
@@ -36,12 +35,12 @@ export default function Signup() {
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
-    if (!formData.fullname.trim()) newErrors.fullname = "Full name is required";
-    if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.phone) newErrors.phone = "Phone is required";
-    if (formData.password.length < 6) newErrors.password = "Min 6 characters";
+    if (!formData.fullname.trim()) newErrors.fullname = "Required";
+    if (!formData.email) newErrors.email = "Required";
+    if (!formData.phone) newErrors.phone = "Required";
+    if (formData.password.length < 6) newErrors.password = "Min 6 chars";
     if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Mismatch";
-    if (!formData.terms) newErrors.terms = "Accept terms";
+    if (!formData.terms) newErrors.terms = "Required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -72,159 +71,133 @@ export default function Signup() {
           phone: `${countryCode}${formData.phone}`,
         });
         await supabase.from("wallets").insert({
-          id: authData.user.id,
+          user_id: authData.user.id,
           balance: 0,
         });
 
-        toast.success("Account created successfully!");
+        toast.success("Identity created!");
         router.push("/signin");
       }
     } catch (error: any) {
-      toast.error(error.message || "An error occurred during signup");
+      toast.error(error.message || "Signup failed");
     } finally {
       setLoading(false);
     }
   };
 
-    return (
-      <main className="min-h-screen bg-background flex items-center justify-center p-6 relative overflow-hidden py-24">
-        {/* Background Decor */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-30">
-          <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-muted-teal/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-frosted-mint/20 rounded-full blur-[120px]" />
+  return (
+    <div className="w-full">
+      <PaperWrapper className="!rotate-1">
+        <div className="space-y-8 py-10">
+          <div className="flex flex-col items-center text-center gap-4">
+            <div className="w-20 h-20 border-2 border-[#000033] rounded-3xl flex items-center justify-center rotate-3 shadow-sm">
+              <Star size={32} />
+            </div>
+            <div className="space-y-1">
+              <h1 className="text-5xl m-0">Join Arena</h1>
+              <p className="text-xl opacity-60">Create your warrior identity</p>
+            </div>
+          </div>
+
+          <form className="space-y-6" onSubmit={handleSignup}>
+            <div className="space-y-2">
+              <Label className="text-xs font-bold opacity-40 uppercase tracking-widest ml-1">Agent Name</Label>
+              <Input 
+                placeholder="Full Name" 
+                className="h-14 border-2 border-[#000033]/10 rounded-2xl px-6 text-xl bg-transparent focus:border-[#000033]/30"
+                value={formData.fullname}
+                onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
+              />
+              {errors.fullname && <p className="text-xs text-red-500 ml-1">{errors.fullname}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-xs font-bold opacity-40 uppercase tracking-widest ml-1">Email</Label>
+              <Input 
+                type="email" 
+                placeholder="warrior@arena.com" 
+                className="h-14 border-2 border-[#000033]/10 rounded-2xl px-6 text-xl bg-transparent focus:border-[#000033]/30"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              />
+              {errors.email && <p className="text-xs text-red-500 ml-1">{errors.email}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-xs font-bold opacity-40 uppercase tracking-widest ml-1">Signal Connection</Label>
+              <div className="flex gap-3">
+                <Select value={countryCode} onValueChange={setCountryCode}>
+                  <SelectTrigger className="w-[100px] h-14 border-2 border-[#000033]/10 rounded-2xl font-bold text-xl bg-transparent">
+                    <SelectValue placeholder="+91" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border-2 border-[#000033]">
+                    <SelectItem value="+91">+91</SelectItem>
+                    <SelectItem value="+1">+1</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Input 
+                  placeholder="9876543210" 
+                  className="h-14 border-2 border-[#000033]/10 rounded-2xl px-6 text-xl bg-transparent focus:border-[#000033]/30 flex-1"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label className="text-xs font-bold opacity-40 uppercase tracking-widest ml-1">Protocol</Label>
+                <Input 
+                  type="password" 
+                  placeholder="Password" 
+                  className="h-14 border-2 border-[#000033]/10 rounded-2xl px-6 text-xl bg-transparent focus:border-[#000033]/30"
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs font-bold opacity-40 uppercase tracking-widest ml-1">Confirm</Label>
+                <Input 
+                  type="password" 
+                  placeholder="Confirm" 
+                  className="h-14 border-2 border-[#000033]/10 rounded-2xl px-6 text-xl bg-transparent focus:border-[#000033]/30"
+                  value={formData.confirmPassword}
+                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-3 px-1">
+              <Checkbox 
+                id="terms" 
+                className="w-5 h-5 rounded-md border-[#000033]/20" 
+                checked={formData.terms}
+                onCheckedChange={(checked) => setFormData({ ...formData, terms: checked as boolean })}
+              />
+              <label htmlFor="terms" className="text-xs font-bold opacity-40 uppercase tracking-widest cursor-pointer">
+                I accept the terms
+              </label>
+            </div>
+
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="btn-hand-drawn w-full py-4 bg-[#000033] text-white"
+            >
+              {loading ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "Enlist Now"}
+            </button>
+          </form>
+
+          <div className="text-center">
+            <p className="text-xl opacity-60">
+              Already enlisted?{" "}
+              <Link href="/signin" className="text-[#000033] font-bold underline">
+                Sign In
+              </Link>
+            </p>
+          </div>
         </div>
-  
-        {/* Auth Card */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="relative max-w-lg w-full bg-card backdrop-blur-xl border border-dark-slate-grey/5 shadow-2xl shadow-dark-slate-grey/5 rounded-[3rem] overflow-hidden animate-fadeIn"
-        >
-          <div className="bg-dark-slate-grey p-10 border-b border-dark-slate-grey/5 relative overflow-hidden">
-            <div className="relative z-10 flex flex-col items-center text-center space-y-4">
-              <div className="w-16 h-16 bg-muted-teal text-mint-cream rounded-2xl flex items-center justify-center shadow-xl shadow-muted-teal/20 mb-2">
-                <Star size={32} />
-              </div>
-              <div className="space-y-1">
-                <h4 className="text-[10px] font-bold text-muted-teal uppercase tracking-[0.4em]">Warrior Enrollment</h4>
-                <h1 className="text-4xl font-heading text-mint-cream leading-tight">
-                  Create <span className="italic font-serif text-mint-cream/60">Identity.</span>
-                </h1>
-              </div>
-            </div>
-            <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-muted-teal/10 blur-[80px] rounded-full" />
-          </div>
-  
-          <div className="p-10 md:p-12 space-y-8">
-            <form className="space-y-6" onSubmit={handleSignup}>
-              <div className="space-y-2">
-                <Label className="text-[10px] font-bold text-dark-slate-grey/40 uppercase tracking-[0.3em] ml-4">Agent Name</Label>
-                <Input 
-                  placeholder="FULL NAME" 
-                  className="h-14 px-8 rounded-[2rem] border-none bg-dark-slate-grey/5 shadow-inner text-dark-slate-grey font-bold text-xs tracking-wide focus-visible:ring-muted-teal placeholder:text-dark-slate-grey/20"
-                  value={formData.fullname}
-                  onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
-                />
-              </div>
-  
-              <div className="space-y-2">
-                <Label className="text-[10px] font-bold text-dark-slate-grey/40 uppercase tracking-[0.3em] ml-4">Deployment Email</Label>
-                <Input 
-                  type="email" 
-                  placeholder="WARRIOR@ARENA.COM" 
-                  className="h-14 px-8 rounded-[2rem] border-none bg-dark-slate-grey/5 shadow-inner text-dark-slate-grey font-bold text-xs tracking-wide focus-visible:ring-muted-teal placeholder:text-dark-slate-grey/20"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                />
-              </div>
-  
-              <div className="space-y-2">
-                <Label className="text-[10px] font-bold text-dark-slate-grey/40 uppercase tracking-[0.3em] ml-4">Signal Connection</Label>
-                <div className="flex gap-3">
-                  <Select value={countryCode} onValueChange={setCountryCode}>
-                    <SelectTrigger className="w-[100px] h-14 rounded-[2rem] border-none bg-dark-slate-grey/5 font-bold text-xs text-dark-slate-grey">
-                      <SelectValue placeholder="+91" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background border-dark-slate-grey/10 text-dark-slate-grey rounded-2xl">
-                      <SelectItem value="+91">+91</SelectItem>
-                      <SelectItem value="+1">+1</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Input 
-                    placeholder="9876543210" 
-                    className="h-14 px-8 rounded-[2rem] border-none bg-dark-slate-grey/5 shadow-inner text-dark-slate-grey font-bold text-xs tracking-wide focus-visible:ring-muted-teal placeholder:text-dark-slate-grey/20 flex-1"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  />
-                </div>
-              </div>
-  
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label className="text-[10px] font-bold text-dark-slate-grey/40 uppercase tracking-[0.3em] ml-4">Access Protocol</Label>
-                  <Input 
-                    type="password" 
-                    placeholder="••••••" 
-                    className="h-14 px-8 rounded-[2rem] border-none bg-dark-slate-grey/5 shadow-inner text-dark-slate-grey font-bold text-xs tracking-wide focus-visible:ring-muted-teal placeholder:text-dark-slate-grey/20"
-                    value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-[10px] font-bold text-dark-slate-grey/40 uppercase tracking-[0.3em] ml-4">Confirm Keys</Label>
-                  <Input 
-                    type="password" 
-                    placeholder="••••••" 
-                    className="h-14 px-8 rounded-[2rem] border-none bg-dark-slate-grey/5 shadow-inner text-dark-slate-grey font-bold text-xs tracking-wide focus-visible:ring-muted-teal placeholder:text-dark-slate-grey/20"
-                    value={formData.confirmPassword}
-                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                  />
-                </div>
-              </div>
-  
-              <div className="flex items-center space-x-3 px-4 py-2">
-                <Checkbox 
-                  id="terms" 
-                  className="w-5 h-5 rounded-md border-dark-slate-grey/10 bg-dark-slate-grey/5 data-[state=checked]:bg-muted-teal data-[state=checked]:text-mint-cream" 
-                  checked={formData.terms}
-                  onCheckedChange={(checked) => setFormData({ ...formData, terms: checked as boolean })}
-                />
-                <label htmlFor="terms" className="text-[10px] font-bold text-dark-slate-grey/40 uppercase tracking-widest cursor-pointer">
-                  I ACCEPT THE <span className="text-muted-teal">TERMS OF ENGAGEMENT</span>
-                </label>
-              </div>
-  
-              <Button 
-                type="submit" 
-                className="w-full h-16 rounded-[2rem] bg-muted-teal hover:bg-muted-teal/90 text-mint-cream font-bold text-[11px] uppercase tracking-[0.3em] shadow-2xl shadow-muted-teal/20 mt-2 border-none" 
-                disabled={loading}
-              >
-                {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "ENLIST IN ARENA"}
-              </Button>
-            </form>
-  
-            <div className="pt-2 text-center">
-              <p className="text-[10px] font-bold text-dark-slate-grey/40 uppercase tracking-[0.2em]">
-                ALREADY ENLISTED?{" "}
-                <Link href="/signin" className="text-muted-teal hover:text-dark-slate-grey transition-colors font-black">
-                  SIGN IN
-                </Link>
-              </p>
-            </div>
-          </div>
-  
-          {/* Security Badges */}
-          <div className="bg-dark-slate-grey/[0.02] p-6 flex items-center justify-center gap-8 border-t border-dark-slate-grey/5">
-            <div className="flex items-center gap-2">
-              <ShieldCheck size={14} className="text-muted-teal" />
-              <span className="text-[8px] font-bold text-dark-slate-grey/40 uppercase tracking-widest">ENCRYPTED</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Zap size={14} className="text-muted-teal" />
-              <span className="text-[8px] font-bold text-dark-slate-grey/40 uppercase tracking-widest">FAST UPLINK</span>
-            </div>
-          </div>
-        </motion.div>
-      </main>
-    );
+      </PaperWrapper>
+    </div>
+  );
 }

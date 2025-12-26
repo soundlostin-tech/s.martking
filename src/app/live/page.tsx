@@ -2,32 +2,25 @@
 
 import { BottomNav } from "@/components/layout/BottomNav";
 import { TopHeader } from "@/components/layout/TopHeader";
-import { Badge } from "@/components/ui/badge";
-import { motion, AnimatePresence } from "framer-motion";
+import { PaperWrapper } from "@/components/layout/PaperWrapper";
 import { 
   Play, 
   Users, 
-  Target, 
   Map as MapIcon, 
-  Wifi, 
-  WifiOff,
-  ChevronRight,
-  Loader2,
-  Gamepad2,
-  Circle,
-  Activity,
-  Zap,
-  Layout,
-  Radio,
-  Eye,
-  Signal,
-  LayoutGrid,
-  Trophy
+  WifiOff, 
+  ChevronRight, 
+  Loader2, 
+  Activity, 
+  Eye, 
+  Signal, 
+  LayoutGrid, 
+  Trophy 
 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { motion } from "framer-motion";
 
 function LiveContent() {
   const searchParams = useSearchParams();
@@ -89,197 +82,120 @@ function LiveContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#073b3a]">
-        <Signal className="w-12 h-12 animate-pulse text-moss-green mb-4" />
-        <p className="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em]">Syncing Feed...</p>
+      <div className="flex flex-col items-center justify-center py-40">
+        <Signal className="w-12 h-12 animate-pulse text-[#000033]/20 mb-4" />
+        <p className="text-xl opacity-40">Syncing Feed...</p>
       </div>
     );
   }
 
   return (
-    <main className="pb-32 relative z-10">
-      <TopHeader />
-
-      <div className="px-6 space-y-10 mt-8 max-w-2xl mx-auto">
-        {activeMatch ? (
-          <>
-            {/* Primary Feed - Cinematic Player */}
-            <section className="space-y-6">
-              <div className="relative aspect-video bg-[#0a4d4b] rounded-[40px] overflow-hidden shadow-2xl shadow-black/40 border border-white/5 group">
-                <iframe 
-                  src={activeMatch.stream_url} 
-                  className="w-full h-full"
-                  allow="autoplay; encrypted-media"
-                />
-                
-                {/* HUD Overlays */}
-                <div className="absolute top-6 left-6 z-20 flex items-center gap-3">
-                  <div className="bg-red-500 text-white px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-2xl text-[10px] font-bold uppercase tracking-widest border border-white/20">
-                    <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-                    LIVE
-                  </div>
-                  <div className="bg-black/40 backdrop-blur-xl text-white px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-2xl text-[10px] font-bold uppercase tracking-widest border border-white/10">
-                    <Eye size={14} className="text-moss-green" />
-                    {activeMatch.viewers_count.toLocaleString()}
-                  </div>
+    <div className="space-y-10 pb-20">
+      {activeMatch ? (
+        <>
+          <section className="space-y-6">
+            <div className="relative aspect-video bg-[#000033]/5 rounded-3xl overflow-hidden border-2 border-[#000033]/10 shadow-lg -rotate-1">
+              <iframe 
+                src={activeMatch.stream_url} 
+                className="w-full h-full"
+                allow="autoplay; encrypted-media"
+              />
+              <div className="absolute top-4 left-4 flex gap-2">
+                <div className="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+                  LIVE
                 </div>
+                <div className="bg-white/80 backdrop-blur-sm text-[#000033] px-3 py-1 rounded-full text-xs font-bold flex items-center gap-2 border border-[#000033]/10">
+                  <Eye size={12} />
+                  {activeMatch.viewers_count}
+                </div>
+              </div>
+            </div>
 
-                <div className="absolute bottom-6 left-6 right-6 z-20 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                   <div className="bg-black/40 backdrop-blur-xl px-4 py-2 rounded-2xl border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white/80">
-                     FEED #AX-{activeMatch.id.slice(0,4).toUpperCase()}
-                   </div>
-                   <button className="w-10 h-10 rounded-2xl bg-white/10 backdrop-blur-xl flex items-center justify-center text-white hover:bg-white/20 transition-all">
-                     <LayoutGrid size={18} />
-                   </button>
+            <div className="border-2 border-[#000033]/10 rounded-3xl p-6 space-y-6 rotate-1">
+              <div className="flex justify-between items-start">
+                <div className="space-y-1">
+                  <h2 className="text-3xl m-0">{activeMatch.title}</h2>
+                  <p className="text-sm opacity-40 uppercase tracking-widest flex items-center gap-2">
+                    <Trophy size={12} /> {activeMatch.tournament?.title}
+                  </p>
                 </div>
               </div>
 
-              {/* Transmission Intelligence */}
-              <div className="bg-white/5 backdrop-blur-xl rounded-[40px] p-8 border border-white/10 shadow-2xl space-y-8">
-                <div className="flex justify-between items-start">
-                  <div className="space-y-2">
-                    <h2 className="text-2xl font-heading text-white leading-tight">{activeMatch.title}</h2>
-                    <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em] flex items-center gap-2">
-                      <Trophy size={12} className="text-moss-green" /> {activeMatch.tournament?.title}
-                    </p>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="border-2 border-[#000033]/5 p-4 rounded-2xl flex items-center gap-4">
+                  <MapIcon size={18} className="opacity-30" />
+                  <div>
+                    <p className="text-[10px] opacity-30 uppercase tracking-widest m-0">Sector</p>
+                    <p className="text-xl m-0">{activeMatch.map}</p>
                   </div>
-                  <Badge className="bg-moss-green/20 text-moss-green border-none rounded-full text-[10px] px-4 py-1.5 font-bold tracking-widest">
-                    ROUND {activeMatch.current_round}
-                  </Badge>
                 </div>
+                <div className="border-2 border-[#000033]/5 p-4 rounded-2xl flex items-center gap-4">
+                  <Activity size={18} className="opacity-30" />
+                  <div>
+                    <p className="text-[10px] opacity-30 uppercase tracking-widest m-0">Mode</p>
+                    <p className="text-xl m-0">{activeMatch.mode}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
 
-                {/* Tactical Grid */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-white/5 p-5 rounded-[28px] border border-white/5 flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-moss-green shadow-inner">
-                      <MapIcon size={20} />
+          {otherMatches.length > 0 && (
+            <section className="space-y-6">
+              <h3 className="text-3xl -rotate-2">Other Relays</h3>
+              <div className="space-y-4">
+                {otherMatches.map((match) => (
+                  <motion.div 
+                    key={match.id}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                      setActiveMatch(match);
+                    }}
+                    className="border-2 border-[#000033]/10 p-4 rounded-2xl flex items-center gap-4 hover:bg-[#000033]/5 cursor-pointer transition-all"
+                  >
+                    <div className="w-16 h-16 rounded-xl bg-[#000033]/5 flex items-center justify-center flex-shrink-0">
+                      <Play size={20} className="opacity-40" />
                     </div>
-                    <div>
-                      <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Sector</p>
-                      <p className="text-sm font-heading text-white">{activeMatch.map}</p>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-xl m-0 truncate">{match.title}</h4>
+                      <p className="text-xs opacity-40 uppercase tracking-widest">{match.mode} • {match.viewers_count} watching</p>
                     </div>
-                  </div>
-                  <div className="bg-white/5 p-5 rounded-[28px] border border-white/5 flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-accent shadow-inner">
-                      <Activity size={20} />
-                    </div>
-                    <div>
-                      <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Mode</p>
-                      <p className="text-sm font-heading text-white">{activeMatch.mode}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Dynamic Telemetry */}
-                <div className="grid grid-cols-3 gap-2 pt-4 border-t border-white/5">
-                  <div className="text-center space-y-1">
-                    <p className="text-[28px] font-heading text-white">{activeMatch.live_stats?.teams_alive || 0}</p>
-                    <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Warriors</p>
-                  </div>
-                  <div className="text-center space-y-1 border-x border-white/5">
-                    <p className="text-[28px] font-heading text-white">{activeMatch.live_stats?.total_kills || 0}</p>
-                    <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Eliminations</p>
-                  </div>
-                  <div className="text-center space-y-1">
-                    <p className="text-[28px] font-heading text-white">{activeMatch.live_stats?.safe_zone_phase || 0}</p>
-                    <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Sector P-{activeMatch.live_stats?.safe_zone_phase || 1}</p>
-                  </div>
-                </div>
+                    <ChevronRight size={20} className="opacity-20" />
+                  </motion.div>
+                ))}
               </div>
             </section>
-
-            {/* Alternative Relays */}
-            {otherMatches.length > 0 && (
-              <section className="space-y-6">
-                <div className="flex items-center justify-between px-2">
-                  <div className="space-y-1">
-                    <h3 className="text-lg font-heading text-white">Alternative <span className="italic font-serif opacity-60">Relays</span></h3>
-                    <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest">SCANNING LIVE SIGNALS</p>
-                  </div>
-                  <div className="flex items-center gap-2 bg-moss-green/10 px-3 py-1.5 rounded-full border border-moss-green/20">
-                    <div className="w-1.5 h-1.5 bg-moss-green rounded-full animate-pulse" />
-                    <span className="text-[9px] font-bold text-moss-green uppercase tracking-widest">{otherMatches.length} RELAYS</span>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  {otherMatches.map((match) => (
-                    <motion.div 
-                      key={match.id}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                        setActiveMatch(match);
-                      }}
-                      className="bg-white/5 backdrop-blur-xl p-4 rounded-[32px] border border-white/5 shadow-xl flex items-center gap-5 hover:border-moss-green/30 transition-all duration-500 cursor-pointer group"
-                    >
-                      <div className="relative w-20 h-20 rounded-[24px] overflow-hidden bg-black flex-shrink-0 shadow-inner">
-                         <iframe 
-                          src={match.stream_url} 
-                          className="w-full h-full pointer-events-none scale-150 opacity-40 blur-[1px]"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <Play size={24} fill="white" className="text-white opacity-60 group-hover:scale-110 group-hover:opacity-100 transition-transform" />
-                        </div>
-                      </div>
-                      <div className="flex-1 min-w-0 space-y-1.5">
-                        <h4 className="font-heading text-white truncate group-hover:text-moss-green transition-colors">{match.title}</h4>
-                        <div className="flex items-center gap-4">
-                          <span className="text-[9px] font-bold text-moss-green px-3 py-1 bg-moss-green/10 rounded-full uppercase tracking-widest">
-                            {match.mode}
-                          </span>
-                          <span className="text-[9px] flex items-center gap-1.5 text-white/20 font-bold uppercase tracking-widest">
-                            <Eye size={12} className="text-white/40" />
-                            {match.viewers_count.toLocaleString()}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-white/20 group-hover:bg-moss-green group-hover:text-white transition-all">
-                        <ChevronRight size={20} strokeWidth={3} />
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </section>
-            )}
-          </>
-        ) : (
-          <div className="py-24 text-center space-y-8 mt-12 bg-white/5 backdrop-blur-xl rounded-[50px] border border-dashed border-white/10">
-            <div className="w-24 h-24 bg-white/5 rounded-[32px] flex items-center justify-center mx-auto text-white/10 shadow-inner">
-              <WifiOff size={48} strokeWidth={1} />
-            </div>
-            <div className="space-y-2 px-10">
-              <h3 className="text-2xl font-heading text-white">Silent <span className="italic font-serif opacity-60">Frequencies</span></h3>
-              <p className="text-[11px] text-white/30 font-bold uppercase tracking-[0.2em] leading-loose">No active combat signals detected in the current sector.</p>
-            </div>
-            <div className="px-10">
-              <button className="w-full py-5 bg-moss-green text-white rounded-3xl text-[11px] font-bold uppercase tracking-[0.3em] shadow-2xl shadow-moss-green/30 hover:scale-[1.02] transition-all">
-                INITIALIZE RECON
-              </button>
-            </div>
+          )}
+        </>
+      ) : (
+        <div className="py-24 text-center space-y-6 border-2 border-dashed border-[#000033]/10 rounded-3xl rotate-1">
+          <WifiOff size={48} className="mx-auto opacity-10" />
+          <div className="space-y-1">
+            <h3 className="text-3xl">Silent Arena</h3>
+            <p className="text-xl opacity-40">No live battles detected in this sector.</p>
           </div>
-        )}
-      </div>
-    </main>
+        </div>
+      )}
+    </div>
   );
 }
 
-export default function Live() {
+export default function LivePage() {
   return (
-    <div className="min-h-screen bg-dark-slate-grey bg-[radial-gradient(circle_at_50%_0%,_#2d4d43_0%,_#243e36_100%)] text-white">
-      <Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center bg-[#073b3a]">
-          <Loader2 className="w-8 h-8 animate-spin text-moss-green" />
-        </div>
-      }>
-        <LiveContent />
-      </Suspense>
+    <div className="w-full">
+      <TopHeader />
+      <PaperWrapper className="mt-20">
+        <Suspense fallback={
+          <div className="flex items-center justify-center py-40">
+            <Loader2 className="w-8 h-8 animate-spin text-[#000033]/10" />
+          </div>
+        }>
+          <LiveContent />
+        </Suspense>
+      </PaperWrapper>
       <BottomNav />
-      {/* Background Glows */}
-      <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0 opacity-30">
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-moss-green/20 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/10 blur-[120px] rounded-full" />
-      </div>
     </div>
   );
 }
