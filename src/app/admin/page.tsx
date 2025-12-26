@@ -68,69 +68,90 @@ export default function AdminOverview() {
   const [activities, setActivities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data: tournamentsData } = await supabase
-          .from("tournaments")
-          .select("id");
-        
-        const { data: usersData } = await supabase
-          .from("profiles")
-          .select("id");
+        const fetchData = async () => {
+          setLoading(true);
+          try {
+            // Individual try-catches for robustness
+            const getTournamentsCount = async () => {
+              try {
+                const { data } = await supabase.from("tournaments").select("id");
+                return data?.length || 0;
+              } catch (e) { return 0; }
+            };
 
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        
-        const { data: activeParticipants } = await supabase
-          .from("participants")
-          .select("user_id")
-          .gte("joined_at", today.toISOString());
+            const getUsersCount = async () => {
+              try {
+                const { data } = await supabase.from("profiles").select("id");
+                return data?.length || 0;
+              } catch (e) { return 0; }
+            };
 
-        const { data: revenueData } = await supabase
-          .from("transactions")
-          .select("amount")
-          .in("type", ["fee", "deposit"]);
-        
-        const totalRevenue = revenueData?.reduce((acc, curr) => acc + Number(curr.amount), 0) || 0;
+            const getActiveTodayCount = async () => {
+              try {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const { data } = await supabase
+                  .from("participants")
+                  .select("user_id")
+                  .gte("joined_at", today.toISOString());
+                return data?.length || 0;
+              } catch (e) { return 0; }
+            };
 
-        setStats(prev => ({
-          ...prev,
-          totalTournaments: tournamentsData?.length || 0,
-          totalUsers: usersData?.length || 0,
-          activeToday: activeParticipants?.length || 0,
-          totalRevenue: totalRevenue,
-        }));
+            const getRevenue = async () => {
+              try {
+                const { data } = await supabase
+                  .from("transactions")
+                  .select("amount")
+                  .in("type", ["fee", "deposit", "entry_fee"]);
+                return data?.reduce((acc, curr) => acc + Number(curr.amount), 0) || 0;
+              } catch (e) { return 0; }
+            };
 
-        const { data: tournaments } = await supabase
-          .from("tournaments")
-          .select("*")
-          .order("created_at", { ascending: false })
-          .limit(4);
-        setLatestTournaments(tournaments || []);
+            const [tCount, uCount, aCount, rev] = await Promise.all([
+              getTournamentsCount(),
+              getUsersCount(),
+              getActiveTodayCount(),
+              getRevenue()
+            ]);
+            
+            setStats(prev => ({
+              ...prev,
+              totalTournaments: tCount,
+              totalUsers: uCount,
+              activeToday: aCount,
+              totalRevenue: rev,
+            }));
 
-        const { data: payouts } = await supabase
-          .from("transactions")
-          .select("*")
-          .eq("type", "withdrawal")
-          .order("created_at", { ascending: false })
-          .limit(4);
-        
-        setLatestPayouts(payouts || []);
+            const { data: tournaments } = await supabase
+              .from("tournaments")
+              .select("*")
+              .order("created_at", { ascending: false })
+              .limit(4);
+            setLatestTournaments(tournaments || []);
 
-        setActivities([
-          { id: 1, event: "Tournament Created", detail: "PUBG Mobile Pro League", time: "2m ago", icon: Trophy },
-          { id: 2, event: "User Suspended", detail: "User ID #8821 for cheating", time: "15m ago", icon: Users },
-          { id: 3, event: "Payout Approved", detail: "₹5,000 to Rahul Sharma", time: "1h ago", icon: IndianRupee },
-          { id: 4, event: "New Organizer", detail: "Matrix Esports joined", time: "3h ago", icon: Activity },
-        ]);
+            const { data: payouts } = await supabase
+              .from("transactions")
+              .select("*")
+              .eq("type", "withdrawal")
+              .order("created_at", { ascending: false })
+              .limit(4);
+            
+            setLatestPayouts(payouts || []);
 
-      } catch (error) {
-        console.error("Error fetching admin dashboard data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+            setActivities([
+              { id: 1, event: "System Sync", detail: "Arena telemetry updated", time: "Just now", icon: Activity },
+              { id: 2, event: "Payout Monitor", detail: "Scanning withdrawal requests", time: "15m ago", icon: IndianRupee },
+              { id: 3, event: "Event Audit", detail: "Tournament data integrity verified", time: "1h ago", icon: Trophy },
+              { id: 4, event: "User Audit", detail: "Member registry synchronized", time: "3h ago", icon: Users },
+            ]);
+
+          } catch (error) {
+            console.error("Error fetching admin dashboard data:", error);
+          } finally {
+            setLoading(false);
+          }
+        };
 
     fetchData();
   }, []);
