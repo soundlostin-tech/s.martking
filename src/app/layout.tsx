@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono, Playfair_Display, Berkshire_Swash } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AnimatedBackground } from "@/components/layout/AnimatedBackground";
 import { ClientLayout } from "@/components/layout/ClientLayout";
@@ -11,17 +11,6 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-});
-
-const berkshire = Berkshire_Swash({
-  variable: "--font-berkshire",
-  weight: "400",
   subsets: ["latin"],
 });
 
@@ -38,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${berkshire.variable} font-serif antialiased bg-background text-foreground`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased font-handwritten`}
       >
         <AnimatedBackground />
         <ClientLayout>{children}</ClientLayout>
