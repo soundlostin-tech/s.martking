@@ -49,89 +49,17 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  --color-jungle-teal-50: #e5fff9;
-  --color-jungle-teal-100: #ccfff2;
-  --color-jungle-teal-200: #99ffe6;
-  --color-jungle-teal-300: #66ffd9;
-  --color-jungle-teal-400: #33ffcc;
-  --color-jungle-teal-500: #00ffbf;
-  --color-jungle-teal-600: #00cc99;
-  --color-jungle-teal-700: #009973;
-  --color-jungle-teal-800: #00664d;
-  --color-jungle-teal-900: #003326;
-  --color-jungle-teal-950: #00241b;
-
-  --color-sea-green-50: #ebf9ef;
-  --color-sea-green-100: #d7f4df;
-  --color-sea-green-200: #b0e8c0;
-  --color-sea-green-300: #88dda0;
-  --color-sea-green-400: #61d181;
-  --color-sea-green-500: #39c661;
-  --color-sea-green-600: #2e9e4e;
-  --color-sea-green-700: #22773a;
-  --color-sea-green-800: #174f27;
-  --color-sea-green-900: #0b2813;
-  --color-sea-green-950: #081c0e;
-
-  --color-bright-fern-50: #f0f9eb;
-  --color-bright-fern-100: #e0f4d7;
-  --color-bright-fern-200: #c2e8b0;
-  --color-bright-fern-300: #a3dd88;
-  --color-bright-fern-400: #84d161;
-  --color-bright-fern-500: #66c639;
-  --color-bright-fern-600: #519e2e;
-  --color-bright-fern-700: #3d7722;
-  --color-bright-fern-800: #294f17;
-  --color-bright-fern-900: #14280b;
-  --color-bright-fern-950: #0e1c08;
-
-  --color-lime-moss-50: #f5fce8;
-  --color-lime-moss-100: #ebf9d2;
-  --color-lime-moss-200: #d8f3a5;
-  --color-lime-moss-300: #c4ed78;
-  --color-lime-moss-400: #b1e84a;
-  --color-lime-moss-500: #9de21d;
-  --color-lime-moss-600: #7eb517;
-  --color-lime-moss-700: #5e8712;
-  --color-lime-moss-800: #3f5a0c;
-  --color-lime-moss-900: #1f2d06;
-  --color-lime-moss-950: #162004;
-
-  --color-yellow-green-50: #fbffe5;
-  --color-yellow-green-100: #f6ffcc;
-  --color-yellow-green-200: #eeff99;
-  --color-yellow-green-300: #e5ff66;
-  --color-yellow-green-400: #ddff33;
-  --color-yellow-green-500: #d4ff00;
-  --color-yellow-green-600: #aacc00;
-  --color-yellow-green-700: #7f9900;
-  --color-yellow-green-800: #556600;
-  --color-yellow-green-900: #2a3300;
-  --color-yellow-green-950: #1e2400;
-
-  --color-lemon-lime-50: #ffffe5;
-  --color-lemon-lime-100: #feffcc;
-  --color-lemon-lime-200: #fdff99;
-  --color-lemon-lime-300: #fcff66;
-  --color-lemon-lime-400: #fcff33;
-  --color-lemon-lime-500: #fbff00;
-  --color-lemon-lime-600: #c9cc00;
-  --color-lemon-lime-700: #969900;
-  --color-lemon-lime-800: #646600;
-  --color-lemon-lime-900: #323300;
-  --color-lemon-lime-950: #232400;
-
-  --color-yellow-50: #ffffe5;
-  --color-yellow-100: #ffffcc;
-  --color-yellow-200: #ffff99;
-  --color-yellow-300: #ffff66;
-  --color-yellow-400: #ffff33;
-  --color-yellow-500: #ffff00;
-  --color-yellow-600: #cccc00;
-  --color-yellow-700: #999900;
-  --color-yellow-800: #666600;
-  --color-yellow-900: #333300;
-  --color-yellow-950: #242400;
+  /* User Defined Theme Colors */
+  --color-jungle-teal: #007f5f;
+  --color-sea-green: #2b9348;
+  --color-bright-fern: #55a630;
+  --color-lime-moss: #80b918;
+  --color-yellow-green: #aacc00;
+  --color-lemon-lime: #bfd200;
+  --color-lemon-lime-2: #d4d700;
+  --color-lemon-lime-3: #dddf00;
+  --color-yellow: #eeef20;
+  --color-yellow-2: #ffff3f;
 }
 
 :root {
@@ -142,31 +70,31 @@
   --card-foreground: #00241b;
   --popover: rgba(255, 255, 255, 0.98);
   --popover-foreground: #00241b;
-  --primary: #007F5F;
+  --primary: #007f5f;
   --primary-foreground: #ffffff;
-  --secondary: #ebf9ef;
-  --secondary-foreground: #22773a;
+  --secondary: #2b9348;
+  --secondary-foreground: #ffffff;
   --muted: #f5fce8;
   --muted-foreground: #5e8712;
-  --accent: #d4ff00;
+  --accent: #d4d700;
   --accent-foreground: #00241b;
   --destructive: oklch(0.577 0.245 27.325);
   --border: #b0e8c0;
   --input: #b0e8c0;
-  --ring: #39c661;
-  --chart-1: #39c661;
-  --chart-2: #66c639;
-  --chart-3: #9de21d;
-  --chart-4: #d4ff00;
-  --chart-5: #fbff00;
+  --ring: #2b9348;
+  --chart-1: #007f5f;
+  --chart-2: #2b9348;
+  --chart-3: #80b918;
+  --chart-4: #d4d700;
+  --chart-5: #ffff3f;
   --sidebar: #ffffff;
   --sidebar-foreground: #003326;
-  --sidebar-primary: #007F5F;
+  --sidebar-primary: #007f5f;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #ebf9ef;
-  --sidebar-accent-foreground: #007F5F;
+  --sidebar-accent: #f5fce8;
+  --sidebar-accent-foreground: #007f5f;
   --sidebar-border: #b0e8c0;
-  --sidebar-ring: #39c661;
+  --sidebar-ring: #2b9348;
 }
 
 @layer base {
@@ -176,12 +104,12 @@
   body {
     @apply bg-background text-foreground font-sans antialiased selection:bg-primary/20 selection:text-primary;
     background-image: 
-      radial-gradient(at 0% 0%, rgba(0, 127, 95, 0.05) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, rgba(212, 255, 0, 0.05) 0px, transparent 50%);
+      radial-gradient(at 0% 0%, rgba(0, 127, 95, 0.08) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(212, 215, 0, 0.08) 0px, transparent 50%);
     background-attachment: fixed;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-normal tracking-tight text-primary;
+    @apply font-heading font-normal tracking-tight text-jungle-teal;
   }
 }
 
@@ -203,7 +131,7 @@
   height: 100%;
   background-image: 
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.015;
+  opacity: 0.02;
   pointer-events: none;
 }
 
@@ -215,19 +143,19 @@
 }
 
 .animate-blob {
-  animation: float 25s infinite alternate ease-in-out;
-  filter: blur(120px);
-  opacity: 0.3;
+  animation: float 20s infinite alternate ease-in-out;
+  filter: blur(140px);
+  opacity: 0.4;
 }
 
 .glass {
-  @apply bg-white/75 backdrop-blur-xl border border-white/20 shadow-xl;
+  @apply bg-white/70 backdrop-blur-2xl border border-white/30 shadow-2xl;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(15px);
   }
   to {
     opacity: 1;
@@ -237,4 +165,21 @@
 
 .animate-fadeIn {
   animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Custom Geometric Shapes (Reference style) */
+.shape-square {
+  clip-path: inset(0 0 0 0);
+}
+
+.shape-circle {
+  clip-path: circle(50% at 50% 50%);
+}
+
+.shape-triangle {
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.shape-diamond {
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }

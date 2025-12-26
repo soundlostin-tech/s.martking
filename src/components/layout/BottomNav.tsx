@@ -17,8 +17,8 @@ export function BottomNav() {
   const pathname = usePathname();
 
     return (
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-lg bg-white/70 backdrop-blur-2xl border border-primary/10 shadow-[0_20px_50px_rgba(34,119,58,0.1)] rounded-[2.5rem] px-4 overflow-hidden">
-        <div className="flex justify-around items-center h-22 py-2">
+      <nav className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-lg bg-white/80 backdrop-blur-3xl border border-jungle-teal/10 shadow-[0_25px_60px_-15px_rgba(0,127,95,0.2)] rounded-[2.5rem] px-4">
+        <div className="flex justify-around items-center h-20">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
@@ -27,34 +27,38 @@ export function BottomNav() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="relative flex flex-col items-center justify-center flex-1 h-full outline-none"
+                className="relative flex flex-col items-center justify-center flex-1 h-full outline-none group"
               >
-                <div className="relative flex flex-col items-center gap-1.5 transition-all duration-300 py-3">
+                <div className="relative flex flex-col items-center gap-1.5 transition-all duration-300">
                     <motion.div
                       animate={{ 
-                        scale: isActive ? 1.15 : 1,
-                        y: isActive ? -2 : 0 
+                        scale: isActive ? 1.2 : 1,
+                        y: isActive ? -4 : 0 
                       }}
-                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 20 }}
                         className={`relative z-10 transition-colors ${
-                          isActive ? "text-primary" : "text-foreground/20 hover:text-foreground/40"
+                          isActive ? "text-jungle-teal" : "text-sea-green/30 group-hover:text-sea-green/60"
                         }`}
                     >
                       <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
+                      {isActive && (
+                        <motion.div 
+                          layoutId="nav-glow"
+                          className="absolute -inset-2 bg-lemon-lime/20 rounded-full blur-md -z-10"
+                        />
+                      )}
                     </motion.div>
   
-                    <span className={`text-[9px] font-bold uppercase tracking-[0.2em] transition-colors ${
-                      isActive ? "text-primary" : "text-foreground/10"
+                    <span className={`text-[8px] font-bold uppercase tracking-[0.2em] transition-colors ${
+                      isActive ? "text-jungle-teal" : "text-sea-green/20"
                     }`}>
                       {item.label}
                     </span>
                 </div>
-                
               </Link>
             );
           })}
         </div>
-      </div>
+      </nav>
     );
-
 }
