@@ -275,12 +275,12 @@ function LiveContent() {
         }>
           <LiveContent />
         </Suspense>
-        <BottomNav />
-        {/* Background Glows */}
-        <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0 opacity-30">
-          <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-malachite-400/10 blur-[120px] rounded-full" />
-          <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-sea-green-500/10 blur-[120px] rounded-full" />
+          <BottomNav />
+          {/* Background Glows - disabled for pure white look */}
+          {/* <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0 opacity-30">
+            <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-malachite-400/10 blur-[120px] rounded-full" />
+            <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-sea-green-500/10 blur-[120px] rounded-full" />
+          </div> */}
         </div>
-      </div>
-    );
-  }
+      );
+    }

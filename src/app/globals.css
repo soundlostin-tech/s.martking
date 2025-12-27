@@ -122,8 +122,8 @@
      SEMANTIC COLOR MAPPINGS - LIGHT NEUTRAL THEME
      ============================================ */
   
-  /* Global App Background: Light Neutral Shadow Green 50 (#F2F4F3) */
-  --background: #f2f4f3;
+  /* Global App Background: Pure White (#FFFFFF) */
+  --background: #ffffff;
   
   /* Main Text: Evergreen (#0D2818) for readability on light */
   --foreground: #0d2818;
@@ -138,14 +138,14 @@
   
   /* Primary Actions: Black Forest / Evergreen (#0D2818) */
   --primary: #0d2818;
-  --primary-foreground: #f2f4f3;
+  --primary-foreground: #ffffff;
   
   /* Secondary Accents: Sea Green (#058C42) */
   --secondary: #058c42;
-  --secondary-foreground: #f2f4f3;
+  --secondary-foreground: #ffffff;
   
     /* Muted: shadow-green-100 for subtle surfaces */
-    --muted: #e5e9e7;
+    --muted: #f8f9f8;
     --muted-foreground: #66746c;
     
     /* Accent: Malachite (#16DB65) */
@@ -154,11 +154,11 @@
     
     /* Destructive: #892d2d */
     --destructive: #892d2d;
-    --destructive-foreground: #f2f4f3;
+    --destructive-foreground: #ffffff;
     
     /* Borders: shadow-green-200 for cleaner look on white cards */
-    --border: #ccd3cf;
-    --input: #ccd3cf;
+    --border: #eef1ef;
+    --input: #eef1ef;
     --ring: #058c42;
   
   /* Chart Colors */
@@ -166,16 +166,16 @@
   --chart-2: #058c42;
   --chart-3: #0d2818;
   --chart-4: #887b79;
-  --chart-5: #f2f4f3;
+  --chart-5: #ffffff;
   
   /* Sidebar */
-  --sidebar: #f2f4f3;
+  --sidebar: #ffffff;
   --sidebar-foreground: #0d2818;
   --sidebar-primary: #0d2818;
-  --sidebar-primary-foreground: #f2f4f3;
-  --sidebar-accent: #e5e9e7;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f8f8f8;
   --sidebar-accent-foreground: #0d2818;
-  --sidebar-border: #ccd3cf;
+  --sidebar-border: #e2e2e2;
   --sidebar-ring: #058c42;
 }
 
@@ -205,7 +205,7 @@
 /* Premium Utility Classes */
 .premium-gradient {
   background: linear-gradient(135deg, #0d2818 0%, #058c42 100%);
-  color: #f2f4f3;
+  color: #ffffff;
 }
 
 .card-premium {
