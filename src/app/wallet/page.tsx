@@ -41,7 +41,7 @@ export default function WalletPage() {
       const { data: walletData, error: walletError } = await supabase
         .from("wallets")
         .select("*")
-        .eq("id", user.id)
+        .eq("user_id", user.id)
         .maybeSingle();
       
       if (walletError) throw walletError;
@@ -50,7 +50,6 @@ export default function WalletPage() {
         const { data: newWallet, error: createError } = await supabase
           .from("wallets")
           .insert({
-            id: user.id,
             user_id: user.id,
             balance: 0,
             lifetime_earnings: 0,
@@ -111,7 +110,7 @@ export default function WalletPage() {
           balance: Number(wallet?.balance || 0) + amount, 
           updated_at: new Date().toISOString() 
         })
-        .eq("id", user!.id);
+        .eq("user_id", user!.id);
       
       if (walletError) throw walletError;
 
@@ -156,7 +155,7 @@ export default function WalletPage() {
           pending_withdrawals: Number(wallet?.pending_withdrawals || 0) + amount,
           updated_at: new Date().toISOString() 
         })
-        .eq("id", user!.id);
+        .eq("user_id", user!.id);
       
       if (walletError) throw walletError;
 

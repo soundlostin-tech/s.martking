@@ -77,7 +77,7 @@ export default function AdminLeaderboard() {
   const fetchLeaderboardData = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data: profiles, error: profilesError } = await supabase
         .from("profiles")
         .select(`
           id,
@@ -86,20 +86,25 @@ export default function AdminLeaderboard() {
           avatar_url,
           win_rate,
           matches_played,
-          role,
-          wallets (
-            lifetime_earnings
-          )
+          role
         `);
 
-      if (error) throw error;
+      if (profilesError) throw profilesError;
 
-      const transformedData = data.map((profile: any, index: number) => {
-        const earnings = profile.wallets?.lifetime_earnings || 0;
+      const { data: wallets, error: walletsError } = await supabase
+        .from("wallets")
+        .select("user_id, lifetime_earnings");
+
+      if (walletsError) throw walletsError;
+
+      const walletMap = new Map(wallets?.map(w => [w.user_id, w.lifetime_earnings]) || []);
+
+      const transformedData = (profiles || []).map((profile: any, index: number) => {
+        const earnings = walletMap.get(profile.id) || 0;
         const matches = profile.matches_played || 0;
-        const avgKillsPerMatch = 4.5 + (parseFloat(profile.win_rate) / 10);
+        const avgKillsPerMatch = 4.5 + (parseFloat(profile.win_rate || "0") / 10);
         const totalKills = Math.floor(matches * avgKillsPerMatch);
-        const wins = Math.floor(matches * (parseFloat(profile.win_rate) / 100));
+        const wins = Math.floor(matches * (parseFloat(profile.win_rate || "0") / 100));
         const points = (wins * 100) + (totalKills * 10);
 
         return {
@@ -111,7 +116,7 @@ export default function AdminLeaderboard() {
           wins,
           kills: totalKills,
           points,
-          earnings,
+          earnings: Number(earnings),
           win_rate: profile.win_rate,
           role: profile.role,
           team: index % 3 === 0 ? "TEAM SK" : index % 3 === 1 ? "SOUL" : "GODLIKE"
