@@ -23,15 +23,15 @@ export function AnalyticsCard({
   showIcon = true,
 }: AnalyticsCardProps) {
   const variants = {
-    light: "bg-alabaster-grey-2 text-onyx border-stone-200",
-    dark: "bg-onyx/20 text-white border-white/10 glass shadow-lg",
-    highlight: "bg-black text-white shadow-lg border-black/10",
+    light: "bg-card text-foreground border-border shadow-sm",
+    dark: "bg-primary text-primary-foreground shadow-lg border-primary/10",
+    highlight: "bg-secondary text-secondary-foreground shadow-lg border-secondary/10",
   };
 
   return (
     <div
       className={cn(
-        "relative p-6 rounded-[24px] border transition-all overflow-hidden group",
+        "relative p-6 rounded-[32px] border transition-all overflow-hidden group",
         variants[variant],
         className
       )}
@@ -47,13 +47,14 @@ export function AnalyticsCard({
       )}
 
       <div className="flex justify-between items-start mb-4">
-        <p className={cn("text-sm opacity-80 uppercase tracking-wider font-medium", variant === "highlight" ? "text-onyx/60" : "text-stone-500")}>
+        <p className={cn("text-[10px] font-bold uppercase tracking-[0.2em]", 
+          variant === "light" ? "text-muted-foreground" : "text-primary-foreground/70")}>
           {title}
         </p>
         {showIcon && (
           <div className={cn(
-            "p-2 rounded-full",
-            variant === "light" ? "bg-stone-100" : "bg-white/10"
+            "p-2 rounded-xl",
+            variant === "light" ? "bg-muted" : "bg-white/10"
           )}>
             <ArrowUpRight size={18} />
           </div>
@@ -63,15 +64,16 @@ export function AnalyticsCard({
       <h2 className="text-3xl font-heading mb-1">{value}</h2>
       
       {subtext && (
-        <p className={cn("text-sm opacity-70", variant === "highlight" ? "text-onyx/60" : "text-stone-500")}>
+        <p className={cn("text-[11px] font-bold opacity-70 uppercase tracking-wider", 
+          variant === "light" ? "text-muted-foreground" : "text-primary-foreground/60")}>
           {subtext}
         </p>
       )}
 
       {trend && (
-        <div className="mt-4 flex items-center gap-1">
-          <span className="text-xs font-bold text-olive">{trend}</span>
-          <span className="text-xs opacity-50">vs last month</span>
+        <div className="mt-4 flex items-center gap-2">
+          <span className={cn("text-[10px] font-bold px-2 py-0.5 rounded-full bg-accent/20 text-accent")}>{trend}</span>
+          <span className="text-[9px] font-bold opacity-50 uppercase tracking-widest">Growth</span>
         </div>
       )}
     </div>
