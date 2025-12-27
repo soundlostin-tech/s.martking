@@ -66,15 +66,19 @@ export default function Signup() {
       if (authError) throw authError;
 
       if (authData.user) {
-        await supabase.from("profiles").insert({
+        const { error: profileError } = await supabase.from("profiles").insert({
           id: authData.user.id,
           full_name: formData.fullname,
           phone: `${countryCode}${formData.phone}`,
         });
-        await supabase.from("wallets").insert({
+        if (profileError) throw profileError;
+
+        const { error: walletError } = await supabase.from("wallets").insert({
           id: authData.user.id,
+          user_id: authData.user.id,
           balance: 0,
         });
+        if (walletError) throw walletError;
 
         toast.success("Account created successfully!");
         router.push("/signin");

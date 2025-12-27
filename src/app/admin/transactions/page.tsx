@@ -122,7 +122,7 @@ export default function AdminTransactions() {
       const { data: wallet, error: walletFetchError } = await supabase
         .from("wallets")
         .select("*")
-        .eq("user_id", userId)
+        .eq("id", userId)
         .single();
       
       if (walletFetchError) throw walletFetchError;
@@ -138,7 +138,7 @@ export default function AdminTransactions() {
       const { error: walletUpdateError } = await supabase
         .from("wallets")
         .update(updates)
-        .eq("user_id", userId);
+        .eq("id", userId);
 
       if (walletUpdateError) throw walletUpdateError;
 

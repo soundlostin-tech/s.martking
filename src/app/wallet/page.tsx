@@ -83,101 +83,101 @@ export default function WalletPage() {
 
       if (txError) throw txError;
       setTransactions(txData || []);
-    } catch (error) {
-      console.error("Error fetching wallet data:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [user]);
+      } catch (error: any) {
+        console.error("Error fetching wallet data:", error.message || error);
+      } finally {
+        setLoading(false);
+      }
+    }, [user]);
 
-  useEffect(() => {
-    fetchWalletData();
-  }, [fetchWalletData]);
-
-  const handleDeposit = async () => {
-    const amount = Number(depositAmount);
-    if (!amount || amount < 10) {
-      toast.error("Minimum deposit is ₹10");
-      return;
-    }
-
-    setProcessing(true);
-    try {
-      const { error: txError } = await supabase.from("transactions").insert({
-        user_id: user!.id,
-        amount,
-        type: "deposit",
-        status: "completed",
-        description: "Arena Balance Recharge",
-      });
-
-      if (txError) throw txError;
-
-      const { error: walletError } = await supabase
-        .from("wallets")
-        .update({ 
-          balance: Number(wallet?.balance || 0) + amount, 
-          updated_at: new Date().toISOString() 
-        })
-        .eq("user_id", user!.id);
-      
-      if (walletError) throw walletError;
-
-      toast.success(`₹${amount} added to your arena balance!`);
-      setIsDepositOpen(false);
-      setDepositAmount("");
+    useEffect(() => {
       fetchWalletData();
-    } catch (error: any) {
-      toast.error("Failed to process deployment funds");
-    } finally {
-      setProcessing(false);
-    }
-  };
+    }, [fetchWalletData]);
 
-  const handleWithdraw = async () => {
-    const amount = Number(withdrawAmount);
-    if (!amount || amount < 100) {
-      toast.error(`Min withdrawal is ₹100`);
-      return;
-    }
-    if (amount > (wallet?.balance || 0)) {
-      toast.error("Insufficient arena balance");
-      return;
-    }
+    const handleDeposit = async () => {
+      const amount = Number(depositAmount);
+      if (!amount || amount < 10) {
+        toast.error("Minimum deposit is ₹10");
+        return;
+      }
 
-    setProcessing(true);
-    try {
-      const { error: txError } = await supabase.from("transactions").insert({
-        user_id: user!.id,
-        amount,
-        type: "withdrawal",
-        status: "pending",
-        description: `Funds Extraction Request`,
-      });
+      setProcessing(true);
+      try {
+        const { error: txError } = await supabase.from("transactions").insert({
+          user_id: user!.id,
+          amount,
+          type: "deposit",
+          status: "completed",
+          description: "Arena Balance Recharge",
+        });
 
-      if (txError) throw txError;
+        if (txError) throw txError;
 
-      const { error: walletError } = await supabase
-        .from("wallets")
-        .update({ 
-          balance: Number(wallet?.balance || 0) - amount,
-          pending_withdrawals: Number(wallet?.pending_withdrawals || 0) + amount,
-          updated_at: new Date().toISOString() 
-        })
-        .eq("user_id", user!.id);
-      
-      if (walletError) throw walletError;
+        const { error: walletError } = await supabase
+          .from("wallets")
+          .update({ 
+            balance: Number(wallet?.balance || 0) + amount, 
+            updated_at: new Date().toISOString() 
+          })
+          .eq("id", user!.id);
+        
+        if (walletError) throw walletError;
 
-      toast.success(`Withdrawal requested. System audit in progress.`);
-      setIsWithdrawOpen(false);
-      setWithdrawAmount("");
-      fetchWalletData();
-    } catch (error: any) {
-      toast.error("Extraction protocol failure");
-    } finally {
-      setProcessing(false);
-    }
-  };
+        toast.success(`₹${amount} added to your arena balance!`);
+        setIsDepositOpen(false);
+        setDepositAmount("");
+        fetchWalletData();
+      } catch (error: any) {
+        toast.error(error.message || "Failed to process deployment funds");
+      } finally {
+        setProcessing(false);
+      }
+    };
+
+    const handleWithdraw = async () => {
+      const amount = Number(withdrawAmount);
+      if (!amount || amount < 100) {
+        toast.error(`Min withdrawal is ₹100`);
+        return;
+      }
+      if (amount > (wallet?.balance || 0)) {
+        toast.error("Insufficient arena balance");
+        return;
+      }
+
+      setProcessing(true);
+      try {
+        const { error: txError } = await supabase.from("transactions").insert({
+          user_id: user!.id,
+          amount,
+          type: "withdrawal",
+          status: "pending",
+          description: `Funds Extraction Request`,
+        });
+
+        if (txError) throw txError;
+
+        const { error: walletError } = await supabase
+          .from("wallets")
+          .update({ 
+            balance: Number(wallet?.balance || 0) - amount,
+            pending_withdrawals: Number(wallet?.pending_withdrawals || 0) + amount,
+            updated_at: new Date().toISOString() 
+          })
+          .eq("id", user!.id);
+        
+        if (walletError) throw walletError;
+
+        toast.success(`Withdrawal requested. System audit in progress.`);
+        setIsWithdrawOpen(false);
+        setWithdrawAmount("");
+        fetchWalletData();
+      } catch (error: any) {
+        toast.error(error.message || "Extraction protocol failure");
+      } finally {
+        setProcessing(false);
+      }
+    };
 
   if (authLoading) return null;
 
