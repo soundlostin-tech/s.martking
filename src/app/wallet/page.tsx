@@ -49,10 +49,29 @@ export default function WalletPage() {
         .from("wallets")
         .select("*")
         .eq("user_id", user.id)
-        .single();
+        .maybeSingle();
       
       if (walletError) throw walletError;
-      setWallet(walletData);
+      
+      if (!walletData) {
+        // Create wallet if it doesn't exist
+        const { data: newWallet, error: createError } = await supabase
+          .from("wallets")
+          .insert({
+            user_id: user.id,
+            balance: 0,
+            lifetime_earnings: 0,
+            pending_withdrawals: 0,
+            updated_at: new Date().toISOString()
+          })
+          .select()
+          .single();
+        
+        if (createError) throw createError;
+        setWallet(newWallet);
+      } else {
+        setWallet(walletData);
+      }
 
       const { data: txData, error: txError } = await supabase
         .from("transactions")
