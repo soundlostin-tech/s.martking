@@ -71,11 +71,11 @@ export default function Signin() {
   };
 
   return (
-    <main className="min-h-[100dvh] bg-evergreen-950 flex flex-col relative overflow-hidden selection:bg-malachite-500 selection:text-black">
+    <main className="min-h-[100dvh] bg-carbon-black flex flex-col relative overflow-hidden selection:bg-dark-emerald selection:text-white">
       {/* Dynamic Background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-malachite-500/10 rounded-full blur-[100px] animate-pulse" />
-        <div className="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-sea-green-500/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-dark-emerald/10 rounded-full blur-[100px] animate-pulse" />
+        <div className="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-emerald-depths/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
       </div>
 
       {/* Header Navigation */}
@@ -87,8 +87,8 @@ export default function Signin() {
           <ChevronLeft className="text-white" size={20} />
         </Link>
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-malachite-400 to-sea-green-600 rounded-lg flex items-center justify-center shadow-lg shadow-malachite-500/20">
-            <Swords size={16} className="text-black" />
+          <div className="w-8 h-8 bg-gradient-to-br from-dark-emerald to-emerald-depths rounded-lg flex items-center justify-center shadow-lg shadow-dark-emerald/20">
+            <Swords size={16} className="text-white" />
           </div>
           <span className="text-[10px] font-black text-white uppercase tracking-[0.3em]">Arena</span>
         </div>
@@ -106,9 +106,9 @@ export default function Signin() {
           {/* Hero Section */}
           <div className="space-y-3">
             <h1 className="text-4xl sm:text-5xl font-outfit font-black text-white tracking-tight">
-              Welcome <span className="text-malachite-400">Back.</span>
+              Welcome <span className="text-dark-emerald">Back.</span>
             </h1>
-            <p className="text-evergreen-300 font-medium text-sm sm:text-base leading-relaxed max-w-[280px]">
+            <p className="text-white/60 font-medium text-sm sm:text-base leading-relaxed max-w-[280px]">
               Secure connection established. Re-enter the combat arena.
             </p>
           </div>
@@ -118,18 +118,18 @@ export default function Signin() {
             <div className="space-y-4">
               {/* Email Input */}
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-[10px] font-bold text-evergreen-400 uppercase tracking-widest ml-1">
+                <Label htmlFor="email" className="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1">
                   Deployment Email
                 </Label>
                 <div className="relative">
-                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-evergreen-500" size={18} />
+                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-dark-emerald" size={18} />
                   <input
                     id="email"
                     type="email"
                     placeholder="warrior@arena.com"
                     className={`w-full h-16 sm:h-18 pl-14 pr-6 rounded-2xl sm:rounded-[1.5rem] bg-white/5 border-2 ${
-                      errors.email ? 'border-destructive/50' : 'border-white/5 focus:border-malachite-500/50'
-                    } text-white font-bold text-sm transition-all focus:outline-none focus:ring-4 focus:ring-malachite-500/10 placeholder:text-evergreen-800`}
+                      errors.email ? 'border-destructive/50' : 'border-white/5 focus:border-dark-emerald/50'
+                    } text-white font-bold text-sm transition-all focus:outline-none focus:ring-4 focus:ring-dark-emerald/10 placeholder:text-white/20`}
                     value={formData.email}
                     onChange={(e) => {
                       setFormData({ ...formData, email: e.target.value });
@@ -145,22 +145,22 @@ export default function Signin() {
               {/* Password Input */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center px-1">
-                  <Label htmlFor="password" className="text-[10px] font-bold text-evergreen-400 uppercase tracking-widest">
+                  <Label htmlFor="password" className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
                     Access Key
                   </Label>
-                  <button type="button" className="text-[10px] text-malachite-400 font-black uppercase tracking-widest hover:text-malachite-300 transition-colors">
+                  <button type="button" className="text-[10px] text-dark-emerald font-black uppercase tracking-widest hover:text-white transition-colors">
                     Forgot?
                   </button>
                 </div>
                 <div className="relative">
-                  <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-evergreen-500" size={18} />
+                  <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-dark-emerald" size={18} />
                   <input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     className={`w-full h-16 sm:h-18 pl-14 pr-14 rounded-2xl sm:rounded-[1.5rem] bg-white/5 border-2 ${
-                      errors.password ? 'border-destructive/50' : 'border-white/5 focus:border-malachite-500/50'
-                    } text-white font-bold text-sm transition-all focus:outline-none focus:ring-4 focus:ring-malachite-500/10 placeholder:text-evergreen-800`}
+                      errors.password ? 'border-destructive/50' : 'border-white/5 focus:border-dark-emerald/50'
+                    } text-white font-bold text-sm transition-all focus:outline-none focus:ring-4 focus:ring-dark-emerald/10 placeholder:text-white/20`}
                     value={formData.password}
                     onChange={(e) => {
                       setFormData({ ...formData, password: e.target.value });
@@ -170,7 +170,7 @@ export default function Signin() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-5 top-1/2 -translate-y-1/2 text-evergreen-400 hover:text-white transition-colors"
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
@@ -186,7 +186,7 @@ export default function Signin() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full h-16 sm:h-18 rounded-2xl sm:rounded-[1.5rem] bg-malachite-500 hover:bg-malachite-400 text-black font-black text-xs sm:text-sm uppercase tracking-[0.2em] shadow-lg shadow-malachite-500/20 active:scale-[0.98] transition-all border-none"
+                className="w-full h-16 sm:h-18 rounded-2xl sm:rounded-[1.5rem] bg-dark-emerald hover:bg-dark-emerald/90 text-white font-black text-xs sm:text-sm uppercase tracking-[0.2em] shadow-lg shadow-dark-emerald/20 active:scale-[0.98] transition-all border-none"
               >
                 {loading ? (
                   <div className="flex items-center gap-3">
@@ -199,9 +199,9 @@ export default function Signin() {
               </Button>
 
               <div className="text-center">
-                <p className="text-xs font-bold text-evergreen-400 uppercase tracking-widest">
+                <p className="text-xs font-bold text-white/40 uppercase tracking-widest">
                   New Warrior?{" "}
-                  <Link href="/signup" className="text-malachite-400 hover:text-white transition-colors underline underline-offset-4 decoration-malachite-400/30 font-black">
+                  <Link href="/signup" className="text-dark-emerald hover:text-white transition-colors underline underline-offset-4 decoration-dark-emerald/30 font-black">
                     Join the Fight
                   </Link>
                 </p>
@@ -214,8 +214,8 @@ export default function Signin() {
       {/* Footer Branding */}
       <footer className="relative z-10 p-8 text-center sm:hidden">
         <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/5 rounded-full border border-white/10 backdrop-blur-md">
-          <ShieldCheck size={14} className="text-malachite-400" />
-          <span className="text-[8px] font-black text-evergreen-400 uppercase tracking-[0.3em]">Encrypted Connection</span>
+          <ShieldCheck size={14} className="text-dark-emerald" />
+          <span className="text-[8px] font-black text-white/40 uppercase tracking-[0.3em]">Encrypted Connection</span>
         </div>
       </footer>
     </main>

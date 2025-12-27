@@ -102,12 +102,12 @@ export default function Home() {
                   }}
                   className={`relative w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-[20px] sm:rounded-[24px] p-[2px] flex items-center justify-center transition-all duration-300 gpu-accelerate ${
                     stories.some(s => s.user_id === user.id) 
-                      ? 'bg-gradient-to-tr from-malachite-400 to-sea-green-500 shadow-lg shadow-malachite-400/20' 
-                      : 'border-2 border-dashed border-evergreen-200'
+                      ? 'bg-gradient-to-tr from-dark-emerald to-emerald-depths shadow-lg shadow-dark-emerald/20' 
+                      : 'border-2 border-dashed border-evergreen'
                   }`}
                 >
                   <div className="w-full h-full rounded-[18px] sm:rounded-[21px] bg-background p-0.5">
-                    <div className="w-full h-full rounded-[16px] sm:rounded-[19px] bg-muted flex items-center justify-center overflow-hidden">
+                    <div className="w-full h-full rounded-[16px] sm:rounded-[19px] bg-jet-black flex items-center justify-center overflow-hidden">
                       {user.user_metadata?.avatar_url ? (
                         <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover" />
                       ) : (
@@ -137,12 +137,12 @@ export default function Home() {
                     whileTap={{ scale: 0.92 }}
                     className={`w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-[20px] sm:rounded-[24px] p-[2px] transition-all duration-300 gpu-accelerate ${
                       hasStory 
-                        ? 'bg-gradient-to-tr from-malachite-400 to-sea-green-500 shadow-lg shadow-malachite-400/20' 
-                        : 'bg-muted'
+                        ? 'bg-gradient-to-tr from-dark-emerald to-emerald-depths shadow-lg shadow-dark-emerald/20' 
+                        : 'bg-jet-black'
                     }`}
                   >
                     <div className="w-full h-full rounded-[18px] sm:rounded-[21px] bg-background p-0.5">
-                      <div className="w-full h-full rounded-[16px] sm:rounded-[19px] bg-muted flex items-center justify-center overflow-hidden">
+                      <div className="w-full h-full rounded-[16px] sm:rounded-[19px] bg-jet-black flex items-center justify-center overflow-hidden">
                         {profile.avatar_url ? (
                           <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
                         ) : (
@@ -152,7 +152,7 @@ export default function Home() {
                     </div>
                   </motion.div>
                   <span className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-wide sm:tracking-widest transition-colors ${
-                    hasStory ? 'text-accent' : 'text-muted-foreground'
+                    hasStory ? 'text-dark-emerald' : 'text-muted-foreground'
                   }`}>
                     {profile.full_name?.split(' ')[0]?.slice(0, 6).toUpperCase()}
                   </span>
@@ -168,12 +168,12 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="relative h-56 sm:h-72 rounded-[28px] sm:rounded-[40px] overflow-hidden shadow-2xl group bg-[#011a0f] gpu-accelerate"
+            className="relative h-56 sm:h-72 rounded-[28px] sm:rounded-[40px] overflow-hidden shadow-2xl group bg-carbon-black gpu-accelerate"
           >
             {/* Background Glows */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-malachite-500/10 to-transparent opacity-50" />
-              <div className="absolute -top-[20%] -left-[10%] w-[120%] h-[140%] bg-[radial-gradient(circle_at_20%_35%,rgba(74,222,128,0.15)_0%,transparent_50%)]" />
+              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-dark-emerald/20 to-transparent opacity-50" />
+              <div className="absolute -top-[20%] -left-[10%] w-[120%] h-[140%] bg-[radial-gradient(circle_at_20%_35%,rgba(6,104,57,0.2)_0%,transparent_50%)]" />
             </div>
             
             <div className="relative h-full p-6 sm:p-8 flex flex-col justify-between z-10">
@@ -183,16 +183,16 @@ export default function Home() {
                     {[1,2,3].map(i => (
                       <div 
                         key={i}
-                        className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-malachite-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]" 
+                        className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-dark-emerald shadow-[0_0_8px_rgba(6,104,57,0.5)]" 
                       />
                     ))}
                   </div>
-                  <span className="text-[9px] sm:text-[10px] font-bold text-malachite-400 uppercase tracking-[0.4em] sm:tracking-[0.5em]">LIVE NOW</span>
+                  <span className="text-[9px] sm:text-[10px] font-bold text-dark-emerald uppercase tracking-[0.4em] sm:tracking-[0.5em]">LIVE NOW</span>
                 </div>
                 
                 <div className="space-y-1">
                   <h2 className="text-4xl sm:text-6xl font-outfit font-black text-white leading-tight tracking-tight">
-                    WIN <span className="text-transparent bg-clip-text bg-gradient-to-r from-malachite-400 to-sea-green-300">₹1.00L</span>
+                    WIN <span className="text-transparent bg-clip-text bg-gradient-to-r from-dark-emerald to-emerald-depths">₹1.00L</span>
                   </h2>
                   <h3 className="text-xl sm:text-3xl font-outfit font-medium tracking-[0.15em] sm:tracking-[0.2em] uppercase text-white/40 flex items-center gap-2">
                     MEGA <span className="font-black text-white italic tracking-normal">VAULT</span>
@@ -202,11 +202,11 @@ export default function Home() {
                 <div className="inline-flex items-center gap-2.5 px-3 sm:px-4 py-2 rounded-full bg-white/[0.03] backdrop-blur-md border border-white/[0.05]">
                   <div className="flex -space-x-2">
                     {[1,2,3].map(i => (
-                      <div key={i} className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-[#011a0f] bg-[#0a2a1d]" />
+                      <div key={i} className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-carbon-black bg-emerald-depths" />
                     ))}
                   </div>
                   <span className="text-[10px] sm:text-[11px] text-white/50 font-bold uppercase tracking-wider">
-                    <span className="text-malachite-400">2.4K+</span> IN QUEUE
+                    <span className="text-dark-emerald">2.4K+</span> IN QUEUE
                   </span>
                 </div>
               </div>
@@ -277,11 +277,11 @@ export default function Home() {
               transition={{ delay: i * 0.05 }}
               className="mobile-card p-4 sm:p-5 flex items-center gap-4 sm:gap-5"
             >
-              <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-muted/50 overflow-hidden flex-shrink-0 border border-border">
+              <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-emerald-depths-2 overflow-hidden flex-shrink-0 border border-evergreen">
                 {match.status === 'live' ? (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-malachite-500/15 flex items-center justify-center animate-pulse">
-                      <Play size={16} className="text-malachite-500 translate-x-0.5 sm:w-5 sm:h-5" fill="currentColor" />
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-dark-emerald/15 flex items-center justify-center animate-pulse">
+                      <Play size={16} className="text-dark-emerald translate-x-0.5 sm:w-5 sm:h-5" fill="currentColor" />
                     </div>
                   </div>
                 ) : (
@@ -290,14 +290,14 @@ export default function Home() {
                   </div>
                 )}
                 <div className="absolute bottom-1 left-1 right-1 px-1.5 py-0.5 rounded-md bg-background/90 backdrop-blur border border-border flex items-center justify-center gap-1">
-                  <div className={`w-1 h-1 rounded-full ${match.status === 'live' ? 'bg-malachite-500 animate-pulse' : 'bg-muted-foreground'}`} />
+                  <div className={`w-1 h-1 rounded-full ${match.status === 'live' ? 'bg-dark-emerald animate-pulse' : 'bg-muted-foreground'}`} />
                   <span className="text-[7px] sm:text-[8px] font-bold uppercase text-foreground">{match.status}</span>
                 </div>
               </div>
               
               <div className="flex-1 min-w-0 space-y-1 sm:space-y-1.5">
                 <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="rounded-md bg-malachite-500/10 border-malachite-500/15 text-malachite-500 text-[7px] sm:text-[8px] font-bold uppercase px-1.5 py-0">
+                  <Badge variant="outline" className="rounded-md bg-dark-emerald/10 border-dark-emerald/15 text-dark-emerald text-[7px] sm:text-[8px] font-bold uppercase px-1.5 py-0">
                     {match.mode}
                   </Badge>
                   <span className="text-[8px] sm:text-[9px] font-bold text-muted-foreground uppercase tracking-wide">{match.map || 'Bermuda'}</span>
@@ -307,7 +307,7 @@ export default function Home() {
                 
                 <div className="flex items-center gap-3 sm:gap-4">
                   <div className="flex items-center gap-1">
-                    <Trophy size={11} className="text-malachite-500 sm:w-3 sm:h-3" />
+                    <Trophy size={11} className="text-dark-emerald sm:w-3 sm:h-3" />
                     <span className="text-[10px] sm:text-[11px] font-bold text-foreground">₹{match.tournament?.prize_pool.toLocaleString()}</span>
                   </div>
                   <div className="flex items-center gap-1">
@@ -319,16 +319,16 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="flex flex-col items-end justify-center gap-1 pl-3 sm:pl-4 border-l border-border">
+              <div className="flex flex-col items-end justify-center gap-1 pl-3 sm:pl-4 border-l border-evergreen">
                 <span className="text-[7px] sm:text-[8px] font-bold text-muted-foreground uppercase tracking-wider">ENTRY</span>
                 <div className="flex items-baseline gap-0.5">
-                  <span className="text-[10px] sm:text-[11px] font-bold text-malachite-500">₹</span>
-                  <span className="text-xl sm:text-2xl font-outfit font-bold text-malachite-500">{match.tournament?.entry_fee}</span>
+                  <span className="text-[10px] sm:text-[11px] font-bold text-dark-emerald">₹</span>
+                  <span className="text-xl sm:text-2xl font-outfit font-bold text-dark-emerald">{match.tournament?.entry_fee}</span>
                 </div>
               </div>
             </motion.div>
           )) : (
-            <div className="py-16 text-center flex flex-col items-center gap-3 bg-muted/50 rounded-[24px] border border-dashed border-border">
+            <div className="py-16 text-center flex flex-col items-center gap-3 bg-jet-black/50 rounded-[24px] border border-dashed border-evergreen">
               <Signal size={36} strokeWidth={1} className="text-muted-foreground/30" />
               <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Scanning for signals...</p>
             </div>
