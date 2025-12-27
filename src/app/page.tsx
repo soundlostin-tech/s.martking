@@ -167,44 +167,91 @@ export default function Home() {
     
             {/* Dynamic Hero Banner */}
             <section className="px-6 mb-10">
-              <div className="relative h-64 rounded-[40px] overflow-hidden shadow-2xl shadow-primary/10 group cursor-pointer active:scale-[0.99] transition-all duration-500 border border-white/5 bg-[#0D2818]">
-                {/* Ambient Glow */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                whileHover={{ y: -5 }}
+                className="relative h-72 rounded-[40px] overflow-hidden shadow-2xl shadow-primary/10 group cursor-pointer transition-all duration-500 border border-white/5 bg-evergreen-500"
+              >
+                {/* Ambient Glows */}
                 <div className="absolute inset-0 overflow-hidden">
-                  <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-malachite-500/10 blur-[100px] rounded-full" />
+                  <motion.div 
+                    animate={{ 
+                      scale: [1, 1.2, 1],
+                      opacity: [0.1, 0.2, 0.1]
+                    }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute -bottom-20 -right-20 w-[400px] h-[400px] bg-malachite-500 blur-[100px] rounded-full" 
+                  />
+                  <div className="absolute -top-20 -left-20 w-[300px] h-[300px] bg-sea-green-500/10 blur-[80px] rounded-full" />
                 </div>
                 
-                <div className="relative h-full p-12 flex flex-col justify-between z-10">
-                  <div className="space-y-5">
+                <div className="relative h-full p-10 flex flex-col justify-between z-10">
+                  <div className="space-y-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-2.5 h-2.5 rounded-full bg-malachite-500 animate-pulse shadow-[0_0_12px_rgba(22,219,101,0.5)]" />
-                      <span className="text-[11px] font-bold text-malachite-500 uppercase tracking-[0.5em]">ELITE DEPLOYMENT ACTIVE</span>
+                      <div className="relative">
+                        <div className="w-2.5 h-2.5 rounded-full bg-malachite-500" />
+                        <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-malachite-400 animate-ping opacity-75" />
+                        <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-malachite-500/50 shadow-[0_0_15px_rgba(22,219,101,0.8)]" />
+                      </div>
+                      <span className="text-[10px] font-black text-malachite-400 uppercase tracking-[0.6em]">ELITE DEPLOYMENT ACTIVE</span>
                     </div>
                     
-                    <div className="space-y-0.5">
-                      <h2 className="text-5xl font-heading text-white leading-tight tracking-tight">
+                    <div className="space-y-1">
+                      <motion.h2 
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.3 }}
+                        className="text-5xl md:text-6xl font-serif text-white leading-[1.1] tracking-tight"
+                      >
                         Win ₹1,00,000
-                      </h2>
-                      <h2 className="text-5xl font-heading text-malachite-500 leading-tight tracking-tight">
+                      </motion.h2>
+                      <motion.h2 
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                        className="text-5xl md:text-6xl font-serif text-malachite-500 leading-[1.1] tracking-tight"
+                      >
                         Mega Pool
-                      </h2>
+                      </motion.h2>
                     </div>
                     
-                    <p className="text-[12px] text-white/60 font-bold uppercase tracking-[0.3em] flex items-center gap-3">
-                      <Users size={16} className="text-malachite-500" /> 2,450 WARRIORS REGISTERED
-                    </p>
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.5 }}
+                      className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10"
+                    >
+                      <Users size={14} className="text-malachite-400" />
+                      <span className="text-[11px] text-white/80 font-bold uppercase tracking-[0.2em]">
+                        <span className="text-malachite-400">2,450</span> WARRIORS REGISTERED
+                      </span>
+                    </motion.div>
                   </div>
                   
-                  <div>
-                    <button className="px-10 py-4 bg-malachite-500 text-white rounded-[22px] text-[12px] font-black uppercase tracking-[0.25em] shadow-xl shadow-malachite-500/20 hover:bg-malachite-400 hover:scale-105 transition-all duration-300">
-                      INITIALIZE ENTRY
-                    </button>
+                  <div className="flex items-center justify-between">
+                    <motion.button 
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="px-10 py-4 bg-malachite-500 text-white rounded-[24px] text-[12px] font-black uppercase tracking-[0.3em] shadow-[0_10px_30px_rgba(22,219,101,0.3)] hover:shadow-[0_15px_40px_rgba(22,219,101,0.4)] hover:bg-malachite-400 transition-all duration-300 relative overflow-hidden group/btn"
+                    >
+                      <span className="relative z-10">INITIALIZE ENTRY</span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite] transition-transform" />
+                    </motion.button>
+
+                    <div className="hidden sm:flex items-center gap-4 text-white/30">
+                      <div className="w-12 h-[1px] bg-white/10" />
+                      <span className="text-[10px] font-bold tracking-[0.3em]">SECURE COMMS</span>
+                      <ShieldCheck size={16} />
+                    </div>
                   </div>
                 </div>
                 
-                <div className="absolute -right-12 -bottom-12 opacity-[0.06] text-white pointer-events-none group-hover:opacity-[0.1] transition-opacity duration-700">
-                  <Trophy size={320} strokeWidth={1} />
+                <div className="absolute -right-16 -bottom-16 opacity-[0.04] text-white pointer-events-none group-hover:opacity-[0.08] transition-all duration-1000 group-hover:scale-110 group-hover:-rotate-12">
+                  <Trophy size={380} strokeWidth={1} />
                 </div>
-              </div>
+              </motion.div>
             </section>
     
             {/* Live Performance Matrix */}
@@ -216,16 +263,17 @@ export default function Home() {
               ].map((stat, i) => (
                   <motion.div 
                   key={i}
-                  initial={{ x: 20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="flex-shrink-0 w-36 card-premium rounded-[32px] p-6"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: i * 0.1 + 0.6 }}
+                  whileHover={{ y: -4, backgroundColor: "var(--muted)" }}
+                  className="flex-shrink-0 w-36 card-premium rounded-[32px] p-6 cursor-default"
                 >
-                  <div className="w-10 h-10 rounded-2xl bg-accent/10 flex items-center justify-center mb-4">
+                  <div className="w-10 h-10 rounded-2xl bg-accent/5 flex items-center justify-center mb-4 border border-accent/10">
                     <stat.icon size={20} className="text-accent" />
                   </div>
                   <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-1">{stat.label}</p>
-                  <h4 className="text-2xl font-heading text-foreground">{stat.value}</h4>
+                  <h4 className="text-2xl font-serif text-foreground">{stat.value}</h4>
                 </motion.div>
               ))}
             </section>
@@ -233,27 +281,36 @@ export default function Home() {
             {/* Section Header */}
             <section className="px-8 pb-6 flex items-center justify-between">
               <div className="space-y-1">
-                <h2 className="text-2xl font-heading text-foreground">Active <span className="italic font-serif opacity-60">Operations</span></h2>
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em]">BATTLE SIGNALS DETECTED</p>
+                <h2 className="text-2xl font-serif text-foreground">Active <span className="italic opacity-60">Operations</span></h2>
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-1 rounded-full bg-accent animate-pulse" />
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em]">BATTLE SIGNALS DETECTED</p>
+                </div>
               </div>
-              <Link href="/matches" className="p-3 bg-card rounded-2xl text-primary hover:text-accent shadow-sm transition-all border border-border">
-                <LayoutGrid size={20} />
-              </Link>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link href="/matches" className="p-3.5 bg-card rounded-2xl text-muted-foreground hover:text-accent shadow-sm transition-all border border-border flex items-center gap-2 group">
+                  <LayoutGrid size={20} />
+                  <span className="text-[10px] font-black uppercase tracking-widest overflow-hidden w-0 group-hover:w-16 transition-all duration-300">BROWSE</span>
+                </Link>
+              </motion.div>
             </section>
     
             {/* Match Command Grid */}
-            <section className="px-6 space-y-5">
+            <section className="px-6 space-y-4">
               {featuredMatches.length > 0 ? featuredMatches.map((match, i) => (
                 <motion.div
                   key={match.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="card-premium rounded-[32px] p-6 group flex items-center gap-6"
+                  transition={{ delay: i * 0.1 }}
+                  whileHover={{ x: 8 }}
+                  className="card-premium rounded-[32px] p-5 group flex items-center gap-6 cursor-pointer relative overflow-hidden"
                 >
-                  <div className="relative w-24 h-24 rounded-3xl bg-muted overflow-hidden flex-shrink-0 shadow-inner border border-border">
+                  {/* Card Background Accent */}
+                  <div className="absolute top-0 left-0 w-1 h-full bg-accent opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                  
+                  <div className="relative w-24 h-24 rounded-[28px] bg-muted/50 overflow-hidden flex-shrink-0 shadow-inner border border-border group-hover:border-accent/20 transition-colors">
                      {match.status === 'live' ? (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center animate-pulse">
@@ -261,39 +318,52 @@ export default function Home() {
                         </div>
                       </div>
                     ) : (
-                      <div className="absolute inset-0 flex items-center justify-center opacity-10">
+                      <div className="absolute inset-0 flex items-center justify-center opacity-10 group-hover:opacity-20 transition-opacity">
                         <Swords size={32} className="text-foreground" />
                       </div>
                     )}
-                    <div className="absolute bottom-2 left-2 right-2 px-2 py-1 rounded-xl bg-background/80 backdrop-blur-md border border-border flex items-center justify-center gap-1.5">
-                      <div className={`w-1 h-1 rounded-full ${match.status === 'live' ? 'bg-accent animate-pulse' : 'bg-muted-foreground'}`} />
-                      <span className="text-[8px] font-bold uppercase tracking-tighter text-foreground">{match.status}</span>
+                    <div className="absolute bottom-2 left-2 right-2 px-2.5 py-1 rounded-xl bg-background/90 backdrop-blur-md border border-border flex items-center justify-center gap-1.5 shadow-sm">
+                      <div className={`w-1.5 h-1.5 rounded-full ${match.status === 'live' ? 'bg-accent animate-pulse' : 'bg-muted-foreground'}`} />
+                      <span className="text-[9px] font-black uppercase tracking-tighter text-foreground">{match.status}</span>
                     </div>
                   </div>
                   
-                  <div className="flex-1 min-w-0 space-y-2">
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">{match.mode} • {match.map || 'Bermuda'}</p>
-                    <h3 className="text-xl font-heading text-foreground truncate group-hover:text-accent transition-colors">{match.title}</h3>
+                  <div className="flex-1 min-w-0 space-y-2.5">
+                    <div className="flex items-center gap-3">
+                      <Badge variant="outline" className="rounded-lg bg-accent/5 border-accent/10 text-accent text-[8px] font-black uppercase tracking-widest px-2 py-0.5">
+                        {match.mode}
+                      </Badge>
+                      <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.2em]">{match.map || 'Bermuda'}</span>
+                    </div>
                     
-                    <div className="flex items-center gap-5 pt-1">
+                    <h3 className="text-xl font-serif text-foreground truncate group-hover:text-accent transition-colors">{match.title}</h3>
+                    
+                    <div className="flex items-center gap-5">
                       <div className="flex items-center gap-2">
-                        <div className="w-5 h-5 rounded-lg bg-accent/10 flex items-center justify-center">
-                          <Trophy size={12} className="text-accent" />
-                        </div>
-                        <span className="text-[11px] font-bold text-foreground">₹{match.tournament?.prize_pool.toLocaleString()}</span>
+                        <Trophy size={14} className="text-accent" />
+                        <span className="text-[12px] font-bold text-foreground">₹{match.tournament?.prize_pool.toLocaleString()}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="w-5 h-5 rounded-lg bg-muted flex items-center justify-center">
-                          <Users size={12} className="text-foreground" />
-                        </div>
-                        <span className="text-[11px] font-bold text-foreground">{match.live_stats?.players_alive || 48} / {match.tournament?.slots || 100}</span>
+                        <Users size={14} className="text-muted-foreground" />
+                        <span className="text-[12px] font-medium text-muted-foreground">
+                          <span className="text-foreground font-bold">{match.live_stats?.players_alive || 48}</span> / {match.tournament?.slots || 100}
+                        </span>
                       </div>
                     </div>
                   </div>
     
-                  <div className="flex flex-col items-end justify-center gap-1 pl-4 border-l border-border">
-                    <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.3em]">ENTRY</span>
-                    <span className="text-2xl font-heading text-accent">₹{match.tournament?.entry_fee}</span>
+                  <div className="flex flex-col items-end justify-center gap-1.5 pl-6 border-l border-border group-hover:border-accent/10 transition-colors">
+                    <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.3em]">ENTRY</span>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-[12px] font-bold text-accent">₹</span>
+                      <span className="text-3xl font-serif text-accent">{match.tournament?.entry_fee}</span>
+                    </div>
+                    <motion.div 
+                      whileHover={{ scale: 1.1 }}
+                      className="w-8 h-8 rounded-xl bg-accent text-white flex items-center justify-center shadow-lg shadow-accent/20 mt-1 opacity-0 group-hover:opacity-100 transition-all duration-300"
+                    >
+                      <ChevronRight size={18} />
+                    </motion.div>
                   </div>
                 </motion.div>
               )) : (
