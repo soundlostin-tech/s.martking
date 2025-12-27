@@ -168,131 +168,125 @@ export default function Home() {
             {/* Dynamic Hero Banner */}
             <section className="px-6 mb-10">
               <motion.div 
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
-                whileHover={{ y: -4 }}
-                className="relative h-72 rounded-[40px] overflow-hidden shadow-[0_20px_50px_rgba(13,40,24,0.3)] group cursor-pointer transition-all duration-700 border border-white/10 bg-[#0D2818]"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -6, rotateY: 2, rotateX: 2 }}
+                style={{ perspective: "1000px" }}
+                className="relative h-72 rounded-[48px] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.4)] group cursor-pointer transition-all duration-700 border border-white/5 bg-[#020617]"
               >
-                {/* Dynamic Ambient Glows */}
+                {/* Cyber-Luxe Ambient Glows */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                   <motion.div 
                     animate={{ 
-                      scale: [1, 1.3, 1],
-                      opacity: [0.15, 0.25, 0.15],
-                      x: [0, 20, 0],
-                      y: [0, -20, 0]
+                      scale: [1, 1.5, 1],
+                      opacity: [0.1, 0.2, 0.1],
+                      rotate: [0, 45, 0]
                     }}
-                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute -bottom-20 -right-20 w-[450px] h-[450px] bg-malachite-500 blur-[120px] rounded-full" 
+                    transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                    className="absolute -top-1/2 -right-1/4 w-[600px] h-[600px] bg-cyan-500/20 blur-[150px] rounded-full" 
                   />
                   <motion.div 
                     animate={{ 
-                      scale: [1, 1.2, 1],
-                      opacity: [0.05, 0.1, 0.05],
-                      x: [0, -30, 0]
+                      scale: [1.2, 1, 1.2],
+                      opacity: [0.05, 0.15, 0.05],
+                      rotate: [0, -45, 0]
                     }}
-                    transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                    className="absolute -top-40 -left-20 w-[400px] h-[400px] bg-sea-green-400 blur-[100px] rounded-full" 
+                    transition={{ duration: 18, repeat: Infinity, ease: "linear", delay: 2 }}
+                    className="absolute -bottom-1/2 -left-1/4 w-[600px] h-[600px] bg-purple-500/20 blur-[150px] rounded-full" 
                   />
+                  {/* Scanning Grid Line */}
+                  <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)]" />
                 </div>
                 
-                <div className="relative h-full p-6 md:p-10 flex flex-col justify-between z-10">
-                  <div className="space-y-4 md:space-y-6">
+                <div className="relative h-full p-7 md:p-12 flex flex-col justify-between z-10">
+                  <div className="space-y-4 md:space-y-7">
                     <motion.div 
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.2 }}
+                      initial={{ opacity: 0, letterSpacing: "1em" }}
+                      animate={{ opacity: 1, letterSpacing: "0.5em" }}
+                      transition={{ delay: 0.4, duration: 1.5 }}
                       className="flex items-center gap-3"
                     >
-                      <div className="relative">
-                        <div className="w-2.5 h-2.5 rounded-full bg-malachite-500" />
-                        <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-malachite-400 animate-ping opacity-75" />
-                        <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-malachite-500/50 shadow-[0_0_20px_rgba(22,219,101,0.8)]" />
+                      <div className="flex gap-1">
+                        {[1,2,3].map(i => (
+                          <motion.div 
+                            key={i}
+                            animate={{ opacity: [0.3, 1, 0.3] }}
+                            transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
+                            className="w-1.5 h-1.5 rounded-full bg-cyan-400" 
+                          />
+                        ))}
                       </div>
-                      <span className="text-[10px] font-black text-malachite-400 uppercase tracking-[0.5em] drop-shadow-sm">ELITE DEPLOYMENT ACTIVE</span>
+                      <span className="text-[9px] font-black text-cyan-400 uppercase tracking-[0.5em] drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]">NEURAL NET ACTIVE</span>
                     </motion.div>
                     
-                    <div className="space-y-1">
+                    <div className="space-y-2">
                       <motion.h2 
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-4xl md:text-6xl font-serif text-white leading-[1.05] tracking-tight drop-shadow-2xl"
+                        initial={{ x: -30, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.5, duration: 0.8 }}
+                        className="text-4xl md:text-7xl font-outfit font-extrabold text-white leading-[0.9] tracking-tighter"
                       >
-                        Win <span className="bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">₹1,00,000</span>
+                        WIN <span className="text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 via-white to-purple-400 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">₹1.00L</span>
                       </motion.h2>
                       <motion.h2 
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.4, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-4xl md:text-6xl font-serif leading-[1.05] tracking-tight italic bg-gradient-to-r from-malachite-400 to-sea-green-400 bg-clip-text text-transparent"
+                        initial={{ x: -30, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.6, duration: 0.8 }}
+                        className="text-2xl md:text-4xl font-outfit font-light tracking-[0.2em] uppercase text-white/40"
                       >
-                        Mega Pool
+                        Mega <span className="font-black text-white/80 italic">Vault</span>
                       </motion.h2>
                     </div>
                     
                     <motion.div 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.5 }}
-                      className="inline-flex items-center gap-3 px-4 py-2 md:px-5 md:py-2.5 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.8 }}
+                      className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.3)]"
                     >
-                      <Users size={14} className="text-malachite-400" />
-                      <span className="text-[10px] md:text-[11px] text-white/90 font-bold uppercase tracking-[0.15em]">
-                        <span className="text-malachite-400 font-black">2,450</span> WARRIORS REGISTERED
+                      <div className="flex -space-x-2">
+                        {[1,2,3].map(i => (
+                          <div key={i} className="w-5 h-5 rounded-full border border-black bg-slate-800" />
+                        ))}
+                      </div>
+                      <span className="text-[10px] text-white/60 font-medium uppercase tracking-widest">
+                        <span className="text-cyan-400 font-bold">2.4K+</span> WARRIORS IN QUEUE
                       </span>
                     </motion.div>
                   </div>
                   
                   <div className="flex items-center justify-between">
                     <motion.button 
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.6 }}
-                      whileHover={{ 
-                        scale: 1.02, 
-                        y: -4,
-                        boxShadow: "0 20px 40px rgba(22,219,101,0.25)"
-                      }}
-                      whileTap={{ scale: 0.97 }}
-                      className="group/btn relative px-8 py-3.5 md:px-10 md:py-4 bg-malachite-500 text-white rounded-[20px] text-[12px] md:text-[13px] font-black uppercase tracking-[0.25em] transition-all duration-500 overflow-hidden border border-white/20"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 1 }}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="group/btn relative px-10 py-4 bg-white text-black rounded-full text-[12px] font-black uppercase tracking-[0.3em] overflow-hidden"
                     >
                       <span className="relative z-20 flex items-center gap-2">
-                        INITIALIZE ENTRY
-                        <ChevronRight size={16} className="group-hover/btn:translate-x-1 transition-transform duration-300" />
+                        ENTER ARENA
+                        <ChevronRight size={18} strokeWidth={3} className="group-hover/btn:translate-x-1 transition-transform" />
                       </span>
-                      
-                      {/* Professional Shimmer */}
-                      <div className="absolute inset-0 z-10 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite]" />
-                      
-                      {/* Hover Overlay */}
-                      <div className="absolute inset-0 bg-white/10 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
-                      
-                      {/* Glow Effect */}
-                      <div className="absolute -inset-4 bg-malachite-400/20 blur-xl opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 opacity-0 group-hover/btn:opacity-100 transition-opacity" />
+                      <div className="absolute inset-0 bg-white group-hover/btn:scale-x-0 transition-transform origin-left duration-500" />
                     </motion.button>
 
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 0.3 }}
-                      transition={{ delay: 0.8 }}
-                      className="hidden sm:flex items-center gap-4 text-white"
-                    >
-                      <div className="w-12 h-[1px] bg-white/20" />
-                      <span className="text-[10px] font-bold tracking-[0.4em]">SECURE COMMS</span>
-                      <ShieldCheck size={16} className="text-malachite-400" />
-                    </motion.div>
+                    <div className="hidden sm:flex flex-col items-end gap-1 opacity-40 group-hover:opacity-80 transition-opacity">
+                      <div className="flex gap-1">
+                        {[1,2,3,4,5].map(i => <div key={i} className="w-1 h-4 bg-white/20 rounded-full" />)}
+                      </div>
+                      <span className="text-[8px] font-bold tracking-[0.5em] text-white uppercase">Sync Status</span>
+                    </div>
                   </div>
                 </div>
                 
-                {/* Watermark Decoration */}
-                <div className="absolute -right-16 -bottom-16 opacity-[0.05] text-white pointer-events-none group-hover:opacity-[0.09] transition-all duration-1000 group-hover:scale-105 group-hover:-rotate-6">
-                  <Trophy size={360} strokeWidth={0.5} />
+                {/* Tech Decoration */}
+                <div className="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-cyan-500/5 to-transparent pointer-events-none" />
+                <div className="absolute top-8 right-8 text-white/5 pointer-events-none group-hover:text-cyan-500/20 transition-colors duration-1000">
+                  <Activity size={240} strokeWidth={0.5} />
                 </div>
-                
-                {/* Edge Light */}
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
               </motion.div>
             </section>
     
@@ -315,7 +309,7 @@ export default function Home() {
                     <stat.icon size={16} className="text-accent md:size-[20px]" />
                   </div>
                   <p className="text-[8px] md:text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-1">{stat.label}</p>
-                  <h4 className="text-xl md:text-2xl font-serif text-foreground">{stat.value}</h4>
+                  <h4 className="text-xl md:text-2xl font-outfit font-black text-foreground">{stat.value}</h4>
                 </motion.div>
               ))}
             </section>
@@ -323,14 +317,14 @@ export default function Home() {
             {/* Section Header */}
             <section className="px-8 pb-6 flex items-center justify-between">
               <div className="space-y-1">
-                <h2 className="text-2xl font-serif text-foreground">Active <span className="italic opacity-60">Operations</span></h2>
+                <h2 className="text-2xl font-outfit font-black text-foreground uppercase tracking-tight">Active <span className="text-cyan-500 italic">Operations</span></h2>
                 <div className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-accent animate-pulse" />
+                  <div className="w-1 h-1 rounded-full bg-cyan-500 animate-pulse" />
                   <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em]">BATTLE SIGNALS DETECTED</p>
                 </div>
               </div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href="/matches" className="p-3.5 bg-card rounded-2xl text-muted-foreground hover:text-accent shadow-sm transition-all border border-border flex items-center gap-2 group">
+                <Link href="/matches" className="p-3.5 bg-card rounded-2xl text-muted-foreground hover:text-cyan-500 shadow-sm transition-all border border-border flex items-center gap-2 group">
                   <LayoutGrid size={20} />
                   <span className="text-[10px] font-black uppercase tracking-widest overflow-hidden w-0 group-hover:w-16 transition-all duration-300">BROWSE</span>
                 </Link>
@@ -350,13 +344,13 @@ export default function Home() {
                   className="card-premium rounded-[32px] p-5 group flex items-center gap-6 cursor-pointer relative overflow-hidden"
                 >
                   {/* Card Background Accent */}
-                  <div className="absolute top-0 left-0 w-1 h-full bg-accent opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                  <div className="absolute top-0 left-0 w-1 h-full bg-cyan-500 opacity-0 group-hover:opacity-100 transition-all duration-300" />
                   
-                  <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-[24px] md:rounded-[28px] bg-muted/50 overflow-hidden flex-shrink-0 shadow-inner border border-border group-hover:border-accent/20 transition-colors">
+                  <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-[24px] md:rounded-[28px] bg-muted/50 overflow-hidden flex-shrink-0 shadow-inner border border-border group-hover:border-cyan-500/20 transition-colors">
                      {match.status === 'live' ? (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-accent/10 flex items-center justify-center animate-pulse">
-                          <Play size={20} className="text-accent translate-x-0.5 md:size-[24px]" fill="currentColor" />
+                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-cyan-500/10 flex items-center justify-center animate-pulse">
+                          <Play size={20} className="text-cyan-500 translate-x-0.5 md:size-[24px]" fill="currentColor" />
                         </div>
                       </div>
                     ) : (
@@ -365,24 +359,24 @@ export default function Home() {
                       </div>
                     )}
                     <div className="absolute bottom-1.5 left-1.5 right-1.5 md:bottom-2 md:left-2 md:right-2 px-2 md:px-2.5 py-0.5 md:py-1 rounded-lg md:rounded-xl bg-background/90 backdrop-blur-md border border-border flex items-center justify-center gap-1 md:gap-1.5 shadow-sm">
-                      <div className={`w-1 h-1 md:w-1.5 md:h-1.5 rounded-full ${match.status === 'live' ? 'bg-accent animate-pulse' : 'bg-muted-foreground'}`} />
+                      <div className={`w-1 h-1 md:w-1.5 md:h-1.5 rounded-full ${match.status === 'live' ? 'bg-cyan-500 animate-pulse' : 'bg-muted-foreground'}`} />
                       <span className="text-[8px] md:text-[9px] font-black uppercase tracking-tighter text-foreground">{match.status}</span>
                     </div>
                   </div>
                   
                   <div className="flex-1 min-w-0 space-y-1.5 md:space-y-2.5">
                     <div className="flex items-center gap-2 md:gap-3">
-                      <Badge variant="outline" className="rounded-md md:rounded-lg bg-accent/5 border-accent/10 text-accent text-[7px] md:text-[8px] font-black uppercase tracking-widest px-1.5 md:px-2 py-0 md:py-0.5">
+                      <Badge variant="outline" className="rounded-md md:rounded-lg bg-cyan-500/5 border-cyan-500/10 text-cyan-500 text-[7px] md:text-[8px] font-black uppercase tracking-widest px-1.5 md:px-2 py-0 md:py-0.5">
                         {match.mode}
                       </Badge>
                       <span className="text-[8px] md:text-[9px] font-bold text-muted-foreground uppercase tracking-[0.15em] md:tracking-[0.2em]">{match.map || 'Bermuda'}</span>
                     </div>
                     
-                    <h3 className="text-lg md:text-xl font-serif text-foreground truncate group-hover:text-accent transition-colors">{match.title}</h3>
+                    <h3 className="text-lg md:text-xl font-outfit font-bold text-foreground truncate group-hover:text-cyan-500 transition-colors">{match.title}</h3>
                     
                     <div className="flex items-center gap-3 md:gap-5">
                       <div className="flex items-center gap-1.5 md:gap-2">
-                        <Trophy size={12} className="text-accent md:size-[14px]" />
+                        <Trophy size={12} className="text-cyan-500 md:size-[14px]" />
                         <span className="text-[11px] md:text-[12px] font-bold text-foreground">₹{match.tournament?.prize_pool.toLocaleString()}</span>
                       </div>
                       <div className="flex items-center gap-1.5 md:gap-2">
@@ -394,15 +388,15 @@ export default function Home() {
                     </div>
                   </div>
     
-                  <div className="flex flex-col items-end justify-center gap-1 md:gap-1.5 pl-4 md:pl-6 border-l border-border group-hover:border-accent/10 transition-colors">
+                  <div className="flex flex-col items-end justify-center gap-1 md:gap-1.5 pl-4 md:pl-6 border-l border-border group-hover:border-cyan-500/10 transition-colors">
                     <span className="text-[8px] md:text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] md:tracking-[0.3em]">ENTRY</span>
                     <div className="flex items-baseline gap-1">
-                      <span className="text-[11px] md:text-[12px] font-bold text-accent">₹</span>
-                      <span className="text-2xl md:text-3xl font-serif text-accent">{match.tournament?.entry_fee}</span>
+                      <span className="text-[11px] md:text-[12px] font-bold text-cyan-500">₹</span>
+                      <span className="text-2xl md:text-3xl font-outfit font-black text-cyan-500">{match.tournament?.entry_fee}</span>
                     </div>
                     <motion.div 
                       whileHover={{ scale: 1.1 }}
-                      className="w-8 h-8 rounded-xl bg-accent text-white flex items-center justify-center shadow-lg shadow-accent/20 mt-1 opacity-0 group-hover:opacity-100 transition-all duration-300"
+                      className="w-8 h-8 rounded-xl bg-cyan-500 text-white flex items-center justify-center shadow-lg shadow-cyan-500/20 mt-1 opacity-0 group-hover:opacity-100 transition-all duration-300"
                     >
                       <ChevronRight size={18} />
                     </motion.div>

@@ -10,6 +10,7 @@
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-berkshire);
   --font-serif: var(--font-playfair);
+  --font-outfit: var(--font-outfit);
   --font-berkshire: var(--font-berkshire);
 
   --color-sidebar-ring: var(--sidebar-ring);
