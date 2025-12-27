@@ -214,167 +214,158 @@ export default function AdminTournaments() {
   }, [tournaments, search, statusFilter, modeFilter]);
 
     return (
-      <div className="min-h-screen pb-32 bg-background text-foreground">
-        <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-40">
-          <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px]" />
-        </div>
-  
-        <div className="px-6 pt-24 relative z-10 space-y-10 max-w-6xl mx-auto">
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="space-y-1">
-              <h4 className="text-[10px] font-bold text-secondary uppercase tracking-[0.4em]">Tactical Operations</h4>
-              <h1 className="text-4xl font-heading text-foreground">Event <span className="italic font-serif opacity-60">Logistics</span></h1>
+      <div className="min-h-screen pb-24 bg-background text-foreground">
+        <div className="px-4 sm:px-6 pt-6 sm:pt-8 relative z-10 space-y-6 sm:space-y-8 max-w-6xl mx-auto">
+          {/* Header - Mobile Optimized */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div className="space-y-0.5">
+              <h4 className="text-[9px] sm:text-[10px] font-bold text-secondary uppercase tracking-wider">Events</h4>
+              <h1 className="text-2xl sm:text-3xl font-heading text-foreground">Tournaments</h1>
             </div>
             <Button 
-              className="h-14 rounded-2xl bg-accent text-primary font-bold text-[10px] tracking-[0.2em] px-8 shadow-xl shadow-accent/20 hover:scale-105 transition-all border-none"
+              className="h-12 sm:h-14 rounded-xl sm:rounded-2xl bg-accent text-primary font-bold text-[10px] sm:text-[11px] tracking-wide px-5 sm:px-8 shadow-lg active:scale-95 transition-transform border-none touch-target"
               onClick={() => {
                 setEditingTournament(null);
                 resetForm();
                 setIsDialogOpen(true);
               }}
             >
-              <Plus size={18} className="mr-2" strokeWidth={3} /> INITIALIZE EVENT
+              <Plus size={16} className="mr-1.5" strokeWidth={3} /> NEW EVENT
             </Button>
           </div>
   
-          {/* Action & Filter Bar */}
-          <div className="bg-card rounded-[2.5rem] border border-border p-6 shadow-lg flex flex-col lg:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
+          {/* Filter Bar - Mobile Optimized */}
+          <div className="bg-card rounded-[20px] sm:rounded-[24px] border border-border p-4 sm:p-5 shadow-sm flex flex-col gap-3">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
               <Input 
-                className="bg-muted border-none pl-14 rounded-2xl h-14 text-xs font-bold tracking-wide focus-visible:ring-accent placeholder:text-muted-foreground/50 text-foreground" 
-                placeholder="SEARCH BY NAME, ID OR MODE..." 
+                className="bg-muted border-none pl-12 rounded-xl h-12 text-sm font-medium focus-visible:ring-accent placeholder:text-muted-foreground/50 text-foreground" 
+                placeholder="Search events..." 
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 overflow-x-auto no-scrollbar">
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-muted border-none font-bold text-[10px] tracking-widest text-muted-foreground">
-                  <SelectValue placeholder="STATUS" />
+                <SelectTrigger className="w-[120px] sm:w-[140px] h-11 rounded-xl bg-muted border-none font-bold text-[10px] tracking-wide text-muted-foreground">
+                  <SelectValue placeholder="Status" />
                 </SelectTrigger>
-                <SelectContent className="rounded-2xl border-border bg-popover text-popover-foreground">
+                <SelectContent className="rounded-xl border-border bg-popover text-popover-foreground">
                   {["All", "Draft", "Upcoming", "Active", "Completed", "Archived"].map(s => (
-                    <SelectItem key={s} value={s} className="text-[10px] uppercase font-bold">{s}</SelectItem>
+                    <SelectItem key={s} value={s} className="text-[11px] font-medium">{s}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
               <Select value={modeFilter} onValueChange={setModeFilter}>
-                <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-muted border-none font-bold text-[10px] tracking-widest text-muted-foreground">
-                  <SelectValue placeholder="MODE" />
+                <SelectTrigger className="w-[120px] sm:w-[140px] h-11 rounded-xl bg-muted border-none font-bold text-[10px] tracking-wide text-muted-foreground">
+                  <SelectValue placeholder="Mode" />
                 </SelectTrigger>
-                <SelectContent className="rounded-2xl border-border bg-popover text-popover-foreground">
+                <SelectContent className="rounded-xl border-border bg-popover text-popover-foreground">
                   {["All", "Solo", "Duo", "Squad"].map(m => (
-                    <SelectItem key={m} value={m} className="text-[10px] uppercase font-bold">{m}</SelectItem>
+                    <SelectItem key={m} value={m} className="text-[11px] font-medium">{m}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
           </div>
   
-          {/* Results Grid */}
-          <div className="space-y-6">
-            <div className="flex items-end justify-between px-2">
-              <div className="space-y-1">
-                <h3 className="text-2xl font-heading text-foreground">Arena <span className="italic font-serif opacity-60">Manifest</span></h3>
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">{filteredTournaments.length} DEPLOYMENTS LOADED</p>
+          {/* Results Grid - Mobile Optimized */}
+          <div className="space-y-4">
+            <div className="flex items-end justify-between px-1">
+              <div className="space-y-0.5">
+                <h3 className="text-base sm:text-lg font-heading text-foreground">Events</h3>
+                <p className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-wide">{filteredTournaments.length} found</p>
               </div>
             </div>
-  
+
             {loading ? (
-              <div className="flex flex-col items-center justify-center py-32 gap-6 bg-card rounded-[3rem] border border-border shadow-sm">
-                <Loader2 className="w-12 h-12 animate-spin text-accent" />
-                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Accessing Data Chambers...</p>
+              <div className="flex flex-col items-center justify-center py-20 gap-4 bg-card rounded-[20px] border border-border">
+                <Loader2 className="w-10 h-10 animate-spin text-accent" />
+                <p className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground">Loading...</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <AnimatePresence mode="popLayout">
                   {filteredTournaments.map((t, idx) => (
                     <motion.div
                       key={t.id}
-                      initial={{ y: 20, opacity: 0 }}
+                      initial={{ y: 15, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: idx * 0.05 }}
+                      transition={{ delay: idx * 0.03 }}
                       layout
-                      className="group relative bg-card rounded-[2.5rem] p-8 shadow-md border border-border hover:border-accent/30 transition-all duration-500 overflow-hidden cursor-pointer"
+                      className="mobile-card p-4 sm:p-5 space-y-4"
                     >
-                      <div className="relative z-10 space-y-6">
-                        <div className="flex justify-between items-start">
-                          <div className="flex items-center gap-2">
-                            <Badge className={`${
-                              t.status === 'active' ? 'bg-accent text-primary shadow-lg shadow-accent/20' : 
-                              t.status === 'upcoming' ? 'bg-secondary text-white' : 'bg-muted text-muted-foreground border border-border'
-                            } border-none rounded-full text-[8px] font-bold px-3 py-1 tracking-widest uppercase`}>
-                              {t.status}
-                            </Badge>
-                            <Badge variant="outline" className="border-border text-muted-foreground text-[8px] font-bold uppercase tracking-widest bg-muted">
-                              {t.game_mode}
-                            </Badge>
-                          </div>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="icon" className="w-10 h-10 rounded-xl bg-muted text-muted-foreground hover:text-foreground transition-colors">
-                                <MoreVertical size={18} />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="rounded-2xl border-border p-2 bg-popover text-popover-foreground shadow-2xl w-48">
-                              <DropdownMenuLabel className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground font-bold px-3 py-2">MANAGEMENT</DropdownMenuLabel>
-                              <DropdownMenuItem className="rounded-xl flex gap-3 cursor-pointer py-3 text-xs font-bold tracking-wide hover:bg-muted" onClick={() => handleEdit(t)}>
-                                <Edit2 size={16} /> EDIT PARAMETERS
-                              </DropdownMenuItem>
-                              <DropdownMenuItem className="rounded-xl flex gap-3 cursor-pointer py-3 text-xs font-bold tracking-wide hover:bg-muted" onClick={() => {
-                                supabase.from("tournaments").insert([{ ...t, id: undefined, created_at: undefined, title: `${t.title} (COPY)`, status: 'draft' }]).then(() => fetchTournaments());
-                              }}>
-                                <Copy size={16} /> CLONE EVENT
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator className="bg-border" />
-                              <DropdownMenuItem className="rounded-xl flex gap-3 cursor-pointer py-3 text-xs font-bold tracking-wide text-destructive focus:text-destructive focus:bg-destructive/10" onClick={() => handleDelete(t.id)}>
-                                <Trash2 size={16} /> DECOMMISSION
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                      <div className="flex justify-between items-start">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <Badge className={`${
+                            t.status === 'active' ? 'bg-accent text-primary' : 
+                            t.status === 'upcoming' ? 'bg-secondary text-white' : 'bg-muted text-muted-foreground'
+                          } border-none rounded-full text-[8px] font-bold px-2 py-0.5`}>
+                            {t.status}
+                          </Badge>
+                          <Badge variant="outline" className="border-border text-muted-foreground text-[8px] font-bold bg-muted">
+                            {t.game_mode}
+                          </Badge>
                         </div>
-  
-                        <div className="space-y-1">
-                          <h3 className="text-2xl font-heading text-foreground leading-tight line-clamp-1 group-hover:text-secondary transition-colors">{t.title}</h3>
-                          <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-[0.2em] flex items-center gap-2">
-                            <Calendar size={12} strokeWidth={3} className="text-accent" /> {t.start_time ? format(new Date(t.start_time), "MMM d, HH:mm") : 'TBD'}
-                          </p>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="w-8 h-8 rounded-lg bg-muted text-muted-foreground touch-target">
+                              <MoreVertical size={16} />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="rounded-xl border-border p-1.5 bg-popover text-popover-foreground shadow-xl w-44">
+                            <DropdownMenuItem className="rounded-lg flex gap-2 cursor-pointer py-2.5 text-[11px] font-medium" onClick={() => handleEdit(t)}>
+                              <Edit2 size={14} /> Edit
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="rounded-lg flex gap-2 cursor-pointer py-2.5 text-[11px] font-medium" onClick={() => {
+                              supabase.from("tournaments").insert([{ ...t, id: undefined, created_at: undefined, title: `${t.title} (COPY)`, status: 'draft' }]).then(() => fetchTournaments());
+                            }}>
+                              <Copy size={14} /> Clone
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator className="bg-border" />
+                            <DropdownMenuItem className="rounded-lg flex gap-2 cursor-pointer py-2.5 text-[11px] font-medium text-destructive focus:text-destructive" onClick={() => handleDelete(t.id)}>
+                              <Trash2 size={14} /> Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+
+                      <div className="space-y-1">
+                        <h3 className="text-base sm:text-lg font-heading text-foreground leading-tight truncate">{t.title}</h3>
+                        <p className="text-[9px] sm:text-[10px] text-muted-foreground font-medium flex items-center gap-1.5">
+                          <Calendar size={11} className="text-accent" /> {t.start_time ? format(new Date(t.start_time), "MMM d, HH:mm") : 'TBD'}
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="bg-muted p-3 rounded-xl border border-border">
+                          <span className="text-[8px] font-bold text-muted-foreground uppercase">Prize</span>
+                          <p className="text-base sm:text-lg font-heading text-foreground">₹{Number(t.prize_pool).toLocaleString()}</p>
                         </div>
-  
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="bg-muted p-4 rounded-2xl border border-border space-y-0.5">
-                            <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Prize Pool</span>
-                            <p className="text-xl font-heading text-foreground">₹{Number(t.prize_pool).toLocaleString()}</p>
-                          </div>
-                          <div className="bg-muted p-4 rounded-2xl border border-border space-y-0.5">
-                            <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Entry Fee</span>
-                            <p className="text-xl font-heading text-foreground">₹{Number(t.entry_fee).toLocaleString()}</p>
-                          </div>
-                        </div>
-  
-                        <div className="flex items-center justify-between pt-4 border-t border-border">
-                          <div className="flex items-center gap-2 text-muted-foreground">
-                            <Users size={14} className="text-accent" />
-                            <span className="text-[10px] font-bold uppercase tracking-widest">{t.participants_count || 0} / {t.slots} WARRIORS</span>
-                          </div>
-                          <Button variant="link" className="text-muted-foreground hover:text-secondary font-bold text-[10px] tracking-widest p-0 h-auto uppercase transition-colors">
-                            AUDIT EVENT <ChevronRight size={14} className="ml-1" />
-                          </Button>
+                        <div className="bg-muted p-3 rounded-xl border border-border">
+                          <span className="text-[8px] font-bold text-muted-foreground uppercase">Entry</span>
+                          <p className="text-base sm:text-lg font-heading text-foreground">₹{Number(t.entry_fee).toLocaleString()}</p>
                         </div>
                       </div>
-                      {/* Visual Glows */}
-                      <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-accent/5 blur-[100px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+                      <div className="flex items-center justify-between pt-3 border-t border-border">
+                        <div className="flex items-center gap-1.5 text-muted-foreground">
+                          <Users size={12} className="text-accent" />
+                          <span className="text-[10px] font-bold">{t.participants_count || 0} / {t.slots}</span>
+                        </div>
+                        <Button variant="link" className="text-muted-foreground font-bold text-[10px] tracking-wide p-0 h-auto">
+                          View <ChevronRight size={12} className="ml-0.5" />
+                        </Button>
+                      </div>
                     </motion.div>
                   ))}
                 </AnimatePresence>
                 {!loading && filteredTournaments.length === 0 && (
-                  <div className="col-span-full py-32 text-center flex flex-col items-center gap-4 bg-card rounded-[3rem] border border-dashed border-border shadow-sm">
-                    <AlertCircle size={48} strokeWidth={1} className="text-muted-foreground/30" />
-                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">No events detected in sectors</p>
-                    <Button variant="link" onClick={() => { setSearch(""); setStatusFilter("All"); setModeFilter("All"); }} className="text-accent font-bold mt-2 text-[10px] tracking-widest uppercase">
-                      RESET SCANNERS
+                  <div className="col-span-full py-16 text-center flex flex-col items-center gap-3 bg-card rounded-[20px] border border-dashed border-border">
+                    <AlertCircle size={36} strokeWidth={1} className="text-muted-foreground/30" />
+                    <p className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground">No events found</p>
+                    <Button variant="link" onClick={() => { setSearch(""); setStatusFilter("All"); setModeFilter("All"); }} className="text-accent font-bold text-[10px]">
+                      Reset Filters
                     </Button>
                   </div>
                 )}
@@ -383,78 +374,77 @@ export default function AdminTournaments() {
           </div>
         </div>
   
-        {/* Management Dialog */}
+        {/* Management Dialog - Mobile Optimized */}
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent className="sm:max-w-2xl rounded-[3rem] p-0 overflow-hidden border-none shadow-2xl bg-popover text-popover-foreground">
-            <div className="bg-accent/10 p-10 border-b border-border relative overflow-hidden">
+          <DialogContent className="max-w-[95vw] sm:max-w-2xl rounded-t-[24px] sm:rounded-[24px] p-0 overflow-hidden border-none shadow-2xl bg-popover text-popover-foreground fixed bottom-0 sm:bottom-auto sm:top-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 m-0">
+            <div className="bg-accent/10 p-5 sm:p-8 border-b border-border relative overflow-hidden">
               <DialogHeader className="relative z-10">
-                <div className="w-12 h-12 rounded-2xl bg-accent/20 flex items-center justify-center text-accent mb-6 shadow-inner">
-                  <Settings size={24} />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-accent/20 flex items-center justify-center text-accent mb-4 sm:mb-6">
+                  <Settings size={20} className="sm:w-6 sm:h-6" />
                 </div>
-                <DialogTitle className="text-4xl font-heading leading-tight text-foreground">{editingTournament ? "Update" : "Initialize"} <span className="italic opacity-60">Deployment</span></DialogTitle>
-                <DialogDescription className="text-muted-foreground font-bold text-[10px] uppercase tracking-[0.3em] mt-2">
-                  Configure arena parameters and engagement protocols.
+                <DialogTitle className="text-2xl sm:text-3xl font-heading leading-tight text-foreground">{editingTournament ? "Edit" : "Create"} Event</DialogTitle>
+                <DialogDescription className="text-muted-foreground font-medium text-[10px] sm:text-[11px] uppercase tracking-wide mt-1.5">
+                  Configure event details
                 </DialogDescription>
               </DialogHeader>
-              <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-accent/10 blur-[100px] rounded-full" />
             </div>
             
-            <form onSubmit={handleCreateOrUpdate} className="p-10 space-y-8 max-h-[70vh] overflow-y-auto no-scrollbar">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <Label className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground ml-2">Event Designation</Label>
+            <form onSubmit={handleCreateOrUpdate} className="p-5 sm:p-8 space-y-5 sm:space-y-6 max-h-[60vh] overflow-y-auto no-scrollbar">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+                <div className="space-y-4 sm:space-y-5">
+                  <div className="space-y-1.5">
+                    <Label className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground ml-1">Title</Label>
                     <Input 
-                      className="rounded-2xl bg-muted border border-border h-14 font-bold text-xs focus-visible:ring-accent placeholder:text-muted-foreground/50 text-foreground shadow-sm" 
-                      placeholder="E.G. GLOBAL CHAMPIONSHIP"
+                      className="rounded-xl bg-muted border border-border h-12 font-medium text-sm focus-visible:ring-accent text-foreground" 
+                      placeholder="Event name"
                       value={formData.title} 
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })} 
                       required 
                     />
                   </div>
-  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground ml-2">Mode</Label>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground ml-1">Mode</Label>
                       <Select value={formData.game_mode} onValueChange={(v) => setFormData({...formData, game_mode: v})}>
-                        <SelectTrigger className="rounded-2xl bg-muted border border-border h-14 font-bold text-xs uppercase text-foreground shadow-sm">
+                        <SelectTrigger className="rounded-xl bg-muted border border-border h-12 font-medium text-sm text-foreground">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="rounded-2xl border-border bg-popover text-popover-foreground">
+                        <SelectContent className="rounded-xl border-border bg-popover text-popover-foreground">
                           {["Solo", "Duo", "Squad"].map(m => (
-                            <SelectItem key={m} value={m} className="font-bold text-[10px] uppercase">{m}</SelectItem>
+                            <SelectItem key={m} value={m} className="font-medium text-sm">{m}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                     </div>
-                    <div className="space-y-2">
-                      <Label className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground ml-2">Warrior Slots</Label>
+                    <div className="space-y-1.5">
+                      <Label className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground ml-1">Slots</Label>
                       <Input 
                         type="number" 
-                        className="rounded-2xl bg-muted border border-border h-14 font-bold text-xs focus-visible:ring-accent text-foreground shadow-sm" 
+                        className="rounded-xl bg-muted border border-border h-12 font-medium text-sm focus-visible:ring-accent text-foreground" 
                         value={formData.slots} 
                         onChange={(e) => setFormData({ ...formData, slots: Number(e.target.value) })} 
                         required 
                       />
                     </div>
                   </div>
-  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground ml-2">Entry Fee (₹)</Label>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground ml-1">Entry (₹)</Label>
                       <Input 
                         type="number" 
-                        className="rounded-2xl bg-muted border border-border h-14 font-bold text-xs focus-visible:ring-accent text-foreground shadow-sm" 
+                        className="rounded-xl bg-muted border border-border h-12 font-medium text-sm focus-visible:ring-accent text-foreground" 
                         value={formData.entry_fee} 
                         onChange={(e) => setFormData({ ...formData, entry_fee: Number(e.target.value) })} 
                         required 
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground ml-2">Prize Pool (₹)</Label>
+                    <div className="space-y-1.5">
+                      <Label className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground ml-1">Prize (₹)</Label>
                       <Input 
                         type="number" 
-                        className="rounded-2xl bg-muted border border-border h-14 font-bold text-xs focus-visible:ring-accent text-foreground shadow-sm" 
+                        className="rounded-xl bg-muted border border-border h-12 font-medium text-sm focus-visible:ring-accent text-foreground" 
                         value={formData.prize_pool} 
                         onChange={(e) => setFormData({ ...formData, prize_pool: Number(e.target.value) })} 
                         required 
@@ -462,52 +452,52 @@ export default function AdminTournaments() {
                     </div>
                   </div>
                 </div>
-  
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <Label className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground ml-2">Deployment Schedule</Label>
+
+                <div className="space-y-4 sm:space-y-5">
+                  <div className="space-y-1.5">
+                    <Label className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground ml-1">Start Time</Label>
                     <Input 
                       type="datetime-local" 
-                      className="rounded-2xl bg-muted border border-border h-14 font-bold text-xs focus-visible:ring-accent text-foreground shadow-sm" 
+                      className="rounded-xl bg-muted border border-border h-12 font-medium text-sm focus-visible:ring-accent text-foreground" 
                       value={formData.start_time} 
                       onChange={(e) => setFormData({ ...formData, start_time: e.target.value })} 
                       required 
                     />
                   </div>
-  
-                  <div className="space-y-2">
-                    <Label className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground ml-2">Mission Status</Label>
+
+                  <div className="space-y-1.5">
+                    <Label className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground ml-1">Status</Label>
                     <Select value={formData.status} onValueChange={(v) => setFormData({...formData, status: v})}>
-                      <SelectTrigger className="rounded-2xl bg-muted border border-border h-14 font-bold text-xs uppercase text-foreground shadow-sm">
+                      <SelectTrigger className="rounded-xl bg-muted border border-border h-12 font-medium text-sm text-foreground">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="rounded-2xl border-border bg-popover text-popover-foreground">
+                      <SelectContent className="rounded-xl border-border bg-popover text-popover-foreground">
                         {["upcoming", "active", "completed", "draft"].map(s => (
-                          <SelectItem key={s} value={s} className="font-bold text-[10px] uppercase">{s}</SelectItem>
+                          <SelectItem key={s} value={s} className="font-medium text-sm capitalize">{s}</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </div>
-  
-                  <div className="space-y-2">
-                    <Label className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground ml-2">Arena Briefing</Label>
+
+                  <div className="space-y-1.5">
+                    <Label className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground ml-1">Rules</Label>
                     <Textarea 
-                      className="rounded-2xl bg-muted border border-border min-h-[120px] font-bold text-xs focus-visible:ring-accent p-4 placeholder:text-muted-foreground/50 text-foreground shadow-sm" 
-                      placeholder="DEFINE THE ENGAGEMENT PROTOCOLS..."
+                      className="rounded-xl bg-muted border border-border min-h-[80px] font-medium text-sm focus-visible:ring-accent p-3 text-foreground" 
+                      placeholder="Event rules..."
                       value={formData.rules} 
                       onChange={(e) => setFormData({ ...formData, rules: e.target.value })} 
                     />
                   </div>
                 </div>
               </div>
-  
-              <DialogFooter className="pt-4">
+
+              <DialogFooter className="pt-3">
                 <Button 
                   type="submit" 
                   disabled={submitting}
-                  className="w-full h-16 rounded-3xl bg-accent text-primary font-bold uppercase tracking-[0.2em] text-[11px] shadow-xl shadow-accent/20 hover:scale-[1.02] transition-all border-none"
+                  className="w-full h-12 sm:h-14 rounded-xl sm:rounded-2xl bg-accent text-primary font-bold uppercase tracking-wide text-[11px] shadow-lg active:scale-[0.98] transition-transform border-none touch-target"
                 >
-                  {submitting ? <Loader2 className="animate-spin" /> : editingTournament ? "CONFIRM PARAMETER UPDATE" : "INITIALIZE DEPLOYMENT"}
+                  {submitting ? <Loader2 className="animate-spin" /> : editingTournament ? "Update Event" : "Create Event"}
                 </Button>
               </DialogFooter>
             </form>

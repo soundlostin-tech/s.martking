@@ -2,7 +2,7 @@ import { Geist, Geist_Mono, Playfair_Display, Berkshire_Swash, Outfit } from "ne
 import "./globals.css";
 import { AnimatedBackground } from "@/components/layout/AnimatedBackground";
 import { ClientLayout } from "@/components/layout/ClientLayout";
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +33,20 @@ const berkshire = Berkshire_Swash({
 export const metadata: Metadata = {
   title: "Smartking's Arena",
   description: "The ultimate competitive gaming arena",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Smartking's Arena",
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({

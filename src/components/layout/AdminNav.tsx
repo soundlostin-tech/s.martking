@@ -18,42 +18,45 @@ export function AdminNav() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-2xl bg-card/80 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-[2.5rem] px-4 overflow-hidden">
-      <div className="flex justify-around items-center h-22 py-2">
-        {navItems.map((item) => {
-          const isActive = pathname === item.href;
-          const Icon = item.icon;
-          
-          return (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="relative flex flex-col items-center justify-center flex-1 h-full outline-none"
-            >
-              <div className="relative flex flex-col items-center gap-1.5 transition-all duration-300 py-3">
-                  <motion.div
-                    animate={{ 
-                      scale: isActive ? 1.15 : 1,
-                      y: isActive ? -2 : 0 
-                    }}
-                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                    className={`relative z-10 p-2.5 rounded-2xl transition-colors ${
-                      isActive ? "text-white bg-primary" : "text-foreground/30 hover:text-foreground/60"
-                    }`}
-                  >
-                    <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
-                  </motion.div>
+    <nav className="fixed bottom-0 left-0 right-0 z-50 px-2 sm:px-4 pb-safe">
+      <div className="max-w-2xl mx-auto bg-card/95 backdrop-blur-xl border border-border shadow-[0_-4px_30px_rgba(0,0,0,0.15)] rounded-t-[24px] sm:rounded-[24px] sm:mb-4 overflow-hidden">
+        <div className="flex justify-around items-center h-16 sm:h-18">
+          {navItems.map((item) => {
+            const isActive = pathname === item.href;
+            const Icon = item.icon;
+            
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="relative flex flex-col items-center justify-center flex-1 h-full touch-target haptic-tap"
+              >
+                <motion.div
+                  initial={false}
+                  animate={{ 
+                    scale: isActive ? 1.05 : 1,
+                    y: isActive ? -1 : 0 
+                  }}
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  className="relative flex flex-col items-center gap-0.5 py-2"
+                >
+                  <div className={`relative z-10 p-1.5 sm:p-2 rounded-lg sm:rounded-xl transition-all duration-200 ${
+                    isActive ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground"
+                  }`}>
+                    <Icon size={18} className="sm:w-5 sm:h-5" strokeWidth={isActive ? 2.5 : 2} />
+                  </div>
   
-                  <span className={`text-[9px] font-bold uppercase tracking-[0.2em] transition-colors ${
-                    isActive ? "text-primary" : "text-foreground/20"
+                  <span className={`text-[8px] sm:text-[9px] font-bold uppercase tracking-wide sm:tracking-[0.15em] transition-colors duration-200 ${
+                    isActive ? "text-primary" : "text-muted-foreground/60"
                   }`}>
                     {item.label}
                   </span>
-              </div>
-            </Link>
-          );
-        })}
+                </motion.div>
+              </Link>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </nav>
   );
 }
