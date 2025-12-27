@@ -106,13 +106,13 @@ export default function MatchesPage() {
             {/* Search & Filter - Tactical Command Style */}
             <section className="px-6 pt-8 space-y-6">
               <div className="relative">
-                <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-evergreen-500" size={18} />
+                <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-evergreen-400" size={18} />
                 <input 
                   type="text" 
                   placeholder="SEARCH ARENA SECTORS..." 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-evergreen-900 border border-evergreen-800 rounded-[24px] py-5 pl-14 pr-6 text-xs font-bold tracking-widest focus:ring-2 focus:ring-malachite-500/20 transition-all placeholder:text-evergreen-600 uppercase shadow-sm text-white"
+                  className="w-full bg-seashell-100 border border-border rounded-[24px] py-5 pl-14 pr-6 text-xs font-bold tracking-widest focus:ring-2 focus:ring-malachite-500/20 transition-all placeholder:text-evergreen-300 uppercase shadow-sm text-foreground"
                 />
               </div>
     
@@ -124,8 +124,8 @@ export default function MatchesPage() {
                     onClick={() => setActiveFilter(filter)}
                     className={`px-8 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap border ${
                       activeFilter === filter 
-                        ? "bg-malachite-500 text-black border-malachite-500 shadow-lg shadow-malachite-500/20" 
-                        : "bg-evergreen-900 text-evergreen-500 border-evergreen-800 hover:bg-evergreen-800"
+                        ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-evergreen-900/10" 
+                        : "bg-seashell-200 text-evergreen-500 border-border hover:bg-seashell-300"
                     }`}
                   >
                     {filter}
@@ -139,7 +139,7 @@ export default function MatchesPage() {
                 {loading ? (
                   <div className="flex flex-col items-center justify-center py-32 gap-6 bg-card rounded-[40px] border border-border shadow-sm">
                     <Loader2 className="w-12 h-12 animate-spin text-malachite-500" />
-                    <p className="text-[10px] text-evergreen-500 font-bold uppercase tracking-[0.3em]">Accessing Arena Database...</p>
+                    <p className="text-[10px] text-evergreen-400 font-bold uppercase tracking-[0.3em]">Accessing Arena Database...</p>
                   </div>
                 ) : matches.length > 0 ? (
                   <AnimatePresence mode="popLayout">
@@ -151,65 +151,65 @@ export default function MatchesPage() {
                         exit={{ opacity: 0, scale: 0.9 }}
                         transition={{ delay: i * 0.05 }}
                         whileTap={{ scale: 0.98 }}
-                        className="bg-card rounded-[40px] p-8 border border-border shadow-xl relative overflow-hidden group"
+                        className="bg-card rounded-[40px] p-8 border border-border shadow-md relative overflow-hidden group"
                       >
                       <div className="flex justify-between items-start mb-10">
                         <div className="flex items-center gap-6">
                           <div className={`w-16 h-16 rounded-[24px] flex items-center justify-center transition-all duration-500 ${
                             match.status === 'live' 
-                              ? 'bg-malachite-500/10 text-malachite-500 group-hover:bg-malachite-500 group-hover:text-black' 
-                              : 'bg-evergreen-500/10 text-evergreen-400 group-hover:bg-evergreen-500 group-hover:text-white'
-                          } shadow-sm`}>
+                              ? 'bg-malachite-500/10 text-malachite-500 group-hover:bg-malachite-500 group-hover:text-white' 
+                              : 'bg-seashell-200 text-evergreen-400 group-hover:bg-evergreen-500 group-hover:text-white'
+                          } shadow-sm border border-border`}>
                             {match.status === 'live' ? <Play size={28} fill="currentColor" className="translate-x-0.5" /> : <Swords size={28} />}
                           </div>
                           <div className="min-w-0 space-y-1.5">
-                            <h3 className="font-heading text-xl text-white truncate group-hover:text-malachite-400 transition-colors">{match.title}</h3>
+                            <h3 className="font-heading text-xl text-foreground truncate group-hover:text-sea-green-600 transition-colors">{match.title}</h3>
                             <div className="flex items-center gap-3">
-                              <Badge variant="outline" className="border-evergreen-800 bg-evergreen-950 text-[8px] font-bold tracking-widest text-evergreen-500 px-3 py-0.5">
+                              <Badge variant="outline" className="border-border bg-seashell-200 text-[8px] font-bold tracking-widest text-evergreen-500 px-3 py-0.5">
                                 {match.mode.toUpperCase()}
                               </Badge>
-                              <p className="text-[9px] text-evergreen-500 font-bold uppercase tracking-[0.2em]">{match.tournament?.title}</p>
+                              <p className="text-[9px] text-evergreen-400 font-bold uppercase tracking-[0.2em]">{match.tournament?.title}</p>
                             </div>
                           </div>
                         </div>
                         <div className={`px-4 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-[0.2em] border ${
                           match.status === 'live' 
-                            ? 'bg-malachite-500 text-black animate-pulse border-white/20 shadow-lg shadow-malachite-500/20' 
-                            : 'bg-evergreen-950 text-evergreen-500 border-evergreen-800'
+                            ? 'bg-malachite-500 text-white animate-pulse border-white/20 shadow-lg shadow-malachite-500/20' 
+                            : 'bg-seashell-100 text-evergreen-500 border-border'
                         }`}>
                           {match.status}
                         </div>
                       </div>
     
                       <div className="grid grid-cols-2 gap-4 mb-10">
-                        <div className="bg-evergreen-950 rounded-[28px] p-5 border border-evergreen-800 flex items-center gap-5 group-hover:bg-evergreen-900 transition-colors">
-                          <div className="w-10 h-10 rounded-xl bg-evergreen-900 flex items-center justify-center text-malachite-400 shadow-sm">
+                        <div className="bg-seashell-200 rounded-[28px] p-5 border border-border flex items-center gap-5 group-hover:bg-seashell-300 transition-colors">
+                          <div className="w-10 h-10 rounded-xl bg-background flex items-center justify-center text-malachite-600 shadow-sm">
                             <Calendar size={18} />
                           </div>
                           <div>
-                            <p className="text-[8px] font-bold text-evergreen-600 uppercase tracking-widest">Deployment</p>
-                            <p className="text-[11px] font-bold text-white uppercase tracking-wide">
+                            <p className="text-[8px] font-bold text-evergreen-400 uppercase tracking-widest">Deployment</p>
+                            <p className="text-[11px] font-bold text-foreground uppercase tracking-wide">
                               {match.start_time ? new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' }) : 'TBD'}
                             </p>
                           </div>
                         </div>
-                        <div className="bg-evergreen-950 rounded-[28px] p-5 border border-evergreen-800 flex items-center gap-5 group-hover:bg-evergreen-900 transition-colors">
-                          <div className="w-10 h-10 rounded-xl bg-evergreen-900 flex items-center justify-center text-malachite-400 shadow-sm">
+                        <div className="bg-seashell-200 rounded-[28px] p-5 border border-border flex items-center gap-5 group-hover:bg-seashell-300 transition-colors">
+                          <div className="w-10 h-10 rounded-xl bg-background flex items-center justify-center text-malachite-600 shadow-sm">
                             <Users size={18} />
                           </div>
                           <div>
-                            <p className="text-[8px] font-bold text-evergreen-600 uppercase tracking-widest">Capacity</p>
-                            <p className="text-[11px] font-bold text-white uppercase tracking-wide">{match.current_slots || 0} / {match.tournament?.slots || 48} WARRIORS</p>
+                            <p className="text-[8px] font-bold text-evergreen-400 uppercase tracking-widest">Capacity</p>
+                            <p className="text-[11px] font-bold text-foreground uppercase tracking-wide">{match.current_slots || 0} / {match.tournament?.slots || 48} WARRIORS</p>
                           </div>
                         </div>
                       </div>
     
-                      <div className="flex items-center justify-between pt-6 border-t border-evergreen-800">
+                      <div className="flex items-center justify-between pt-6 border-t border-border">
                         <div className="flex flex-col gap-1">
-                          <p className="text-[9px] font-bold text-evergreen-500 uppercase tracking-[0.3em]">PRIZE POOL</p>
+                          <p className="text-[9px] font-bold text-evergreen-400 uppercase tracking-[0.3em]">PRIZE POOL</p>
                           <div className="flex items-center gap-2">
-                            <Trophy size={18} className="text-malachite-400" />
-                            <span className="text-2xl font-heading text-white">₹{match.tournament?.prize_pool.toLocaleString() || 0}</span>
+                            <Trophy size={18} className="text-malachite-600" />
+                            <span className="text-2xl font-heading text-foreground">₹{match.tournament?.prize_pool.toLocaleString() || 0}</span>
                           </div>
                         </div>
                       
@@ -218,14 +218,14 @@ export default function MatchesPage() {
                           whileTap={{ scale: 0.95 }}
                           onClick={() => handleJoinMatch(match.tournament_id, match.id)}
                           disabled={joining === match.id}
-                          className="bg-malachite-500 text-black px-10 py-4 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-malachite-500/20 flex items-center gap-3 hover:bg-malachite-400 transition-all border-none"
+                          className="bg-secondary text-secondary-foreground px-10 py-4 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-sea-green-500/20 flex items-center gap-3 hover:bg-sea-green-400 transition-all border-none"
                         >
                           {joining === match.id ? <Loader2 size={16} className="animate-spin" /> : (
                             <>DEPLOY ₹{match.tournament?.entry_fee} <ChevronRight size={14} strokeWidth={3} /></>
                           )}
                         </motion.button>
                       ) : (
-                        <Link href={match.status === 'live' ? `/live?match=${match.id}` : '#'} className="bg-malachite-500 text-black px-10 py-4 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-malachite-500/20 flex items-center gap-3 hover:bg-malachite-400 transition-all">
+                        <Link href={match.status === 'live' ? `/live?match=${match.id}` : '#'} className="bg-secondary text-secondary-foreground px-10 py-4 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-sea-green-500/20 flex items-center gap-3 hover:bg-sea-green-400 transition-all">
                           {match.status === 'live' ? <>WATCH FEED <Radio size={14} className="animate-pulse" /></> : "VIEW DEBRIEF"}
                         </Link>
                       )}
@@ -238,17 +238,17 @@ export default function MatchesPage() {
                 </AnimatePresence>
               ) : (
                 <div className="bg-card p-20 rounded-[50px] border border-dashed border-border text-center space-y-8 mt-8 shadow-sm">
-                  <div className="w-24 h-24 bg-evergreen-950 rounded-[32px] flex items-center justify-center mx-auto text-evergreen-800 shadow-inner">
+                  <div className="w-24 h-24 bg-seashell-200 rounded-[32px] flex items-center justify-center mx-auto text-evergreen-200 shadow-inner">
                     <Signal size={48} strokeWidth={1} />
                   </div>
                 <div className="space-y-3 px-6">
-                  <h3 className="text-2xl font-heading text-white">Silent <span className="italic font-serif opacity-60">Horizon</span></h3>
-                  <p className="text-[11px] text-evergreen-600 font-bold uppercase tracking-[0.2em] leading-loose">No battle signals detected in the selected sector. Adjust your scanners.</p>
+                  <h3 className="text-2xl font-heading text-foreground">Silent <span className="italic font-serif opacity-60">Horizon</span></h3>
+                  <p className="text-[11px] text-evergreen-400 font-bold uppercase tracking-[0.2em] leading-loose">No battle signals detected in the selected sector. Adjust your scanners.</p>
                 </div>
                 <div className="px-10">
                   <button 
                     onClick={() => { setActiveFilter("All"); setSearchQuery(""); }}
-                    className="w-full py-5 bg-evergreen-950 text-evergreen-500 hover:text-malachite-400 rounded-[20px] text-[10px] font-bold uppercase tracking-[0.3em] transition-all border border-evergreen-800"
+                    className="w-full py-5 bg-seashell-200 text-evergreen-500 hover:text-malachite-600 rounded-[20px] text-[10px] font-bold uppercase tracking-[0.3em] transition-all border border-border"
                   >
                     RESET SCANNERS
                   </button>

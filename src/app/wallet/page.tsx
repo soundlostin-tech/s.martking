@@ -162,45 +162,45 @@ export default function WalletPage() {
   if (authLoading) return null;
 
     return (
-      <div className="min-h-screen bg-background text-white">
+      <div className="min-h-screen bg-background text-foreground">
         <main className="pb-32 relative z-10">
           <TopHeader />
   
           <div className="px-6 pt-8 space-y-10 max-w-2xl mx-auto">
-            {/* Main Balance Card - High-End Aesthetic */}
+            {/* Main Balance Card - Premium Aesthetic */}
             <section>
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="relative h-64 rounded-[40px] bg-malachite-500 overflow-hidden shadow-xl shadow-malachite-500/20 p-10 flex flex-col justify-between group"
+                className="relative h-64 rounded-[40px] premium-gradient overflow-hidden shadow-2xl shadow-evergreen-900/20 p-10 flex flex-col justify-between group"
               >
                 <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:opacity-20 transition-opacity">
-                  <WalletIcon size={160} className="text-black" strokeWidth={1} />
+                  <WalletIcon size={160} className="text-white" strokeWidth={1} />
                 </div>
                 
                 <div className="relative z-10">
-                  <p className="text-[10px] font-bold text-black/60 uppercase tracking-[0.4em] mb-2">OPERATIONAL CAPITAL</p>
+                  <p className="text-[10px] font-bold text-seashell-300 uppercase tracking-[0.4em] mb-2">OPERATIONAL CAPITAL</p>
                   <div className="flex items-baseline gap-3">
-                    <span className="text-3xl font-heading text-black/40">₹</span>
-                    <h2 className="text-6xl font-heading text-black tracking-tight">
+                    <span className="text-3xl font-heading text-seashell-400">₹</span>
+                    <h2 className="text-6xl font-heading text-white tracking-tight">
                       {(wallet?.balance || 0).toLocaleString()}
                     </h2>
                   </div>
                 </div>
   
-                <div className="relative z-10 grid grid-cols-2 gap-8 pt-8 border-t border-black/10">
+                <div className="relative z-10 grid grid-cols-2 gap-8 pt-8 border-t border-white/10">
                   <div>
-                    <p className="text-[9px] font-bold text-black/40 uppercase tracking-widest mb-1">Lifetime Earnings</p>
-                    <p className="text-2xl font-heading text-black">₹{(wallet?.lifetime_earnings || 0).toLocaleString()}</p>
+                    <p className="text-[9px] font-bold text-seashell-300 uppercase tracking-widest mb-1">Lifetime Earnings</p>
+                    <p className="text-2xl font-heading text-white">₹{(wallet?.lifetime_earnings || 0).toLocaleString()}</p>
                   </div>
                   <div className="text-right md:text-left">
-                    <p className="text-[9px] font-bold text-black/40 uppercase tracking-widest mb-1">Pending Extract</p>
-                    <p className="text-2xl font-heading text-black/60">₹{(wallet?.pending_withdrawals || 0).toLocaleString()}</p>
+                    <p className="text-[9px] font-bold text-seashell-300 uppercase tracking-widest mb-1">Pending Extract</p>
+                    <p className="text-2xl font-heading text-seashell-200">₹{(wallet?.pending_withdrawals || 0).toLocaleString()}</p>
                   </div>
                 </div>
                 
                 {/* Visual Glow */}
-                <div className="absolute top-[-50%] right-[-20%] w-full h-full bg-white/20 blur-[100px] rounded-full pointer-events-none" />
+                <div className="absolute top-[-50%] right-[-20%] w-full h-full bg-white/10 blur-[100px] rounded-full pointer-events-none" />
               </motion.div>
             </section>
   
@@ -209,9 +209,9 @@ export default function WalletPage() {
               <motion.button 
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsDepositOpen(true)}
-                className="bg-card rounded-[32px] py-8 flex flex-col items-center gap-3 border border-border shadow-md hover:bg-evergreen-900 transition-all"
+                className="bg-card rounded-[32px] py-8 flex flex-col items-center gap-3 border border-border shadow-sm hover:bg-seashell-200 transition-all"
               >
-                <div className="w-12 h-12 rounded-2xl bg-malachite-500/10 flex items-center justify-center text-malachite-400 shadow-sm">
+                <div className="w-12 h-12 rounded-2xl bg-malachite-500/10 flex items-center justify-center text-malachite-600 shadow-sm">
                   <Plus size={24} strokeWidth={3} />
                 </div>
                 <span className="text-[10px] font-bold text-evergreen-500 uppercase tracking-[0.2em]">Add Funds</span>
@@ -219,9 +219,9 @@ export default function WalletPage() {
               <motion.button 
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsWithdrawOpen(true)}
-                className="bg-card rounded-[32px] py-8 flex flex-col items-center gap-3 border border-border shadow-md hover:bg-evergreen-900 transition-all"
+                className="bg-card rounded-[32px] py-8 flex flex-col items-center gap-3 border border-border shadow-sm hover:bg-seashell-200 transition-all"
               >
-                <div className="w-12 h-12 rounded-2xl bg-evergreen-950 flex items-center justify-center text-evergreen-400 shadow-sm">
+                <div className="w-12 h-12 rounded-2xl bg-seashell-200 flex items-center justify-center text-evergreen-500 shadow-sm">
                   <ArrowDownLeft size={24} strokeWidth={3} />
                 </div>
                 <span className="text-[10px] font-bold text-evergreen-500 uppercase tracking-[0.2em]">Withdraw</span>
@@ -232,17 +232,17 @@ export default function WalletPage() {
             <section className="space-y-6">
               <div className="flex items-center justify-between px-2">
                 <div className="space-y-1">
-                  <h3 className="text-xl font-heading text-white tracking-wide">Financial <span className="italic font-serif opacity-60">Logs</span></h3>
-                  <p className="text-[10px] font-bold text-evergreen-500 uppercase tracking-widest">TRANSACTION HISTORY</p>
+                  <h3 className="text-xl font-heading text-foreground tracking-wide">Financial <span className="italic font-serif opacity-60">Logs</span></h3>
+                  <p className="text-[10px] font-bold text-evergreen-400 uppercase tracking-widest">TRANSACTION HISTORY</p>
                 </div>
-                <Activity size={20} className="text-evergreen-800" />
+                <Activity size={20} className="text-evergreen-200" />
               </div>
     
               <div className="space-y-4">
                 {loading ? (
                   <div className="flex flex-col items-center justify-center py-20 gap-4 bg-card rounded-[40px] border border-border shadow-sm">
                     <Loader2 className="w-8 h-8 animate-spin text-malachite-500" />
-                    <p className="text-[10px] text-evergreen-500 font-bold uppercase tracking-widest">Syncing Ledger...</p>
+                    <p className="text-[10px] text-evergreen-400 font-bold uppercase tracking-widest">Syncing Ledger...</p>
                   </div>
                 ) : transactions.length > 0 ? (
                   transactions.map((tx, i) => (
@@ -251,22 +251,22 @@ export default function WalletPage() {
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.05 }}
-                      className="bg-card p-5 rounded-[32px] flex items-center justify-between border border-border shadow-sm hover:border-evergreen-700 transition-all"
+                      className="bg-card p-5 rounded-[32px] flex items-center justify-between border border-border shadow-sm hover:border-evergreen-200 transition-all"
                     >
                       <div className="flex items-center gap-5">
                         <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner ${
-                          ['deposit', 'prize'].includes(tx.type) ? 'bg-malachite-500/10 text-malachite-400' : 'bg-evergreen-950 text-evergreen-500'
+                          ['deposit', 'prize'].includes(tx.type) ? 'bg-malachite-500/10 text-malachite-600' : 'bg-seashell-200 text-evergreen-500'
                         }`}>
                           {tx.type === 'deposit' ? <Plus size={20} strokeWidth={3} /> : tx.type === 'withdrawal' ? <ArrowDownLeft size={20} strokeWidth={3} /> : <TrendingUp size={20} strokeWidth={3} />}
                         </div>
                         <div>
-                          <h4 className="text-[13px] font-bold text-white capitalize mb-1">{tx.description || tx.type}</h4>
+                          <h4 className="text-[13px] font-bold text-foreground capitalize mb-1">{tx.description || tx.type}</h4>
                           <div className="flex items-center gap-3">
-                            <span className="text-[9px] font-bold text-evergreen-500 uppercase tracking-widest flex items-center gap-1.5">
+                            <span className="text-[9px] font-bold text-evergreen-400 uppercase tracking-widest flex items-center gap-1.5">
                               <Clock size={10} /> {new Date(tx.created_at).toLocaleDateString()}
                             </span>
                             <Badge variant="outline" className={`border-none rounded-full text-[8px] px-2 py-0 h-4 font-bold tracking-tighter ${
-                              tx.status === 'completed' ? 'bg-malachite-500/10 text-malachite-400' : 'bg-evergreen-950 text-evergreen-500'
+                              tx.status === 'completed' ? 'bg-malachite-500/10 text-malachite-600' : 'bg-seashell-200 text-evergreen-500'
                             }`}>
                               {tx.status.toUpperCase()}
                             </Badge>
@@ -275,7 +275,7 @@ export default function WalletPage() {
                       </div>
                       <div className="text-right">
                         <p className={`text-xl font-heading ${
-                          ['deposit', 'prize'].includes(tx.type) ? 'text-malachite-400' : 'text-evergreen-500'
+                          ['deposit', 'prize'].includes(tx.type) ? 'text-malachite-600' : 'text-evergreen-500'
                         }`}>
                           {['deposit', 'prize'].includes(tx.type) ? '+' : '-'}₹{tx.amount}
                         </p>
@@ -284,8 +284,8 @@ export default function WalletPage() {
                   ))
                 ) : (
                   <div className="text-center py-20 bg-card rounded-[40px] border border-dashed border-border space-y-4 shadow-sm">
-                    <AlertCircle size={40} className="text-evergreen-800 mx-auto" />
-                    <p className="text-[10px] text-evergreen-500 font-bold uppercase tracking-[0.3em]">Operational Ledger Empty</p>
+                    <AlertCircle size={40} className="text-evergreen-100 mx-auto" />
+                    <p className="text-[10px] text-evergreen-300 font-bold uppercase tracking-[0.3em]">Operational Ledger Empty</p>
                   </div>
                 )}
               </div>
@@ -295,19 +295,19 @@ export default function WalletPage() {
   
         {/* Styled Modals */}
         <Dialog open={isDepositOpen} onOpenChange={setIsDepositOpen}>
-          <DialogContent className="p-0 border-none bg-evergreen-950 rounded-[40px] overflow-hidden max-w-[90vw] sm:max-w-[400px] shadow-2xl border border-evergreen-800">
-            <div className="bg-malachite-500/10 p-10 relative overflow-hidden">
+          <DialogContent className="p-0 border-none bg-background rounded-[40px] overflow-hidden max-w-[90vw] sm:max-w-[400px] shadow-2xl border border-border">
+            <div className="premium-gradient p-10 relative overflow-hidden">
               <DialogTitle className="text-3xl font-heading text-white mb-2">Fund <span className="italic opacity-60">Arena</span></DialogTitle>
-              <DialogDescription className="text-evergreen-400 text-[10px] font-bold uppercase tracking-[0.2em]">Inject operational capital for match deployment.</DialogDescription>
-              <div className="absolute top-[-20%] right-[-10%] w-48 h-48 bg-malachite-400/20 blur-[60px] rounded-full" />
+              <DialogDescription className="text-seashell-200 text-[10px] font-bold uppercase tracking-[0.2em]">Inject operational capital for match deployment.</DialogDescription>
+              <div className="absolute top-[-20%] right-[-10%] w-48 h-48 bg-white/10 blur-[60px] rounded-full" />
             </div>
             <div className="p-10 space-y-8">
               <div className="space-y-3">
-                <label className="text-[10px] font-bold text-evergreen-500 uppercase tracking-[0.3em] ml-2">AMOUNT (₹)</label>
+                <label className="text-[10px] font-bold text-evergreen-400 uppercase tracking-[0.3em] ml-2">AMOUNT (₹)</label>
                 <Input 
                   type="number" 
                   placeholder="Enter amount" 
-                  className="h-16 rounded-2xl border border-evergreen-800 bg-evergreen-900 text-2xl font-heading px-8 focus-visible:ring-malachite-400 text-white placeholder:text-evergreen-700"
+                  className="h-16 rounded-2xl border border-border bg-seashell-100 text-2xl font-heading px-8 focus-visible:ring-malachite-500 text-foreground placeholder:text-evergreen-300"
                   value={depositAmount}
                   onChange={(e) => setDepositAmount(e.target.value)}
                 />
@@ -315,7 +315,7 @@ export default function WalletPage() {
               <button 
                 onClick={handleDeposit}
                 disabled={processing}
-                className="w-full h-16 bg-malachite-500 text-black rounded-[2rem] text-[11px] font-bold uppercase tracking-[0.3em] shadow-xl shadow-malachite-500/20 active:scale-95 transition-all"
+                className="w-full h-16 bg-primary text-primary-foreground rounded-[2rem] text-[11px] font-bold uppercase tracking-[0.3em] shadow-xl shadow-evergreen-900/10 active:scale-95 transition-all"
               >
                 {processing ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "CONFIRM DEPLOYMENT"}
               </button>
@@ -324,19 +324,19 @@ export default function WalletPage() {
         </Dialog>
   
         <Dialog open={isWithdrawOpen} onOpenChange={setIsWithdrawOpen}>
-          <DialogContent className="p-0 border-none bg-evergreen-950 rounded-[40px] overflow-hidden max-w-[90vw] sm:max-w-[400px] shadow-2xl border border-evergreen-800">
-            <div className="bg-evergreen-900 p-10 relative overflow-hidden">
-              <DialogTitle className="text-3xl font-heading text-white mb-2">Funds <span className="italic opacity-60">Extraction</span></DialogTitle>
+          <DialogContent className="p-0 border-none bg-background rounded-[40px] overflow-hidden max-w-[90vw] sm:max-w-[400px] shadow-2xl border border-border">
+            <div className="bg-seashell-200 p-10 relative overflow-hidden">
+              <DialogTitle className="text-3xl font-heading text-foreground mb-2">Funds <span className="italic opacity-60">Extraction</span></DialogTitle>
               <DialogDescription className="text-evergreen-400 text-[10px] font-bold uppercase tracking-[0.2em]">Initiate withdrawal of match winnings.</DialogDescription>
               <div className="absolute top-[-20%] right-[-10%] w-48 h-48 bg-malachite-500/10 blur-[60px] rounded-full" />
             </div>
             <div className="p-10 space-y-8">
               <div className="space-y-3">
-                <label className="text-[10px] font-bold text-evergreen-500 uppercase tracking-[0.3em] ml-2">AMOUNT (₹)</label>
+                <label className="text-[10px] font-bold text-evergreen-400 uppercase tracking-[0.3em] ml-2">AMOUNT (₹)</label>
                 <Input 
                   type="number" 
                   placeholder="Min ₹100" 
-                  className="h-16 rounded-2xl border border-evergreen-800 bg-evergreen-900 text-2xl font-heading px-8 focus-visible:ring-malachite-400 text-white placeholder:text-evergreen-700"
+                  className="h-16 rounded-2xl border border-border bg-seashell-100 text-2xl font-heading px-8 focus-visible:ring-malachite-500 text-foreground placeholder:text-evergreen-300"
                   value={withdrawAmount}
                   onChange={(e) => setWithdrawAmount(e.target.value)}
                 />
@@ -344,7 +344,7 @@ export default function WalletPage() {
               <button 
                 onClick={handleWithdraw}
                 disabled={processing}
-                className="w-full h-16 bg-evergreen-900 text-malachite-400 rounded-[2rem] text-[11px] font-bold uppercase tracking-[0.3em] shadow-xl border border-evergreen-800 active:scale-95 transition-all"
+                className="w-full h-16 bg-secondary text-secondary-foreground rounded-[2rem] text-[11px] font-bold uppercase tracking-[0.3em] shadow-xl border-none active:scale-95 transition-all"
               >
                 {processing ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "INITIATE EXTRACTION"}
               </button>

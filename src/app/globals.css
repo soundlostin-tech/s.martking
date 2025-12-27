@@ -119,64 +119,64 @@
   --radius: 2rem;
   
   /* ============================================
-     SEMANTIC COLOR MAPPINGS - GREEN & BLACK THEME
+     SEMANTIC COLOR MAPPINGS - LIGHT NEUTRAL THEME
      ============================================ */
   
-  /* Global App Background: Black (#020202) */
-  --background: #020202;
+  /* Global App Background: Light Neutral (#F7EBE8) */
+  --background: #f7ebe8;
   
-  /* Main Text: White for Dark Mode */
-  --foreground: #ffffff;
+  /* Main Text: Evergreen (#0D2818) for readability on light */
+  --foreground: #0d2818;
   
-  /* Surfaces & Cards: Rich Forest Charcoal (#0D120E) */
-  --card: #0D120E;
-  --card-foreground: #ffffff;
+  /* Surfaces & Cards: Match background per requirements */
+  --card: #f7ebe8;
+  --card-foreground: #0d2818;
   
   /* Popover */
-  --popover: #0D120E;
-  --popover-foreground: #ffffff;
+  --popover: #f7ebe8;
+  --popover-foreground: #0d2818;
   
-  /* Primary Actions: Malachite (#16DB65) */
-  --primary: #16db65;
-  --primary-foreground: #020202;
+  /* Primary Actions: Black Forest / Evergreen (#0D2818) */
+  --primary: #0d2818;
+  --primary-foreground: #f7ebe8;
   
   /* Secondary Accents: Sea Green (#058C42) */
   --secondary: #058c42;
-  --secondary-foreground: #ffffff;
+  --secondary-foreground: #f7ebe8;
   
-  /* Muted: evergreen-400 for background, shadow-green-500 for text */
-  --muted: #3f5449;
-  --muted-foreground: #809187;
+  /* Muted: seashell-200 for background, seashell-700 for text */
+  --muted: #efe1de;
+  --muted-foreground: #887b79;
   
   /* Accent: Malachite (#16DB65) */
   --accent: #16db65;
-  --accent-foreground: #020202;
+  --accent-foreground: #0d2818;
   
   /* Destructive: #892d2d */
   --destructive: #892d2d;
-  --destructive-foreground: #ffffff;
+  --destructive-foreground: #f7ebe8;
   
-  /* Borders: evergreen-800 for subtle tactical look */
-  --border: #08180e;
-  --input: #08180e;
-  --ring: #16db65;
+  /* Borders: seashell-400 for subtle look on neutral bg */
+  --border: #dfcdca;
+  --input: #dfcdca;
+  --ring: #058c42;
   
   /* Chart Colors */
   --chart-1: #16db65;
   --chart-2: #058c42;
   --chart-3: #0d2818;
-  --chart-4: #809187;
-  --chart-5: #020202;
+  --chart-4: #887b79;
+  --chart-5: #f7ebe8;
   
   /* Sidebar */
-  --sidebar: #020202;
-  --sidebar-foreground: #ffffff;
-  --sidebar-primary: #16db65;
-  --sidebar-primary-foreground: #020202;
-  --sidebar-accent: #0d2818;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #0d2818;
-  --sidebar-ring: #16db65;
+  --sidebar: #f7ebe8;
+  --sidebar-foreground: #0d2818;
+  --sidebar-primary: #0d2818;
+  --sidebar-primary-foreground: #f7ebe8;
+  --sidebar-accent: #efe1de;
+  --sidebar-accent-foreground: #0d2818;
+  --sidebar-border: #dfcdca;
+  --sidebar-ring: #058c42;
 }
 
 @layer base {
@@ -186,9 +186,6 @@
   }
   html, body {
     @apply bg-background text-foreground font-sans antialiased selection:bg-malachite-500/20 selection:text-malachite-600 overflow-x-hidden;
-    background-image: 
-      radial-gradient(at 0% 0%, rgba(22, 219, 101, 0.05) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, rgba(13, 40, 24, 0.1) 0px, transparent 50%);
     background-attachment: fixed;
     touch-action: manipulation;
     overscroll-behavior-y: none;
@@ -196,13 +193,24 @@
     user-select: none;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-normal tracking-tight text-white;
+    @apply font-heading font-normal tracking-tight text-foreground;
   }
   input, textarea, select {
     @apply selection:bg-malachite-500/20 selection:text-malachite-600;
     -webkit-user-select: text;
     user-select: text;
   }
+}
+
+/* Premium Gradient Utility */
+.premium-gradient {
+  background: linear-gradient(135deg, #0d2818 0%, #058c42 100%);
+  color: #f7ebe8;
+}
+
+.premium-radial {
+  background: radial-gradient(circle at center, #16db65 0%, #058c42 100%);
+  color: #0d2818;
 }
 
 /* Native Scrollbar Hiding */
