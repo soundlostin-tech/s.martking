@@ -34,13 +34,13 @@ export function BottomNav() {
                   className="relative flex flex-col items-center gap-1 transition-all duration-300"
                 >
                   <div className={`relative z-10 p-1.5 rounded-2xl transition-all duration-300 ${
-                    isActive ? "bg-accent/10 text-secondary" : "text-muted-foreground"
+                    isActive ? "bg-accent/10 text-accent" : "text-muted-foreground"
                   }`}>
                     <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
                   </div>
     
                   <span className={`text-[9px] font-bold uppercase tracking-wider transition-all duration-300 ${
-                    isActive ? "text-secondary scale-110" : "text-muted-foreground"
+                    isActive ? "text-accent scale-110" : "text-muted-foreground"
                   }`}>
                     {item.label}
                   </span>

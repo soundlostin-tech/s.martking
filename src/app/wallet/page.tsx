@@ -206,82 +206,82 @@ export default function WalletPage() {
     
               {/* Quick Actions */}
                 <section className="grid grid-cols-2 gap-6">
-                  <motion.button 
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setIsDepositOpen(true)}
-                    className="card-premium rounded-[32px] py-8 flex flex-col items-center gap-3 border-none shadow-md"
-                  >
-                    <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent shadow-sm">
-                      <Plus size={24} strokeWidth={3} />
+                    <motion.button 
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setIsDepositOpen(true)}
+                      className="card-premium rounded-[32px] py-8 flex flex-col items-center gap-3 border-none shadow-md group"
+                    >
+                      <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent shadow-sm group-hover:bg-accent group-hover:text-primary-foreground transition-all">
+                        <Plus size={24} strokeWidth={3} />
+                      </div>
+                      <span className="text-[10px] font-bold text-accent uppercase tracking-[0.2em]">Add Funds</span>
+                    </motion.button>
+                    <motion.button 
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setIsWithdrawOpen(true)}
+                      className="card-premium rounded-[32px] py-8 flex flex-col items-center gap-3 border-none shadow-md group"
+                    >
+                      <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground shadow-sm group-hover:bg-accent group-hover:text-primary-foreground transition-all">
+                        <ArrowDownLeft size={24} strokeWidth={3} />
+                      </div>
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] group-hover:text-accent transition-colors">Withdraw</span>
+                    </motion.button>
+                  </section>
+        
+                {/* Activity Section */}
+                <section className="space-y-6">
+                  <div className="flex items-center justify-between px-2">
+                    <div className="space-y-1">
+                      <h3 className="text-xl font-heading text-foreground tracking-wide">Financial <span className="italic font-serif opacity-60">Logs</span></h3>
+                      <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">TRANSACTION HISTORY</p>
                     </div>
-                    <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Add Funds</span>
-                  </motion.button>
-                  <motion.button 
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setIsWithdrawOpen(true)}
-                    className="card-premium rounded-[32px] py-8 flex flex-col items-center gap-3 border-none shadow-md"
-                  >
-                    <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-primary shadow-sm">
-                      <ArrowDownLeft size={24} strokeWidth={3} />
-                    </div>
-                    <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Withdraw</span>
-                  </motion.button>
-                </section>
-      
-              {/* Activity Section */}
-              <section className="space-y-6">
-                <div className="flex items-center justify-between px-2">
-                  <div className="space-y-1">
-                    <h3 className="text-xl font-heading text-foreground tracking-wide">Financial <span className="italic font-serif opacity-60">Logs</span></h3>
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">TRANSACTION HISTORY</p>
+                    <Activity size={20} className="text-muted-foreground" />
                   </div>
-                  <Activity size={20} className="text-muted-foreground" />
-                </div>
-      
-                <div className="space-y-4">
-                  {loading ? (
-                    <div className="flex flex-col items-center justify-center py-20 gap-4 bg-card rounded-[40px] border border-border shadow-sm">
-                      <Loader2 className="w-8 h-8 animate-spin text-accent" />
-                      <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Syncing Ledger...</p>
-                    </div>
-                  ) : transactions.length > 0 ? (
-                    transactions.map((tx, i) => (
-                        <motion.div 
-                          key={tx.id}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.05 }}
-                          className="card-premium p-5 rounded-[32px] flex items-center justify-between"
-                        >
-                        <div className="flex items-center gap-5">
-                          <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner ${
-                            ['deposit', 'prize'].includes(tx.type) ? 'bg-accent/10 text-accent' : 'bg-muted text-primary'
-                          }`}>
-                            {tx.type === 'deposit' ? <Plus size={20} strokeWidth={3} /> : tx.type === 'withdrawal' ? <ArrowDownLeft size={20} strokeWidth={3} /> : <TrendingUp size={20} strokeWidth={3} />}
-                          </div>
-                          <div>
-                            <h4 className="text-[13px] font-bold text-foreground capitalize mb-1">{tx.description || tx.type}</h4>
-                            <div className="flex items-center gap-3">
-                              <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-1.5">
-                                <Clock size={10} /> {new Date(tx.created_at).toLocaleDateString()}
-                              </span>
-                              <Badge variant="outline" className={`border-none rounded-full text-[8px] px-2 py-0 h-4 font-bold tracking-tighter ${
-                                tx.status === 'completed' ? 'bg-accent/10 text-accent' : 'bg-muted text-muted-foreground'
-                              }`}>
-                                {tx.status.toUpperCase()}
-                              </Badge>
+        
+                  <div className="space-y-4">
+                    {loading ? (
+                      <div className="flex flex-col items-center justify-center py-20 gap-4 bg-card rounded-[40px] border border-border shadow-sm">
+                        <Loader2 className="w-8 h-8 animate-spin text-accent" />
+                        <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Syncing Ledger...</p>
+                      </div>
+                    ) : transactions.length > 0 ? (
+                      transactions.map((tx, i) => (
+                          <motion.div 
+                            key={tx.id}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: i * 0.05 }}
+                            className="card-premium p-5 rounded-[32px] flex items-center justify-between group"
+                          >
+                          <div className="flex items-center gap-5">
+                            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner transition-all ${
+                              ['deposit', 'prize'].includes(tx.type) ? 'bg-accent/10 text-accent group-hover:bg-accent group-hover:text-primary-foreground' : 'bg-muted text-muted-foreground group-hover:bg-muted-foreground group-hover:text-background'
+                            }`}>
+                              {tx.type === 'deposit' ? <Plus size={20} strokeWidth={3} /> : tx.type === 'withdrawal' ? <ArrowDownLeft size={20} strokeWidth={3} /> : <TrendingUp size={20} strokeWidth={3} />}
+                            </div>
+                            <div>
+                              <h4 className="text-[13px] font-bold text-foreground capitalize mb-1">{tx.description || tx.type}</h4>
+                              <div className="flex items-center gap-3">
+                                <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-1.5">
+                                  <Clock size={10} /> {new Date(tx.created_at).toLocaleDateString()}
+                                </span>
+                                <Badge variant="outline" className={`border-none rounded-full text-[8px] px-2 py-0 h-4 font-bold tracking-tighter ${
+                                  tx.status === 'completed' ? 'bg-accent/10 text-accent' : 'bg-muted text-muted-foreground'
+                                }`}>
+                                  {tx.status.toUpperCase()}
+                                </Badge>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="text-right">
-                          <p className={`text-xl font-heading ${
-                            ['deposit', 'prize'].includes(tx.type) ? 'text-accent' : 'text-primary'
-                          }`}>
-                            {['deposit', 'prize'].includes(tx.type) ? '+' : '-'}₹{tx.amount}
-                          </p>
-                        </div>
-                      </motion.div>
-                    ))
+                          <div className="text-right">
+                            <p className={`text-xl font-heading ${
+                              ['deposit', 'prize'].includes(tx.type) ? 'text-accent' : 'text-foreground/60'
+                            }`}>
+                              {['deposit', 'prize'].includes(tx.type) ? '+' : '-'}₹{tx.amount}
+                            </p>
+                          </div>
+                        </motion.div>
+                      ))
                   ) : (
                     <div className="text-center py-20 bg-card rounded-[40px] border border-dashed border-border space-y-4 shadow-sm">
                       <AlertCircle size={40} className="text-muted-foreground/20 mx-auto" />

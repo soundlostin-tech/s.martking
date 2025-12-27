@@ -155,81 +155,81 @@ export default function MatchesPage() {
                         >
                       <div className="flex justify-between items-start mb-10">
                         <div className="flex items-center gap-6">
-                          <div className={`w-16 h-16 rounded-[24px] flex items-center justify-center transition-all duration-500 ${
-                            match.status === 'live' 
-                              ? 'bg-accent/10 text-accent group-hover:bg-accent group-hover:text-primary' 
-                              : 'bg-muted text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground'
-                          } shadow-sm border border-border`}>
-                            {match.status === 'live' ? <Play size={28} fill="currentColor" className="translate-x-0.5" /> : <Swords size={28} />}
+                            <div className={`w-16 h-16 rounded-[24px] flex items-center justify-center transition-all duration-500 ${
+                              match.status === 'live' 
+                                ? 'bg-accent/10 text-accent group-hover:bg-accent group-hover:text-primary-foreground' 
+                                : 'bg-muted text-muted-foreground group-hover:bg-accent group-hover:text-primary-foreground'
+                            } shadow-sm border border-border`}>
+                              {match.status === 'live' ? <Play size={28} fill="currentColor" className="translate-x-0.5" /> : <Swords size={28} />}
+                            </div>
+                            <div className="min-w-0 space-y-1.5">
+                              <h3 className="font-heading text-xl text-foreground truncate group-hover:text-accent transition-colors">{match.title}</h3>
+                              <div className="flex items-center gap-3">
+                                <Badge variant="outline" className="border-border bg-muted text-[8px] font-bold tracking-widest text-muted-foreground px-3 py-0.5">
+                                  {match.mode.toUpperCase()}
+                                </Badge>
+                                <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-[0.2em]">{match.tournament?.title}</p>
+                              </div>
+                            </div>
                           </div>
-                          <div className="min-w-0 space-y-1.5">
-                            <h3 className="font-heading text-xl text-foreground truncate group-hover:text-secondary transition-colors">{match.title}</h3>
-                            <div className="flex items-center gap-3">
-                              <Badge variant="outline" className="border-border bg-muted text-[8px] font-bold tracking-widest text-muted-foreground px-3 py-0.5">
-                                {match.mode.toUpperCase()}
-                              </Badge>
-                              <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-[0.2em]">{match.tournament?.title}</p>
+                          <div className={`px-4 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-[0.2em] border ${
+                            match.status === 'live' 
+                              ? 'bg-accent text-primary-foreground animate-pulse border-white/20 shadow-lg shadow-accent/20' 
+                              : 'bg-muted text-muted-foreground border-border'
+                          }`}>
+                            {match.status}
+                          </div>
+                        </div>
+      
+                        <div className="grid grid-cols-2 gap-4 mb-10">
+                          <div className="bg-muted/50 rounded-[28px] p-5 border border-border flex items-center gap-5 group-hover:bg-muted transition-colors">
+                            <div className="w-10 h-10 rounded-xl bg-background flex items-center justify-center text-accent shadow-sm">
+                              <Calendar size={18} />
+                            </div>
+                            <div>
+                              <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">Deployment</p>
+                              <p className="text-[11px] font-bold text-foreground uppercase tracking-wide">
+                                {match.start_time ? new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' }) : 'TBD'}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="bg-muted/50 rounded-[28px] p-5 border border-border flex items-center gap-5 group-hover:bg-muted transition-colors">
+                            <div className="w-10 h-10 rounded-xl bg-background flex items-center justify-center text-accent shadow-sm">
+                              <Users size={18} />
+                            </div>
+                            <div>
+                              <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">Capacity</p>
+                              <p className="text-[11px] font-bold text-foreground uppercase tracking-wide">{match.current_slots || 0} / {match.tournament?.slots || 48} WARRIORS</p>
                             </div>
                           </div>
                         </div>
-                        <div className={`px-4 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-[0.2em] border ${
-                          match.status === 'live' 
-                            ? 'bg-accent text-primary animate-pulse border-white/20 shadow-lg shadow-accent/20' 
-                            : 'bg-muted text-muted-foreground border-border'
-                        }`}>
-                          {match.status}
-                        </div>
+      
+                        <div className="flex items-center justify-between pt-6 border-t border-border">
+                          <div className="flex flex-col gap-1">
+                            <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.3em]">PRIZE POOL</p>
+                            <div className="flex items-center gap-2">
+                              <Trophy size={18} className="text-accent" />
+                              <span className="text-2xl font-heading text-foreground">₹{match.tournament?.prize_pool.toLocaleString() || 0}</span>
+                            </div>
+                          </div>
+                        
+                        {match.status === "upcoming" ? (
+                          <motion.button 
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => handleJoinMatch(match.tournament_id, match.id)}
+                            disabled={joining === match.id}
+                            className="bg-accent text-primary-foreground px-10 py-4 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-accent/20 flex items-center gap-3 hover:bg-accent/90 transition-all border-none"
+                          >
+                            {joining === match.id ? <Loader2 size={16} className="animate-spin" /> : (
+                              <>DEPLOY ₹{match.tournament?.entry_fee} <ChevronRight size={14} strokeWidth={3} /></>
+                            )}
+                          </motion.button>
+                        ) : (
+                          <Link href={match.status === 'live' ? `/live?match=${match.id}` : '#'} className="bg-accent text-primary-foreground px-10 py-4 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-accent/20 flex items-center gap-3 hover:bg-accent/90 transition-all">
+                            {match.status === 'live' ? <>WATCH FEED <Radio size={14} className="animate-pulse" /></> : "VIEW DEBRIEF"}
+                          </Link>
+                        )}
                       </div>
-    
-                      <div className="grid grid-cols-2 gap-4 mb-10">
-                        <div className="bg-muted/50 rounded-[28px] p-5 border border-border flex items-center gap-5 group-hover:bg-muted transition-colors">
-                          <div className="w-10 h-10 rounded-xl bg-background flex items-center justify-center text-accent shadow-sm">
-                            <Calendar size={18} />
-                          </div>
-                          <div>
-                            <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">Deployment</p>
-                            <p className="text-[11px] font-bold text-foreground uppercase tracking-wide">
-                              {match.start_time ? new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' }) : 'TBD'}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="bg-muted/50 rounded-[28px] p-5 border border-border flex items-center gap-5 group-hover:bg-muted transition-colors">
-                          <div className="w-10 h-10 rounded-xl bg-background flex items-center justify-center text-accent shadow-sm">
-                            <Users size={18} />
-                          </div>
-                          <div>
-                            <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">Capacity</p>
-                            <p className="text-[11px] font-bold text-foreground uppercase tracking-wide">{match.current_slots || 0} / {match.tournament?.slots || 48} WARRIORS</p>
-                          </div>
-                        </div>
-                      </div>
-    
-                      <div className="flex items-center justify-between pt-6 border-t border-border">
-                        <div className="flex flex-col gap-1">
-                          <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.3em]">PRIZE POOL</p>
-                          <div className="flex items-center gap-2">
-                            <Trophy size={18} className="text-accent" />
-                            <span className="text-2xl font-heading text-foreground">₹{match.tournament?.prize_pool.toLocaleString() || 0}</span>
-                          </div>
-                        </div>
-                      
-                      {match.status === "upcoming" ? (
-                        <motion.button 
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => handleJoinMatch(match.tournament_id, match.id)}
-                          disabled={joining === match.id}
-                          className="bg-secondary text-secondary-foreground px-10 py-4 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-secondary/20 flex items-center gap-3 hover:bg-secondary/90 transition-all border-none"
-                        >
-                          {joining === match.id ? <Loader2 size={16} className="animate-spin" /> : (
-                            <>DEPLOY ₹{match.tournament?.entry_fee} <ChevronRight size={14} strokeWidth={3} /></>
-                          )}
-                        </motion.button>
-                      ) : (
-                        <Link href={match.status === 'live' ? `/live?match=${match.id}` : '#'} className="bg-secondary text-secondary-foreground px-10 py-4 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-secondary/20 flex items-center gap-3 hover:bg-secondary/90 transition-all">
-                          {match.status === 'live' ? <>WATCH FEED <Radio size={14} className="animate-pulse" /></> : "VIEW DEBRIEF"}
-                        </Link>
-                      )}
-                    </div>
                     
                     {/* Visual background glows */}
                     <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-accent/5 blur-[100px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />

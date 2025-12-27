@@ -155,7 +155,7 @@ export default function Home() {
                           </div>
                       </motion.div>
                       <span className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${
-                        hasStory ? 'text-secondary' : 'text-muted-foreground'
+                        hasStory ? 'text-accent' : 'text-muted-foreground'
                       }`}>
                         {profile.full_name?.split(' ')[0].toUpperCase()}
                       </span>
@@ -192,7 +192,7 @@ export default function Home() {
                   </p>
                   
                   <div className="mt-8 flex items-center gap-4">
-                    <button className="px-8 py-3.5 bg-accent text-primary rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-accent/20 hover:bg-accent/90 transition-all">
+                    <button className="px-8 py-3.5 bg-accent text-primary-foreground rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-accent/20 hover:bg-accent/90 transition-all">
                       INITIALIZE ENTRY
                     </button>
                   </div>
@@ -259,18 +259,18 @@ export default function Home() {
                       </div>
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center opacity-10">
-                        <Swords size={32} className="text-primary" />
+                        <Swords size={32} className="text-foreground" />
                       </div>
                     )}
                     <div className="absolute bottom-2 left-2 right-2 px-2 py-1 rounded-xl bg-background/80 backdrop-blur-md border border-border flex items-center justify-center gap-1.5">
                       <div className={`w-1 h-1 rounded-full ${match.status === 'live' ? 'bg-accent animate-pulse' : 'bg-muted-foreground'}`} />
-                      <span className="text-[8px] font-bold uppercase tracking-tighter text-primary">{match.status}</span>
+                      <span className="text-[8px] font-bold uppercase tracking-tighter text-foreground">{match.status}</span>
                     </div>
                   </div>
                   
                   <div className="flex-1 min-w-0 space-y-2">
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">{match.mode} • {match.map || 'Bermuda'}</p>
-                    <h3 className="text-xl font-heading text-foreground truncate group-hover:text-secondary transition-colors">{match.title}</h3>
+                    <h3 className="text-xl font-heading text-foreground truncate group-hover:text-accent transition-colors">{match.title}</h3>
                     
                     <div className="flex items-center gap-5 pt-1">
                       <div className="flex items-center gap-2">
@@ -281,16 +281,16 @@ export default function Home() {
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-5 h-5 rounded-lg bg-muted flex items-center justify-center">
-                          <Users size={12} className="text-primary" />
+                          <Users size={12} className="text-foreground" />
                         </div>
-                        <span className="text-[11px] font-bold text-primary">{match.live_stats?.players_alive || 48} / {match.tournament?.slots || 100}</span>
+                        <span className="text-[11px] font-bold text-foreground">{match.live_stats?.players_alive || 48} / {match.tournament?.slots || 100}</span>
                       </div>
                     </div>
                   </div>
     
                   <div className="flex flex-col items-end justify-center gap-1 pl-4 border-l border-border">
                     <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.3em]">ENTRY</span>
-                    <span className="text-2xl font-heading text-secondary">₹{match.tournament?.entry_fee}</span>
+                    <span className="text-2xl font-heading text-accent">₹{match.tournament?.entry_fee}</span>
                   </div>
                 </motion.div>
               )) : (

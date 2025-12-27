@@ -51,42 +51,46 @@
      Color Palette: Forest Elite
      ============================================ */
 
-  /* Evergreen Scale (Primary elements, text, surfaces) */
-  --color-evergreen-50: #e7e9e8;
-  --color-evergreen-100: #cfd4d1;
-  --color-evergreen-200: #9faaaa;
-  --color-evergreen-300: #6f7f76;
-  --color-evergreen-400: #3f5449;
-  --color-evergreen-500: #0D2818;
-  --color-evergreen-600: #0c2416;
-  --color-evergreen-700: #0a2013;
-  --color-evergreen-800: #08180e;
-  --color-evergreen-900: #051009;
-  --color-evergreen-950: #020202;
+    /* Evergreen Scale (Primary elements, text, surfaces) */
+    --color-evergreen-50: #e7e9e8;
+    --color-evergreen-100: #cfd4d1;
+    --color-evergreen-200: #9faaaa;
+    --color-evergreen-300: #6f7f76;
+    --color-evergreen-400: #3f5449;
+    --color-evergreen-500: #0D2818;
+    --color-evergreen-600: #0c2416;
+    --color-evergreen-700: #0a2013;
+    --color-evergreen-800: #08180e;
+    --color-evergreen-900: #051009;
+    --color-evergreen-950: #020202;
+  
+    /* Sea Green Scale (Interactive elements, buttons) */
+    --color-sea-green-50: #e6f4ec;
+    --color-sea-green-100: #cde8d9;
+    --color-sea-green-200: #9bd1b3;
+    --color-sea-green-300: #69ba8d;
+    --color-sea-green-400: #37a367;
+    --color-sea-green-500: #058C42;
+    --color-sea-green-600: #047e3b;
+    --color-sea-green-700: #046a32;
+    --color-sea-green-800: #035428;
+    --color-sea-green-900: #024320;
+  
+    /* Malachite Scale (Accent elements, highlights) */
+    --color-malachite-50: #e8fbf0;
+    --color-malachite-100: #d1f7e0;
+    --color-malachite-200: #a3efc2;
+    --color-malachite-300: #75e7a3;
+    --color-malachite-400: #47df85;
+    --color-malachite-500: #16DB65;
+    --color-malachite-600: #14c55b;
+    --color-malachite-700: #11a54c;
+    --color-malachite-800: #0d833c;
+    --color-malachite-900: #0a6930;
+  
+    /* Muted Green Scale (Added for palette completeness) */
+    --color-forest-500: #04471C;
 
-  /* Sea Green Scale (Interactive elements, buttons) */
-  --color-sea-green-50: #e6f4ec;
-  --color-sea-green-100: #cde8d9;
-  --color-sea-green-200: #9bd1b3;
-  --color-sea-green-300: #69ba8d;
-  --color-sea-green-400: #37a367;
-  --color-sea-green-500: #058C42;
-  --color-sea-green-600: #047e3b;
-  --color-sea-green-700: #046a32;
-  --color-sea-green-800: #035428;
-  --color-sea-green-900: #024320;
-
-  /* Malachite Scale (Accent elements, highlights) */
-  --color-malachite-50: #e8fbf0;
-  --color-malachite-100: #d1f7e0;
-  --color-malachite-200: #a3efc2;
-  --color-malachite-300: #75e7a3;
-  --color-malachite-400: #47df85;
-  --color-malachite-500: #16DB65;
-  --color-malachite-600: #14c55b;
-  --color-malachite-700: #11a54c;
-  --color-malachite-800: #0d833c;
-  --color-malachite-900: #0a6930;
 
   /* Seashell Scale (Constraint: F7EBE8 Background) */
   --color-seashell-50: #fdfbfb;
@@ -119,64 +123,64 @@
   --radius: 2rem;
   
   /* ============================================
-     SEMANTIC COLOR MAPPINGS - LIGHT NEUTRAL THEME
+     SEMANTIC COLOR MAPPINGS - DARK GREEN THEME
      ============================================ */
   
-  /* Global App Background: Pure White (#FFFFFF) */
-  --background: #ffffff;
+  /* Global App Background: Deep Black (#020202) */
+  --background: #020202;
   
-  /* Main Text: Evergreen (#0D2818) for readability on light */
-  --foreground: #0d2818;
+  /* Main Text: White for readability on dark */
+  --foreground: #ffffff;
   
-  /* Surfaces & Cards: Solid color on neutral bg */
-  --card: #ffffff;
-  --card-foreground: #0d2818;
+  /* Surfaces & Cards: Dark Forest Green (#0D2818) */
+  --card: #0d2818;
+  --card-foreground: #ffffff;
   
   /* Popover */
-  --popover: #ffffff;
-  --popover-foreground: #0d2818;
+  --popover: #0d2818;
+  --popover-foreground: #ffffff;
   
-  /* Primary Actions: Black Forest / Evergreen (#0D2818) */
-  --primary: #0d2818;
-  --primary-foreground: #ffffff;
+  /* Primary Actions: Neon Green (#16DB65) */
+  --primary: #16db65;
+  --primary-foreground: #020202;
   
   /* Secondary Accents: Sea Green (#058C42) */
   --secondary: #058c42;
   --secondary-foreground: #ffffff;
   
-    /* Muted: shadow-green-100 for subtle surfaces */
-    --muted: #f8f9f8;
-    --muted-foreground: #66746c;
+    /* Muted: Dark Green (#04471C) for subtle surfaces */
+    --muted: #04471c;
+    --muted-foreground: #9faaaa;
     
-    /* Accent: Malachite (#16DB65) */
+    /* Accent: Neon Green (#16DB65) */
     --accent: #16db65;
-    --accent-foreground: #0d2818;
+    --accent-foreground: #020202;
     
     /* Destructive: #892d2d */
     --destructive: #892d2d;
     --destructive-foreground: #ffffff;
     
-    /* Borders: shadow-green-200 for cleaner look on white cards */
-    --border: #eef1ef;
-    --input: #eef1ef;
-    --ring: #058c42;
+    /* Borders: Dark Green (#04471C) */
+    --border: #04471c;
+    --input: #04471c;
+    --ring: #16db65;
   
   /* Chart Colors */
   --chart-1: #16db65;
   --chart-2: #058c42;
   --chart-3: #0d2818;
-  --chart-4: #887b79;
-  --chart-5: #ffffff;
+  --chart-4: #04471c;
+  --chart-5: #020202;
   
   /* Sidebar */
-  --sidebar: #ffffff;
-  --sidebar-foreground: #0d2818;
-  --sidebar-primary: #0d2818;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f8f8f8;
-  --sidebar-accent-foreground: #0d2818;
-  --sidebar-border: #e2e2e2;
-  --sidebar-ring: #058c42;
+  --sidebar: #020202;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #16db65;
+  --sidebar-primary-foreground: #020202;
+  --sidebar-accent: #0d2818;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #04471c;
+  --sidebar-ring: #16db65;
 }
 
 @layer base {

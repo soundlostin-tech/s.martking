@@ -150,175 +150,170 @@ export default function Profile() {
                     </button>
                   </div>
                   
-                  <div className="space-y-2">
-                    <h2 className="text-3xl font-heading text-foreground">{profile?.full_name || "Initiate Warrior"}</h2>
-                    <div className="flex items-center justify-center gap-3">
-                      <Badge variant="outline" className="border-border bg-muted text-[9px] font-bold tracking-[0.3em] text-secondary px-4 py-1 rounded-full uppercase">
-                        LEVEL 42 PRO
-                      </Badge>
-                      <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em]">@{profile?.username || user?.email?.split('@')[0]}</p>
+                    <div className="space-y-2">
+                      <h2 className="text-3xl font-heading text-foreground">{profile?.full_name || "Initiate Warrior"}</h2>
+                      <div className="flex items-center justify-center gap-3">
+                        <Badge variant="outline" className="border-border bg-muted text-[9px] font-bold tracking-[0.3em] text-accent px-4 py-1 rounded-full uppercase">
+                          LEVEL 42 PRO
+                        </Badge>
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em]">@{profile?.username || user?.email?.split('@')[0]}</p>
+                      </div>
                     </div>
-                  </div>
-                </section>
-      
-                  {/* Stats Grid - Performance Matrix */}
-                  <section className="grid grid-cols-2 gap-6">
-                    {[
-                      { label: "Elite Wins", value: Math.floor((profile?.matches_played || 0) * (parseFloat(profile?.win_rate || "0") / 100)), icon: Award, color: "accent" },
-                      { label: "Win Rate", value: `${profile?.win_rate || 0}%`, icon: TrendingUp, color: "accent" },
-                      { label: "Earnings", value: `₹${(wallet?.lifetime_earnings || 0).toLocaleString()}`, icon: Trophy, color: "accent" },
-                      { label: "Matches", value: profile?.matches_played || 0, icon: Gamepad2, color: "primary" },
-                    ].map((stat, i) => (
-                        <motion.div 
-                          key={i}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          transition={{ delay: i * 0.1 }}
-                          className="card-premium p-6 rounded-[32px] border-none shadow-md"
-                        >
-                        <div className="flex items-center gap-4 mb-4">
-                          <div className={`w-10 h-10 rounded-2xl bg-accent/10 flex items-center justify-center text-accent shadow-sm`}>
-                            <stat.icon size={20} />
-                          </div>
-                          <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">{stat.label}</span>
-                        </div>
-                        <h4 className="text-3xl font-heading text-foreground">{stat.value}</h4>
-                      </motion.div>
-                    ))}
                   </section>
         
-                  {/* Profile Menu - System Protocols */}
-                  <section className="bg-card rounded-[40px] overflow-hidden border border-border shadow-md">
-                    <div className="p-4 space-y-2">
+                    {/* Stats Grid - Performance Matrix */}
+                    <section className="grid grid-cols-2 gap-6">
                       {[
-                        { label: "Operational Parameters", icon: Settings, href: "#", color: "text-secondary" },
-                        { label: "Signal Notifications", icon: Bell, href: "#", color: "text-muted-foreground" },
-                        { label: "Finance Archives", icon: CreditCard, href: "/wallet", color: "text-secondary" },
-                        { label: "Security Clearance", icon: ShieldCheck, href: "#", color: "text-muted-foreground" },
-                      ].map((item, i) => (
-                        <button 
-                          key={i}
-                          className="w-full flex items-center justify-between p-5 hover:bg-muted active:bg-muted/80 transition-all rounded-[28px] group text-left"
-                        >
+                        { label: "Elite Wins", value: Math.floor((profile?.matches_played || 0) * (parseFloat(profile?.win_rate || "0") / 100)), icon: Award, color: "accent" },
+                        { label: "Win Rate", value: `${profile?.win_rate || 0}%`, icon: TrendingUp, color: "accent" },
+                        { label: "Earnings", value: `₹${(wallet?.lifetime_earnings || 0).toLocaleString()}`, icon: Trophy, color: "accent" },
+                        { label: "Matches", value: profile?.matches_played || 0, icon: Gamepad2, color: "accent" },
+                      ].map((stat, i) => (
+                          <motion.div 
+                            key={i}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: i * 0.1 }}
+                            className="card-premium p-6 rounded-[32px] border-none shadow-md group"
+                          >
+                          <div className="flex items-center gap-4 mb-4">
+                            <div className={`w-10 h-10 rounded-2xl bg-accent/10 flex items-center justify-center text-accent shadow-sm group-hover:bg-accent group-hover:text-primary-foreground transition-all`}>
+                              <stat.icon size={20} />
+                            </div>
+                            <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">{stat.label}</span>
+                          </div>
+                          <h4 className="text-3xl font-heading text-foreground">{stat.value}</h4>
+                        </motion.div>
+                      ))}
+                    </section>
+          
+                    {/* Profile Menu - System Protocols */}
+                    <section className="bg-card rounded-[40px] overflow-hidden border border-border shadow-md">
+                      <div className="p-4 space-y-2">
+                        {[
+                          { label: "Operational Parameters", icon: Settings, href: "#", color: "text-accent" },
+                          { label: "Signal Notifications", icon: Bell, href: "#", color: "text-muted-foreground" },
+                          { label: "Finance Archives", icon: CreditCard, href: "/wallet", color: "text-accent" },
+                          { label: "Security Clearance", icon: ShieldCheck, href: "#", color: "text-muted-foreground" },
+                        ].map((item, i) => (
+                          <button 
+                            key={i}
+                            className="w-full flex items-center justify-between p-5 hover:bg-muted active:bg-muted/80 transition-all rounded-[28px] group text-left"
+                          >
+                          <div className="flex items-center gap-5">
+                            <div className={`w-12 h-12 rounded-2xl bg-muted flex items-center justify-center ${item.color} shadow-sm border border-border group-hover:bg-accent group-hover:text-primary-foreground transition-all`}>
+                              <item.icon size={22} />
+                            </div>
+                            <span className="text-[13px] font-bold text-foreground uppercase tracking-widest">{item.label}</span>
+                          </div>
+                          <ChevronRight size={20} className="text-muted-foreground group-active:translate-x-1 transition-all" />
+                        </button>
+                      ))}
+                      
+                      <div className="h-[1px] bg-border my-4 mx-6" />
+                      
+                      <button 
+                        onClick={handleLogout}
+                        className="w-full flex items-center justify-between p-5 hover:bg-destructive/5 active:bg-destructive/10 transition-all rounded-[28px] group text-left"
+                      >
                         <div className="flex items-center gap-5">
-                          <div className={`w-12 h-12 rounded-2xl bg-muted flex items-center justify-center ${item.color} shadow-sm border border-border`}>
-                            <item.icon size={22} />
+                          <div className="w-12 h-12 rounded-2xl bg-destructive/10 flex items-center justify-center text-destructive shadow-sm border border-destructive/10">
+                            <LogOut size={22} />
                           </div>
-                          <span className="text-[13px] font-bold text-foreground uppercase tracking-widest">{item.label}</span>
+                          <span className="text-[13px] font-bold text-destructive uppercase tracking-widest">Terminate Uplink</span>
                         </div>
-                        <ChevronRight size={20} className="text-muted-foreground group-active:translate-x-1 transition-all" />
+                        <ChevronRight size={20} className="text-destructive/20 group-active:translate-x-1 transition-all" />
                       </button>
-                    ))}
-                    
-                    <div className="h-[1px] bg-border my-4 mx-6" />
-                    
-                    <button 
-                      onClick={handleLogout}
-                      className="w-full flex items-center justify-between p-5 hover:bg-destructive/5 active:bg-destructive/10 transition-all rounded-[28px] group text-left"
-                    >
-                      <div className="flex items-center gap-5">
-                        <div className="w-12 h-12 rounded-2xl bg-destructive/10 flex items-center justify-center text-destructive shadow-sm border border-destructive/10">
-                          <LogOut size={22} />
-                        </div>
-                        <span className="text-[13px] font-bold text-destructive uppercase tracking-widest">Terminate Uplink</span>
-                      </div>
-                      <ChevronRight size={20} className="text-destructive/20 group-active:translate-x-1 transition-all" />
-                    </button>
-                  </div>
-                </section>
-              </div>
-      
-              {/* Edit Profile Overlay */}
-              <AnimatePresence>
-                {isEditing && (
-                  <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-xl flex items-end sm:items-center justify-center p-4"
-                  >
+                    </div>
+                  </section>
+                </div>
+        
+                {/* Edit Profile Overlay */}
+                <AnimatePresence>
+                  {isEditing && (
                     <motion.div 
-                      initial={{ y: "100%" }}
-                      animate={{ y: 0 }}
-                      exit={{ y: "100%" }}
-                      className="bg-background border border-border w-full max-w-md rounded-t-[48px] sm:rounded-[48px] p-10 space-y-10 shadow-2xl relative overflow-hidden"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-xl flex items-end sm:items-center justify-center p-4"
                     >
-                      <div className="relative z-10 flex items-center justify-between">
-                        <div className="space-y-1">
-                          <h3 className="text-2xl font-heading text-foreground">Dossier <span className="italic opacity-60">Update</span></h3>
-                          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Modify Warrior Identification</p>
+                      <motion.div 
+                        initial={{ y: "100%" }}
+                        animate={{ y: 0 }}
+                        exit={{ y: "100%" }}
+                        className="bg-background border border-border w-full max-w-md rounded-t-[48px] sm:rounded-[48px] p-10 space-y-10 shadow-2xl relative overflow-hidden"
+                      >
+                        <div className="relative z-10 flex items-center justify-between">
+                          <div className="space-y-1">
+                            <h3 className="text-2xl font-heading text-foreground">Dossier <span className="italic opacity-60">Update</span></h3>
+                            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Modify Warrior Identification</p>
+                          </div>
+                          <button onClick={() => setIsEditing(false)} className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors border border-border">
+                            <X size={24} />
+                          </button>
                         </div>
-                        <button onClick={() => setIsEditing(false)} className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors border border-border">
-                          <X size={24} />
-                        </button>
-                      </div>
-      
-                      <form onSubmit={handleUpdateProfile} className="relative z-10 space-y-8">
-                        <div className="space-y-6">
-                          <div className="space-y-3">
-                            <label className="text-[10px] font-bold text-secondary uppercase tracking-[0.3em] ml-2">Display Designation</label>
-                            <Input 
-                              value={formData.full_name} 
-                              onChange={(e) => setFormData({ ...formData, full_name: e.target.value })} 
-                              className="h-16 rounded-2xl border border-border bg-muted font-bold px-8 text-foreground focus-visible:ring-accent text-sm"
-                              placeholder="Your Name"
-                            />
+        
+                        <form onSubmit={handleUpdateProfile} className="relative z-10 space-y-8">
+                          <div className="space-y-6">
+                            <div className="space-y-3">
+                              <label className="text-[10px] font-bold text-accent uppercase tracking-[0.3em] ml-2">Display Designation</label>
+                              <Input 
+                                value={formData.full_name} 
+                                onChange={(e) => setFormData({ ...formData, full_name: e.target.value })} 
+                                className="h-16 rounded-2xl border border-border bg-muted font-bold px-8 text-foreground focus-visible:ring-accent text-sm"
+                                placeholder="Your Name"
+                              />
+                            </div>
+                            <div className="space-y-3">
+                              <label className="text-[10px] font-bold text-accent uppercase tracking-[0.3em] ml-2">Arena Alias</label>
+                              <Input 
+                                value={formData.username} 
+                                onChange={(e) => setFormData({ ...formData, username: e.target.value })} 
+                                className="h-16 rounded-2xl border border-border bg-muted font-bold px-8 text-foreground focus-visible:ring-accent text-sm"
+                                placeholder="Username"
+                              />
+                            </div>
+                            <div className="space-y-3">
+                              <label className="text-[10px] font-bold text-accent uppercase tracking-[0.3em] ml-2">Signal Connection (Phone)</label>
+                              <Input 
+                                value={formData.phone} 
+                                onChange={(e) => setFormData({ ...formData, phone: e.target.value })} 
+                                className="h-16 rounded-2xl border border-border bg-muted font-bold px-8 text-foreground focus-visible:ring-accent text-sm"
+                                placeholder="+91"
+                              />
+                            </div>
+                            <div className="space-y-3">
+                              <label className="text-[10px] font-bold text-accent uppercase tracking-[0.3em] ml-2">Visual Proxy (URL)</label>
+                              <Input 
+                                value={formData.avatar_url} 
+                                onChange={(e) => setFormData({ ...formData, avatar_url: e.target.value })} 
+                                className="h-16 rounded-2xl border border-border bg-muted font-bold px-8 text-foreground focus-visible:ring-accent text-sm"
+                                placeholder="https://..."
+                              />
+                            </div>
                           </div>
-                          <div className="space-y-3">
-                            <label className="text-[10px] font-bold text-secondary uppercase tracking-[0.3em] ml-2">Arena Alias</label>
-                            <Input 
-                              value={formData.username} 
-                              onChange={(e) => setFormData({ ...formData, username: e.target.value })} 
-                              className="h-16 rounded-2xl border border-border bg-muted font-bold px-8 text-foreground focus-visible:ring-accent text-sm"
-                              placeholder="Username"
-                            />
-                          </div>
-                          <div className="space-y-3">
-                            <label className="text-[10px] font-bold text-secondary uppercase tracking-[0.3em] ml-2">Signal Connection (Phone)</label>
-                            <Input 
-                              value={formData.phone} 
-                              onChange={(e) => setFormData({ ...formData, phone: e.target.value })} 
-                              className="h-16 rounded-2xl border border-border bg-muted font-bold px-8 text-foreground focus-visible:ring-accent text-sm"
-                              placeholder="+91"
-                            />
-                          </div>
-                          <div className="space-y-3">
-                            <label className="text-[10px] font-bold text-secondary uppercase tracking-[0.3em] ml-2">Visual Proxy (URL)</label>
-                            <Input 
-                              value={formData.avatar_url} 
-                              onChange={(e) => setFormData({ ...formData, avatar_url: e.target.value })} 
-                              className="h-16 rounded-2xl border border-border bg-muted font-bold px-8 text-foreground focus-visible:ring-accent text-sm"
-                              placeholder="https://..."
-                            />
-                          </div>
-                        </div>
-      
-                        <button 
-                          type="submit" 
-                          disabled={saving}
-                          className="w-full h-16 bg-primary text-primary-foreground rounded-3xl text-[11px] font-bold uppercase tracking-[0.3em] shadow-xl shadow-primary/20 active:scale-95 transition-all"
-                        >
-                          {saving ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "COMMIT CHANGES"}
-                        </button>
-                      </form>
-                    
-                    {/* Visual Glow */}
-                    <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-accent/5 blur-[100px] rounded-full pointer-events-none" />
+        
+                          <button 
+                            type="submit" 
+                            disabled={saving}
+                            className="w-full h-16 bg-primary text-primary-foreground rounded-3xl text-[11px] font-bold uppercase tracking-[0.3em] shadow-xl shadow-primary/20 active:scale-95 transition-all"
+                          >
+                            {saving ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "COMMIT CHANGES"}
+                          </button>
+                        </form>
+                      
+                      {/* Visual Glow */}
+                      <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-accent/5 blur-[100px] rounded-full pointer-events-none" />
+                    </motion.div>
                   </motion.div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-        </main>
-
-
-      <BottomNav />
-      {/* Background Glows - disabled for pure white look */}
-      {/* <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0 opacity-30">
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-malachite-400/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-malachite-500/15 blur-[120px] rounded-full" />
-      </div> */}
-    </div>
+                )}
+              </AnimatePresence>
+  
+          </main>
+  
+  
+        <BottomNav />
+      </div>
   );
 }
 
