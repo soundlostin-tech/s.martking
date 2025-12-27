@@ -128,12 +128,12 @@
   /* Main Text: Evergreen (#0D2818) for readability on light */
   --foreground: #0d2818;
   
-  /* Surfaces & Cards: Solid color on neutral bg */
-  --card: #f7ebe8;
+  /* Surfaces & Cards: Solid white for high contrast on neutral bg */
+  --card: #ffffff;
   --card-foreground: #0d2818;
   
   /* Popover */
-  --popover: #f7ebe8;
+  --popover: #ffffff;
   --popover-foreground: #0d2818;
   
   /* Primary Actions: Black Forest / Evergreen (#0D2818) */
