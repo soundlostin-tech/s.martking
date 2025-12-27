@@ -68,7 +68,7 @@ export default function Signin() {
   };
 
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center p-6 relative overflow-hidden">
+      <main className="min-h-screen bg-transparent flex items-center justify-center p-6 relative overflow-hidden">
         {/* Background Decor */}
         <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-40">
           <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-malachite-400/10 rounded-full blur-[120px]" />

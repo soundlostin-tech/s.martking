@@ -267,7 +267,7 @@ function LiveContent() {
 
 export default function Live() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-transparent text-foreground">
       <Suspense fallback={
         <div className="min-h-screen flex items-center justify-center bg-background">
           <Loader2 className="w-8 h-8 animate-spin text-secondary" />

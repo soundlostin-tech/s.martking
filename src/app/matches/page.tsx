@@ -99,7 +99,7 @@ export default function MatchesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-transparent text-foreground">
       <main className="pb-32 relative z-10">
         <TopHeader />
 

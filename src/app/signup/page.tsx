@@ -87,7 +87,7 @@ export default function Signup() {
   };
 
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center p-6 relative overflow-hidden py-24">
+      <main className="min-h-screen bg-transparent flex items-center justify-center p-6 relative overflow-hidden py-24">
         {/* Background Decor */}
         <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-30">
           <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-sea-green-600/10 rounded-full blur-[120px]" />

@@ -145,7 +145,7 @@ export default function AdminOverview() {
   }
 
     return (
-      <main className="min-h-screen pb-32 bg-background text-foreground">
+      <main className="min-h-screen pb-32 bg-transparent text-foreground">
         <div className="px-6 pt-24 relative z-10 space-y-10 max-w-7xl mx-auto">
           {/* Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
