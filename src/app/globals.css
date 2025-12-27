@@ -123,46 +123,46 @@
   --radius: 2rem;
   
   /* ============================================
-     SEMANTIC COLOR MAPPINGS - DARK GREEN THEME
+     SEMANTIC COLOR MAPPINGS - LIGHT THEME (WHITE BG)
      ============================================ */
   
-  /* Global App Background: Deep Black (#020202) */
-  --background: #020202;
+  /* Global App Background: White (#ffffff) */
+  --background: #ffffff;
   
-  /* Main Text: White for readability on dark */
-  --foreground: #ffffff;
+  /* Main Text: Deep Black for readability on light */
+  --foreground: #020202;
   
-  /* Surfaces & Cards: Dark Forest Green (#0D2818) */
-  --card: #0d2818;
-  --card-foreground: #ffffff;
+  /* Surfaces & Cards: Very Light Gray/White */
+  --card: #ffffff;
+  --card-foreground: #020202;
   
   /* Popover */
-  --popover: #0d2818;
-  --popover-foreground: #ffffff;
+  --popover: #ffffff;
+  --popover-foreground: #020202;
   
-  /* Primary Actions: Neon Green (#16DB65) */
-  --primary: #16db65;
-  --primary-foreground: #020202;
+  /* Primary Actions: Neon Green (#16DB65) - maybe slightly darker for contrast on white */
+  --primary: #0ca64b;
+  --primary-foreground: #ffffff;
   
   /* Secondary Accents: Sea Green (#058C42) */
   --secondary: #058c42;
   --secondary-foreground: #ffffff;
   
-    /* Muted: Dark Green (#04471C) for subtle surfaces */
-    --muted: #04471c;
-    --muted-foreground: #9faaaa;
+    /* Muted: Light Gray for subtle surfaces */
+    --muted: #f4f4f4;
+    --muted-foreground: #64748b;
     
-    /* Accent: Neon Green (#16DB65) */
-    --accent: #16db65;
-    --accent-foreground: #020202;
+    /* Accent: Sea Green (#058C42) */
+    --accent: #058c42;
+    --accent-foreground: #ffffff;
     
     /* Destructive: #892d2d */
     --destructive: #892d2d;
     --destructive-foreground: #ffffff;
     
-    /* Borders: Dark Green (#04471C) */
-    --border: #04471c;
-    --input: #04471c;
+    /* Borders: Light Gray */
+    --border: #e2e8f0;
+    --input: #e2e8f0;
     --ring: #16db65;
   
   /* Chart Colors */
@@ -173,13 +173,13 @@
   --chart-5: #020202;
   
   /* Sidebar */
-  --sidebar: #020202;
-  --sidebar-foreground: #ffffff;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #020202;
   --sidebar-primary: #16db65;
-  --sidebar-primary-foreground: #020202;
-  --sidebar-accent: #0d2818;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #04471c;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f4f4f4;
+  --sidebar-accent-foreground: #020202;
+  --sidebar-border: #e2e8f0;
   --sidebar-ring: #16db65;
 }
 
@@ -259,7 +259,7 @@
   width: 100%;
   height: 100%;
   z-index: -1;
-  background-color: #020202;
+  background-color: #ffffff;
   overflow: hidden;
   pointer-events: none;
 }
@@ -269,19 +269,19 @@
   position: absolute;
   inset: 0;
   background-image: 
-    linear-gradient(to right, rgba(22, 219, 101, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(22, 219, 101, 0.05) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: radial-gradient(ellipse at center, black, transparent 80%);
+    linear-gradient(to right, rgba(5, 140, 66, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(5, 140, 66, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black, transparent 90%);
 }
 
 .scan-line {
   position: absolute;
   width: 100%;
   height: 2px;
-  background: linear-gradient(to right, transparent, rgba(22, 219, 101, 0.2), transparent);
-  animation: scan 8s linear infinite;
-  opacity: 0.5;
+  background: linear-gradient(to right, transparent, rgba(5, 140, 66, 0.1), transparent);
+  animation: scan 10s linear infinite;
+  opacity: 0.3;
 }
 
 @keyframes scan {
