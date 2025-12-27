@@ -128,12 +128,12 @@
   /* Main Text: White for Dark Mode */
   --foreground: #ffffff;
   
-  /* Surfaces & Cards: Evergreen (#0D2818) */
-  --card: #0D2818;
+  /* Surfaces & Cards: Rich Forest Charcoal (#0D120E) */
+  --card: #0D120E;
   --card-foreground: #ffffff;
   
   /* Popover */
-  --popover: #0D2818;
+  --popover: #0D120E;
   --popover-foreground: #ffffff;
   
   /* Primary Actions: Malachite (#16DB65) */
@@ -156,9 +156,9 @@
   --destructive: #892d2d;
   --destructive-foreground: #ffffff;
   
-  /* Borders: evergreen-400 */
-  --border: #3f5449;
-  --input: #3f5449;
+  /* Borders: evergreen-800 for subtle tactical look */
+  --border: #08180e;
+  --input: #08180e;
   --ring: #16db65;
   
   /* Chart Colors */

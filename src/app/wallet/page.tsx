@@ -209,7 +209,7 @@ export default function WalletPage() {
               <motion.button 
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsDepositOpen(true)}
-                className="bg-evergreen-900/40 rounded-[32px] py-8 flex flex-col items-center gap-3 border border-evergreen-800 shadow-md hover:bg-evergreen-900 transition-all"
+                className="bg-card rounded-[32px] py-8 flex flex-col items-center gap-3 border border-border shadow-md hover:bg-evergreen-900 transition-all"
               >
                 <div className="w-12 h-12 rounded-2xl bg-malachite-500/10 flex items-center justify-center text-malachite-400 shadow-sm">
                   <Plus size={24} strokeWidth={3} />
@@ -219,7 +219,7 @@ export default function WalletPage() {
               <motion.button 
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsWithdrawOpen(true)}
-                className="bg-evergreen-900/40 rounded-[32px] py-8 flex flex-col items-center gap-3 border border-evergreen-800 shadow-md hover:bg-evergreen-900 transition-all"
+                className="bg-card rounded-[32px] py-8 flex flex-col items-center gap-3 border border-border shadow-md hover:bg-evergreen-900 transition-all"
               >
                 <div className="w-12 h-12 rounded-2xl bg-evergreen-950 flex items-center justify-center text-evergreen-400 shadow-sm">
                   <ArrowDownLeft size={24} strokeWidth={3} />
@@ -227,7 +227,7 @@ export default function WalletPage() {
                 <span className="text-[10px] font-bold text-evergreen-500 uppercase tracking-[0.2em]">Withdraw</span>
               </motion.button>
             </section>
-  
+    
             {/* Activity Section */}
             <section className="space-y-6">
               <div className="flex items-center justify-between px-2">
@@ -237,10 +237,10 @@ export default function WalletPage() {
                 </div>
                 <Activity size={20} className="text-evergreen-800" />
               </div>
-  
+    
               <div className="space-y-4">
                 {loading ? (
-                  <div className="flex flex-col items-center justify-center py-20 gap-4 bg-evergreen-900/40 rounded-[40px] border border-evergreen-800 shadow-sm">
+                  <div className="flex flex-col items-center justify-center py-20 gap-4 bg-card rounded-[40px] border border-border shadow-sm">
                     <Loader2 className="w-8 h-8 animate-spin text-malachite-500" />
                     <p className="text-[10px] text-evergreen-500 font-bold uppercase tracking-widest">Syncing Ledger...</p>
                   </div>
@@ -251,7 +251,7 @@ export default function WalletPage() {
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.05 }}
-                      className="bg-evergreen-900/40 p-5 rounded-[32px] flex items-center justify-between border border-evergreen-800 shadow-sm hover:border-evergreen-700 transition-all"
+                      className="bg-card p-5 rounded-[32px] flex items-center justify-between border border-border shadow-sm hover:border-evergreen-700 transition-all"
                     >
                       <div className="flex items-center gap-5">
                         <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner ${
@@ -283,7 +283,7 @@ export default function WalletPage() {
                     </motion.div>
                   ))
                 ) : (
-                  <div className="text-center py-20 bg-evergreen-900/40 rounded-[40px] border border-dashed border-evergreen-800 space-y-4 shadow-sm">
+                  <div className="text-center py-20 bg-card rounded-[40px] border border-dashed border-border space-y-4 shadow-sm">
                     <AlertCircle size={40} className="text-evergreen-800 mx-auto" />
                     <p className="text-[10px] text-evergreen-500 font-bold uppercase tracking-[0.3em]">Operational Ledger Empty</p>
                   </div>

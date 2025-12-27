@@ -234,7 +234,7 @@ export default function Home() {
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: i * 0.1 }}
-              className="flex-shrink-0 w-36 bg-evergreen-900/50 rounded-[32px] p-6 border border-evergreen-800 shadow-sm"
+              className="flex-shrink-0 w-36 bg-card rounded-[32px] p-6 border border-border shadow-sm"
             >
               <div className="w-10 h-10 rounded-2xl bg-malachite-500/10 flex items-center justify-center mb-4">
                 <stat.icon size={20} className="text-malachite-400" />
@@ -251,7 +251,7 @@ export default function Home() {
             <h2 className="text-2xl font-heading text-white">Active <span className="italic font-serif opacity-60">Operations</span></h2>
             <p className="text-[10px] font-bold text-evergreen-500 uppercase tracking-[0.3em]">BATTLE SIGNALS DETECTED</p>
           </div>
-          <Link href="/matches" className="p-3 bg-evergreen-900 rounded-2xl text-evergreen-400 hover:text-malachite-400 shadow-sm transition-all border border-evergreen-800">
+          <Link href="/matches" className="p-3 bg-card rounded-2xl text-evergreen-400 hover:text-malachite-400 shadow-sm transition-all border border-border">
             <LayoutGrid size={20} />
           </Link>
         </section>
@@ -266,7 +266,7 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
               whileTap={{ scale: 0.97 }}
-              className="bg-evergreen-900/40 rounded-[32px] p-6 border border-evergreen-800 shadow-sm hover:border-malachite-400/30 transition-all duration-500 group flex items-center gap-6"
+              className="bg-card rounded-[32px] p-6 border border-border shadow-sm hover:border-malachite-400/30 transition-all duration-500 group flex items-center gap-6"
             >
               <div className="relative w-24 h-24 rounded-3xl bg-evergreen-800 overflow-hidden flex-shrink-0 shadow-inner">
                  {match.status === 'live' ? (

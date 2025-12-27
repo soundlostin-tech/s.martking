@@ -134,25 +134,25 @@ export default function MatchesPage() {
               </div>
             </section>
     
-            {/* Match List - Polished Arena Cards */}
-            <section className="px-6 pt-8 space-y-6 max-w-2xl mx-auto">
-              {loading ? (
-                <div className="flex flex-col items-center justify-center py-32 gap-6 bg-evergreen-900/40 rounded-[40px] border border-evergreen-800 shadow-sm">
-                  <Loader2 className="w-12 h-12 animate-spin text-malachite-500" />
-                  <p className="text-[10px] text-evergreen-500 font-bold uppercase tracking-[0.3em]">Accessing Arena Database...</p>
-                </div>
-              ) : matches.length > 0 ? (
-                <AnimatePresence mode="popLayout">
-                  {matches.map((match, i) => (
-                    <motion.div
-                      key={match.id}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ delay: i * 0.05 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="bg-evergreen-900/40 rounded-[40px] p-8 border border-evergreen-800 shadow-xl relative overflow-hidden group"
-                    >
+              {/* Match List - Polished Arena Cards */}
+              <section className="px-6 pt-8 space-y-6 max-w-2xl mx-auto">
+                {loading ? (
+                  <div className="flex flex-col items-center justify-center py-32 gap-6 bg-card rounded-[40px] border border-border shadow-sm">
+                    <Loader2 className="w-12 h-12 animate-spin text-malachite-500" />
+                    <p className="text-[10px] text-evergreen-500 font-bold uppercase tracking-[0.3em]">Accessing Arena Database...</p>
+                  </div>
+                ) : matches.length > 0 ? (
+                  <AnimatePresence mode="popLayout">
+                    {matches.map((match, i) => (
+                      <motion.div
+                        key={match.id}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{ delay: i * 0.05 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="bg-card rounded-[40px] p-8 border border-border shadow-xl relative overflow-hidden group"
+                      >
                       <div className="flex justify-between items-start mb-10">
                         <div className="flex items-center gap-6">
                           <div className={`w-16 h-16 rounded-[24px] flex items-center justify-center transition-all duration-500 ${
@@ -235,12 +235,12 @@ export default function MatchesPage() {
                     <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[80%] bg-malachite-500/5 blur-[100px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                   </motion.div>
                 ))}
-              </AnimatePresence>
-            ) : (
-              <div className="bg-evergreen-900/40 p-20 rounded-[50px] border border-dashed border-evergreen-800 text-center space-y-8 mt-8 shadow-sm">
-                <div className="w-24 h-24 bg-evergreen-950 rounded-[32px] flex items-center justify-center mx-auto text-evergreen-800 shadow-inner">
-                  <Signal size={48} strokeWidth={1} />
-                </div>
+                </AnimatePresence>
+              ) : (
+                <div className="bg-card p-20 rounded-[50px] border border-dashed border-border text-center space-y-8 mt-8 shadow-sm">
+                  <div className="w-24 h-24 bg-evergreen-950 rounded-[32px] flex items-center justify-center mx-auto text-evergreen-800 shadow-inner">
+                    <Signal size={48} strokeWidth={1} />
+                  </div>
                 <div className="space-y-3 px-6">
                   <h3 className="text-2xl font-heading text-white">Silent <span className="italic font-serif opacity-60">Horizon</span></h3>
                   <p className="text-[11px] text-evergreen-600 font-bold uppercase tracking-[0.2em] leading-loose">No battle signals detected in the selected sector. Adjust your scanners.</p>

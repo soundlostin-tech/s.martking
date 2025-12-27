@@ -161,45 +161,45 @@ export default function Profile() {
               </div>
             </section>
   
-            {/* Stats Grid - Performance Matrix */}
-            <section className="grid grid-cols-2 gap-6">
-              {[
-                { label: "Elite Wins", value: Math.floor((profile?.matches_played || 0) * (parseFloat(profile?.win_rate || "0") / 100)), icon: Award, color: "malachite" },
-                { label: "Win Rate", value: `${profile?.win_rate || 0}%`, icon: TrendingUp, color: "malachite" },
-                { label: "Earnings", value: `₹${(wallet?.lifetime_earnings || 0).toLocaleString()}`, icon: Trophy, color: "malachite" },
-                { label: "Matches", value: profile?.matches_played || 0, icon: Gamepad2, color: "evergreen" },
-              ].map((stat, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="bg-evergreen-900/40 p-6 rounded-[32px] border border-evergreen-800 shadow-md"
-                >
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className={`w-10 h-10 rounded-2xl bg-malachite-500/10 flex items-center justify-center text-malachite-400 shadow-sm`}>
-                      <stat.icon size={20} />
-                    </div>
-                    <span className="text-[9px] font-bold text-evergreen-500 uppercase tracking-widest">{stat.label}</span>
-                  </div>
-                  <h4 className="text-3xl font-heading text-white">{stat.value}</h4>
-                </motion.div>
-              ))}
-            </section>
-  
-            {/* Profile Menu - System Protocols */}
-            <section className="bg-evergreen-900/40 rounded-[40px] overflow-hidden border border-evergreen-800 shadow-lg">
-              <div className="p-4 space-y-2">
+              {/* Stats Grid - Performance Matrix */}
+              <section className="grid grid-cols-2 gap-6">
                 {[
-                  { label: "Operational Parameters", icon: Settings, href: "#", color: "text-malachite-400" },
-                  { label: "Signal Notifications", icon: Bell, href: "#", color: "text-evergreen-500" },
-                  { label: "Finance Archives", icon: CreditCard, href: "/wallet", color: "text-malachite-400" },
-                  { label: "Security Clearance", icon: ShieldCheck, href: "#", color: "text-evergreen-500" },
-                ].map((item, i) => (
-                  <button 
+                  { label: "Elite Wins", value: Math.floor((profile?.matches_played || 0) * (parseFloat(profile?.win_rate || "0") / 100)), icon: Award, color: "malachite" },
+                  { label: "Win Rate", value: `${profile?.win_rate || 0}%`, icon: TrendingUp, color: "malachite" },
+                  { label: "Earnings", value: `₹${(wallet?.lifetime_earnings || 0).toLocaleString()}`, icon: Trophy, color: "malachite" },
+                  { label: "Matches", value: profile?.matches_played || 0, icon: Gamepad2, color: "evergreen" },
+                ].map((stat, i) => (
+                  <motion.div 
                     key={i}
-                    className="w-full flex items-center justify-between p-5 hover:bg-evergreen-800 active:bg-evergreen-700 transition-all rounded-[28px] group text-left"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: i * 0.1 }}
+                    className="bg-card p-6 rounded-[32px] border border-border shadow-md"
                   >
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className={`w-10 h-10 rounded-2xl bg-malachite-500/10 flex items-center justify-center text-malachite-400 shadow-sm`}>
+                        <stat.icon size={20} />
+                      </div>
+                      <span className="text-[9px] font-bold text-evergreen-500 uppercase tracking-widest">{stat.label}</span>
+                    </div>
+                    <h4 className="text-3xl font-heading text-white">{stat.value}</h4>
+                  </motion.div>
+                ))}
+              </section>
+    
+              {/* Profile Menu - System Protocols */}
+              <section className="bg-card rounded-[40px] overflow-hidden border border-border shadow-lg">
+                <div className="p-4 space-y-2">
+                  {[
+                    { label: "Operational Parameters", icon: Settings, href: "#", color: "text-malachite-400" },
+                    { label: "Signal Notifications", icon: Bell, href: "#", color: "text-evergreen-500" },
+                    { label: "Finance Archives", icon: CreditCard, href: "/wallet", color: "text-malachite-400" },
+                    { label: "Security Clearance", icon: ShieldCheck, href: "#", color: "text-evergreen-500" },
+                  ].map((item, i) => (
+                    <button 
+                      key={i}
+                      className="w-full flex items-center justify-between p-5 hover:bg-evergreen-800 active:bg-evergreen-700 transition-all rounded-[28px] group text-left"
+                    >
                     <div className="flex items-center gap-5">
                       <div className={`w-12 h-12 rounded-2xl bg-evergreen-950 flex items-center justify-center ${item.color} shadow-sm`}>
                         <item.icon size={22} />

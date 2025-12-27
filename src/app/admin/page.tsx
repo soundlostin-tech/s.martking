@@ -178,225 +178,225 @@ export default function AdminOverview() {
             </div>
   
   
-          {/* Summary KPIs */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                { label: "Tournaments", value: stats.totalTournaments, icon: Trophy, growth: stats.revenueGrowth, primary: true },
-                { label: "Members", value: stats.totalUsers, icon: Users, growth: stats.userGrowth },
-                { label: "Active Now", value: stats.activeToday, icon: Activity, sub: "In the Arena" },
-                { label: "Net Revenue", value: `₹${stats.totalRevenue.toLocaleString()}`, icon: IndianRupee, sub: "Platform Earnings" },
-              ].map((stat, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: i * 0.1 }}
-                    className={`rounded-[2.5rem] p-8 border border-evergreen-800 shadow-lg relative overflow-hidden group ${
-                      stat.primary ? "bg-malachite-500/10 border-malachite-500/30" : "bg-evergreen-900/40"
-                    }`}
-                  >
-                    <div className="flex justify-between items-start relative z-10">
-                      <div className="space-y-1">
-                        <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${stat.primary ? "text-malachite-400" : "text-evergreen-500"}`}>
-                          {stat.label}
-                        </p>
-                        <h3 className="text-4xl font-heading text-white leading-none">{stat.value}</h3>
-                        {stat.growth && (
-                          <div className="flex items-center gap-1 text-[10px] font-bold mt-3 text-malachite-400">
-                            <TrendingUp size={12} strokeWidth={3} />
-                            {stat.growth}%
-                          </div>
-                        )}
-                        {stat.sub && (
-                          <p className="text-[9px] font-bold uppercase tracking-widest mt-3 text-evergreen-600">{stat.sub}</p>
-                        )}
-                      </div>
-                      <div className={`p-4 rounded-2xl ${stat.primary ? "bg-malachite-500 text-black shadow-lg shadow-malachite-500/20" : "bg-evergreen-950 text-malachite-400"} group-hover:scale-110 transition-all duration-500 shadow-sm border border-white/5`}>
-                        <stat.icon size={22} />
-                      </div>
-                    </div>
-                    <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-malachite-500/10" : "bg-white/5"}`} />
-  
-                </motion.div>
-              ))}
-          </div>
-  
-          {/* Analytics Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <Card className="rounded-[3rem] border-evergreen-800 shadow-lg overflow-hidden bg-evergreen-900/40 p-8 space-y-8">
-  
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-malachite-500">FINANCIALS</h4>
-                  <h3 className="text-2xl font-heading text-white font-normal">Revenue <span className="italic font-serif opacity-60">Performance</span></h3>
-                </div>
-                <Badge className="bg-malachite-500/10 text-malachite-500 rounded-full text-[9px] px-3 py-1 font-bold border border-malachite-500/20">LIVE DATA</Badge>
-              </div>
-              <div className="h-[280px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={revenueData}>
-                      <defs>
-                        <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#16DB65" stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor="#16DB65" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(22, 219, 101, 0.05)" />
-                      <XAxis 
-                        dataKey="name" 
-                        axisLine={false} 
-                        tickLine={false} 
-                        tick={{fontSize: 10, fontWeight: 'bold', fill: '#809187'}}
-                      />
-                      <YAxis hide />
-                      <Tooltip 
-                        contentStyle={{
-                          borderRadius: '24px', 
-                          border: '1px solid #0D2818', 
-                          boxShadow: '0 20px 40px rgba(0,0,0,0.5)', 
-                          background: '#020202', 
-                          color: '#16DB65',
-                          padding: '16px'
-                        }}
-                        labelStyle={{fontWeight: 'bold', fontSize: '12px', color: '#16DB65', marginBottom: '8px'}}
-                      />
-                      <Area 
-                        type="monotone" 
-                        dataKey="value" 
-                        stroke="#16DB65" 
-                        strokeWidth={4}
-                        fillOpacity={1} 
-                        fill="url(#colorValue)" 
-                      />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
-            </Card>
-  
-              <Card className="rounded-[3rem] border-evergreen-800 shadow-lg overflow-hidden bg-evergreen-900/40 p-8 space-y-8">
-  
-              <div className="space-y-1">
-                <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-malachite-500">ENGAGEMENT</h4>
-                <h3 className="text-2xl font-heading text-white font-normal">Warrior <span className="italic font-serif opacity-60">Activity</span></h3>
-              </div>
-              <div className="h-[280px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={playerData}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(22, 219, 101, 0.05)" />
-                      <XAxis 
-                        dataKey="name" 
-                        axisLine={false} 
-                        tickLine={false} 
-                        tick={{fontSize: 10, fontWeight: 'bold', fill: '#809187'}}
-                      />
-                      <YAxis hide />
-                      <Tooltip 
-                        cursor={{fill: 'rgba(22, 219, 101, 0.05)'}}
-                        contentStyle={{
-                          borderRadius: '24px', 
-                          border: '1px solid #0D2818', 
-                          boxShadow: '0 20px 40px rgba(0,0,0,0.5)', 
-                          background: '#020202', 
-                          color: '#16DB65',
-                          padding: '16px'
-                        }}
-                      />
-                      <Bar 
-                        dataKey="players" 
-                        fill="#058C42" 
-                        radius={[12, 12, 0, 0]} 
-                        barSize={24}
-                      />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </Card>
-          </div>
-  
-          {/* Operations Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Latest Tournaments */}
-            <div className="lg:col-span-2 space-y-6">
-              <div className="flex justify-between items-end px-4">
-                <div className="space-y-1">
-                  <h3 className="text-2xl font-heading text-white">Live <span className="italic font-serif opacity-60">Deployments</span></h3>
-                  <p className="text-[10px] font-bold text-evergreen-500 uppercase tracking-[0.2em]">RECENT ARENA ACTIVITY</p>
-                </div>
-                <Link href="/admin/tournaments" className="group flex items-center gap-2 text-[10px] font-bold text-malachite-500 uppercase tracking-widest hover:text-white transition-colors pb-1">
-                  COMMAND CENTER <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {latestTournaments.length > 0 ? (
-                  latestTournaments.map((t) => (
-                    <motion.div 
-                      key={t.id}
-                      whileHover={{ scale: 1.02 }}
-                      className="bg-evergreen-900/40 p-6 rounded-[2rem] border border-evergreen-800 shadow-md flex items-center justify-between group cursor-pointer"
+            {/* Summary KPIs */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[
+                  { label: "Tournaments", value: stats.totalTournaments, icon: Trophy, growth: stats.revenueGrowth, primary: true },
+                  { label: "Members", value: stats.totalUsers, icon: Users, growth: stats.userGrowth },
+                  { label: "Active Now", value: stats.activeToday, icon: Activity, sub: "In the Arena" },
+                  { label: "Net Revenue", value: `₹${stats.totalRevenue.toLocaleString()}`, icon: IndianRupee, sub: "Platform Earnings" },
+                ].map((stat, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: i * 0.1 }}
+                      className={`rounded-[2.5rem] p-8 border border-border shadow-lg relative overflow-hidden group ${
+                        stat.primary ? "bg-malachite-500/10 border-malachite-500/30" : "bg-card"
+                      }`}
                     >
-                      <div className="flex items-center gap-5">
-                        <div className="w-14 h-14 rounded-2xl bg-evergreen-950 flex items-center justify-center text-evergreen-600 group-hover:bg-malachite-500/10 group-hover:text-malachite-400 transition-all duration-500 border border-white/5 shadow-inner">
-                          <Trophy size={24} />
-                        </div>
+                      <div className="flex justify-between items-start relative z-10">
                         <div className="space-y-1">
-                          <h4 className="font-heading text-white text-base leading-none">{t.title}</h4>
-                          <p className="text-[9px] text-evergreen-500 font-bold uppercase tracking-widest flex items-center gap-2">
-                            <Clock size={10} />
-                            {format(new Date(t.created_at), "MMM d, HH:mm")}
+                          <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${stat.primary ? "text-malachite-400" : "text-evergreen-500"}`}>
+                            {stat.label}
                           </p>
+                          <h3 className="text-4xl font-heading text-white leading-none">{stat.value}</h3>
+                          {stat.growth && (
+                            <div className="flex items-center gap-1 text-[10px] font-bold mt-3 text-malachite-400">
+                              <TrendingUp size={12} strokeWidth={3} />
+                              {stat.growth}%
+                            </div>
+                          )}
+                          {stat.sub && (
+                            <p className="text-[9px] font-bold uppercase tracking-widest mt-3 text-evergreen-600">{stat.sub}</p>
+                          )}
+                        </div>
+                        <div className={`p-4 rounded-2xl ${stat.primary ? "bg-malachite-500 text-black shadow-lg shadow-malachite-500/20" : "bg-evergreen-950 text-malachite-400"} group-hover:scale-110 transition-all duration-500 shadow-sm border border-white/5`}>
+                          <stat.icon size={22} />
                         </div>
                       </div>
-                      <Badge className={`border-none text-[8px] px-3 py-1 font-bold tracking-widest rounded-full ${
-                        t.status === 'active' ? 'bg-malachite-500 text-black shadow-sm' : 'bg-evergreen-950 text-evergreen-500 border border-evergreen-800'
-                      }`}>
-                        {t.status.toUpperCase()}
-                      </Badge>
-                    </motion.div>
-                  ))
-                ) : (
-                  <div className="col-span-2 bg-evergreen-900/40 p-16 rounded-[3rem] border border-dashed border-evergreen-800 text-center space-y-4 shadow-sm">
-                    <Zap className="w-10 h-10 text-evergreen-800 mx-auto" strokeWidth={1} />
-                    <p className="text-[10px] text-evergreen-600 font-bold uppercase tracking-[0.4em]">No active deployments</p>
+                      <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-malachite-500/10" : "bg-white/5"}`} />
+    
+                  </motion.div>
+                ))}
+            </div>
+    
+            {/* Analytics Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <Card className="rounded-[3rem] border-border shadow-lg overflow-hidden bg-card p-8 space-y-8">
+    
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-malachite-500">FINANCIALS</h4>
+                    <h3 className="text-2xl font-heading text-white font-normal">Revenue <span className="italic font-serif opacity-60">Performance</span></h3>
                   </div>
-                )}
-              </div>
-            </div>
-  
-            {/* Activity Logs */}
-            <div className="space-y-6">
-              <div className="px-4 space-y-1">
-                <h3 className="text-2xl font-heading text-white">System <span className="italic font-serif opacity-60">Logs</span></h3>
-                <p className="text-[10px] font-bold text-evergreen-500 uppercase tracking-[0.2em]">REAL-TIME AUDIT</p>
-              </div>
-              
-              <div className="bg-evergreen-900/40 rounded-[2.5rem] border border-evergreen-800 shadow-lg overflow-hidden">
-                <div className="max-h-[420px] overflow-y-auto no-scrollbar">
-                  {activities.map((activity, index) => (
-                    <div 
-                      key={activity.id} 
-                      className={`flex items-start gap-4 p-6 ${index !== activities.length - 1 ? 'border-b border-evergreen-800' : ''} hover:bg-white/[0.02] transition-colors group`}
-                    >
-                      <div className="mt-1 p-3 rounded-xl bg-evergreen-950 text-evergreen-600 group-hover:text-malachite-400 transition-colors border border-white/5">
-                        <activity.icon size={18} />
-                      </div>
-                      <div className="flex-1 space-y-1.5">
-                        <div className="flex justify-between items-start">
-                          <h5 className="text-[10px] font-bold text-evergreen-400 uppercase tracking-widest">{activity.event}</h5>
-                          <span className="text-[8px] text-evergreen-600 font-bold uppercase tracking-tighter flex items-center gap-1.5">
-                            <Clock size={10} /> {activity.time}
-                          </span>
-                        </div>
-                        <p className="text-xs text-evergreen-500 font-serif italic leading-relaxed">{activity.detail}</p>
-                      </div>
-                    </div>
-                  ))}
+                  <Badge className="bg-malachite-500/10 text-malachite-500 rounded-full text-[9px] px-3 py-1 font-bold border border-malachite-500/20">LIVE DATA</Badge>
                 </div>
-                <button className="w-full py-6 bg-evergreen-950 text-[9px] font-bold uppercase tracking-[0.4em] text-evergreen-600 hover:text-malachite-400 hover:bg-evergreen-900 transition-all border-t border-evergreen-800">
-                  ACCESS SYSTEM ARCHIVES
-                </button>
-              </div>
+                <div className="h-[280px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={revenueData}>
+                        <defs>
+                          <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#16DB65" stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor="#16DB65" stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(22, 219, 101, 0.05)" />
+                        <XAxis 
+                          dataKey="name" 
+                          axisLine={false} 
+                          tickLine={false} 
+                          tick={{fontSize: 10, fontWeight: 'bold', fill: '#809187'}}
+                        />
+                        <YAxis hide />
+                        <Tooltip 
+                          contentStyle={{
+                            borderRadius: '24px', 
+                            border: '1px solid #0D2818', 
+                            boxShadow: '0 20px 40px rgba(0,0,0,0.5)', 
+                            background: '#020202', 
+                            color: '#16DB65',
+                            padding: '16px'
+                          }}
+                          labelStyle={{fontWeight: 'bold', fontSize: '12px', color: '#16DB65', marginBottom: '8px'}}
+                        />
+                        <Area 
+                          type="monotone" 
+                          dataKey="value" 
+                          stroke="#16DB65" 
+                          strokeWidth={4}
+                          fillOpacity={1} 
+                          fill="url(#colorValue)" 
+                        />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              </Card>
+    
+                <Card className="rounded-[3rem] border-border shadow-lg overflow-hidden bg-card p-8 space-y-8">
+    
+                <div className="space-y-1">
+                  <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-malachite-500">ENGAGEMENT</h4>
+                  <h3 className="text-2xl font-heading text-white font-normal">Warrior <span className="italic font-serif opacity-60">Activity</span></h3>
+                </div>
+                <div className="h-[280px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={playerData}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(22, 219, 101, 0.05)" />
+                        <XAxis 
+                          dataKey="name" 
+                          axisLine={false} 
+                          tickLine={false} 
+                          tick={{fontSize: 10, fontWeight: 'bold', fill: '#809187'}}
+                        />
+                        <YAxis hide />
+                        <Tooltip 
+                          cursor={{fill: 'rgba(22, 219, 101, 0.05)'}}
+                          contentStyle={{
+                            borderRadius: '24px', 
+                            border: '1px solid #0D2818', 
+                            boxShadow: '0 20px 40px rgba(0,0,0,0.5)', 
+                            background: '#020202', 
+                            color: '#16DB65',
+                            padding: '16px'
+                          }}
+                        />
+                        <Bar 
+                          dataKey="players" 
+                          fill="#058C42" 
+                          radius={[12, 12, 0, 0]} 
+                          barSize={24}
+                        />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </Card>
             </div>
+    
+            {/* Operations Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Latest Tournaments */}
+              <div className="lg:col-span-2 space-y-6">
+                <div className="flex justify-between items-end px-4">
+                  <div className="space-y-1">
+                    <h3 className="text-2xl font-heading text-white">Live <span className="italic font-serif opacity-60">Deployments</span></h3>
+                    <p className="text-[10px] font-bold text-evergreen-500 uppercase tracking-[0.2em]">RECENT ARENA ACTIVITY</p>
+                  </div>
+                  <Link href="/admin/tournaments" className="group flex items-center gap-2 text-[10px] font-bold text-malachite-500 uppercase tracking-widest hover:text-white transition-colors pb-1">
+                    COMMAND CENTER <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {latestTournaments.length > 0 ? (
+                    latestTournaments.map((t) => (
+                      <motion.div 
+                        key={t.id}
+                        whileHover={{ scale: 1.02 }}
+                        className="bg-card p-6 rounded-[2rem] border border-border shadow-md flex items-center justify-between group cursor-pointer"
+                      >
+                        <div className="flex items-center gap-5">
+                          <div className="w-14 h-14 rounded-2xl bg-evergreen-950 flex items-center justify-center text-evergreen-600 group-hover:bg-malachite-500/10 group-hover:text-malachite-400 transition-all duration-500 border border-white/5 shadow-inner">
+                            <Trophy size={24} />
+                          </div>
+                          <div className="space-y-1">
+                            <h4 className="font-heading text-white text-base leading-none">{t.title}</h4>
+                            <p className="text-[9px] text-evergreen-500 font-bold uppercase tracking-widest flex items-center gap-2">
+                              <Clock size={10} />
+                              {format(new Date(t.created_at), "MMM d, HH:mm")}
+                            </p>
+                          </div>
+                        </div>
+                        <Badge className={`border-none text-[8px] px-3 py-1 font-bold tracking-widest rounded-full ${
+                          t.status === 'active' ? 'bg-malachite-500 text-black shadow-sm' : 'bg-evergreen-950 text-evergreen-500 border border-evergreen-800'
+                        }`}>
+                          {t.status.toUpperCase()}
+                        </Badge>
+                      </motion.div>
+                    ))
+                  ) : (
+                    <div className="col-span-2 bg-card p-16 rounded-[3rem] border border-dashed border-border text-center space-y-4 shadow-sm">
+                      <Zap className="w-10 h-10 text-evergreen-800 mx-auto" strokeWidth={1} />
+                      <p className="text-[10px] text-evergreen-600 font-bold uppercase tracking-[0.4em]">No active deployments</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+    
+              {/* Activity Logs */}
+              <div className="space-y-6">
+                <div className="px-4 space-y-1">
+                  <h3 className="text-2xl font-heading text-white">System <span className="italic font-serif opacity-60">Logs</span></h3>
+                  <p className="text-[10px] font-bold text-evergreen-500 uppercase tracking-[0.2em]">REAL-TIME AUDIT</p>
+                </div>
+                
+                <div className="bg-card rounded-[2.5rem] border border-border shadow-lg overflow-hidden">
+                  <div className="max-h-[420px] overflow-y-auto no-scrollbar">
+                    {activities.map((activity, index) => (
+                      <div 
+                        key={activity.id} 
+                        className={`flex items-start gap-4 p-6 ${index !== activities.length - 1 ? 'border-b border-border' : ''} hover:bg-white/[0.02] transition-colors group`}
+                      >
+                        <div className="mt-1 p-3 rounded-xl bg-evergreen-950 text-evergreen-600 group-hover:text-malachite-400 transition-colors border border-white/5">
+                          <activity.icon size={18} />
+                        </div>
+                        <div className="flex-1 space-y-1.5">
+                          <div className="flex justify-between items-start">
+                            <h5 className="text-[10px] font-bold text-evergreen-400 uppercase tracking-widest">{activity.event}</h5>
+                            <span className="text-[8px] text-evergreen-600 font-bold uppercase tracking-tighter flex items-center gap-1.5">
+                              <Clock size={10} /> {activity.time}
+                            </span>
+                          </div>
+                          <p className="text-xs text-evergreen-500 font-serif italic leading-relaxed">{activity.detail}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <button className="w-full py-6 bg-evergreen-950 text-[9px] font-bold uppercase tracking-[0.4em] text-evergreen-600 hover:text-malachite-400 hover:bg-evergreen-900 transition-all border-t border-border">
+                    ACCESS SYSTEM ARCHIVES
+                  </button>
+                </div>
+              </div>
           </div>
         </div>
 
