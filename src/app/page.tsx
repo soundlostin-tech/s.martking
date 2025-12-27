@@ -168,62 +168,61 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="relative h-52 sm:h-72 rounded-[28px] sm:rounded-[40px] overflow-hidden shadow-lg group bg-gradient-to-br from-evergreen-900 to-evergreen-800 gpu-accelerate"
+            className="relative h-56 sm:h-72 rounded-[28px] sm:rounded-[40px] overflow-hidden shadow-2xl group bg-[#011a0f] gpu-accelerate"
           >
+            {/* Background Glows */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-              <div className="absolute -top-1/2 -right-1/4 w-[400px] h-[400px] bg-malachite-500/15 blur-[100px] rounded-full" />
-              <div className="absolute -bottom-1/2 -left-1/4 w-[400px] h-[400px] bg-sea-green-500/15 blur-[100px] rounded-full" />
+              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-malachite-500/10 to-transparent opacity-50" />
+              <div className="absolute -top-[20%] -left-[10%] w-[120%] h-[140%] bg-[radial-gradient(circle_at_20%_35%,rgba(74,222,128,0.15)_0%,transparent_50%)]" />
             </div>
             
-            <div className="relative h-full p-5 sm:p-8 flex flex-col justify-between z-10">
-              <div className="space-y-3 sm:space-y-5">
+            <div className="relative h-full p-6 sm:p-8 flex flex-col justify-between z-10">
+              <div className="space-y-4 sm:space-y-5">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1">
                     {[1,2,3].map(i => (
-                      <motion.div 
+                      <div 
                         key={i}
-                        animate={{ opacity: [0.3, 1, 0.3] }}
-                        transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
-                        className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-malachite-400" 
+                        className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-malachite-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]" 
                       />
                     ))}
                   </div>
-                  <span className="text-[8px] sm:text-[9px] font-bold text-malachite-400 uppercase tracking-[0.3em] sm:tracking-[0.5em]">LIVE NOW</span>
+                  <span className="text-[9px] sm:text-[10px] font-bold text-malachite-400 uppercase tracking-[0.4em] sm:tracking-[0.5em]">LIVE NOW</span>
                 </div>
                 
                 <div className="space-y-1">
-                  <h2 className="text-3xl sm:text-5xl font-outfit font-extrabold text-white leading-none tracking-tight">
-                    WIN <span className="text-transparent bg-clip-text bg-gradient-to-br from-malachite-400 via-white to-sea-green-400">₹1.00L</span>
+                  <h2 className="text-4xl sm:text-6xl font-outfit font-black text-white leading-tight tracking-tight">
+                    WIN <span className="text-transparent bg-clip-text bg-gradient-to-r from-malachite-400 to-sea-green-300">₹1.00L</span>
                   </h2>
-                  <h3 className="text-lg sm:text-2xl font-outfit font-light tracking-[0.1em] sm:tracking-[0.2em] uppercase text-white/60">
-                    Mega <span className="font-bold text-white/90 italic">Vault</span>
+                  <h3 className="text-xl sm:text-3xl font-outfit font-medium tracking-[0.15em] sm:tracking-[0.2em] uppercase text-white/40 flex items-center gap-2">
+                    MEGA <span className="font-black text-white italic tracking-normal">VAULT</span>
                   </h3>
                 </div>
                 
-                <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/10 backdrop-blur-xl border border-white/10">
-                  <div className="flex -space-x-1.5">
+                <div className="inline-flex items-center gap-2.5 px-3 sm:px-4 py-2 rounded-full bg-white/[0.03] backdrop-blur-md border border-white/[0.05]">
+                  <div className="flex -space-x-2">
                     {[1,2,3].map(i => (
-                      <div key={i} className="w-4 h-4 sm:w-5 sm:h-5 rounded-full border border-black bg-evergreen-900" />
+                      <div key={i} className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-[#011a0f] bg-[#0a2a1d]" />
                     ))}
                   </div>
-                  <span className="text-[9px] sm:text-[10px] text-white/60 font-medium uppercase tracking-wider">
-                    <span className="text-malachite-400 font-bold">2.4K+</span> IN QUEUE
+                  <span className="text-[10px] sm:text-[11px] text-white/50 font-bold uppercase tracking-wider">
+                    <span className="text-malachite-400">2.4K+</span> IN QUEUE
                   </span>
                 </div>
               </div>
               
               <motion.button 
                 whileTap={{ scale: 0.95 }}
-                className="self-start px-6 sm:px-8 py-3 sm:py-3.5 bg-white text-black rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] flex items-center gap-2 haptic-tap"
+                className="self-start px-7 sm:px-9 py-3.5 sm:py-4 bg-white text-black rounded-full text-[11px] sm:text-[12px] font-black uppercase tracking-[0.15em] flex items-center gap-2 haptic-tap shadow-xl shadow-white/5"
               >
                 ENTER ARENA
-                <ChevronRight size={14} strokeWidth={3} />
+                <ChevronRight size={16} strokeWidth={4} />
               </motion.button>
             </div>
             
-            <div className="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-malachite-500/10 to-transparent pointer-events-none" />
-            <div className="absolute top-4 right-4 text-white/5 pointer-events-none">
-              <Activity size={120} strokeWidth={0.5} className="sm:w-[180px] sm:h-[180px]" />
+            {/* Heartbeat Graphic */}
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 h-full w-1/2 flex items-center justify-end pr-4 pointer-events-none overflow-hidden opacity-10">
+              <Activity size={240} strokeWidth={0.5} className="text-white sm:w-[320px] sm:h-[320px] transform scale-x-150" />
             </div>
           </motion.div>
         </section>
