@@ -197,8 +197,8 @@ export default function Home() {
                   />
                 </div>
                 
-                <div className="relative h-full p-10 flex flex-col justify-between z-10">
-                  <div className="space-y-6">
+                <div className="relative h-full p-6 md:p-10 flex flex-col justify-between z-10">
+                  <div className="space-y-4 md:space-y-6">
                     <motion.div 
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -218,7 +218,7 @@ export default function Home() {
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-5xl md:text-6xl font-serif text-white leading-[1.05] tracking-tight drop-shadow-2xl"
+                        className="text-4xl md:text-6xl font-serif text-white leading-[1.05] tracking-tight drop-shadow-2xl"
                       >
                         Win <span className="bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">₹1,00,000</span>
                       </motion.h2>
@@ -226,7 +226,7 @@ export default function Home() {
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.4, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-5xl md:text-6xl font-serif leading-[1.05] tracking-tight italic bg-gradient-to-r from-malachite-400 to-sea-green-400 bg-clip-text text-transparent"
+                        className="text-4xl md:text-6xl font-serif leading-[1.05] tracking-tight italic bg-gradient-to-r from-malachite-400 to-sea-green-400 bg-clip-text text-transparent"
                       >
                         Mega Pool
                       </motion.h2>
@@ -236,10 +236,10 @@ export default function Home() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.5 }}
-                      className="inline-flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl"
+                      className="inline-flex items-center gap-3 px-4 py-2 md:px-5 md:py-2.5 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl"
                     >
                       <Users size={14} className="text-malachite-400" />
-                      <span className="text-[11px] text-white/90 font-bold uppercase tracking-[0.15em]">
+                      <span className="text-[10px] md:text-[11px] text-white/90 font-bold uppercase tracking-[0.15em]">
                         <span className="text-malachite-400 font-black">2,450</span> WARRIORS REGISTERED
                       </span>
                     </motion.div>
@@ -256,7 +256,7 @@ export default function Home() {
                         boxShadow: "0 20px 40px rgba(22,219,101,0.25)"
                       }}
                       whileTap={{ scale: 0.97 }}
-                      className="group/btn relative px-10 py-4 bg-malachite-500 text-white rounded-[20px] text-[13px] font-black uppercase tracking-[0.25em] transition-all duration-500 overflow-hidden border border-white/20"
+                      className="group/btn relative px-8 py-3.5 md:px-10 md:py-4 bg-malachite-500 text-white rounded-[20px] text-[12px] md:text-[13px] font-black uppercase tracking-[0.25em] transition-all duration-500 overflow-hidden border border-white/20"
                     >
                       <span className="relative z-20 flex items-center gap-2">
                         INITIALIZE ENTRY
@@ -309,13 +309,13 @@ export default function Home() {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: i * 0.1 + 0.6 }}
                   whileHover={{ y: -4, backgroundColor: "var(--muted)" }}
-                  className="flex-shrink-0 w-36 card-premium rounded-[32px] p-6 cursor-default"
+                  className="flex-shrink-0 w-32 md:w-36 card-premium rounded-[28px] md:rounded-[32px] p-4 md:p-6 cursor-default"
                 >
-                  <div className="w-10 h-10 rounded-2xl bg-accent/5 flex items-center justify-center mb-4 border border-accent/10">
-                    <stat.icon size={20} className="text-accent" />
+                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl bg-accent/5 flex items-center justify-center mb-3 md:mb-4 border border-accent/10">
+                    <stat.icon size={16} className="text-accent md:size-[20px]" />
                   </div>
-                  <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-1">{stat.label}</p>
-                  <h4 className="text-2xl font-serif text-foreground">{stat.value}</h4>
+                  <p className="text-[8px] md:text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-1">{stat.label}</p>
+                  <h4 className="text-xl md:text-2xl font-serif text-foreground">{stat.value}</h4>
                 </motion.div>
               ))}
             </section>
@@ -352,53 +352,53 @@ export default function Home() {
                   {/* Card Background Accent */}
                   <div className="absolute top-0 left-0 w-1 h-full bg-accent opacity-0 group-hover:opacity-100 transition-all duration-300" />
                   
-                  <div className="relative w-24 h-24 rounded-[28px] bg-muted/50 overflow-hidden flex-shrink-0 shadow-inner border border-border group-hover:border-accent/20 transition-colors">
+                  <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-[24px] md:rounded-[28px] bg-muted/50 overflow-hidden flex-shrink-0 shadow-inner border border-border group-hover:border-accent/20 transition-colors">
                      {match.status === 'live' ? (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center animate-pulse">
-                          <Play size={24} className="text-accent translate-x-0.5" fill="currentColor" />
+                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-accent/10 flex items-center justify-center animate-pulse">
+                          <Play size={20} className="text-accent translate-x-0.5 md:size-[24px]" fill="currentColor" />
                         </div>
                       </div>
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center opacity-10 group-hover:opacity-20 transition-opacity">
-                        <Swords size={32} className="text-foreground" />
+                        <Swords size={24} className="text-foreground md:size-[32px]" />
                       </div>
                     )}
-                    <div className="absolute bottom-2 left-2 right-2 px-2.5 py-1 rounded-xl bg-background/90 backdrop-blur-md border border-border flex items-center justify-center gap-1.5 shadow-sm">
-                      <div className={`w-1.5 h-1.5 rounded-full ${match.status === 'live' ? 'bg-accent animate-pulse' : 'bg-muted-foreground'}`} />
-                      <span className="text-[9px] font-black uppercase tracking-tighter text-foreground">{match.status}</span>
+                    <div className="absolute bottom-1.5 left-1.5 right-1.5 md:bottom-2 md:left-2 md:right-2 px-2 md:px-2.5 py-0.5 md:py-1 rounded-lg md:rounded-xl bg-background/90 backdrop-blur-md border border-border flex items-center justify-center gap-1 md:gap-1.5 shadow-sm">
+                      <div className={`w-1 h-1 md:w-1.5 md:h-1.5 rounded-full ${match.status === 'live' ? 'bg-accent animate-pulse' : 'bg-muted-foreground'}`} />
+                      <span className="text-[8px] md:text-[9px] font-black uppercase tracking-tighter text-foreground">{match.status}</span>
                     </div>
                   </div>
                   
-                  <div className="flex-1 min-w-0 space-y-2.5">
-                    <div className="flex items-center gap-3">
-                      <Badge variant="outline" className="rounded-lg bg-accent/5 border-accent/10 text-accent text-[8px] font-black uppercase tracking-widest px-2 py-0.5">
+                  <div className="flex-1 min-w-0 space-y-1.5 md:space-y-2.5">
+                    <div className="flex items-center gap-2 md:gap-3">
+                      <Badge variant="outline" className="rounded-md md:rounded-lg bg-accent/5 border-accent/10 text-accent text-[7px] md:text-[8px] font-black uppercase tracking-widest px-1.5 md:px-2 py-0 md:py-0.5">
                         {match.mode}
                       </Badge>
-                      <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.2em]">{match.map || 'Bermuda'}</span>
+                      <span className="text-[8px] md:text-[9px] font-bold text-muted-foreground uppercase tracking-[0.15em] md:tracking-[0.2em]">{match.map || 'Bermuda'}</span>
                     </div>
                     
-                    <h3 className="text-xl font-serif text-foreground truncate group-hover:text-accent transition-colors">{match.title}</h3>
+                    <h3 className="text-lg md:text-xl font-serif text-foreground truncate group-hover:text-accent transition-colors">{match.title}</h3>
                     
-                    <div className="flex items-center gap-5">
-                      <div className="flex items-center gap-2">
-                        <Trophy size={14} className="text-accent" />
-                        <span className="text-[12px] font-bold text-foreground">₹{match.tournament?.prize_pool.toLocaleString()}</span>
+                    <div className="flex items-center gap-3 md:gap-5">
+                      <div className="flex items-center gap-1.5 md:gap-2">
+                        <Trophy size={12} className="text-accent md:size-[14px]" />
+                        <span className="text-[11px] md:text-[12px] font-bold text-foreground">₹{match.tournament?.prize_pool.toLocaleString()}</span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Users size={14} className="text-muted-foreground" />
-                        <span className="text-[12px] font-medium text-muted-foreground">
+                      <div className="flex items-center gap-1.5 md:gap-2">
+                        <Users size={12} className="text-muted-foreground md:size-[14px]" />
+                        <span className="text-[11px] md:text-[12px] font-medium text-muted-foreground">
                           <span className="text-foreground font-bold">{match.live_stats?.players_alive || 48}</span> / {match.tournament?.slots || 100}
                         </span>
                       </div>
                     </div>
                   </div>
     
-                  <div className="flex flex-col items-end justify-center gap-1.5 pl-6 border-l border-border group-hover:border-accent/10 transition-colors">
-                    <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.3em]">ENTRY</span>
+                  <div className="flex flex-col items-end justify-center gap-1 md:gap-1.5 pl-4 md:pl-6 border-l border-border group-hover:border-accent/10 transition-colors">
+                    <span className="text-[8px] md:text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] md:tracking-[0.3em]">ENTRY</span>
                     <div className="flex items-baseline gap-1">
-                      <span className="text-[12px] font-bold text-accent">₹</span>
-                      <span className="text-3xl font-serif text-accent">{match.tournament?.entry_fee}</span>
+                      <span className="text-[11px] md:text-[12px] font-bold text-accent">₹</span>
+                      <span className="text-2xl md:text-3xl font-serif text-accent">{match.tournament?.entry_fee}</span>
                     </div>
                     <motion.div 
                       whileHover={{ scale: 1.1 }}
