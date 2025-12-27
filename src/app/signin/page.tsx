@@ -79,16 +79,16 @@ export default function Signin() {
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="relative max-w-lg w-full bg-evergreen-950 border border-evergreen-800 shadow-2xl rounded-[3rem] overflow-hidden animate-fadeIn"
+          className="relative max-w-lg w-full bg-white/60 backdrop-blur-xl border border-border shadow-2xl rounded-[3rem] overflow-hidden animate-fadeIn"
         >
-          <div className="bg-malachite-500/5 p-10 border-b border-evergreen-800 relative overflow-hidden">
+          <div className="bg-malachite-500/5 p-10 border-b border-border relative overflow-hidden">
             <div className="relative z-10 flex flex-col items-center text-center space-y-4">
               <div className="w-16 h-16 bg-malachite-500 text-black rounded-2xl flex items-center justify-center shadow-xl shadow-malachite-500/20 mb-2">
                 <Swords size={32} />
               </div>
               <div className="space-y-1">
-                <h4 className="text-[10px] font-bold text-malachite-500 uppercase tracking-[0.4em]">Combat Uplink</h4>
-                <h1 className="text-4xl font-heading text-white leading-tight">
+                <h4 className="text-[10px] font-bold text-malachite-600 uppercase tracking-[0.4em]">Combat Uplink</h4>
+                <h1 className="text-4xl font-heading text-primary leading-tight">
                   Welcome <span className="italic font-serif opacity-60">Back.</span>
                 </h1>
               </div>
@@ -99,32 +99,32 @@ export default function Signin() {
           <div className="p-10 md:p-12 space-y-10">
             <form className="space-y-8" onSubmit={handleSignin}>
               <div className="space-y-3">
-                <Label htmlFor="email" className="text-[10px] font-bold text-evergreen-500 uppercase tracking-[0.3em] ml-4">Deployment Email</Label>
+                <Label htmlFor="email" className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em] ml-4">Deployment Email</Label>
                 <input 
                   id="email" 
                   type="email" 
                   placeholder="warrior@arena.com" 
-                  className={`w-full h-16 px-8 rounded-[2rem] border-none bg-evergreen-900 shadow-inner text-white font-bold text-xs tracking-wide focus:ring-2 focus:ring-malachite-500/20 placeholder:text-evergreen-700 ${errors.email ? 'ring-2 ring-malachite-500/50' : ''}`}
+                  className={`w-full h-16 px-8 rounded-[2rem] border border-border bg-white/50 shadow-inner text-foreground font-bold text-xs tracking-wide focus:ring-2 focus:ring-malachite-500/20 placeholder:text-muted-foreground/50 ${errors.email ? 'ring-2 ring-malachite-500/50' : ''}`}
                   value={formData.email}
                   onChange={(e) => {
                     setFormData({ ...formData, email: e.target.value });
                     if (errors.email) setErrors({ ...errors, email: "" });
                   }}
                 />
-                {errors.email && <p className="text-[10px] text-malachite-500 px-6 mt-1 font-bold">{errors.email}</p>}
+                {errors.email && <p className="text-[10px] text-destructive px-6 mt-1 font-bold">{errors.email}</p>}
               </div>
   
               <div className="space-y-3">
                 <div className="flex justify-between items-center px-4">
-                  <Label htmlFor="password" className="text-[10px] font-bold text-evergreen-500 uppercase tracking-[0.3em]">Access Protocol</Label>
-                  <button type="button" className="text-[10px] text-malachite-500/60 hover:text-malachite-500 font-bold uppercase tracking-widest transition-colors">Recover Keys?</button>
+                  <Label htmlFor="password" className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em]">Access Protocol</Label>
+                  <button type="button" className="text-[10px] text-secondary hover:text-malachite-600 font-bold uppercase tracking-widest transition-colors">Recover Keys?</button>
                 </div>
                 <div className="relative">
                   <input 
                     id="password" 
                     type={showPassword ? "text" : "password"} 
                     placeholder="••••••••" 
-                    className={`w-full h-16 px-8 pr-16 rounded-[2rem] border-none bg-evergreen-900 shadow-inner text-white font-bold text-xs tracking-wide focus:ring-2 focus:ring-malachite-500/20 placeholder:text-evergreen-700 ${errors.password ? 'ring-2 ring-malachite-500/50' : ''}`}
+                    className={`w-full h-16 px-8 pr-16 rounded-[2rem] border border-border bg-white/50 shadow-inner text-foreground font-bold text-xs tracking-wide focus:ring-2 focus:ring-malachite-500/20 placeholder:text-muted-foreground/50 ${errors.password ? 'ring-2 ring-malachite-500/50' : ''}`}
                     value={formData.password}
                     onChange={(e) => {
                       setFormData({ ...formData, password: e.target.value });
@@ -134,12 +134,12 @@ export default function Signin() {
                   <button 
                     type="button" 
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-6 top-1/2 -translate-y-1/2 text-evergreen-600 hover:text-white transition-colors"
+                    className="absolute right-6 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
-                {errors.password && <p className="text-[10px] text-malachite-500 px-6 mt-1 font-bold">{errors.password}</p>}
+                {errors.password && <p className="text-[10px] text-destructive px-6 mt-1 font-bold">{errors.password}</p>}
               </div>
   
               <Button 
@@ -152,9 +152,9 @@ export default function Signin() {
             </form>
   
             <div className="pt-4 text-center">
-              <p className="text-[10px] font-bold text-evergreen-500 uppercase tracking-[0.2em]">
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
                 NEW TO THE ARENA?{" "}
-                <Link href="/signup" className="text-malachite-500 hover:text-malachite-400 transition-colors underline decoration-malachite-500/30 underline-offset-4">
+                <Link href="/signup" className="text-secondary hover:text-malachite-600 transition-colors underline decoration-secondary/30 underline-offset-4">
                   CREATE IDENTITY
                 </Link>
               </p>
@@ -162,18 +162,18 @@ export default function Signin() {
           </div>
   
           {/* Security Badges */}
-          <div className="bg-evergreen-900/50 p-6 flex items-center justify-center gap-8 border-t border-evergreen-800">
+          <div className="bg-muted/50 p-6 flex items-center justify-center gap-8 border-t border-border">
             <div className="flex items-center gap-2">
-              <ShieldCheck size={14} className="text-malachite-500" />
-              <span className="text-[8px] font-bold text-evergreen-500 uppercase tracking-widest">ENCRYPTED</span>
+              <ShieldCheck size={14} className="text-secondary" />
+              <span className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">ENCRYPTED</span>
             </div>
             <div className="flex items-center gap-2">
-              <Zap size={14} className="text-malachite-500" />
-              <span className="text-[8px] font-bold text-evergreen-500 uppercase tracking-widest">FAST UPLINK</span>
+              <Zap size={14} className="text-secondary" />
+              <span className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">FAST UPLINK</span>
             </div>
           </div>
         </motion.div>
       </main>
 
-  );
+    );
 }

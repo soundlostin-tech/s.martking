@@ -138,7 +138,7 @@ export default function AdminOverview() {
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="space-y-4 text-center">
           <Activity className="w-12 h-12 animate-pulse text-primary mx-auto" />
-          <p className="text-[10px] font-bold text-foreground/40 uppercase tracking-[0.3em]">Establishing Uplink...</p>
+          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em]">Establishing Uplink...</p>
         </div>
       </div>
     );
@@ -150,19 +150,19 @@ export default function AdminOverview() {
           {/* Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div className="space-y-1">
-                <h4 className="text-[10px] font-bold text-sea-green-600 uppercase tracking-[0.4em]">Intelligence Command</h4>
+                <h4 className="text-[10px] font-bold text-secondary uppercase tracking-[0.4em]">Intelligence Command</h4>
                 <h1 className="text-4xl md:text-5xl font-heading text-foreground">Arena <span className="italic font-serif opacity-60">Overview</span></h1>
               </div>
               
-              <div className="flex bg-seashell-200 p-1 rounded-[1.2rem] border border-border shadow-md">
+              <div className="flex bg-muted p-1 rounded-[1.2rem] border border-border shadow-md">
                 {["Today", "Week", "Month", "All"].map((range) => (
                   <button
                     key={range}
                     onClick={() => setTimeRange(range)}
                     className={`px-6 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${
                       timeRange === range 
-                        ? "bg-primary text-primary-foreground shadow-lg shadow-evergreen-900/20" 
-                        : "text-evergreen-500 hover:text-foreground hover:bg-seashell-300"
+                        ? "bg-primary text-primary-foreground shadow-lg" 
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                     }`}
                   >
                     {range}
@@ -186,30 +186,30 @@ export default function AdminOverview() {
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: i * 0.1 }}
                       className={`rounded-[2.5rem] p-8 border border-border shadow-sm relative overflow-hidden group ${
-                        stat.primary ? "bg-malachite-500/10 border-malachite-500/30" : "bg-card"
+                        stat.primary ? "bg-accent/10 border-accent/30" : "bg-card"
                       }`}
                     >
                       <div className="flex justify-between items-start relative z-10">
                         <div className="space-y-1">
-                          <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${stat.primary ? "text-malachite-600" : "text-evergreen-400"}`}>
+                          <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${stat.primary ? "text-secondary" : "text-muted-foreground"}`}>
                             {stat.label}
                           </p>
                           <h3 className="text-4xl font-heading text-foreground leading-none">{stat.value}</h3>
                           {stat.growth && (
-                            <div className="flex items-center gap-1 text-[10px] font-bold mt-3 text-malachite-600">
+                            <div className="flex items-center gap-1 text-[10px] font-bold mt-3 text-secondary">
                               <TrendingUp size={12} strokeWidth={3} />
                               {stat.growth}%
                             </div>
                           )}
                           {stat.sub && (
-                            <p className="text-[9px] font-bold uppercase tracking-widest mt-3 text-evergreen-400">{stat.sub}</p>
+                            <p className="text-[9px] font-bold uppercase tracking-widest mt-3 text-muted-foreground">{stat.sub}</p>
                           )}
                         </div>
-                        <div className={`p-4 rounded-2xl ${stat.primary ? "bg-malachite-500 text-white shadow-lg shadow-malachite-500/20" : "bg-seashell-200 text-malachite-600"} group-hover:scale-110 transition-all duration-500 shadow-sm border border-border`}>
+                        <div className={`p-4 rounded-2xl ${stat.primary ? "bg-accent text-accent-foreground shadow-lg shadow-accent/20" : "bg-muted text-secondary"} group-hover:scale-110 transition-all duration-500 shadow-sm border border-border`}>
                           <stat.icon size={22} />
                         </div>
                       </div>
-                      <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-malachite-500/10" : "bg-evergreen-900/5"}`} />
+                      <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-accent/10" : "bg-primary/5"}`} />
     
                   </motion.div>
                 ))}
@@ -221,10 +221,10 @@ export default function AdminOverview() {
     
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">
-                    <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-sea-green-600">FINANCIALS</h4>
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">FINANCIALS</h4>
                     <h3 className="text-2xl font-heading text-foreground font-normal">Revenue <span className="italic font-serif opacity-60">Performance</span></h3>
                   </div>
-                  <Badge className="bg-malachite-500/10 text-malachite-600 rounded-full text-[9px] px-3 py-1 font-bold border border-malachite-500/20">LIVE DATA</Badge>
+                  <Badge className="bg-accent/10 text-secondary rounded-full text-[9px] px-3 py-1 font-bold border border-accent/20">LIVE DATA</Badge>
                 </div>
                 <div className="h-[280px]">
                   <ResponsiveContainer width="100%" height="100%">
@@ -270,7 +270,7 @@ export default function AdminOverview() {
                 <Card className="rounded-[3rem] border-border shadow-sm overflow-hidden bg-card p-8 space-y-8">
     
                 <div className="space-y-1">
-                  <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-sea-green-600">ENGAGEMENT</h4>
+                  <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">ENGAGEMENT</h4>
                   <h3 className="text-2xl font-heading text-foreground font-normal">Warrior <span className="italic font-serif opacity-60">Activity</span></h3>
                 </div>
                 <div className="h-[280px]">
@@ -314,9 +314,9 @@ export default function AdminOverview() {
                 <div className="flex justify-between items-end px-4">
                   <div className="space-y-1">
                     <h3 className="text-2xl font-heading text-foreground">Live <span className="italic font-serif opacity-60">Deployments</span></h3>
-                    <p className="text-[10px] font-bold text-evergreen-400 uppercase tracking-[0.2em]">RECENT ARENA ACTIVITY</p>
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">RECENT ARENA ACTIVITY</p>
                   </div>
-                  <Link href="/admin/tournaments" className="group flex items-center gap-2 text-[10px] font-bold text-sea-green-600 uppercase tracking-widest hover:text-foreground transition-colors pb-1">
+                  <Link href="/admin/tournaments" className="group flex items-center gap-2 text-[10px] font-bold text-secondary uppercase tracking-widest hover:text-foreground transition-colors pb-1">
                     COMMAND CENTER <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
@@ -327,31 +327,31 @@ export default function AdminOverview() {
                       <motion.div 
                         key={t.id}
                         whileHover={{ scale: 1.02 }}
-                        className="bg-card p-6 rounded-[2rem] border border-border shadow-sm flex items-center justify-between group cursor-pointer hover:bg-seashell-200 transition-all"
+                        className="bg-card p-6 rounded-[2rem] border border-border shadow-sm flex items-center justify-between group cursor-pointer hover:bg-muted/30 transition-all"
                       >
                         <div className="flex items-center gap-5">
-                          <div className="w-14 h-14 rounded-2xl bg-seashell-100 flex items-center justify-center text-evergreen-300 group-hover:bg-malachite-500/10 group-hover:text-malachite-600 transition-all duration-500 border border-border shadow-inner">
+                          <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground group-hover:bg-accent/10 group-hover:text-secondary transition-all duration-500 border border-border shadow-inner">
                             <Trophy size={24} />
                           </div>
                           <div className="space-y-1">
                             <h4 className="font-heading text-foreground text-base leading-none">{t.title}</h4>
-                            <p className="text-[9px] text-evergreen-400 font-bold uppercase tracking-widest flex items-center gap-2">
+                            <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest flex items-center gap-2">
                               <Clock size={10} />
                               {format(new Date(t.created_at), "MMM d, HH:mm")}
                             </p>
                           </div>
                         </div>
                         <Badge className={`border-none text-[8px] px-3 py-1 font-bold tracking-widest rounded-full ${
-                          t.status === 'active' ? 'bg-malachite-500 text-white shadow-sm' : 'bg-seashell-200 text-evergreen-500 border border-border'
+                          t.status === 'active' ? 'bg-accent text-accent-foreground shadow-sm' : 'bg-muted text-muted-foreground border border-border'
                         }`}>
                           {t.status.toUpperCase()}
                         </Badge>
                       </motion.div>
                     ))
                   ) : (
-                    <div className="col-span-2 bg-card p-16 rounded-[3rem] border border-dashed border-border text-center space-y-4 shadow-sm">
-                      <Zap className="w-10 h-10 text-evergreen-200 mx-auto" strokeWidth={1} />
-                      <p className="text-[10px] text-evergreen-400 font-bold uppercase tracking-[0.4em]">No active deployments</p>
+                    <div className="col-span-2 bg-muted/30 p-16 rounded-[3rem] border border-dashed border-border text-center space-y-4 shadow-sm">
+                      <Zap className="w-10 h-10 text-muted-foreground/30 mx-auto" strokeWidth={1} />
+                      <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-[0.4em]">No active deployments</p>
                     </div>
                   )}
                 </div>
@@ -361,7 +361,7 @@ export default function AdminOverview() {
               <div className="space-y-6">
                 <div className="px-4 space-y-1">
                   <h3 className="text-2xl font-heading text-foreground">System <span className="italic font-serif opacity-60">Logs</span></h3>
-                  <p className="text-[10px] font-bold text-evergreen-400 uppercase tracking-[0.2em]">REAL-TIME AUDIT</p>
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">REAL-TIME AUDIT</p>
                 </div>
                 
                 <div className="bg-card rounded-[2.5rem] border border-border shadow-md overflow-hidden">
@@ -369,24 +369,24 @@ export default function AdminOverview() {
                     {activities.map((activity, index) => (
                       <div 
                         key={activity.id} 
-                        className={`flex items-start gap-4 p-6 ${index !== activities.length - 1 ? 'border-b border-border' : ''} hover:bg-seashell-100 transition-colors group`}
+                        className={`flex items-start gap-4 p-6 ${index !== activities.length - 1 ? 'border-b border-border' : ''} hover:bg-muted/30 transition-colors group`}
                       >
-                        <div className="mt-1 p-3 rounded-xl bg-seashell-100 text-evergreen-200 group-hover:text-malachite-600 transition-colors border border-border">
+                        <div className="mt-1 p-3 rounded-xl bg-muted text-muted-foreground group-hover:text-secondary transition-colors border border-border">
                           <activity.icon size={18} />
                         </div>
                         <div className="flex-1 space-y-1.5">
                           <div className="flex justify-between items-start">
-                            <h5 className="text-[10px] font-bold text-evergreen-500 uppercase tracking-widest">{activity.event}</h5>
-                            <span className="text-[8px] text-evergreen-400 font-bold uppercase tracking-tighter flex items-center gap-1.5">
+                            <h5 className="text-[10px] font-bold text-foreground uppercase tracking-widest">{activity.event}</h5>
+                            <span className="text-[8px] text-muted-foreground font-bold uppercase tracking-tighter flex items-center gap-1.5">
                               <Clock size={10} /> {activity.time}
                             </span>
                           </div>
-                          <p className="text-xs text-evergreen-400 font-serif italic leading-relaxed">{activity.detail}</p>
+                          <p className="text-xs text-muted-foreground font-serif italic leading-relaxed">{activity.detail}</p>
                         </div>
                       </div>
                     ))}
                   </div>
-                  <button className="w-full py-6 bg-seashell-100 text-[9px] font-bold uppercase tracking-[0.4em] text-evergreen-500 hover:text-malachite-600 hover:bg-seashell-200 transition-all border-t border-border">
+                  <button className="w-full py-6 bg-muted text-[9px] font-bold uppercase tracking-[0.4em] text-muted-foreground hover:text-secondary hover:bg-muted/50 transition-all border-t border-border">
                     ACCESS SYSTEM ARCHIVES
                   </button>
                 </div>
