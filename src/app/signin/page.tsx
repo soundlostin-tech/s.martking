@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { Eye, EyeOff, Loader2, Swords, ShieldCheck, Zap, ArrowLeft, Mail, Lock } from "lucide-react";
+import { Eye, EyeOff, Loader2, Swords, ShieldCheck, Zap, ArrowLeft, Mail, Lock, ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
@@ -71,148 +71,153 @@ export default function Signin() {
   };
 
   return (
-    <main className="min-h-screen bg-evergreen-950 flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden">
-      {/* Background Decor - Refined for better mobile performance */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-50">
-        <div className="absolute top-0 left-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-malachite-400/10 rounded-full blur-[80px] sm:blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-sea-green-500/10 rounded-full blur-[80px] sm:blur-[120px]" />
+    <main className="min-h-[100dvh] bg-evergreen-950 flex flex-col relative overflow-hidden selection:bg-malachite-500 selection:text-black">
+      {/* Dynamic Background */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-malachite-500/10 rounded-full blur-[100px] animate-pulse" />
+        <div className="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-sea-green-500/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
       </div>
 
-      {/* Back Button */}
-      <motion.div 
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="absolute top-6 left-6 z-20"
-      >
+      {/* Header Navigation */}
+      <nav className="relative z-20 flex items-center justify-between p-6 sm:p-8">
         <Link 
           href="/"
-          className="flex items-center gap-2 text-[10px] font-bold text-evergreen-300 uppercase tracking-widest hover:text-white transition-colors group"
+          className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all active:scale-95"
         >
-          <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-malachite-500 transition-colors">
-            <ArrowLeft size={14} className="text-white" />
-          </div>
-          <span>Back to Arena</span>
+          <ChevronLeft className="text-white" size={20} />
         </Link>
-      </motion.div>
-
-      {/* Auth Card */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="relative w-full max-w-[440px] bg-evergreen-900/80 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden z-10"
-      >
-        <div className="bg-gradient-to-br from-malachite-500/10 to-transparent p-8 sm:p-10 border-b border-white/5 relative overflow-hidden text-center">
-          <div className="relative z-10 flex flex-col items-center space-y-4">
-            <motion.div 
-              whileHover={{ rotate: 15, scale: 1.1 }}
-              className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-malachite-400 to-sea-green-600 text-black rounded-2xl flex items-center justify-center shadow-xl shadow-malachite-500/20"
-            >
-              <Swords size={28} className="sm:w-8 sm:h-8" />
-            </motion.div>
-            <div className="space-y-1">
-              <h4 className="text-[9px] sm:text-[10px] font-bold text-malachite-400 uppercase tracking-[0.4em]">Combat Uplink</h4>
-              <h1 className="text-3xl sm:text-4xl font-outfit font-extrabold text-white leading-tight tracking-tight">
-                Welcome <span className="text-malachite-400 italic">Back.</span>
-              </h1>
-            </div>
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-gradient-to-br from-malachite-400 to-sea-green-600 rounded-lg flex items-center justify-center shadow-lg shadow-malachite-500/20">
+            <Swords size={16} className="text-black" />
           </div>
-          {/* Subtle glow effect */}
-          <div className="absolute -top-1/2 -right-1/4 w-64 h-64 bg-malachite-500/20 blur-[60px] rounded-full pointer-events-none" />
+          <span className="text-[10px] font-black text-white uppercase tracking-[0.3em]">Arena</span>
         </div>
+        <div className="w-10 h-10" /> {/* Spacer */}
+      </nav>
 
-        <div className="p-8 sm:p-10 space-y-8">
-          <form className="space-y-6" onSubmit={handleSignin}>
-            <div className="space-y-2.5">
-              <div className="flex items-center justify-between px-1">
-                <Label htmlFor="email" className="text-[9px] sm:text-[10px] font-bold text-evergreen-300 uppercase tracking-[0.2em] ml-1">Deployment Email</Label>
-                <Mail size={12} className="text-evergreen-500" />
-              </div>
-              <div className="relative group">
-                <input 
-                  id="email" 
-                  type="email" 
-                  placeholder="warrior@arena.com" 
-                  className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.email ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-white font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 focus:border-malachite-500/50 transition-all placeholder:text-evergreen-700`}
-                  value={formData.email}
-                  onChange={(e) => {
-                    setFormData({ ...formData, email: e.target.value });
-                    if (errors.email) setErrors({ ...errors, email: "" });
-                  }}
-                />
-              </div>
-              {errors.email && (
-                <motion.p initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="text-[9px] sm:text-[10px] text-destructive px-2 font-bold uppercase tracking-wider">{errors.email}</motion.p>
-              )}
-            </div>
-
-            <div className="space-y-2.5">
-              <div className="flex justify-between items-center px-1">
-                <Label htmlFor="password" className="text-[9px] sm:text-[10px] font-bold text-evergreen-300 uppercase tracking-[0.2em] ml-1">Access Protocol</Label>
-                <button type="button" className="text-[9px] sm:text-[10px] text-malachite-400 hover:text-white font-bold uppercase tracking-widest transition-colors haptic-tap">Recover Keys?</button>
-              </div>
-              <div className="relative group">
-                <input 
-                  id="password" 
-                  type={showPassword ? "text" : "password"} 
-                  placeholder="••••••••" 
-                  className={`w-full h-14 sm:h-16 px-6 sm:px-8 pr-14 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.password ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-white font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 focus:border-malachite-500/50 transition-all placeholder:text-evergreen-700`}
-                  value={formData.password}
-                  onChange={(e) => {
-                    setFormData({ ...formData, password: e.target.value });
-                    if (errors.password) setErrors({ ...errors, password: "" });
-                  }}
-                />
-                <button 
-                  type="button" 
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-5 sm:right-6 top-1/2 -translate-y-1/2 text-evergreen-400 hover:text-white transition-colors p-2"
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-              {errors.password && (
-                <motion.p initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="text-[9px] sm:text-[10px] text-destructive px-2 font-bold uppercase tracking-wider">{errors.password}</motion.p>
-              )}
-            </div>
-
-            <motion.button 
-              type="submit" 
-              whileTap={{ scale: 0.98 }}
-              className="w-full h-14 sm:h-16 rounded-[1.5rem] sm:rounded-[2rem] bg-gradient-to-r from-malachite-500 to-sea-green-600 hover:from-malachite-400 hover:to-sea-green-500 text-black font-extrabold text-[10px] sm:text-[11px] uppercase tracking-[0.3em] shadow-xl shadow-malachite-500/10 mt-2 border-none disabled:opacity-50 disabled:cursor-not-allowed transition-all haptic-tap" 
-              disabled={loading}
-            >
-              {loading ? (
-                <div className="flex items-center justify-center gap-3">
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  <span>SYNCING...</span>
-                </div>
-              ) : "ESTABLISH UPLINK"}
-            </motion.button>
-          </form>
-
-          <div className="pt-2 text-center">
-            <p className="text-[9px] sm:text-[10px] font-bold text-evergreen-400 uppercase tracking-[0.2em]">
-              NEW TO THE ARENA?{" "}
-              <Link href="/signup" className="text-malachite-400 hover:text-white transition-colors underline underline-offset-4 decoration-malachite-400/30 font-extrabold">
-                CREATE IDENTITY
-              </Link>
+      {/* Content Container */}
+      <div className="flex-1 flex flex-col justify-center px-6 sm:px-8 pb-12 max-w-lg mx-auto w-full relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="space-y-10"
+        >
+          {/* Hero Section */}
+          <div className="space-y-3">
+            <h1 className="text-4xl sm:text-5xl font-outfit font-black text-white tracking-tight">
+              Welcome <span className="text-malachite-400">Back.</span>
+            </h1>
+            <p className="text-evergreen-300 font-medium text-sm sm:text-base leading-relaxed max-w-[280px]">
+              Secure connection established. Re-enter the combat arena.
             </p>
           </div>
-        </div>
 
-        {/* Security Footer */}
-        <div className="bg-white/5 p-5 sm:p-6 flex items-center justify-center gap-6 sm:gap-10 border-t border-white/5">
-          <div className="flex items-center gap-2">
-            <ShieldCheck size={14} className="text-malachite-400" />
-            <span className="text-[8px] sm:text-[9px] font-bold text-evergreen-400 uppercase tracking-widest">ENCRYPTED</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Zap size={14} className="text-malachite-400" />
-            <span className="text-[8px] sm:text-[9px] font-bold text-evergreen-400 uppercase tracking-widest">FAST SYNC</span>
-          </div>
+          {/* Form Section */}
+          <form onSubmit={handleSignin} className="space-y-6">
+            <div className="space-y-4">
+              {/* Email Input */}
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-[10px] font-bold text-evergreen-400 uppercase tracking-widest ml-1">
+                  Deployment Email
+                </Label>
+                <div className="relative">
+                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-evergreen-500" size={18} />
+                  <input
+                    id="email"
+                    type="email"
+                    placeholder="warrior@arena.com"
+                    className={`w-full h-16 sm:h-18 pl-14 pr-6 rounded-2xl sm:rounded-[1.5rem] bg-white/5 border-2 ${
+                      errors.email ? 'border-destructive/50' : 'border-white/5 focus:border-malachite-500/50'
+                    } text-white font-bold text-sm transition-all focus:outline-none focus:ring-4 focus:ring-malachite-500/10 placeholder:text-evergreen-800`}
+                    value={formData.email}
+                    onChange={(e) => {
+                      setFormData({ ...formData, email: e.target.value });
+                      if (errors.email) setErrors({ ...errors, email: "" });
+                    }}
+                  />
+                </div>
+                {errors.email && (
+                  <p className="text-[10px] text-destructive font-bold uppercase tracking-wider ml-1">{errors.email}</p>
+                )}
+              </div>
+
+              {/* Password Input */}
+              <div className="space-y-2">
+                <div className="flex justify-between items-center px-1">
+                  <Label htmlFor="password" className="text-[10px] font-bold text-evergreen-400 uppercase tracking-widest">
+                    Access Key
+                  </Label>
+                  <button type="button" className="text-[10px] text-malachite-400 font-black uppercase tracking-widest hover:text-malachite-300 transition-colors">
+                    Forgot?
+                  </button>
+                </div>
+                <div className="relative">
+                  <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-evergreen-500" size={18} />
+                  <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    className={`w-full h-16 sm:h-18 pl-14 pr-14 rounded-2xl sm:rounded-[1.5rem] bg-white/5 border-2 ${
+                      errors.password ? 'border-destructive/50' : 'border-white/5 focus:border-malachite-500/50'
+                    } text-white font-bold text-sm transition-all focus:outline-none focus:ring-4 focus:ring-malachite-500/10 placeholder:text-evergreen-800`}
+                    value={formData.password}
+                    onChange={(e) => {
+                      setFormData({ ...formData, password: e.target.value });
+                      if (errors.password) setErrors({ ...errors, password: "" });
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-evergreen-400 hover:text-white transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+                {errors.password && (
+                  <p className="text-[10px] text-destructive font-bold uppercase tracking-wider ml-1">{errors.password}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Submit Action */}
+            <div className="space-y-4 pt-4">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full h-16 sm:h-18 rounded-2xl sm:rounded-[1.5rem] bg-malachite-500 hover:bg-malachite-400 text-black font-black text-xs sm:text-sm uppercase tracking-[0.2em] shadow-lg shadow-malachite-500/20 active:scale-[0.98] transition-all border-none"
+              >
+                {loading ? (
+                  <div className="flex items-center gap-3">
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span>Establishing Uplink...</span>
+                  </div>
+                ) : (
+                  "Login to Arena"
+                )}
+              </Button>
+
+              <div className="text-center">
+                <p className="text-xs font-bold text-evergreen-400 uppercase tracking-widest">
+                  New Warrior?{" "}
+                  <Link href="/signup" className="text-malachite-400 hover:text-white transition-colors underline underline-offset-4 decoration-malachite-400/30 font-black">
+                    Join the Fight
+                  </Link>
+                </p>
+              </div>
+            </div>
+          </form>
+        </motion.div>
+      </div>
+
+      {/* Footer Branding */}
+      <footer className="relative z-10 p-8 text-center sm:hidden">
+        <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/5 rounded-full border border-white/10 backdrop-blur-md">
+          <ShieldCheck size={14} className="text-malachite-400" />
+          <span className="text-[8px] font-black text-evergreen-400 uppercase tracking-[0.3em]">Encrypted Connection</span>
         </div>
-      </motion.div>
+      </footer>
     </main>
   );
 }
