@@ -128,7 +128,7 @@
   /* Main Text: Evergreen (#0D2818) for readability on light */
   --foreground: #0d2818;
   
-  /* Surfaces & Cards: Solid white for high contrast on neutral bg */
+  /* Surfaces & Cards: Solid color on neutral bg */
   --card: #ffffff;
   --card-foreground: #0d2818;
   
@@ -144,8 +144,8 @@
   --secondary: #058c42;
   --secondary-foreground: #f7ebe8;
   
-  /* Muted: seashell-200 for surfaces, seashell-700 for text */
-  --muted: #efe1de;
+  /* Muted: Cleaner light tone for surfaces */
+  --muted: #f2e6e3;
   --muted-foreground: #887b79;
   
   /* Accent: Malachite (#16DB65) */

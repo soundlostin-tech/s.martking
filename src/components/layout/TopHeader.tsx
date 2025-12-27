@@ -5,7 +5,7 @@ import { Search, Bell, Menu } from "lucide-react";
 
 export function TopHeader() {
   return (
-    <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-xl border-b border-border px-6 py-4 flex items-center justify-between">
+    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border px-6 py-4 flex items-center justify-between">
       <div className="flex flex-col">
         <h1 className="text-xl font-heading text-primary font-bold tracking-tight leading-none">
           Smartking's
