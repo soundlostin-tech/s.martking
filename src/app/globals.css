@@ -373,7 +373,7 @@ input, textarea, select {
 
 /* Mobile Header Height */
 .header-height {
-  height: calc(56px + env(safe-area-inset-top, 0px));
+  height: calc(64px + env(safe-area-inset-top, 0px));
   padding-top: env(safe-area-inset-top, 0px);
 }
 
