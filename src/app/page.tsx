@@ -168,89 +168,131 @@ export default function Home() {
             {/* Dynamic Hero Banner */}
             <section className="px-6 mb-10">
               <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                whileHover={{ y: -5 }}
-                className="relative h-72 rounded-[40px] overflow-hidden shadow-2xl shadow-primary/10 group cursor-pointer transition-all duration-500 border border-white/5 bg-evergreen-500"
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
+                whileHover={{ y: -4 }}
+                className="relative h-72 rounded-[40px] overflow-hidden shadow-[0_20px_50px_rgba(13,40,24,0.3)] group cursor-pointer transition-all duration-700 border border-white/10 bg-[#0D2818]"
               >
-                {/* Ambient Glows */}
-                <div className="absolute inset-0 overflow-hidden">
+                {/* Dynamic Ambient Glows */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  <motion.div 
+                    animate={{ 
+                      scale: [1, 1.3, 1],
+                      opacity: [0.15, 0.25, 0.15],
+                      x: [0, 20, 0],
+                      y: [0, -20, 0]
+                    }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute -bottom-20 -right-20 w-[450px] h-[450px] bg-malachite-500 blur-[120px] rounded-full" 
+                  />
                   <motion.div 
                     animate={{ 
                       scale: [1, 1.2, 1],
-                      opacity: [0.1, 0.2, 0.1]
+                      opacity: [0.05, 0.1, 0.05],
+                      x: [0, -30, 0]
                     }}
-                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute -bottom-20 -right-20 w-[400px] h-[400px] bg-malachite-500 blur-[100px] rounded-full" 
+                    transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                    className="absolute -top-40 -left-20 w-[400px] h-[400px] bg-sea-green-400 blur-[100px] rounded-full" 
                   />
-                  <div className="absolute -top-20 -left-20 w-[300px] h-[300px] bg-sea-green-500/10 blur-[80px] rounded-full" />
                 </div>
                 
                 <div className="relative h-full p-10 flex flex-col justify-between z-10">
                   <div className="space-y-6">
-                    <div className="flex items-center gap-3">
+                    <motion.div 
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2 }}
+                      className="flex items-center gap-3"
+                    >
                       <div className="relative">
                         <div className="w-2.5 h-2.5 rounded-full bg-malachite-500" />
                         <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-malachite-400 animate-ping opacity-75" />
-                        <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-malachite-500/50 shadow-[0_0_15px_rgba(22,219,101,0.8)]" />
+                        <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-malachite-500/50 shadow-[0_0_20px_rgba(22,219,101,0.8)]" />
                       </div>
-                      <span className="text-[10px] font-black text-malachite-400 uppercase tracking-[0.6em]">ELITE DEPLOYMENT ACTIVE</span>
-                    </div>
+                      <span className="text-[10px] font-black text-malachite-400 uppercase tracking-[0.5em] drop-shadow-sm">ELITE DEPLOYMENT ACTIVE</span>
+                    </motion.div>
                     
                     <div className="space-y-1">
                       <motion.h2 
-                        initial={{ x: -20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.3 }}
-                        className="text-5xl md:text-6xl font-serif text-white leading-[1.1] tracking-tight"
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        className="text-5xl md:text-6xl font-serif text-white leading-[1.05] tracking-tight drop-shadow-2xl"
                       >
-                        Win ₹1,00,000
+                        Win <span className="bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">₹1,00,000</span>
                       </motion.h2>
                       <motion.h2 
-                        initial={{ x: -20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.4 }}
-                        className="text-5xl md:text-6xl font-serif text-malachite-500 leading-[1.1] tracking-tight"
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.4, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        className="text-5xl md:text-6xl font-serif leading-[1.05] tracking-tight italic bg-gradient-to-r from-malachite-400 to-sea-green-400 bg-clip-text text-transparent"
                       >
                         Mega Pool
                       </motion.h2>
                     </div>
                     
                     <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.5 }}
-                      className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10"
+                      className="inline-flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl"
                     >
                       <Users size={14} className="text-malachite-400" />
-                      <span className="text-[11px] text-white/80 font-bold uppercase tracking-[0.2em]">
-                        <span className="text-malachite-400">2,450</span> WARRIORS REGISTERED
+                      <span className="text-[11px] text-white/90 font-bold uppercase tracking-[0.15em]">
+                        <span className="text-malachite-400 font-black">2,450</span> WARRIORS REGISTERED
                       </span>
                     </motion.div>
                   </div>
                   
                   <div className="flex items-center justify-between">
                     <motion.button 
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="px-10 py-4 bg-malachite-500 text-white rounded-[24px] text-[12px] font-black uppercase tracking-[0.3em] shadow-[0_10px_30px_rgba(22,219,101,0.3)] hover:shadow-[0_15px_40px_rgba(22,219,101,0.4)] hover:bg-malachite-400 transition-all duration-300 relative overflow-hidden group/btn"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 }}
+                      whileHover={{ 
+                        scale: 1.02, 
+                        y: -4,
+                        boxShadow: "0 20px 40px rgba(22,219,101,0.25)"
+                      }}
+                      whileTap={{ scale: 0.97 }}
+                      className="group/btn relative px-10 py-4 bg-malachite-500 text-white rounded-[20px] text-[13px] font-black uppercase tracking-[0.25em] transition-all duration-500 overflow-hidden border border-white/20"
                     >
-                      <span className="relative z-10">INITIALIZE ENTRY</span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite] transition-transform" />
+                      <span className="relative z-20 flex items-center gap-2">
+                        INITIALIZE ENTRY
+                        <ChevronRight size={16} className="group-hover/btn:translate-x-1 transition-transform duration-300" />
+                      </span>
+                      
+                      {/* Professional Shimmer */}
+                      <div className="absolute inset-0 z-10 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite]" />
+                      
+                      {/* Hover Overlay */}
+                      <div className="absolute inset-0 bg-white/10 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
+                      
+                      {/* Glow Effect */}
+                      <div className="absolute -inset-4 bg-malachite-400/20 blur-xl opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500" />
                     </motion.button>
 
-                    <div className="hidden sm:flex items-center gap-4 text-white/30">
-                      <div className="w-12 h-[1px] bg-white/10" />
-                      <span className="text-[10px] font-bold tracking-[0.3em]">SECURE COMMS</span>
-                      <ShieldCheck size={16} />
-                    </div>
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 0.3 }}
+                      transition={{ delay: 0.8 }}
+                      className="hidden sm:flex items-center gap-4 text-white"
+                    >
+                      <div className="w-12 h-[1px] bg-white/20" />
+                      <span className="text-[10px] font-bold tracking-[0.4em]">SECURE COMMS</span>
+                      <ShieldCheck size={16} className="text-malachite-400" />
+                    </motion.div>
                   </div>
                 </div>
                 
-                <div className="absolute -right-16 -bottom-16 opacity-[0.04] text-white pointer-events-none group-hover:opacity-[0.08] transition-all duration-1000 group-hover:scale-110 group-hover:-rotate-12">
-                  <Trophy size={380} strokeWidth={1} />
+                {/* Watermark Decoration */}
+                <div className="absolute -right-16 -bottom-16 opacity-[0.05] text-white pointer-events-none group-hover:opacity-[0.09] transition-all duration-1000 group-hover:scale-105 group-hover:-rotate-6">
+                  <Trophy size={360} strokeWidth={0.5} />
                 </div>
+                
+                {/* Edge Light */}
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
               </motion.div>
             </section>
     
