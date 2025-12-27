@@ -255,9 +255,9 @@ export default function Home() {
         {/* Section Header - Mobile Optimized */}
         <section className="px-4 sm:px-6 pb-4 flex items-center justify-between">
           <div className="space-y-0.5">
-            <h2 className="text-lg sm:text-xl font-outfit font-bold text-foreground">Active <span className="text-malachite-500 italic">Battles</span></h2>
+            <h2 className="text-lg sm:text-xl font-outfit font-bold text-foreground">Active <span className="text-dark-emerald italic">Battles</span></h2>
             <div className="flex items-center gap-1.5">
-              <div className="w-1 h-1 rounded-full bg-malachite-500 animate-pulse" />
+              <div className="w-1 h-1 rounded-full bg-dark-emerald animate-pulse" />
               <p className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-wider">LIVE SIGNALS</p>
             </div>
           </div>

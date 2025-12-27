@@ -55,13 +55,10 @@
   --color-emerald-depths-2: #0F5132;
   --color-deep-forest: #14452F;
   --color-evergreen: #18392B;
-  --color-jet-black: #1D2E28;
-  --color-carbon-black: #212224;
+    --color-jet-black: #1D2E28;
+    --color-carbon-black: #212224;
+  }
 
-  /* Legacy scales for compatibility */
-  --color-malachite-500: #16DB65;
-  --color-malachite-400: #47df85;
-}
 
 :root {
   --radius: 2rem;

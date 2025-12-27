@@ -105,7 +105,7 @@ export default function Profile() {
   if (authLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <Activity className="w-10 h-10 animate-pulse text-malachite-500" />
+        <Activity className="w-10 h-10 animate-pulse text-dark-emerald" />
       </div>
     );
   }
@@ -121,7 +121,7 @@ export default function Profile() {
             <div className="relative mb-4 sm:mb-6">
               <motion.div 
                 whileTap={{ scale: 0.95 }}
-                className="w-24 h-24 sm:w-32 sm:h-32 rounded-[28px] sm:rounded-[36px] p-1 bg-gradient-to-tr from-malachite-400 to-sea-green-500 shadow-lg"
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-[28px] sm:rounded-[36px] p-1 bg-gradient-to-tr from-dark-emerald to-emerald-depths shadow-lg"
               >
                 <div className="w-full h-full rounded-[24px] sm:rounded-[32px] bg-background p-0.5">
                   <Avatar className="w-full h-full rounded-[22px] sm:rounded-[30px] border-none bg-muted">

@@ -90,7 +90,7 @@ function LiveContent() {
     if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background">
-        <Signal className="w-12 h-12 animate-pulse text-secondary mb-4" />
+        <Signal className="w-12 h-12 animate-pulse text-dark-emerald mb-4" />
         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em]">Syncing Feed...</p>
       </div>
     );
@@ -105,7 +105,7 @@ function LiveContent() {
           <>
             {/* Primary Feed - Cinematic Player */}
             <section className="space-y-6">
-              <div className="relative aspect-video bg-black rounded-[40px] overflow-hidden shadow-2xl shadow-primary/10 border border-border group">
+              <div className="relative aspect-video bg-black rounded-[40px] overflow-hidden shadow-2xl shadow-dark-emerald/10 border border-border group">
                 <iframe 
                   src={activeMatch.stream_url} 
                   className="w-full h-full"
@@ -114,12 +114,12 @@ function LiveContent() {
                 
                 {/* HUD Overlays */}
                 <div className="absolute top-6 left-6 z-20 flex items-center gap-3">
-                  <div className="bg-accent text-accent-foreground px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-2xl text-[10px] font-bold uppercase tracking-widest border border-white/20">
-                    <div className="w-1.5 h-1.5 bg-accent-foreground rounded-full animate-pulse" />
+                  <div className="bg-dark-emerald text-white px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-2xl text-[10px] font-bold uppercase tracking-widest border border-white/20">
+                    <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
                     LIVE
                   </div>
                   <div className="bg-black/40 backdrop-blur-md text-white px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-2xl text-[10px] font-bold uppercase tracking-widest border border-white/10">
-                    <Eye size={14} className="text-accent" />
+                    <Eye size={14} className="text-dark-emerald" />
                     {activeMatch.viewers_count.toLocaleString()}
                   </div>
                 </div>
@@ -140,10 +140,10 @@ function LiveContent() {
                   <div className="space-y-2">
                     <h2 className="text-2xl font-heading text-foreground leading-tight">{activeMatch.title}</h2>
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em] flex items-center gap-2">
-                      <Trophy size={12} className="text-secondary" /> {activeMatch.tournament?.title}
+                      <Trophy size={12} className="text-dark-emerald" /> {activeMatch.tournament?.title}
                     </p>
                   </div>
-                  <Badge className="bg-secondary/10 text-secondary border-none rounded-full text-[10px] px-4 py-1.5 font-bold tracking-widest">
+                  <Badge className="bg-dark-emerald/10 text-dark-emerald border-none rounded-full text-[10px] px-4 py-1.5 font-bold tracking-widest">
                     ROUND {activeMatch.current_round}
                   </Badge>
                 </div>
@@ -151,7 +151,7 @@ function LiveContent() {
                 {/* Tactical Grid */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-muted/30 p-5 rounded-[28px] border border-border flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-secondary shadow-inner">
+                    <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-dark-emerald shadow-inner">
                       <MapIcon size={20} />
                     </div>
                     <div>
@@ -160,7 +160,7 @@ function LiveContent() {
                     </div>
                   </div>
                   <div className="bg-muted/30 p-5 rounded-[28px] border border-border flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-secondary shadow-inner">
+                    <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-dark-emerald shadow-inner">
                       <Activity size={20} />
                     </div>
                     <div>
