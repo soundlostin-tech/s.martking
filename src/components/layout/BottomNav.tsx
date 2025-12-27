@@ -17,7 +17,7 @@ export function BottomNav() {
   const pathname = usePathname();
 
     return (
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-t border-shadow-green-200 pb-safe shadow-[0_-5px_20px_-10px_rgba(13,40,24,0.05)]">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-t border-evergreen-800 pb-safe shadow-[0_-5px_20px_-10px_rgba(0,0,0,0.5)]">
         <div className="flex justify-around items-center h-16 max-w-lg mx-auto px-4">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
@@ -34,13 +34,13 @@ export function BottomNav() {
                   className="relative flex flex-col items-center gap-1 transition-all duration-300"
                 >
                   <div className={`relative z-10 p-1.5 rounded-2xl transition-all duration-300 ${
-                    isActive ? "bg-malachite-500/10 text-sea-green-600" : "text-shadow-green-500"
+                    isActive ? "bg-malachite-500/10 text-malachite-500" : "text-evergreen-500"
                   }`}>
                     <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
                   </div>
     
                   <span className={`text-[9px] font-bold uppercase tracking-wider transition-all duration-300 ${
-                    isActive ? "text-sea-green-600 scale-110" : "text-shadow-green-400"
+                    isActive ? "text-malachite-500 scale-110" : "text-evergreen-600"
                   }`}>
                     {item.label}
                   </span>

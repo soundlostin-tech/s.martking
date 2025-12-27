@@ -122,60 +122,60 @@
      SEMANTIC COLOR MAPPINGS - GREEN & BLACK THEME
      ============================================ */
   
-  /* Global App Background: near white, but using seashell-50 for consistency */
-  --background: #fdfbfb;
+  /* Global App Background: Black (#020202) */
+  --background: #020202;
   
-  /* Main Text: Black (#020202) */
-  --foreground: #020202;
+  /* Main Text: White for Dark Mode */
+  --foreground: #ffffff;
   
-  /* Surfaces & Cards: Keep F7EBE8 */
-  --card: #f7ebe8;
-  --card-foreground: #020202;
+  /* Surfaces & Cards: Evergreen (#0D2818) */
+  --card: #0D2818;
+  --card-foreground: #ffffff;
   
-  /* Popover: sea-green-50 */
-  --popover: #e6f4ec;
-  --popover-foreground: #0d2818;
+  /* Popover */
+  --popover: #0D2818;
+  --popover-foreground: #ffffff;
   
-  /* Primary Actions: Evergreen (#0D2818) */
-  --primary: #0d2818;
-  --primary-foreground: #ffffff;
+  /* Primary Actions: Malachite (#16DB65) */
+  --primary: #16db65;
+  --primary-foreground: #020202;
   
   /* Secondary Accents: Sea Green (#058C42) */
   --secondary: #058c42;
   --secondary-foreground: #ffffff;
   
-  /* Muted: shadow-green-100 */
-  --muted: #e5e9e7;
+  /* Muted: evergreen-400 for background, shadow-green-500 for text */
+  --muted: #3f5449;
   --muted-foreground: #809187;
   
   /* Accent: Malachite (#16DB65) */
   --accent: #16db65;
   --accent-foreground: #020202;
   
-  /* Destructive: #892d2d (keeping a dark red for destructive) */
+  /* Destructive: #892d2d */
   --destructive: #892d2d;
   --destructive-foreground: #ffffff;
   
-  /* Borders: shadow-green-200 */
-  --border: #ccd3cf;
-  --input: #b3bdb7;
+  /* Borders: evergreen-400 */
+  --border: #3f5449;
+  --input: #3f5449;
   --ring: #16db65;
   
   /* Chart Colors */
-  --chart-1: #0d2818;
+  --chart-1: #16db65;
   --chart-2: #058c42;
-  --chart-3: #16db65;
+  --chart-3: #0d2818;
   --chart-4: #809187;
-  --chart-5: #f7ebe8;
+  --chart-5: #020202;
   
   /* Sidebar */
-  --sidebar: #0d2818;
+  --sidebar: #020202;
   --sidebar-foreground: #ffffff;
   --sidebar-primary: #16db65;
   --sidebar-primary-foreground: #020202;
-  --sidebar-accent: #058c42;
+  --sidebar-accent: #0d2818;
   --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #0a2013;
+  --sidebar-border: #0d2818;
   --sidebar-ring: #16db65;
 }
 
@@ -187,8 +187,8 @@
   html, body {
     @apply bg-background text-foreground font-sans antialiased selection:bg-malachite-500/20 selection:text-malachite-600 overflow-x-hidden;
     background-image: 
-      radial-gradient(at 0% 0%, rgba(13, 40, 24, 0.03) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, rgba(22, 219, 101, 0.05) 0px, transparent 50%);
+      radial-gradient(at 0% 0%, rgba(22, 219, 101, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(13, 40, 24, 0.1) 0px, transparent 50%);
     background-attachment: fixed;
     touch-action: manipulation;
     overscroll-behavior-y: none;
@@ -196,7 +196,7 @@
     user-select: none;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-normal tracking-tight text-evergreen-950;
+    @apply font-heading font-normal tracking-tight text-white;
   }
   input, textarea, select {
     @apply selection:bg-malachite-500/20 selection:text-malachite-600;

@@ -106,15 +106,15 @@ export default function Home() {
                   className={`relative w-[72px] h-[72px] rounded-[24px] p-[2.5px] flex items-center justify-center transition-all duration-500 ${
                     stories.some(s => s.user_id === user.id) 
                       ? 'bg-gradient-to-tr from-malachite-400 to-sea-green-500 shadow-lg shadow-malachite-400/20' 
-                      : 'border-2 border-dashed border-shadow-green-300 hover:border-shadow-green-400'
+                      : 'border-2 border-dashed border-evergreen-700 hover:border-evergreen-600'
                   }`}
                 >
                   <div className="w-full h-full rounded-[21px] bg-background p-0.5">
-                    <div className="w-full h-full rounded-[19px] bg-seashell-100 flex items-center justify-center overflow-hidden">
+                    <div className="w-full h-full rounded-[19px] bg-evergreen-900 flex items-center justify-center overflow-hidden">
                       {user.user_metadata?.avatar_url ? (
                         <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover" />
                       ) : (
-                        <span className="text-xl font-heading text-shadow-green-400">{user.email?.[0].toUpperCase()}</span>
+                        <span className="text-xl font-heading text-evergreen-400">{user.email?.[0].toUpperCase()}</span>
                       )}
                     </div>
                   </div>
@@ -124,7 +124,7 @@ export default function Home() {
                     </div>
                   )}
                 </motion.div>
-                <span className="text-[10px] font-bold text-shadow-green-500 uppercase tracking-widest">YOU</span>
+                <span className="text-[10px] font-bold text-evergreen-500 uppercase tracking-widest">YOU</span>
               </div>
             )}
 
@@ -141,21 +141,21 @@ export default function Home() {
                     className={`w-[72px] h-[72px] rounded-[24px] p-[2.5px] transition-all duration-500 ${
                       hasStory 
                         ? 'bg-gradient-to-tr from-malachite-400 to-sea-green-500 shadow-lg shadow-malachite-400/20' 
-                        : 'bg-seashell-100'
+                        : 'bg-evergreen-900'
                     }`}
                   >
                       <div className="w-full h-full rounded-[21px] bg-background p-0.5">
-                        <div className="w-full h-full rounded-[19px] bg-seashell-200 flex items-center justify-center overflow-hidden">
+                        <div className="w-full h-full rounded-[19px] bg-evergreen-800 flex items-center justify-center overflow-hidden">
                           {profile.avatar_url ? (
                             <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
                           ) : (
-                            <span className="text-xl font-heading text-shadow-green-400">{profile.full_name?.[0].toUpperCase()}</span>
+                            <span className="text-xl font-heading text-evergreen-400">{profile.full_name?.[0].toUpperCase()}</span>
                           )}
                         </div>
                       </div>
                   </motion.div>
                   <span className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${
-                    hasStory ? 'text-sea-green-600' : 'text-shadow-green-400'
+                    hasStory ? 'text-sea-green-500' : 'text-evergreen-600'
                   }`}>
                     {profile.full_name?.split(' ')[0].toUpperCase()}
                   </span>
@@ -167,7 +167,7 @@ export default function Home() {
 
         {/* Dynamic Hero Banner */}
         <section className="px-6 mb-10">
-          <div className="relative h-56 rounded-[40px] overflow-hidden shadow-xl shadow-evergreen-500/5 group cursor-pointer active:scale-[0.98] transition-all duration-500 border border-shadow-green-200">
+          <div className="relative h-56 rounded-[40px] overflow-hidden shadow-xl shadow-malachite-500/5 group cursor-pointer active:scale-[0.98] transition-all duration-500 border border-evergreen-800">
             <div className="absolute inset-0 bg-evergreen-950 group-hover:bg-evergreen-900 transition-colors duration-700" />
             
             {/* Ambient FX */}
@@ -234,13 +234,13 @@ export default function Home() {
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: i * 0.1 }}
-              className="flex-shrink-0 w-36 bg-seashell-100 rounded-[32px] p-6 border border-shadow-green-200 shadow-sm"
+              className="flex-shrink-0 w-36 bg-evergreen-900/50 rounded-[32px] p-6 border border-evergreen-800 shadow-sm"
             >
               <div className="w-10 h-10 rounded-2xl bg-malachite-500/10 flex items-center justify-center mb-4">
-                <stat.icon size={20} className="text-sea-green-600" />
+                <stat.icon size={20} className="text-malachite-400" />
               </div>
-              <p className="text-[9px] font-bold text-shadow-green-500 uppercase tracking-widest mb-1">{stat.label}</p>
-              <h4 className="text-2xl font-heading text-evergreen-950">{stat.value}</h4>
+              <p className="text-[9px] font-bold text-evergreen-500 uppercase tracking-widest mb-1">{stat.label}</p>
+              <h4 className="text-2xl font-heading text-white">{stat.value}</h4>
             </motion.div>
           ))}
         </section>
@@ -248,10 +248,10 @@ export default function Home() {
         {/* Section Header */}
         <section className="px-8 pb-6 flex items-center justify-between">
           <div className="space-y-1">
-            <h2 className="text-2xl font-heading text-evergreen-950">Active <span className="italic font-serif opacity-60">Operations</span></h2>
-            <p className="text-[10px] font-bold text-shadow-green-500 uppercase tracking-[0.3em]">BATTLE SIGNALS DETECTED</p>
+            <h2 className="text-2xl font-heading text-white">Active <span className="italic font-serif opacity-60">Operations</span></h2>
+            <p className="text-[10px] font-bold text-evergreen-500 uppercase tracking-[0.3em]">BATTLE SIGNALS DETECTED</p>
           </div>
-          <Link href="/matches" className="p-3 bg-seashell-100 rounded-2xl text-shadow-green-500 hover:text-sea-green-600 shadow-sm transition-all border border-shadow-green-200">
+          <Link href="/matches" className="p-3 bg-evergreen-900 rounded-2xl text-evergreen-400 hover:text-malachite-400 shadow-sm transition-all border border-evergreen-800">
             <LayoutGrid size={20} />
           </Link>
         </section>
@@ -266,55 +266,55 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
               whileTap={{ scale: 0.97 }}
-              className="bg-seashell-100 rounded-[32px] p-6 border border-shadow-green-200 shadow-sm hover:border-malachite-400/30 transition-all duration-500 group flex items-center gap-6"
+              className="bg-evergreen-900/40 rounded-[32px] p-6 border border-evergreen-800 shadow-sm hover:border-malachite-400/30 transition-all duration-500 group flex items-center gap-6"
             >
-              <div className="relative w-24 h-24 rounded-3xl bg-seashell-200 overflow-hidden flex-shrink-0 shadow-inner">
+              <div className="relative w-24 h-24 rounded-3xl bg-evergreen-800 overflow-hidden flex-shrink-0 shadow-inner">
                  {match.status === 'live' ? (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-12 h-12 rounded-full bg-malachite-500/20 flex items-center justify-center animate-pulse">
-                      <Play size={24} className="text-sea-green-600 translate-x-0.5" fill="currentColor" />
+                      <Play size={24} className="text-malachite-400 translate-x-0.5" fill="currentColor" />
                     </div>
                   </div>
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center opacity-10">
-                    <Swords size={32} className="text-evergreen-950" />
+                    <Swords size={32} className="text-white" />
                   </div>
                 )}
-                <div className="absolute bottom-2 left-2 right-2 px-2 py-1 rounded-xl bg-white/80 backdrop-blur-md border border-shadow-green-200 flex items-center justify-center gap-1.5">
-                  <div className={`w-1 h-1 rounded-full ${match.status === 'live' ? 'bg-sea-green-500 animate-pulse' : 'bg-malachite-500'}`} />
-                  <span className="text-[8px] font-bold uppercase tracking-tighter text-evergreen-950">{match.status}</span>
+                <div className="absolute bottom-2 left-2 right-2 px-2 py-1 rounded-xl bg-black/60 backdrop-blur-md border border-evergreen-700 flex items-center justify-center gap-1.5">
+                  <div className={`w-1 h-1 rounded-full ${match.status === 'live' ? 'bg-malachite-500 animate-pulse' : 'bg-evergreen-400'}`} />
+                  <span className="text-[8px] font-bold uppercase tracking-tighter text-white">{match.status}</span>
                 </div>
               </div>
               
               <div className="flex-1 min-w-0 space-y-2">
-                <p className="text-[10px] font-bold text-shadow-green-500 uppercase tracking-[0.2em]">{match.mode} • {match.map || 'Bermuda'}</p>
-                <h3 className="text-xl font-heading text-evergreen-950 truncate group-hover:text-sea-green-600 transition-colors">{match.title}</h3>
+                <p className="text-[10px] font-bold text-evergreen-500 uppercase tracking-[0.2em]">{match.mode} • {match.map || 'Bermuda'}</p>
+                <h3 className="text-xl font-heading text-white truncate group-hover:text-malachite-400 transition-colors">{match.title}</h3>
                 
                 <div className="flex items-center gap-5 pt-1">
                   <div className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-lg bg-malachite-500/10 flex items-center justify-center">
-                      <Trophy size={12} className="text-sea-green-600" />
+                      <Trophy size={12} className="text-malachite-400" />
                     </div>
-                    <span className="text-[11px] font-bold text-evergreen-900">₹{match.tournament?.prize_pool.toLocaleString()}</span>
+                    <span className="text-[11px] font-bold text-white">₹{match.tournament?.prize_pool.toLocaleString()}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded-lg bg-seashell-200 flex items-center justify-center">
-                      <Users size={12} className="text-shadow-green-500" />
+                    <div className="w-5 h-5 rounded-lg bg-evergreen-800 flex items-center justify-center">
+                      <Users size={12} className="text-evergreen-400" />
                     </div>
-                    <span className="text-[11px] font-bold text-shadow-green-500">{match.live_stats?.players_alive || 48} / {match.tournament?.slots || 100}</span>
+                    <span className="text-[11px] font-bold text-evergreen-400">{match.live_stats?.players_alive || 48} / {match.tournament?.slots || 100}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-col items-end justify-center gap-1 pl-4 border-l border-shadow-green-200">
-                <span className="text-[9px] font-bold text-shadow-green-500 uppercase tracking-[0.3em]">ENTRY</span>
-                <span className="text-2xl font-heading text-sea-green-600">₹{match.tournament?.entry_fee}</span>
+              <div className="flex flex-col items-end justify-center gap-1 pl-4 border-l border-evergreen-800">
+                <span className="text-[9px] font-bold text-evergreen-500 uppercase tracking-[0.3em]">ENTRY</span>
+                <span className="text-2xl font-heading text-malachite-400">₹{match.tournament?.entry_fee}</span>
               </div>
             </motion.div>
           )) : (
-            <div className="py-20 text-center flex flex-col items-center gap-4 bg-seashell-100 rounded-[40px] border border-dashed border-shadow-green-300 shadow-sm">
-              <Signal size={48} strokeWidth={1} className="text-shadow-green-300" />
-              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-shadow-green-500 italic">Scanning for Battle Signals...</p>
+            <div className="py-20 text-center flex flex-col items-center gap-4 bg-evergreen-900/20 rounded-[40px] border border-dashed border-evergreen-800 shadow-sm">
+              <Signal size={48} strokeWidth={1} className="text-evergreen-800" />
+              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-evergreen-700 italic">Scanning for Battle Signals...</p>
             </div>
           )}
         </section>
