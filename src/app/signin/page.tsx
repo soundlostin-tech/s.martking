@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { Eye, EyeOff, Loader2, Swords, ShieldCheck, Zap } from "lucide-react";
+import { Eye, EyeOff, Loader2, Swords, ShieldCheck, Zap, ArrowLeft, Mail, Lock } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
@@ -30,6 +30,8 @@ export default function Signin() {
     }
     if (!formData.password) {
       newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -57,8 +59,9 @@ export default function Signin() {
         return;
       }
 
-      toast.success("Signed in successfully!");
+      toast.success("Welcome back to the Arena!");
       router.push("/");
+      router.refresh();
     } catch (error: any) {
       toast.error("An unexpected error occurred. Please try again.");
       console.error("Signin error:", error);
@@ -67,113 +70,150 @@ export default function Signin() {
     }
   };
 
-    return (
-      <main className="min-h-screen bg-transparent flex items-center justify-center p-6 relative overflow-hidden">
-        {/* Background Decor */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-40">
-          <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-malachite-400/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-malachite-500/15 rounded-full blur-[120px]" />
-        </div>
-  
-        {/* Auth Card */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="relative max-w-lg w-full bg-white/60 backdrop-blur-xl border border-border shadow-2xl rounded-[3rem] overflow-hidden animate-fadeIn"
+  return (
+    <main className="min-h-screen bg-transparent flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+      {/* Background Decor - Refined for better mobile performance */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-30">
+        <div className="absolute top-[-10%] left-[-10%] w-[120%] h-[120%] bg-evergreen-950" />
+        <div className="absolute top-0 left-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-malachite-400/10 rounded-full blur-[80px] sm:blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-sea-green-500/10 rounded-full blur-[80px] sm:blur-[120px]" />
+      </div>
+
+      {/* Back Button */}
+      <motion.div 
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="absolute top-6 left-6 z-20"
+      >
+        <Link 
+          href="/"
+          className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest hover:text-foreground transition-colors group"
         >
-          <div className="bg-malachite-500/5 p-10 border-b border-border relative overflow-hidden">
-            <div className="relative z-10 flex flex-col items-center text-center space-y-4">
-              <div className="w-16 h-16 bg-malachite-500 text-black rounded-2xl flex items-center justify-center shadow-xl shadow-malachite-500/20 mb-2">
-                <Swords size={32} />
-              </div>
-              <div className="space-y-1">
-                <h4 className="text-[10px] font-bold text-malachite-600 uppercase tracking-[0.4em]">Combat Uplink</h4>
-                <h1 className="text-4xl font-heading text-primary leading-tight">
-                  Welcome <span className="italic font-serif opacity-60">Back.</span>
-                </h1>
-              </div>
-            </div>
-            <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-malachite-400/10 blur-[80px] rounded-full" />
+          <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-accent transition-colors">
+            <ArrowLeft size={14} />
           </div>
-  
-          <div className="p-10 md:p-12 space-y-10">
-            <form className="space-y-8" onSubmit={handleSignin}>
-              <div className="space-y-3">
-                <Label htmlFor="email" className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em] ml-4">Deployment Email</Label>
+          <span>Back to Arena</span>
+        </Link>
+      </motion.div>
+
+      {/* Auth Card */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative w-full max-w-[440px] bg-background/40 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden z-10"
+      >
+        <div className="bg-gradient-to-br from-malachite-500/10 to-transparent p-8 sm:p-10 border-b border-white/5 relative overflow-hidden text-center">
+          <div className="relative z-10 flex flex-col items-center space-y-4">
+            <motion.div 
+              whileHover={{ rotate: 15, scale: 1.1 }}
+              className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-malachite-400 to-sea-green-600 text-black rounded-2xl flex items-center justify-center shadow-xl shadow-malachite-500/20"
+            >
+              <Swords size={28} className="sm:w-8 sm:h-8" />
+            </motion.div>
+            <div className="space-y-1">
+              <h4 className="text-[9px] sm:text-[10px] font-bold text-malachite-400 uppercase tracking-[0.4em]">Combat Uplink</h4>
+              <h1 className="text-3xl sm:text-4xl font-outfit font-extrabold text-foreground leading-tight tracking-tight">
+                Welcome <span className="text-malachite-400 italic">Back.</span>
+              </h1>
+            </div>
+          </div>
+          {/* Subtle glow effect */}
+          <div className="absolute -top-1/2 -right-1/4 w-64 h-64 bg-malachite-500/20 blur-[60px] rounded-full pointer-events-none" />
+        </div>
+
+        <div className="p-8 sm:p-10 space-y-8">
+          <form className="space-y-6" onSubmit={handleSignin}>
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between px-1">
+                <Label htmlFor="email" className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] ml-1">Deployment Email</Label>
+                <Mail size={12} className="text-muted-foreground/30" />
+              </div>
+              <div className="relative group">
                 <input 
                   id="email" 
                   type="email" 
                   placeholder="warrior@arena.com" 
-                  className={`w-full h-16 px-8 rounded-[2rem] border border-border bg-white/50 shadow-inner text-foreground font-bold text-xs tracking-wide focus:ring-2 focus:ring-malachite-500/20 placeholder:text-muted-foreground/50 ${errors.email ? 'ring-2 ring-malachite-500/50' : ''}`}
+                  className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.email ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-foreground font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 focus:border-malachite-500/50 transition-all placeholder:text-muted-foreground/30`}
                   value={formData.email}
                   onChange={(e) => {
                     setFormData({ ...formData, email: e.target.value });
                     if (errors.email) setErrors({ ...errors, email: "" });
                   }}
                 />
-                {errors.email && <p className="text-[10px] text-destructive px-6 mt-1 font-bold">{errors.email}</p>}
               </div>
-  
-              <div className="space-y-3">
-                <div className="flex justify-between items-center px-4">
-                  <Label htmlFor="password" className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em]">Access Protocol</Label>
-                  <button type="button" className="text-[10px] text-secondary hover:text-malachite-600 font-bold uppercase tracking-widest transition-colors">Recover Keys?</button>
-                </div>
-                <div className="relative">
-                  <input 
-                    id="password" 
-                    type={showPassword ? "text" : "password"} 
-                    placeholder="••••••••" 
-                    className={`w-full h-16 px-8 pr-16 rounded-[2rem] border border-border bg-white/50 shadow-inner text-foreground font-bold text-xs tracking-wide focus:ring-2 focus:ring-malachite-500/20 placeholder:text-muted-foreground/50 ${errors.password ? 'ring-2 ring-malachite-500/50' : ''}`}
-                    value={formData.password}
-                    onChange={(e) => {
-                      setFormData({ ...formData, password: e.target.value });
-                      if (errors.password) setErrors({ ...errors, password: "" });
-                    }}
-                  />
-                  <button 
-                    type="button" 
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-6 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-                {errors.password && <p className="text-[10px] text-destructive px-6 mt-1 font-bold">{errors.password}</p>}
-              </div>
-  
-              <Button 
-                type="submit" 
-                className="w-full h-16 rounded-[2rem] bg-malachite-500 hover:bg-malachite-400 text-black font-bold text-[11px] uppercase tracking-[0.3em] shadow-xl shadow-malachite-500/20 mt-4 border-none" 
-                disabled={loading}
-              >
-                {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "ESTABLISH UPLINK"}
-              </Button>
-            </form>
-  
-            <div className="pt-4 text-center">
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
-                NEW TO THE ARENA?{" "}
-                <Link href="/signup" className="text-secondary hover:text-malachite-600 transition-colors underline decoration-secondary/30 underline-offset-4">
-                  CREATE IDENTITY
-                </Link>
-              </p>
+              {errors.email && (
+                <motion.p initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="text-[9px] sm:text-[10px] text-destructive px-2 font-bold uppercase tracking-wider">{errors.email}</motion.p>
+              )}
             </div>
-          </div>
-  
-          {/* Security Badges */}
-          <div className="bg-muted/50 p-6 flex items-center justify-center gap-8 border-t border-border">
-            <div className="flex items-center gap-2">
-              <ShieldCheck size={14} className="text-secondary" />
-              <span className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">ENCRYPTED</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Zap size={14} className="text-secondary" />
-              <span className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">FAST UPLINK</span>
-            </div>
-          </div>
-        </motion.div>
-      </main>
 
-    );
+            <div className="space-y-2.5">
+              <div className="flex justify-between items-center px-1">
+                <Label htmlFor="password" className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] ml-1">Access Protocol</Label>
+                <button type="button" className="text-[9px] sm:text-[10px] text-malachite-400 hover:text-white font-bold uppercase tracking-widest transition-colors haptic-tap">Recover Keys?</button>
+              </div>
+              <div className="relative group">
+                <input 
+                  id="password" 
+                  type={showPassword ? "text" : "password"} 
+                  placeholder="••••••••" 
+                  className={`w-full h-14 sm:h-16 px-6 sm:px-8 pr-14 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.password ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-foreground font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 focus:border-malachite-500/50 transition-all placeholder:text-muted-foreground/30`}
+                  value={formData.password}
+                  onChange={(e) => {
+                    setFormData({ ...formData, password: e.target.value });
+                    if (errors.password) setErrors({ ...errors, password: "" });
+                  }}
+                />
+                <button 
+                  type="button" 
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-5 sm:right-6 top-1/2 -translate-y-1/2 text-muted-foreground/50 hover:text-foreground transition-colors p-2"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+              {errors.password && (
+                <motion.p initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="text-[9px] sm:text-[10px] text-destructive px-2 font-bold uppercase tracking-wider">{errors.password}</motion.p>
+              )}
+            </div>
+
+            <motion.button 
+              type="submit" 
+              whileTap={{ scale: 0.98 }}
+              className="w-full h-14 sm:h-16 rounded-[1.5rem] sm:rounded-[2rem] bg-gradient-to-r from-malachite-500 to-sea-green-600 hover:from-malachite-400 hover:to-sea-green-500 text-black font-extrabold text-[10px] sm:text-[11px] uppercase tracking-[0.3em] shadow-xl shadow-malachite-500/10 mt-2 border-none disabled:opacity-50 disabled:cursor-not-allowed transition-all haptic-tap" 
+              disabled={loading}
+            >
+              {loading ? (
+                <div className="flex items-center justify-center gap-3">
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <span>SYNCING...</span>
+                </div>
+              ) : "ESTABLISH UPLINK"}
+            </motion.button>
+          </form>
+
+          <div className="pt-2 text-center">
+            <p className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
+              NEW TO THE ARENA?{" "}
+              <Link href="/signup" className="text-malachite-400 hover:text-white transition-colors underline underline-offset-4 decoration-malachite-400/30 font-extrabold">
+                CREATE IDENTITY
+              </Link>
+            </p>
+          </div>
+        </div>
+
+        {/* Security Footer */}
+        <div className="bg-white/5 p-5 sm:p-6 flex items-center justify-center gap-6 sm:gap-10 border-t border-white/5">
+          <div className="flex items-center gap-2">
+            <ShieldCheck size={14} className="text-malachite-400" />
+            <span className="text-[8px] sm:text-[9px] font-bold text-muted-foreground uppercase tracking-widest">ENCRYPTED</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Zap size={14} className="text-malachite-400" />
+            <span className="text-[8px] sm:text-[9px] font-bold text-muted-foreground uppercase tracking-widest">FAST SYNC</span>
+          </div>
+        </div>
+      </motion.div>
+    </main>
+  );
 }

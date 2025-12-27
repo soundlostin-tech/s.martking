@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -12,12 +11,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
-import { Crown, Loader2, Eye, EyeOff, Star, Swords, ShieldCheck, Zap } from "lucide-react";
+import { Loader2, Eye, EyeOff, Star, ShieldCheck, Zap, ArrowLeft, User, Mail, Phone, Lock, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 
 export default function Signup() {
   const [loading, setLoading] = useState(false);
@@ -36,29 +34,44 @@ export default function Signup() {
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
-    if (!formData.fullname.trim()) newErrors.fullname = "Full name is required";
-    if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.phone) newErrors.phone = "Phone is required";
-    if (formData.password.length < 6) newErrors.password = "Min 6 characters";
-    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Mismatch";
-    if (!formData.terms) newErrors.terms = "Accept terms";
+    if (!formData.fullname.trim()) newErrors.fullname = "Identity name is required";
+    if (!formData.email) {
+      newErrors.email = "Deployment email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Invalid signal format";
+    }
+    if (!formData.phone) {
+      newErrors.phone = "Communication line is required";
+    } else if (!/^\d{10}$/.test(formData.phone)) {
+      newErrors.phone = "Must be exactly 10 digits";
+    }
+    if (formData.password.length < 6) newErrors.password = "Access key too weak (min 6)";
+    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Access keys do not match";
+    if (!formData.terms) newErrors.terms = "Accept engagement terms";
+    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (!validate()) {
+      toast.error("Please resolve the validation errors");
+      return;
+    }
 
     setLoading(true);
     try {
+      const fullPhone = `${countryCode}${formData.phone}`;
+      
+      // 1. Auth Signup
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
           data: {
             full_name: formData.fullname,
-            phone: `${countryCode}${formData.phone}`,
+            phone: fullPhone,
           },
         },
       });
@@ -66,170 +79,283 @@ export default function Signup() {
       if (authError) throw authError;
 
       if (authData.user) {
+        // 2. Create Profile
         const { error: profileError } = await supabase.from("profiles").insert({
           id: authData.user.id,
           full_name: formData.fullname,
-          phone: `${countryCode}${formData.phone}`,
+          phone: fullPhone,
+          username: formData.fullname.toLowerCase().replace(/\s+/g, '_') + Math.floor(Math.random() * 1000),
+          role: "Player",
+          status: "Active",
+          win_rate: 0,
+          matches_played: 0,
         });
-        if (profileError) throw profileError;
+        
+        if (profileError) {
+          console.error("Profile creation error:", profileError);
+          // We don't throw here to avoid blocking the user if auth succeeded but profile failed
+          // (though in a real app we'd want to handle this better)
+        }
 
+        // 3. Create Wallet
         const { error: walletError } = await supabase.from("wallets").insert({
-          id: authData.user.id,
           user_id: authData.user.id,
           balance: 0,
+          lifetime_earnings: 0,
+          pending_withdrawals: 0,
         });
-        if (walletError) throw walletError;
+        
+        if (walletError) {
+          console.error("Wallet creation error:", walletError);
+        }
 
-        toast.success("Account created successfully!");
+        toast.success("Identity Created! Welcome to the Arena.");
         router.push("/signin");
       }
     } catch (error: any) {
-      toast.error(error.message || "An error occurred during signup");
+      toast.error(error.message || "Uplink failed. Please try again.");
+      console.error("Signup error:", error);
     } finally {
       setLoading(false);
     }
   };
 
-    return (
-      <main className="min-h-screen bg-transparent flex items-center justify-center p-6 relative overflow-hidden py-24">
-        {/* Background Decor */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-30">
-          <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-sea-green-600/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-malachite-500/10 rounded-full blur-[120px]" />
-        </div>
-  
-        {/* Auth Card */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="relative max-w-lg w-full bg-white/60 backdrop-blur-xl border border-border shadow-2xl rounded-[3rem] overflow-hidden animate-fadeIn"
+  return (
+    <main className="min-h-screen bg-transparent flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden py-24">
+      {/* Background Decor */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-30">
+        <div className="absolute top-[-10%] left-[-10%] w-[120%] h-[120%] bg-evergreen-950" />
+        <div className="absolute top-0 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-sea-green-500/10 rounded-full blur-[80px] sm:blur-[120px]" />
+        <div className="absolute bottom-0 left-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-malachite-400/10 rounded-full blur-[80px] sm:blur-[120px]" />
+      </div>
+
+      {/* Back Button */}
+      <motion.div 
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="absolute top-6 left-6 z-20"
+      >
+        <Link 
+          href="/"
+          className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest hover:text-foreground transition-colors group"
         >
-          <div className="bg-malachite-500/5 p-10 border-b border-border relative overflow-hidden">
-            <div className="relative z-10 flex flex-col items-center text-center space-y-4">
-              <div className="w-16 h-16 bg-malachite-500 text-black rounded-2xl flex items-center justify-center shadow-xl shadow-malachite-500/20 mb-2">
-                <Star size={32} />
-              </div>
-              <div className="space-y-1">
-                <h4 className="text-[10px] font-bold text-malachite-600 uppercase tracking-[0.4em]">Warrior Enrollment</h4>
-                <h1 className="text-4xl font-heading text-primary leading-tight">
-                  Create <span className="italic font-serif opacity-60">Identity.</span>
-                </h1>
-              </div>
-            </div>
-            <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-malachite-400/10 blur-[80px] rounded-full" />
+          <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-accent transition-colors">
+            <ArrowLeft size={14} />
           </div>
-  
-          <div className="p-10 md:p-12 space-y-8">
-            <form className="space-y-6" onSubmit={handleSignup}>
-              <div className="space-y-2">
-                <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em] ml-4">Agent Name</Label>
-                <Input 
-                  placeholder="FULL NAME" 
-                  className="h-14 px-8 rounded-[2rem] border border-border bg-white/50 shadow-inner text-foreground font-bold text-xs tracking-wide focus-visible:ring-malachite-400 placeholder:text-muted-foreground/50"
+          <span className="hidden sm:inline">Back to Arena</span>
+        </Link>
+      </motion.div>
+
+      {/* Auth Card */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative w-full max-w-[500px] bg-background/40 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden z-10"
+      >
+        <div className="bg-gradient-to-br from-malachite-500/10 to-transparent p-8 sm:p-10 border-b border-white/5 relative overflow-hidden text-center">
+          <div className="relative z-10 flex flex-col items-center space-y-4">
+            <motion.div 
+              whileHover={{ rotate: 15, scale: 1.1 }}
+              className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-malachite-400 to-sea-green-600 text-black rounded-2xl flex items-center justify-center shadow-xl shadow-malachite-500/20"
+            >
+              <Star size={28} className="sm:w-8 sm:h-8" />
+            </motion.div>
+            <div className="space-y-1">
+              <h4 className="text-[9px] sm:text-[10px] font-bold text-malachite-400 uppercase tracking-[0.4em]">Enlistment Protocol</h4>
+              <h1 className="text-3xl sm:text-4xl font-outfit font-extrabold text-foreground leading-tight tracking-tight">
+                Create <span className="text-malachite-400 italic">Identity.</span>
+              </h1>
+            </div>
+          </div>
+          <div className="absolute -top-1/2 -right-1/4 w-64 h-64 bg-malachite-500/20 blur-[60px] rounded-full pointer-events-none" />
+        </div>
+
+        <div className="p-8 sm:p-10 space-y-8">
+          <form className="space-y-6" onSubmit={handleSignup}>
+            {/* Identity Name */}
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between px-1">
+                <Label className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] ml-1">Identity Name</Label>
+                <User size={12} className="text-muted-foreground/30" />
+              </div>
+              <div className="relative group">
+                <input 
+                  placeholder="COMMANDER NAME" 
+                  className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.fullname ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-foreground font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 transition-all placeholder:text-muted-foreground/30`}
                   value={formData.fullname}
-                  onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, fullname: e.target.value });
+                    if (errors.fullname) setErrors({ ...errors, fullname: "" });
+                  }}
                 />
               </div>
-  
-              <div className="space-y-2">
-                <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em] ml-4">Deployment Email</Label>
-                <Input 
+              {errors.fullname && (
+                <p className="text-[9px] text-destructive px-2 font-bold uppercase tracking-wider">{errors.fullname}</p>
+              )}
+            </div>
+
+            {/* Deployment Email */}
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between px-1">
+                <Label className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] ml-1">Deployment Email</Label>
+                <Mail size={12} className="text-muted-foreground/30" />
+              </div>
+              <div className="relative group">
+                <input 
                   type="email" 
                   placeholder="WARRIOR@ARENA.COM" 
-                  className="h-14 px-8 rounded-[2rem] border border-border bg-white/50 shadow-inner text-foreground font-bold text-xs tracking-wide focus-visible:ring-malachite-400 placeholder:text-muted-foreground/50"
+                  className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.email ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-foreground font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 transition-all placeholder:text-muted-foreground/30`}
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, email: e.target.value });
+                    if (errors.email) setErrors({ ...errors, email: "" });
+                  }}
                 />
               </div>
-  
-              <div className="space-y-2">
-                <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em] ml-4">Signal Connection</Label>
-                <div className="flex gap-3">
-                  <Select value={countryCode} onValueChange={setCountryCode}>
-                    <SelectTrigger className="w-[100px] h-14 rounded-[2rem] border border-border bg-white/50 font-bold text-xs text-foreground">
-                      <SelectValue placeholder="+91" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border-border text-foreground rounded-2xl">
-                      <SelectItem value="+91">+91</SelectItem>
-                      <SelectItem value="+1">+1</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Input 
+              {errors.email && (
+                <p className="text-[9px] text-destructive px-2 font-bold uppercase tracking-wider">{errors.email}</p>
+              )}
+            </div>
+
+            {/* Signal Connection (Phone) */}
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between px-1">
+                <Label className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] ml-1">Signal Connection</Label>
+                <Phone size={12} className="text-muted-foreground/30" />
+              </div>
+              <div className="flex gap-3">
+                <Select value={countryCode} onValueChange={setCountryCode}>
+                  <SelectTrigger className="w-[85px] h-14 sm:h-16 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 bg-white/5 font-bold text-xs text-foreground focus:ring-malachite-500/20">
+                    <SelectValue placeholder="+91" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background/95 backdrop-blur-xl border-white/10 text-foreground rounded-2xl">
+                    <SelectItem value="+91">+91</SelectItem>
+                    <SelectItem value="+1">+1</SelectItem>
+                    <SelectItem value="+44">+44</SelectItem>
+                  </SelectContent>
+                </Select>
+                <div className="relative group flex-1">
+                  <input 
                     placeholder="9876543210" 
-                    className="h-14 px-8 rounded-[2rem] border border-border bg-white/50 shadow-inner text-foreground font-bold text-xs tracking-wide focus-visible:ring-malachite-400 placeholder:text-muted-foreground/50 flex-1"
+                    className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.phone ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-foreground font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 transition-all placeholder:text-muted-foreground/30`}
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) });
+                      if (errors.phone) setErrors({ ...errors, phone: "" });
+                    }}
                   />
                 </div>
               </div>
-  
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em] ml-4">Access Protocol</Label>
-                  <Input 
-                    type="password" 
+              {errors.phone && (
+                <p className="text-[9px] text-destructive px-2 font-bold uppercase tracking-wider">{errors.phone}</p>
+              )}
+            </div>
+
+            {/* Access Protocol (Password) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between px-1">
+                  <Label className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] ml-1">Access Protocol</Label>
+                  <Lock size={12} className="text-muted-foreground/30" />
+                </div>
+                <div className="relative group">
+                  <input 
+                    type={showPassword ? "text" : "password"} 
                     placeholder="••••••" 
-                    className="h-14 px-8 rounded-[2rem] border border-border bg-white/50 shadow-inner text-foreground font-bold text-xs tracking-wide focus-visible:ring-malachite-400 placeholder:text-muted-foreground/50"
+                    className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.password ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-foreground font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 transition-all placeholder:text-muted-foreground/30`}
                     value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, password: e.target.value });
+                      if (errors.password) setErrors({ ...errors, password: "" });
+                    }}
                   />
+                  <button 
+                    type="button" 
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground/50 hover:text-foreground transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
                 </div>
-                <div className="space-y-2">
-                  <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em] ml-4">Confirm Keys</Label>
-                  <Input 
-                    type="password" 
+                {errors.password && (
+                  <p className="text-[9px] text-destructive px-2 font-bold uppercase tracking-wider">{errors.password}</p>
+                )}
+              </div>
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between px-1">
+                  <Label className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] ml-1">Confirm Keys</Label>
+                  <CheckCircle2 size={12} className="text-muted-foreground/30" />
+                </div>
+                <div className="relative group">
+                  <input 
+                    type={showPassword ? "text" : "password"} 
                     placeholder="••••••" 
-                    className="h-14 px-8 rounded-[2rem] border border-border bg-white/50 shadow-inner text-foreground font-bold text-xs tracking-wide focus-visible:ring-malachite-400 placeholder:text-muted-foreground/50"
+                    className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.confirmPassword ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-foreground font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 transition-all placeholder:text-muted-foreground/30`}
                     value={formData.confirmPassword}
-                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, confirmPassword: e.target.value });
+                      if (errors.confirmPassword) setErrors({ ...errors, confirmPassword: "" });
+                    }}
                   />
                 </div>
+                {errors.confirmPassword && (
+                  <p className="text-[9px] text-destructive px-2 font-bold uppercase tracking-wider">{errors.confirmPassword}</p>
+                )}
               </div>
-  
-              <div className="flex items-center space-x-3 px-4 py-2">
-                <Checkbox 
-                  id="terms" 
-                  className="w-5 h-5 rounded-md border-border bg-white/50 data-[state=checked]:bg-malachite-500 data-[state=checked]:text-black" 
-                  checked={formData.terms}
-                  onCheckedChange={(checked) => setFormData({ ...formData, terms: checked as boolean })}
-                />
-                <label htmlFor="terms" className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest cursor-pointer">
-                  I ACCEPT THE <span className="text-secondary">TERMS OF ENGAGEMENT</span>
-                </label>
-              </div>
-  
-              <Button 
-                type="submit" 
-                className="w-full h-16 rounded-[2rem] bg-malachite-500 hover:bg-malachite-400 text-black font-bold text-[11px] uppercase tracking-[0.3em] shadow-2xl shadow-malachite-500/20 mt-2 border-none" 
-                disabled={loading}
-              >
-                {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "ENLIST IN ARENA"}
-              </Button>
-            </form>
-  
-            <div className="pt-2 text-center">
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
-                ALREADY ENLISTED?{" "}
-                <Link href="/signin" className="text-secondary hover:text-malachite-600 transition-colors">
-                  SIGN IN
-                </Link>
-              </p>
             </div>
+
+            {/* Terms */}
+            <div className="flex items-center space-x-3 px-4 py-2 group cursor-pointer" onClick={() => setFormData({ ...formData, terms: !formData.terms })}>
+              <Checkbox 
+                id="terms" 
+                className="w-5 h-5 rounded-md border-white/10 bg-white/5 data-[state=checked]:bg-malachite-500 data-[state=checked]:text-black transition-all" 
+                checked={formData.terms}
+                onCheckedChange={(checked) => setFormData({ ...formData, terms: checked as boolean })}
+              />
+              <label htmlFor="terms" className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-widest cursor-pointer group-hover:text-foreground transition-colors">
+                I accept the <span className="text-malachite-400">Terms of Engagement</span>
+              </label>
+            </div>
+
+            {/* Submit Button */}
+            <motion.button 
+              type="submit" 
+              whileTap={{ scale: 0.98 }}
+              className="w-full h-14 sm:h-16 rounded-[1.5rem] sm:rounded-[2rem] bg-gradient-to-r from-malachite-500 to-sea-green-600 hover:from-malachite-400 hover:to-sea-green-500 text-black font-extrabold text-[10px] sm:text-[11px] uppercase tracking-[0.3em] shadow-xl shadow-malachite-500/10 mt-2 border-none disabled:opacity-50 disabled:cursor-not-allowed transition-all haptic-tap" 
+              disabled={loading}
+            >
+              {loading ? (
+                <div className="flex items-center justify-center gap-3">
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <span>INITIALIZING...</span>
+                </div>
+              ) : "ENLIST IN ARENA"}
+            </motion.button>
+          </form>
+
+          <div className="pt-2 text-center">
+            <p className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
+              ALREADY ENLISTED?{" "}
+              <Link href="/signin" className="text-malachite-400 hover:text-white transition-colors underline underline-offset-4 decoration-malachite-400/30 font-extrabold">
+                ESTABLISH UPLINK
+              </Link>
+            </p>
           </div>
-  
-          {/* Security Badges */}
-          <div className="bg-muted/50 p-6 flex items-center justify-center gap-8 border-t border-border">
-            <div className="flex items-center gap-2">
-              <ShieldCheck size={14} className="text-secondary" />
-              <span className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">ENCRYPTED</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Zap size={14} className="text-secondary" />
-              <span className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">FAST UPLINK</span>
-            </div>
+        </div>
+
+        {/* Security Footer */}
+        <div className="bg-white/5 p-5 sm:p-6 flex items-center justify-center gap-6 sm:gap-10 border-t border-white/5">
+          <div className="flex items-center gap-2">
+            <ShieldCheck size={14} className="text-malachite-400" />
+            <span className="text-[8px] sm:text-[9px] font-bold text-muted-foreground uppercase tracking-widest">ENCRYPTED</span>
           </div>
-        </motion.div>
-      </main>
-  
-    );
+          <div className="flex items-center gap-2">
+            <Zap size={14} className="text-malachite-400" />
+            <span className="text-[8px] sm:text-[9px] font-bold text-muted-foreground uppercase tracking-widest">FAST SYNC</span>
+          </div>
+        </div>
+      </motion.div>
+    </main>
+  );
 }
