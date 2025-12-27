@@ -167,39 +167,42 @@ export default function Home() {
     
             {/* Dynamic Hero Banner */}
             <section className="px-6 mb-10">
-              <div className="relative h-56 rounded-[40px] overflow-hidden shadow-xl shadow-primary/10 group cursor-pointer active:scale-[0.98] transition-all duration-500 border border-border premium-gradient">
-                {/* Ambient FX */}
-                <div className="absolute inset-0 overflow-hidden opacity-40">
-                  <motion.div
-                    animate={{
-                      scale: [1, 1.2, 1],
-                      rotate: [0, 90, 0],
-                      opacity: [0.2, 0.4, 0.2],
-                    }}
-                    transition={{ duration: 15, repeat: Infinity }}
-                    className="absolute -top-20 -left-20 w-64 h-64 bg-accent/20 blur-[80px] rounded-full"
-                  />
+              <div className="relative h-64 rounded-[40px] overflow-hidden shadow-2xl shadow-primary/10 group cursor-pointer active:scale-[0.99] transition-all duration-500 border border-white/5 bg-[#0D2818]">
+                {/* Ambient Glow */}
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-malachite-500/10 blur-[100px] rounded-full" />
                 </div>
                 
-                <div className="relative h-full p-10 flex flex-col justify-center">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                    <span className="text-[10px] font-bold text-accent uppercase tracking-[0.4em]">ELITE DEPLOYMENT ACTIVE</span>
+                <div className="relative h-full p-12 flex flex-col justify-between z-10">
+                  <div className="space-y-5">
+                    <div className="flex items-center gap-3">
+                      <div className="w-2.5 h-2.5 rounded-full bg-malachite-500 animate-pulse shadow-[0_0_12px_rgba(22,219,101,0.5)]" />
+                      <span className="text-[11px] font-bold text-malachite-500 uppercase tracking-[0.5em]">ELITE DEPLOYMENT ACTIVE</span>
+                    </div>
+                    
+                    <div className="space-y-0.5">
+                      <h2 className="text-5xl font-heading text-white leading-tight tracking-tight">
+                        Win ₹1,00,000
+                      </h2>
+                      <h2 className="text-5xl font-heading text-malachite-500 leading-tight tracking-tight">
+                        Mega Pool
+                      </h2>
+                    </div>
+                    
+                    <p className="text-[12px] text-white/60 font-bold uppercase tracking-[0.3em] flex items-center gap-3">
+                      <Users size={16} className="text-malachite-500" /> 2,450 WARRIORS REGISTERED
+                    </p>
                   </div>
-                  <h2 className="text-4xl font-heading text-primary-foreground leading-[1.1] tracking-tight">Win ₹1,00,000<br/><span className="text-accent">Mega Pool</span></h2>
-                  <p className="text-[11px] text-primary-foreground/80 font-bold uppercase tracking-[0.2em] mt-4 flex items-center gap-2">
-                    <Users size={14} className="text-accent" /> 2,450 WARRIORS REGISTERED
-                  </p>
                   
-                  <div className="mt-8 flex items-center gap-4">
-                    <button className="px-8 py-3.5 bg-accent text-primary-foreground rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-accent/20 hover:bg-accent/90 transition-all">
+                  <div>
+                    <button className="px-10 py-4 bg-malachite-500 text-white rounded-[22px] text-[12px] font-black uppercase tracking-[0.25em] shadow-xl shadow-malachite-500/20 hover:bg-malachite-400 hover:scale-105 transition-all duration-300">
                       INITIALIZE ENTRY
                     </button>
                   </div>
                 </div>
                 
-                <div className="absolute right-10 top-1/2 -translate-y-1/2 opacity-[0.05] group-hover:opacity-[0.08] transition-opacity text-white">
-                  <Trophy size={160} strokeWidth={1} />
+                <div className="absolute -right-12 -bottom-12 opacity-[0.06] text-white pointer-events-none group-hover:opacity-[0.1] transition-opacity duration-700">
+                  <Trophy size={320} strokeWidth={1} />
                 </div>
               </div>
             </section>
