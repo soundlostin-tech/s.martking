@@ -162,70 +162,51 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Hero Banner - Mobile Optimized */}
-        <section className="px-4 sm:px-6 mb-6 sm:mb-10">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="relative h-56 sm:h-72 rounded-[28px] sm:rounded-[40px] overflow-hidden shadow-2xl group bg-carbon-black gpu-accelerate"
-          >
-            {/* Background Glows */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-dark-emerald/20 to-transparent opacity-50" />
-              <div className="absolute -top-[20%] -left-[10%] w-[120%] h-[140%] bg-[radial-gradient(circle_at_20%_35%,rgba(6,104,57,0.2)_0%,transparent_50%)]" />
-            </div>
-            
-            <div className="relative h-full p-6 sm:p-8 flex flex-col justify-between z-10">
-              <div className="space-y-4 sm:space-y-5">
-                <div className="flex items-center gap-2">
-                  <div className="flex gap-1">
-                    {[1,2,3].map(i => (
-                      <div 
-                        key={i}
-                        className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-dark-emerald shadow-[0_0_8px_rgba(6,104,57,0.5)]" 
-                      />
-                    ))}
-                  </div>
-                  <span className="text-[9px] sm:text-[10px] font-bold text-dark-emerald uppercase tracking-[0.4em] sm:tracking-[0.5em]">LIVE NOW</span>
-                </div>
-                
-                <div className="space-y-1">
-                  <h2 className="text-4xl sm:text-6xl font-outfit font-black text-white leading-tight tracking-tight">
-                    WIN <span className="text-transparent bg-clip-text bg-gradient-to-r from-dark-emerald to-emerald-depths">₹1.00L</span>
-                  </h2>
-                  <h3 className="text-xl sm:text-3xl font-outfit font-medium tracking-[0.15em] sm:tracking-[0.2em] uppercase text-white/40 flex items-center gap-2">
-                    MEGA <span className="font-black text-white italic tracking-normal">VAULT</span>
-                  </h3>
-                </div>
-                
-                <div className="inline-flex items-center gap-2.5 px-3 sm:px-4 py-2 rounded-full bg-white/[0.03] backdrop-blur-md border border-white/[0.05]">
-                  <div className="flex -space-x-2">
-                    {[1,2,3].map(i => (
-                      <div key={i} className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-carbon-black bg-emerald-depths" />
-                    ))}
-                  </div>
-                  <span className="text-[10px] sm:text-[11px] text-white/50 font-bold uppercase tracking-wider">
-                    <span className="text-dark-emerald">2.4K+</span> IN QUEUE
-                  </span>
-                </div>
+          {/* Hero Banner - Mobile Optimized */}
+          <section className="px-4 sm:px-6 mb-6 sm:mb-10">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="relative h-64 sm:h-80 rounded-[32px] sm:rounded-[48px] overflow-hidden shadow-2xl group bg-jet-black border border-emerald-depths/20 gpu-accelerate"
+            >
+              {/* Background Pattern */}
+              <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#066839 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+              
+              {/* Background Glows */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute -top-[20%] -right-[10%] w-[60%] h-[60%] bg-dark-emerald/20 blur-[100px] rounded-full" />
+                <div className="absolute -bottom-[20%] -left-[10%] w-[60%] h-[60%] bg-emerald-depths/20 blur-[100px] rounded-full" />
               </div>
               
-              <motion.button 
-                whileTap={{ scale: 0.95 }}
-                className="self-start px-7 sm:px-9 py-3.5 sm:py-4 bg-white text-black rounded-full text-[11px] sm:text-[12px] font-black uppercase tracking-[0.15em] flex items-center gap-2 haptic-tap shadow-xl shadow-white/5"
-              >
-                ENTER ARENA
-                <ChevronRight size={16} strokeWidth={4} />
-              </motion.button>
-            </div>
-            
-            {/* Heartbeat Graphic */}
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 h-full w-1/2 flex items-center justify-end pr-4 pointer-events-none overflow-hidden opacity-10">
-              <Activity size={240} strokeWidth={0.5} className="text-white sm:w-[320px] sm:h-[320px] transform scale-x-150" />
-            </div>
-          </motion.div>
-        </section>
+              <div className="relative h-full p-8 sm:p-10 flex flex-col justify-between z-10">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="bg-dark-emerald text-white px-3 py-1 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-[0.3em]">LIVE SIGNAL</span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-dark-emerald animate-pulse" />
+                  </div>
+                  
+                  <div className="space-y-1">
+                    <h2 className="text-4xl sm:text-6xl font-heading text-white leading-tight">
+                      STAY <span className="text-dark-emerald italic">STRONG</span>
+                    </h2>
+                    <p className="text-xl sm:text-2xl font-outfit font-black tracking-[0.1em] text-white/60 uppercase">
+                      WIN ₹1,00,000 MEGA ARENA
+                    </p>
+                  </div>
+                </div>
+                
+                <motion.button 
+                  whileTap={{ scale: 0.95 }}
+                  className="self-start px-8 sm:px-10 py-4 sm:py-5 bg-dark-emerald text-white rounded-2xl text-[11px] sm:text-[12px] font-black uppercase tracking-[0.2em] flex items-center gap-2 shadow-xl shadow-dark-emerald/30 hover:bg-dark-emerald/90 transition-all"
+                >
+                  ENTER ARENA
+                  <ChevronRight size={18} strokeWidth={3} />
+                </motion.button>
+              </div>
+            </motion.div>
+          </section>
+
 
         {/* Stats Grid - Mobile Optimized */}
         <section className="px-4 sm:px-6 mb-8 sm:mb-12">

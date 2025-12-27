@@ -177,66 +177,69 @@ export default function WalletPage() {
       <main className="pb-24 relative z-10">
         <TopHeader />
 
-        <div className="px-4 sm:px-6 pt-4 sm:pt-6 space-y-6 sm:space-y-8">
-          {/* Balance Card - Mobile Optimized */}
-          <section>
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="relative h-44 sm:h-52 rounded-[24px] sm:rounded-[32px] premium-gradient overflow-hidden shadow-lg p-5 sm:p-8 flex flex-col justify-between"
-            >
-              <div className="absolute top-0 right-0 p-6 opacity-10">
-                <WalletIcon size={100} className="text-white sm:w-[140px] sm:h-[140px]" strokeWidth={1} />
-              </div>
-              
-              <div className="relative z-10">
-                <p className="text-[9px] sm:text-[10px] font-bold text-primary-foreground/70 uppercase tracking-[0.3em] mb-1">Balance</p>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-xl sm:text-2xl font-heading text-primary-foreground/60">₹</span>
-                  <h2 className="text-4xl sm:text-5xl font-heading text-primary-foreground tracking-tight">
-                    {(wallet?.balance || 0).toLocaleString()}
-                  </h2>
+          <div className="px-4 sm:px-6 pt-4 sm:pt-6 space-y-6 sm:space-y-10">
+            {/* Balance Card - Clean White Design */}
+            <section>
+              <motion.div 
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="relative h-48 sm:h-56 rounded-[32px] bg-white overflow-hidden shadow-2xl p-8 flex flex-col justify-between border border-dark-emerald/10"
+              >
+                <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#066839 1px, transparent 1px)', backgroundSize: '12px 12px' }} />
+                
+                <div className="relative z-10 flex justify-between items-start">
+                  <div className="space-y-1">
+                    <p className="text-[10px] font-black text-dark-emerald/60 uppercase tracking-[0.3em]">AVAILABLE FUNDS</p>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl font-heading text-dark-emerald/40">₹</span>
+                      <h2 className="text-5xl sm:text-6xl font-heading text-dark-emerald tracking-tight">
+                        {(wallet?.balance || 0).toLocaleString()}
+                      </h2>
+                    </div>
+                  </div>
+                  <div className="w-14 h-14 rounded-2xl bg-dark-emerald/5 flex items-center justify-center text-dark-emerald border border-dark-emerald/10">
+                    <WalletIcon size={28} strokeWidth={2.5} />
+                  </div>
                 </div>
-              </div>
 
-              <div className="relative z-10 grid grid-cols-2 gap-4 sm:gap-6 pt-4 border-t border-white/10">
-                <div>
-                  <p className="text-[8px] sm:text-[9px] font-bold text-primary-foreground/60 uppercase tracking-wider mb-0.5">Earnings</p>
-                  <p className="text-lg sm:text-xl font-heading text-primary-foreground">₹{(wallet?.lifetime_earnings || 0).toLocaleString()}</p>
+                <div className="relative z-10 flex items-center gap-6 pt-6 border-t border-dark-emerald/10">
+                  <div>
+                    <p className="text-[9px] font-black text-dark-emerald/40 uppercase tracking-widest">LIFE EARNINGS</p>
+                    <p className="text-xl font-heading text-dark-emerald">₹{(wallet?.lifetime_earnings || 0).toLocaleString()}</p>
+                  </div>
+                  <div className="h-8 w-[1px] bg-dark-emerald/10" />
+                  <div>
+                    <p className="text-[9px] font-black text-dark-emerald/40 uppercase tracking-widest">PENDING</p>
+                    <p className="text-xl font-heading text-dark-emerald/60">₹{(wallet?.pending_withdrawals || 0).toLocaleString()}</p>
+                  </div>
                 </div>
-                <div className="text-right sm:text-left">
-                  <p className="text-[8px] sm:text-[9px] font-bold text-primary-foreground/60 uppercase tracking-wider mb-0.5">Pending</p>
-                  <p className="text-lg sm:text-xl font-heading text-primary-foreground/80">₹{(wallet?.pending_withdrawals || 0).toLocaleString()}</p>
-                </div>
-              </div>
-              
-              <div className="absolute top-[-30%] right-[-10%] w-full h-full bg-white/5 blur-[80px] rounded-full pointer-events-none" />
-            </motion.div>
-          </section>
+              </motion.div>
+            </section>
 
-          {/* Quick Actions - Mobile Optimized */}
-          <section className="grid grid-cols-2 gap-3 sm:gap-4">
-            <motion.button 
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsDepositOpen(true)}
-              className="mobile-card py-5 sm:py-6 flex flex-col items-center gap-2 haptic-tap"
-            >
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-accent/15 flex items-center justify-center text-accent">
-                <Plus size={20} strokeWidth={3} className="sm:w-6 sm:h-6" />
-              </div>
-              <span className="text-[10px] sm:text-[11px] font-bold text-accent uppercase tracking-wide">Add Funds</span>
-            </motion.button>
-            <motion.button 
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsWithdrawOpen(true)}
-              className="mobile-card py-5 sm:py-6 flex flex-col items-center gap-2 haptic-tap"
-            >
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-muted flex items-center justify-center text-muted-foreground">
-                <ArrowDownLeft size={20} strokeWidth={3} className="sm:w-6 sm:h-6" />
-              </div>
-              <span className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-wide">Withdraw</span>
-            </motion.button>
-          </section>
+            {/* Deposit Actions - Dark Emerald Focus */}
+            <section className="grid grid-cols-2 gap-4">
+              <motion.button 
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsDepositOpen(true)}
+                className="bg-dark-emerald text-white rounded-[24px] py-6 flex flex-col items-center gap-3 shadow-xl shadow-dark-emerald/20 border-none"
+              >
+                <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-white">
+                  <Plus size={24} strokeWidth={3} />
+                </div>
+                <span className="text-[11px] font-black uppercase tracking-widest">DEPOSIT CASH</span>
+              </motion.button>
+              <motion.button 
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsWithdrawOpen(true)}
+                className="bg-jet-black text-white rounded-[24px] py-6 flex flex-col items-center gap-3 shadow-lg border border-emerald-depths/20"
+              >
+                <div className="w-12 h-12 rounded-2xl bg-dark-emerald/10 flex items-center justify-center text-dark-emerald">
+                  <ArrowDownLeft size={24} strokeWidth={3} />
+                </div>
+                <span className="text-[11px] font-black uppercase tracking-widest">WITHDRAW</span>
+              </motion.button>
+            </section>
+
 
           {/* Transaction History - Mobile Optimized */}
           <section className="space-y-4">

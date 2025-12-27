@@ -23,43 +23,36 @@ export function BottomNav() {
           const isActive = pathname === item.href;
           const Icon = item.icon;
           
-          return (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="relative flex flex-col items-center justify-center flex-1 h-full touch-target haptic-tap"
-            >
-              <motion.div
-                initial={false}
-                animate={{ 
-                  scale: isActive ? 1.1 : 1,
-                  y: isActive ? -2 : 0 
-                }}
-                transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                className="relative flex flex-col items-center gap-0.5"
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="relative flex flex-col items-center justify-center flex-1 h-full touch-target"
               >
-                <div className={`relative z-10 p-2 rounded-xl transition-colors duration-200 ${
-                  isActive ? "bg-accent/15 text-accent" : "text-muted-foreground"
-                }`}>
-                  <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
-                </div>
-  
-                <span className={`text-[10px] font-bold uppercase tracking-wide transition-colors duration-200 ${
-                  isActive ? "text-accent" : "text-muted-foreground"
-                }`}>
-                  {item.label}
-                </span>
+                <motion.div
+                  initial={false}
+                  animate={{ 
+                    scale: isActive ? 1.05 : 1,
+                    y: isActive ? -4 : 0 
+                  }}
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  className="relative flex flex-col items-center gap-1"
+                >
+                  <div className={`relative z-10 p-2 rounded-xl transition-all duration-300 ${
+                    isActive ? "bg-dark-emerald text-white shadow-lg shadow-dark-emerald/20" : "text-muted-foreground hover:text-foreground"
+                  }`}>
+                    <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+                  </div>
+    
+                  <span className={`text-[9px] font-bold uppercase tracking-[0.15em] transition-colors duration-200 ${
+                    isActive ? "text-dark-emerald" : "text-muted-foreground"
+                  }`}>
+                    {item.label}
+                  </span>
+                </motion.div>
+              </Link>
+            );
 
-                {isActive && (
-                  <motion.div 
-                    layoutId="nav-indicator"
-                    className="absolute -top-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-accent rounded-full"
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  />
-                )}
-              </motion.div>
-            </Link>
-          );
         })}
       </div>
       <div className="h-[env(safe-area-inset-bottom,0px)]" />

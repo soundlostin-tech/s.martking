@@ -97,39 +97,49 @@ export default function MatchesPage() {
 
   return (
     <div className="min-h-screen bg-transparent text-foreground">
-      <main className="pb-24 relative z-10">
-        <TopHeader />
+        <main className="pb-24 relative z-10">
+          <TopHeader />
 
-        {/* Search & Filter - Mobile Optimized */}
-        <section className="px-4 sm:px-6 pt-4 sm:pt-6 space-y-4">
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
-            <input 
-              type="text" 
-              placeholder="Search matches..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-muted border border-border rounded-xl sm:rounded-2xl py-3.5 sm:py-4 pl-12 pr-4 text-sm font-medium focus:ring-2 focus:ring-accent/20 transition-all placeholder:text-muted-foreground/50 text-foreground"
-            />
-          </div>
+          {/* Matches Header - Patterned */}
+          <section className="relative px-6 py-8 overflow-hidden bg-dark-emerald/5 border-b border-border">
+            <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#066839 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
+            <div className="relative z-10 space-y-1">
+              <h2 className="text-3xl font-heading text-foreground">Arena <span className="text-dark-emerald italic">Battles</span></h2>
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em]">Live Feed / Sector Alpha</p>
+            </div>
+          </section>
 
-          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
-            {filters.map((filter) => (
-              <motion.button
-                key={filter}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveFilter(filter)}
-                className={`flex-shrink-0 px-5 sm:px-6 py-2.5 rounded-xl text-[11px] sm:text-xs font-bold uppercase tracking-wide transition-all whitespace-nowrap border haptic-tap ${
-                  activeFilter === filter 
-                    ? "bg-primary text-primary-foreground border-primary shadow-sm" 
-                    : "bg-muted text-foreground border-border active:bg-muted/80"
-                }`}
-              >
-                {filter}
-              </motion.button>
-            ))}
-          </div>
-        </section>
+          {/* Search & Filter - Mobile Optimized */}
+          <section className="px-4 sm:px-6 pt-6 space-y-4">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-dark-emerald/50" size={18} />
+              <input 
+                type="text" 
+                placeholder="SEARCH ARENA..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-jet-black border border-emerald-depths/30 rounded-2xl py-4 pl-12 pr-4 text-[10px] font-bold tracking-widest focus:ring-2 focus:ring-dark-emerald/20 transition-all placeholder:text-muted-foreground/30 text-foreground uppercase"
+              />
+            </div>
+
+            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
+              {filters.map((filter) => (
+                <motion.button
+                  key={filter}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setActiveFilter(filter)}
+                  className={`flex-shrink-0 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap border ${
+                    activeFilter === filter 
+                      ? "bg-dark-emerald text-white border-dark-emerald shadow-lg shadow-dark-emerald/20" 
+                      : "bg-jet-black text-muted-foreground border-emerald-depths/20"
+                  }`}
+                >
+                  {filter}
+                </motion.button>
+              ))}
+            </div>
+          </section>
+
 
         {/* Match List - Mobile Optimized */}
         <section className="px-4 sm:px-6 pt-6 space-y-3 sm:space-y-4">

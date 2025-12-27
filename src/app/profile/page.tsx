@@ -115,41 +115,52 @@ export default function Profile() {
       <main className="pb-24 relative z-10">
         <TopHeader />
 
-        <div className="px-4 sm:px-6 pt-6 sm:pt-8 space-y-6 sm:space-y-8">
-          {/* Profile Header - Mobile Optimized */}
-          <section className="flex flex-col items-center text-center">
-            <div className="relative mb-4 sm:mb-6">
-              <motion.div 
-                whileTap={{ scale: 0.95 }}
-                className="w-24 h-24 sm:w-32 sm:h-32 rounded-[28px] sm:rounded-[36px] p-1 bg-gradient-to-tr from-dark-emerald to-emerald-depths shadow-lg"
-              >
-                <div className="w-full h-full rounded-[24px] sm:rounded-[32px] bg-background p-0.5">
-                  <Avatar className="w-full h-full rounded-[22px] sm:rounded-[30px] border-none bg-muted">
-                    <AvatarImage src={profile?.avatar_url} className="object-cover" />
-                    <AvatarFallback className="bg-muted text-muted-foreground text-2xl sm:text-3xl font-heading">
-                      {profile?.full_name?.[0].toUpperCase() || "SK"}
-                    </AvatarFallback>
-                  </Avatar>
-                </div>
-              </motion.div>
-              <button 
-                onClick={() => setIsEditing(true)}
-                className="absolute -bottom-1 -right-1 w-9 h-9 sm:w-10 sm:h-10 bg-primary text-primary-foreground rounded-xl sm:rounded-2xl shadow-lg flex items-center justify-center active:scale-90 transition-transform border-2 border-background touch-target"
-              >
-                <Edit2 size={16} strokeWidth={3} />
-              </button>
-            </div>
-            
-            <div className="space-y-1.5">
-              <h2 className="text-2xl sm:text-3xl font-heading text-foreground">{profile?.full_name || "Warrior"}</h2>
-              <div className="flex items-center justify-center gap-2">
-                <Badge variant="outline" className="border-border bg-muted text-[8px] sm:text-[9px] font-bold tracking-wider text-accent px-3 py-0.5 rounded-full uppercase">
-                  PRO
-                </Badge>
-                <p className="text-[10px] sm:text-[11px] font-medium text-muted-foreground">@{profile?.username || user?.email?.split('@')[0]}</p>
+          <div className="px-4 sm:px-6 pt-10 space-y-10">
+            {/* Profile Header - Centered & Little Planet Style */}
+            <section className="flex flex-col items-center text-center space-y-6">
+              <div className="relative">
+                <motion.div 
+                  whileTap={{ scale: 0.95 }}
+                  className="w-32 h-32 sm:w-40 sm:h-40 rounded-full p-1 bg-gradient-to-tr from-dark-emerald to-emerald-depths shadow-2xl relative"
+                >
+                  <div className="w-full h-full rounded-full bg-background p-1">
+                    <Avatar className="w-full h-full rounded-full border-none bg-jet-black flex items-center justify-center overflow-hidden">
+                      {profile?.avatar_url ? (
+                        <AvatarImage src={profile?.avatar_url} className="object-cover" />
+                      ) : (
+                        <div className="text-dark-emerald">
+                           {/* Little Planet Icon Placeholder */}
+                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-16 h-16">
+                             <circle cx="12" cy="12" r="10" />
+                             <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                           </svg>
+                        </div>
+                      )}
+                    </Avatar>
+                  </div>
+                  
+                  {/* Orbiting Badge */}
+                  <div className="absolute -top-2 -right-2 w-10 h-10 rounded-full bg-dark-emerald text-white flex items-center justify-center border-4 border-background shadow-xl">
+                    <Trophy size={16} strokeWidth={2.5} />
+                  </div>
+                </motion.div>
+
+                <button 
+                  onClick={() => setIsEditing(true)}
+                  className="absolute bottom-2 right-2 w-10 h-10 bg-white text-dark-emerald rounded-full shadow-lg flex items-center justify-center active:scale-90 transition-transform border-4 border-background touch-target"
+                >
+                  <Edit2 size={16} strokeWidth={3} />
+                </button>
               </div>
-            </div>
-          </section>
+              
+              <div className="space-y-2">
+                <h2 className="text-4xl font-heading text-foreground tracking-tight">{profile?.full_name || "WARRIOR"}</h2>
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-[10px] font-black text-dark-emerald uppercase tracking-[0.3em]">ARENA ID: {profile?.username || user?.email?.split('@')[0].toUpperCase()}</span>
+                </div>
+              </div>
+            </section>
+
 
           {/* Stats Grid - Mobile Optimized */}
           <section className="grid grid-cols-2 gap-3 sm:gap-4">

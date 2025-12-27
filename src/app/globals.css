@@ -55,23 +55,23 @@
   --color-emerald-depths-2: #0F5132;
   --color-deep-forest: #14452F;
   --color-evergreen: #18392B;
-    --color-jet-black: #1D2E28;
-    --color-carbon-black: #212224;
-  }
+  --color-jet-black: #1D2E28;
+  --color-carbon-black: #212224;
+}
 
 
 :root {
-  --radius: 2rem;
+  --radius: 12px;
   
   /* Backgrounds */
   --background: #212224; /* carbon-black */
   --foreground: #ffffff;
   
   /* Surfaces */
-  --card: #0A5C36; /* emerald-depths */
+  --card: #1D2E28; /* jet-black */
   --card-foreground: #ffffff;
   
-  --popover: #0F5132; /* emerald-depths-2 */
+  --popover: #1D2E28; /* jet-black */
   --popover-foreground: #ffffff;
   
   /* Actions */
@@ -91,19 +91,19 @@
   --destructive-foreground: #ffffff;
   
   /* Borders */
-  --border: #18392B; /* evergreen */
+  --border: #0A5C36; /* emerald-depths for card borders */
   --input: #18392B; /* evergreen */
   --ring: #066839; /* dark-emerald */
 
   /* Sidebar */
-  --sidebar: #1D2E28;
+  --sidebar: #066839; /* dark-emerald as requested */
   --sidebar-foreground: #ffffff;
-  --sidebar-primary: #066839;
-  --sidebar-primary-foreground: #ffffff;
+  --sidebar-primary: #ffffff;
+  --sidebar-primary-foreground: #066839;
   --sidebar-accent: #0A5C36;
   --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #18392B;
-  --sidebar-ring: #066839;
+  --sidebar-border: #0A5C36;
+  --sidebar-ring: #ffffff;
 }
 
 @layer base {
@@ -118,9 +118,13 @@
     overscroll-behavior-y: none;
     -webkit-user-select: none;
     user-select: none;
+    /* Geometric Pattern */
+    background-image: radial-gradient(#0A5C36 0.5px, transparent 0.5px);
+    background-size: 24px 24px;
+    background-color: #212224;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-normal tracking-tight text-foreground;
+    @apply font-heading font-bold tracking-tight text-foreground;
   }
 }
 
@@ -139,10 +143,11 @@
 
 .card-premium {
   @apply bg-card border border-border shadow-xl hover:shadow-2xl transition-all duration-300;
+  border-radius: 12px;
 }
 
 .mobile-card {
-  @apply bg-emerald-depths border border-evergreen rounded-[24px] p-4 shadow-sm active:scale-[0.98] transition-transform duration-150;
+  @apply bg-jet-black border border-emerald-depths rounded-[12px] p-4 shadow-sm active:scale-[0.98] transition-transform duration-150;
 }
 
 /* GPU Acceleration for Animations */
