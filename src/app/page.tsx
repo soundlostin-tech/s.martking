@@ -106,15 +106,15 @@ export default function Home() {
                   className={`relative w-[72px] h-[72px] rounded-[24px] p-[2.5px] flex items-center justify-center transition-all duration-500 ${
                     stories.some(s => s.user_id === user.id) 
                       ? 'bg-gradient-to-tr from-secondary to-accent shadow-lg shadow-secondary/20' 
-                      : 'border-2 border-dashed border-primary/10 hover:border-primary/20'
+                      : 'border-2 border-dashed border-shadow-grey-200 hover:border-shadow-grey-300'
                   }`}
                 >
                   <div className="w-full h-full rounded-[21px] bg-background p-0.5">
-                    <div className="w-full h-full rounded-[19px] bg-primary/5 flex items-center justify-center overflow-hidden">
+                    <div className="w-full h-full rounded-[19px] bg-seashell-50 flex items-center justify-center overflow-hidden">
                       {user.user_metadata?.avatar_url ? (
                         <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover" />
                       ) : (
-                        <span className="text-xl font-heading text-primary/20">{user.email?.[0].toUpperCase()}</span>
+                        <span className="text-xl font-heading text-shadow-grey-200">{user.email?.[0].toUpperCase()}</span>
                       )}
                     </div>
                   </div>
@@ -124,7 +124,7 @@ export default function Home() {
                     </div>
                   )}
                 </motion.div>
-                <span className="text-[10px] font-bold text-primary/40 uppercase tracking-widest">YOU</span>
+                <span className="text-[10px] font-bold text-shadow-grey-500 uppercase tracking-widest">YOU</span>
               </div>
             )}
 
@@ -141,21 +141,21 @@ export default function Home() {
                     className={`w-[72px] h-[72px] rounded-[24px] p-[2.5px] transition-all duration-500 ${
                       hasStory 
                         ? 'bg-gradient-to-tr from-secondary to-accent shadow-lg shadow-secondary/20' 
-                        : 'bg-primary/5'
+                        : 'bg-seashell-100'
                     }`}
                   >
                       <div className="w-full h-full rounded-[21px] bg-background p-0.5">
-                        <div className="w-full h-full rounded-[19px] bg-primary/5 flex items-center justify-center overflow-hidden">
+                        <div className="w-full h-full rounded-[19px] bg-seashell-50 flex items-center justify-center overflow-hidden">
                           {profile.avatar_url ? (
                             <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
                           ) : (
-                            <span className="text-xl font-heading text-primary/10">{profile.full_name?.[0].toUpperCase()}</span>
+                            <span className="text-xl font-heading text-shadow-grey-200">{profile.full_name?.[0].toUpperCase()}</span>
                           )}
                         </div>
                       </div>
                   </motion.div>
                   <span className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${
-                    hasStory ? 'text-primary' : 'text-primary/20'
+                    hasStory ? 'text-primary' : 'text-shadow-grey-300'
                   }`}>
                     {profile.full_name?.split(' ')[0].toUpperCase()}
                   </span>
@@ -167,8 +167,8 @@ export default function Home() {
 
         {/* Dynamic Hero Banner */}
         <section className="px-6 mb-10">
-          <div className="relative h-56 rounded-[40px] overflow-hidden shadow-xl shadow-primary/5 group cursor-pointer active:scale-[0.98] transition-all duration-500 border border-primary/5">
-            <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors duration-700" />
+          <div className="relative h-56 rounded-[40px] overflow-hidden shadow-xl shadow-primary/5 group cursor-pointer active:scale-[0.98] transition-all duration-500 border border-shadow-grey-100">
+            <div className="absolute inset-0 bg-seashell-50 group-hover:bg-seashell-100 transition-colors duration-700" />
             
             {/* Ambient FX */}
             <div className="absolute inset-0 overflow-hidden opacity-60">
@@ -198,7 +198,7 @@ export default function Home() {
                 <span className="text-[10px] font-bold text-secondary uppercase tracking-[0.4em]">ELITE DEPLOYMENT ACTIVE</span>
               </div>
               <h2 className="text-4xl font-heading text-primary leading-[1.1] tracking-tight">Win ₹1,00,000<br/>Mega Pool</h2>
-              <p className="text-[11px] text-primary/40 font-bold uppercase tracking-[0.2em] mt-4 flex items-center gap-2">
+              <p className="text-[11px] text-shadow-grey-500 font-bold uppercase tracking-[0.2em] mt-4 flex items-center gap-2">
                 <Users size={14} className="text-secondary" /> 2,450 WARRIORS REGISTERED
               </p>
               
@@ -208,7 +208,7 @@ export default function Home() {
                 </button>
                 <div className="flex -space-x-3">
                   {[1,2,3].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full border-4 border-white bg-primary/5 overflow-hidden shadow-sm">
+                    <div key={i} className="w-10 h-10 rounded-full border-4 border-white bg-seashell-100 overflow-hidden shadow-sm">
                       <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+50}`} alt="" />
                     </div>
                   ))}
@@ -234,12 +234,12 @@ export default function Home() {
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: i * 0.1 }}
-              className="flex-shrink-0 w-36 bg-card rounded-[32px] p-6 border border-primary/5 shadow-sm"
+              className="flex-shrink-0 w-36 bg-card rounded-[32px] p-6 border border-shadow-grey-100 shadow-sm"
             >
               <div className="w-10 h-10 rounded-2xl bg-secondary/10 flex items-center justify-center mb-4">
                 <stat.icon size={20} className="text-secondary" />
               </div>
-              <p className="text-[9px] font-bold text-primary/30 uppercase tracking-widest mb-1">{stat.label}</p>
+              <p className="text-[9px] font-bold text-shadow-grey-500 uppercase tracking-widest mb-1">{stat.label}</p>
               <h4 className="text-2xl font-heading text-primary">{stat.value}</h4>
             </motion.div>
           ))}
@@ -249,9 +249,9 @@ export default function Home() {
         <section className="px-8 pb-6 flex items-center justify-between">
           <div className="space-y-1">
             <h2 className="text-2xl font-heading text-primary">Active <span className="italic font-serif opacity-60">Operations</span></h2>
-            <p className="text-[10px] font-bold text-primary/20 uppercase tracking-[0.3em]">BATTLE SIGNALS DETECTED</p>
+            <p className="text-[10px] font-bold text-shadow-grey-400 uppercase tracking-[0.3em]">BATTLE SIGNALS DETECTED</p>
           </div>
-          <Link href="/matches" className="p-3 bg-card rounded-2xl text-primary/40 hover:text-secondary shadow-sm transition-all border border-primary/5">
+          <Link href="/matches" className="p-3 bg-card rounded-2xl text-shadow-grey-400 hover:text-secondary shadow-sm transition-all border border-shadow-grey-100">
             <LayoutGrid size={20} />
           </Link>
         </section>
@@ -266,9 +266,9 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
               whileTap={{ scale: 0.97 }}
-              className="bg-card rounded-[32px] p-6 border border-primary/5 shadow-sm hover:border-secondary/30 transition-all duration-500 group flex items-center gap-6"
+              className="bg-card rounded-[32px] p-6 border border-shadow-grey-100 shadow-sm hover:border-secondary/30 transition-all duration-500 group flex items-center gap-6"
             >
-              <div className="relative w-24 h-24 rounded-3xl bg-primary/5 overflow-hidden flex-shrink-0 shadow-inner">
+              <div className="relative w-24 h-24 rounded-3xl bg-seashell-200 overflow-hidden flex-shrink-0 shadow-inner">
                  {match.status === 'live' ? (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center animate-pulse">
@@ -280,14 +280,14 @@ export default function Home() {
                     <Swords size={32} />
                   </div>
                 )}
-                <div className="absolute bottom-2 left-2 right-2 px-2 py-1 rounded-xl bg-white/80 backdrop-blur-md border border-primary/5 flex items-center justify-center gap-1.5">
-                  <div className={`w-1 h-1 rounded-full ${match.status === 'live' ? 'bg-red-500 animate-pulse' : 'bg-secondary'}`} />
-                  <span className="text-[8px] font-bold uppercase tracking-tighter text-primary/80">{match.status}</span>
+                <div className="absolute bottom-2 left-2 right-2 px-2 py-1 rounded-xl bg-white/80 backdrop-blur-md border border-shadow-grey-100 flex items-center justify-center gap-1.5">
+                  <div className={`w-1 h-1 rounded-full ${match.status === 'live' ? 'bg-strawberry-red-500 animate-pulse' : 'bg-secondary'}`} />
+                  <span className="text-[8px] font-bold uppercase tracking-tighter text-shadow-grey-900">{match.status}</span>
                 </div>
               </div>
               
               <div className="flex-1 min-w-0 space-y-2">
-                <p className="text-[10px] font-bold text-primary/30 uppercase tracking-[0.2em]">{match.mode} • {match.map || 'Bermuda'}</p>
+                <p className="text-[10px] font-bold text-shadow-grey-500 uppercase tracking-[0.2em]">{match.mode} • {match.map || 'Bermuda'}</p>
                 <h3 className="text-xl font-heading text-primary truncate group-hover:text-secondary transition-colors">{match.title}</h3>
                 
                 <div className="flex items-center gap-5 pt-1">
@@ -295,26 +295,26 @@ export default function Home() {
                     <div className="w-5 h-5 rounded-lg bg-secondary/10 flex items-center justify-center">
                       <Trophy size={12} className="text-secondary" />
                     </div>
-                    <span className="text-[11px] font-bold text-primary/60">₹{match.tournament?.prize_pool.toLocaleString()}</span>
+                    <span className="text-[11px] font-bold text-shadow-grey-800">₹{match.tournament?.prize_pool.toLocaleString()}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded-lg bg-primary/5 flex items-center justify-center">
-                      <Users size={12} className="text-primary/30" />
+                    <div className="w-5 h-5 rounded-lg bg-seashell-200 flex items-center justify-center">
+                      <Users size={12} className="text-shadow-grey-400" />
                     </div>
-                    <span className="text-[11px] font-bold text-primary/40">{match.live_stats?.players_alive || 48} / {match.tournament?.slots || 100}</span>
+                    <span className="text-[11px] font-bold text-shadow-grey-500">{match.live_stats?.players_alive || 48} / {match.tournament?.slots || 100}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-col items-end justify-center gap-1 pl-4 border-l border-primary/5">
-                <span className="text-[9px] font-bold text-primary/20 uppercase tracking-[0.3em]">ENTRY</span>
+              <div className="flex flex-col items-end justify-center gap-1 pl-4 border-l border-shadow-grey-100">
+                <span className="text-[9px] font-bold text-shadow-grey-400 uppercase tracking-[0.3em]">ENTRY</span>
                 <span className="text-2xl font-heading text-secondary">₹{match.tournament?.entry_fee}</span>
               </div>
             </motion.div>
           )) : (
-            <div className="py-20 text-center flex flex-col items-center gap-4 bg-card rounded-[40px] border border-dashed border-primary/10 shadow-sm">
-              <Signal size={48} strokeWidth={1} className="text-primary/10" />
-              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/20 italic">Scanning for Battle Signals...</p>
+            <div className="py-20 text-center flex flex-col items-center gap-4 bg-card rounded-[40px] border border-dashed border-shadow-grey-200 shadow-sm">
+              <Signal size={48} strokeWidth={1} className="text-shadow-grey-200" />
+              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-shadow-grey-400 italic">Scanning for Battle Signals...</p>
             </div>
           )}
         </section>

@@ -104,115 +104,115 @@ export default function MatchesPage() {
       <main className="pb-32 relative z-10">
         <TopHeader />
 
-        {/* Search & Filter - Tactical Command Style */}
-        <section className="px-6 pt-8 space-y-6">
-          <div className="relative">
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-primary/30" size={18} />
-            <input 
-              type="text" 
-              placeholder="SEARCH ARENA SECTORS..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white border border-primary/5 rounded-[24px] py-5 pl-14 pr-6 text-xs font-bold tracking-widest focus:ring-2 focus:ring-secondary/20 transition-all placeholder:text-primary/20 uppercase shadow-sm"
-            />
-          </div>
-
-          <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
-            {filters.map((filter) => (
-              <motion.button
-                key={filter}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveFilter(filter)}
-                className={`px-8 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap border ${
-                  activeFilter === filter 
-                    ? "bg-secondary text-white border-secondary shadow-lg shadow-secondary/20" 
-                    : "bg-white text-primary/40 border-primary/5 hover:bg-white/80"
-                }`}
-              >
-                {filter}
-              </motion.button>
-            ))}
-          </div>
-        </section>
-
-        {/* Match List - Polished Arena Cards */}
-        <section className="px-6 pt-8 space-y-6 max-w-2xl mx-auto">
-          {loading ? (
-            <div className="flex flex-col items-center justify-center py-32 gap-6 bg-white rounded-[40px] border border-primary/5 shadow-sm">
-              <Loader2 className="w-12 h-12 animate-spin text-secondary" />
-              <p className="text-[10px] text-primary/20 font-bold uppercase tracking-[0.3em]">Accessing Arena Database...</p>
+          {/* Search & Filter - Tactical Command Style */}
+          <section className="px-6 pt-8 space-y-6">
+            <div className="relative">
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-shadow-grey-400" size={18} />
+              <input 
+                type="text" 
+                placeholder="SEARCH ARENA SECTORS..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-card border border-shadow-grey-100 rounded-[24px] py-5 pl-14 pr-6 text-xs font-bold tracking-widest focus:ring-2 focus:ring-secondary/20 transition-all placeholder:text-shadow-grey-300 uppercase shadow-sm"
+              />
             </div>
-          ) : matches.length > 0 ? (
-            <AnimatePresence mode="popLayout">
-              {matches.map((match, i) => (
-                <motion.div
-                  key={match.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ delay: i * 0.05 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="bg-white rounded-[40px] p-8 border border-primary/5 shadow-[0_10px_40px_-15px_rgba(36,62,54,0.08)] relative overflow-hidden group"
+  
+            <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+              {filters.map((filter) => (
+                <motion.button
+                  key={filter}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setActiveFilter(filter)}
+                  className={`px-8 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap border ${
+                    activeFilter === filter 
+                      ? "bg-secondary text-white border-secondary shadow-lg shadow-secondary/20" 
+                      : "bg-card text-shadow-grey-500 border-shadow-grey-100 hover:bg-seashell-200"
+                  }`}
                 >
-                  <div className="flex justify-between items-start mb-10">
-                    <div className="flex items-center gap-6">
-                      <div className={`w-16 h-16 rounded-[24px] flex items-center justify-center transition-all duration-500 ${
-                        match.status === 'live' 
-                          ? 'bg-red-500/10 text-red-500 group-hover:bg-red-500 group-hover:text-white' 
-                          : 'bg-secondary/10 text-secondary group-hover:bg-secondary group-hover:text-white'
-                      } shadow-sm`}>
-                        {match.status === 'live' ? <Play size={28} fill="currentColor" className="translate-x-0.5" /> : <Swords size={28} />}
+                  {filter}
+                </motion.button>
+              ))}
+            </div>
+          </section>
+  
+          {/* Match List - Polished Arena Cards */}
+          <section className="px-6 pt-8 space-y-6 max-w-2xl mx-auto">
+            {loading ? (
+              <div className="flex flex-col items-center justify-center py-32 gap-6 bg-card rounded-[40px] border border-shadow-grey-100 shadow-sm">
+                <Loader2 className="w-12 h-12 animate-spin text-secondary" />
+                <p className="text-[10px] text-shadow-grey-400 font-bold uppercase tracking-[0.3em]">Accessing Arena Database...</p>
+              </div>
+            ) : matches.length > 0 ? (
+              <AnimatePresence mode="popLayout">
+                {matches.map((match, i) => (
+                  <motion.div
+                    key={match.id}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ delay: i * 0.05 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="bg-card rounded-[40px] p-8 border border-shadow-grey-100 shadow-[0_10px_40px_-15px_rgba(30,30,36,0.08)] relative overflow-hidden group"
+                  >
+                    <div className="flex justify-between items-start mb-10">
+                      <div className="flex items-center gap-6">
+                        <div className={`w-16 h-16 rounded-[24px] flex items-center justify-center transition-all duration-500 ${
+                          match.status === 'live' 
+                            ? 'bg-strawberry-red-500/10 text-strawberry-red-500 group-hover:bg-strawberry-red-500 group-hover:text-white' 
+                            : 'bg-secondary/10 text-secondary group-hover:bg-secondary group-hover:text-white'
+                        } shadow-sm`}>
+                          {match.status === 'live' ? <Play size={28} fill="currentColor" className="translate-x-0.5" /> : <Swords size={28} />}
+                        </div>
+                        <div className="min-w-0 space-y-1.5">
+                          <h3 className="font-heading text-xl text-primary truncate group-hover:text-secondary transition-colors">{match.title}</h3>
+                          <div className="flex items-center gap-3">
+                            <Badge variant="outline" className="border-shadow-grey-100 bg-seashell-50 text-[8px] font-bold tracking-widest text-shadow-grey-500 px-3 py-0.5">
+                              {match.mode.toUpperCase()}
+                            </Badge>
+                            <p className="text-[9px] text-shadow-grey-400 font-bold uppercase tracking-[0.2em]">{match.tournament?.title}</p>
+                          </div>
+                        </div>
                       </div>
-                      <div className="min-w-0 space-y-1.5">
-                        <h3 className="font-heading text-xl text-primary truncate group-hover:text-secondary transition-colors">{match.title}</h3>
-                        <div className="flex items-center gap-3">
-                          <Badge variant="outline" className="border-primary/5 bg-primary/5 text-[8px] font-bold tracking-widest text-primary/40 px-3 py-0.5">
-                            {match.mode.toUpperCase()}
-                          </Badge>
-                          <p className="text-[9px] text-primary/20 font-bold uppercase tracking-[0.2em]">{match.tournament?.title}</p>
+                      <div className={`px-4 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-[0.2em] border ${
+                        match.status === 'live' 
+                          ? 'bg-strawberry-red-500 text-white animate-pulse border-white/20 shadow-lg shadow-strawberry-red-500/20' 
+                          : 'bg-seashell-50 text-shadow-grey-500 border-shadow-grey-100'
+                      }`}>
+                        {match.status}
+                      </div>
+                    </div>
+  
+                    <div className="grid grid-cols-2 gap-4 mb-10">
+                      <div className="bg-seashell-50 rounded-[28px] p-5 border border-shadow-grey-100 flex items-center gap-5 group-hover:bg-seashell-100 transition-colors">
+                        <div className="w-10 h-10 rounded-xl bg-card flex items-center justify-center text-secondary shadow-sm">
+                          <Calendar size={18} />
+                        </div>
+                        <div>
+                          <p className="text-[8px] font-bold text-shadow-grey-400 uppercase tracking-widest">Deployment</p>
+                          <p className="text-[11px] font-bold text-primary uppercase tracking-wide">
+                            {match.start_time ? new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' }) : 'TBD'}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="bg-seashell-50 rounded-[28px] p-5 border border-shadow-grey-100 flex items-center gap-5 group-hover:bg-seashell-100 transition-colors">
+                        <div className="w-10 h-10 rounded-xl bg-card flex items-center justify-center text-secondary shadow-sm">
+                          <Users size={18} />
+                        </div>
+                        <div>
+                          <p className="text-[8px] font-bold text-shadow-grey-400 uppercase tracking-widest">Capacity</p>
+                          <p className="text-[11px] font-bold text-primary uppercase tracking-wide">{match.current_slots || 0} / {match.tournament?.slots || 48} WARRIORS</p>
                         </div>
                       </div>
                     </div>
-                    <div className={`px-4 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-[0.2em] border ${
-                      match.status === 'live' 
-                        ? 'bg-red-500 text-white animate-pulse border-white/20 shadow-lg shadow-red-500/20' 
-                        : 'bg-primary/5 text-primary/40 border-primary/5'
-                    }`}>
-                      {match.status}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 mb-10">
-                    <div className="bg-primary/5 rounded-[28px] p-5 border border-primary/5 flex items-center gap-5 group-hover:bg-primary/10 transition-colors">
-                      <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-secondary shadow-sm">
-                        <Calendar size={18} />
+  
+                    <div className="flex items-center justify-between pt-6 border-t border-shadow-grey-100">
+                      <div className="flex flex-col gap-1">
+                        <p className="text-[9px] font-bold text-shadow-grey-400 uppercase tracking-[0.3em]">PRIZE POOL</p>
+                        <div className="flex items-center gap-2">
+                          <Trophy size={18} className="text-secondary" />
+                          <span className="text-2xl font-heading text-primary">₹{match.tournament?.prize_pool.toLocaleString() || 0}</span>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-[8px] font-bold text-primary/20 uppercase tracking-widest">Deployment</p>
-                        <p className="text-[11px] font-bold text-primary uppercase tracking-wide">
-                          {match.start_time ? new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' }) : 'TBD'}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="bg-primary/5 rounded-[28px] p-5 border border-primary/5 flex items-center gap-5 group-hover:bg-primary/10 transition-colors">
-                      <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-secondary shadow-sm">
-                        <Users size={18} />
-                      </div>
-                      <div>
-                        <p className="text-[8px] font-bold text-primary/20 uppercase tracking-widest">Capacity</p>
-                        <p className="text-[11px] font-bold text-primary uppercase tracking-wide">{match.current_slots || 0} / {match.tournament?.slots || 48} WARRIORS</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-6 border-t border-primary/5">
-                    <div className="flex flex-col gap-1">
-                      <p className="text-[9px] font-bold text-primary/20 uppercase tracking-[0.3em]">PRIZE POOL</p>
-                      <div className="flex items-center gap-2">
-                        <Trophy size={18} className="text-secondary" />
-                        <span className="text-2xl font-heading text-primary">₹{match.tournament?.prize_pool.toLocaleString() || 0}</span>
-                      </div>
-                    </div>
                     
                     {match.status === "upcoming" ? (
                       <motion.button 
