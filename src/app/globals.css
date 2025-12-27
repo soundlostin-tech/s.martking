@@ -122,8 +122,8 @@
      SEMANTIC COLOR MAPPINGS - LIGHT NEUTRAL THEME
      ============================================ */
   
-  /* Global App Background: Light Neutral (#F7EBE8) */
-  --background: #f7ebe8;
+  /* Global App Background: Light Neutral Shadow Green 50 (#F2F4F3) */
+  --background: #f2f4f3;
   
   /* Main Text: Evergreen (#0D2818) for readability on light */
   --foreground: #0d2818;
@@ -138,15 +138,15 @@
   
   /* Primary Actions: Black Forest / Evergreen (#0D2818) */
   --primary: #0d2818;
-  --primary-foreground: #f7ebe8;
+  --primary-foreground: #f2f4f3;
   
   /* Secondary Accents: Sea Green (#058C42) */
   --secondary: #058c42;
-  --secondary-foreground: #f7ebe8;
+  --secondary-foreground: #f2f4f3;
   
-    /* Muted: seashell-50/100ish for subtle surfaces */
-    --muted: #f8f2f1;
-    --muted-foreground: #887b79;
+    /* Muted: shadow-green-100 for subtle surfaces */
+    --muted: #e5e9e7;
+    --muted-foreground: #66746c;
     
     /* Accent: Malachite (#16DB65) */
     --accent: #16db65;
@@ -154,11 +154,11 @@
     
     /* Destructive: #892d2d */
     --destructive: #892d2d;
-    --destructive-foreground: #f7ebe8;
+    --destructive-foreground: #f2f4f3;
     
-    /* Borders: seashell-300 for cleaner look on white cards */
-    --border: #e7d7d4;
-    --input: #e7d7d4;
+    /* Borders: shadow-green-200 for cleaner look on white cards */
+    --border: #ccd3cf;
+    --input: #ccd3cf;
     --ring: #058c42;
   
   /* Chart Colors */
@@ -166,16 +166,16 @@
   --chart-2: #058c42;
   --chart-3: #0d2818;
   --chart-4: #887b79;
-  --chart-5: #f7ebe8;
+  --chart-5: #f2f4f3;
   
   /* Sidebar */
-  --sidebar: #f7ebe8;
+  --sidebar: #f2f4f3;
   --sidebar-foreground: #0d2818;
   --sidebar-primary: #0d2818;
-  --sidebar-primary-foreground: #f7ebe8;
-  --sidebar-accent: #efe1de;
+  --sidebar-primary-foreground: #f2f4f3;
+  --sidebar-accent: #e5e9e7;
   --sidebar-accent-foreground: #0d2818;
-  --sidebar-border: #dfcdca;
+  --sidebar-border: #ccd3cf;
   --sidebar-ring: #058c42;
 }
 
@@ -202,64 +202,18 @@
   }
 }
 
-/* Premium Gradient Utility */
+/* Premium Utility Classes */
 .premium-gradient {
   background: linear-gradient(135deg, #0d2818 0%, #058c42 100%);
-  color: #f7ebe8;
+  color: #f2f4f3;
 }
 
-.premium-radial {
-  background: radial-gradient(circle at center, #16db65 0%, #058c42 100%);
-  color: #0d2818;
-}
-
-/* Native Scrollbar Hiding */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* Mesh Background */
-.mesh-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  overflow: hidden;
-  background-color: var(--background);
-}
-
-.mesh-bg::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-image: 
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.03;
-  pointer-events: none;
-}
-
-@keyframes float {
-  0% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(5%, -5%) scale(1.05); }
-  66% { transform: translate(-3%, 3%) scale(0.98); }
-  100% { transform: translate(0, 0) scale(1); }
-}
-
-.animate-blob {
-  animation: float 20s infinite alternate ease-in-out;
-  filter: blur(140px);
-  opacity: 0.4;
+.card-premium {
+  @apply bg-card border border-border shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300;
 }
 
 .glass {
-  @apply bg-white/40 backdrop-blur-2xl border border-shadow-green-200 shadow-xl;
+  @apply bg-white/60 backdrop-blur-2xl border border-white/20 shadow-xl;
 }
 
 @keyframes fadeIn {

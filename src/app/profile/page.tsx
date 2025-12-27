@@ -169,13 +169,13 @@ export default function Profile() {
                       { label: "Earnings", value: `₹${(wallet?.lifetime_earnings || 0).toLocaleString()}`, icon: Trophy, color: "accent" },
                       { label: "Matches", value: profile?.matches_played || 0, icon: Gamepad2, color: "primary" },
                     ].map((stat, i) => (
-                      <motion.div 
-                        key={i}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: i * 0.1 }}
-                        className="bg-card p-6 rounded-[32px] border border-border shadow-sm"
-                      >
+                        <motion.div 
+                          key={i}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          transition={{ delay: i * 0.1 }}
+                          className="card-premium p-6 rounded-[32px] border-none shadow-md"
+                        >
                         <div className="flex items-center gap-4 mb-4">
                           <div className={`w-10 h-10 rounded-2xl bg-accent/10 flex items-center justify-center text-accent shadow-sm`}>
                             <stat.icon size={20} />

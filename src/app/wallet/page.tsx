@@ -205,28 +205,28 @@ export default function WalletPage() {
               </section>
     
               {/* Quick Actions */}
-              <section className="grid grid-cols-2 gap-6">
-                <motion.button 
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setIsDepositOpen(true)}
-                  className="bg-card rounded-[32px] py-8 flex flex-col items-center gap-3 border border-border shadow-sm hover:bg-muted transition-all"
-                >
-                  <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent shadow-sm">
-                    <Plus size={24} strokeWidth={3} />
-                  </div>
-                  <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Add Funds</span>
-                </motion.button>
-                <motion.button 
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setIsWithdrawOpen(true)}
-                  className="bg-card rounded-[32px] py-8 flex flex-col items-center gap-3 border border-border shadow-sm hover:bg-muted transition-all"
-                >
-                  <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-primary shadow-sm">
-                    <ArrowDownLeft size={24} strokeWidth={3} />
-                  </div>
-                  <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Withdraw</span>
-                </motion.button>
-              </section>
+                <section className="grid grid-cols-2 gap-6">
+                  <motion.button 
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setIsDepositOpen(true)}
+                    className="card-premium rounded-[32px] py-8 flex flex-col items-center gap-3 border-none shadow-md"
+                  >
+                    <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent shadow-sm">
+                      <Plus size={24} strokeWidth={3} />
+                    </div>
+                    <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Add Funds</span>
+                  </motion.button>
+                  <motion.button 
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setIsWithdrawOpen(true)}
+                    className="card-premium rounded-[32px] py-8 flex flex-col items-center gap-3 border-none shadow-md"
+                  >
+                    <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-primary shadow-sm">
+                      <ArrowDownLeft size={24} strokeWidth={3} />
+                    </div>
+                    <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Withdraw</span>
+                  </motion.button>
+                </section>
       
               {/* Activity Section */}
               <section className="space-y-6">
@@ -246,13 +246,13 @@ export default function WalletPage() {
                     </div>
                   ) : transactions.length > 0 ? (
                     transactions.map((tx, i) => (
-                      <motion.div 
-                        key={tx.id}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.05 }}
-                        className="bg-card p-5 rounded-[32px] flex items-center justify-between border border-border shadow-sm hover:border-accent/20 transition-all"
-                      >
+                        <motion.div 
+                          key={tx.id}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.05 }}
+                          className="card-premium p-5 rounded-[32px] flex items-center justify-between"
+                        >
                         <div className="flex items-center gap-5">
                           <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner ${
                             ['deposit', 'prize'].includes(tx.type) ? 'bg-accent/10 text-accent' : 'bg-muted text-primary'

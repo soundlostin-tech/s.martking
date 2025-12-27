@@ -150,9 +150,9 @@ export default function MatchesPage() {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
                         transition={{ delay: i * 0.05 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="bg-card rounded-[40px] p-8 border border-border shadow-md relative overflow-hidden group"
-                      >
+                          whileTap={{ scale: 0.98 }}
+                          className="card-premium rounded-[40px] p-8 relative overflow-hidden group shadow-md"
+                        >
                       <div className="flex justify-between items-start mb-10">
                         <div className="flex items-center gap-6">
                           <div className={`w-16 h-16 rounded-[24px] flex items-center justify-center transition-all duration-500 ${

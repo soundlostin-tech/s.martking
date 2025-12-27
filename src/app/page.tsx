@@ -211,12 +211,12 @@ export default function Home() {
                 { label: "Global Rank", value: userStats.rank, icon: Zap, color: "accent" },
                 { label: "Engagement", value: userStats.growth, icon: TrendingUp, color: "accent" },
               ].map((stat, i) => (
-                <motion.div 
+                  <motion.div 
                   key={i}
                   initial={{ x: 20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: i * 0.1 }}
-                  className="flex-shrink-0 w-36 bg-card rounded-[32px] p-6 border border-border shadow-sm"
+                  className="flex-shrink-0 w-36 card-premium rounded-[32px] p-6"
                 >
                   <div className="w-10 h-10 rounded-2xl bg-accent/10 flex items-center justify-center mb-4">
                     <stat.icon size={20} className="text-accent" />
@@ -248,7 +248,7 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05 }}
                   whileTap={{ scale: 0.97 }}
-                  className="bg-card rounded-[32px] p-6 border border-border shadow-sm hover:border-accent/30 transition-all duration-500 group flex items-center gap-6"
+                  className="card-premium rounded-[32px] p-6 group flex items-center gap-6"
                 >
                   <div className="relative w-24 h-24 rounded-3xl bg-muted overflow-hidden flex-shrink-0 shadow-inner border border-border">
                      {match.status === 'live' ? (

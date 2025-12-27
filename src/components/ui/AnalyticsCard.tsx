@@ -22,11 +22,11 @@ export function AnalyticsCard({
   className,
   showIcon = true,
 }: AnalyticsCardProps) {
-  const variants = {
-    light: "bg-card text-foreground border-border shadow-sm",
-    dark: "bg-primary text-primary-foreground shadow-lg border-primary/10",
-    highlight: "bg-secondary text-secondary-foreground shadow-lg border-secondary/10",
-  };
+    const variants = {
+      light: "card-premium text-foreground",
+      dark: "bg-primary text-primary-foreground shadow-lg border-primary/10",
+      highlight: "bg-secondary text-secondary-foreground shadow-lg border-secondary/10",
+    };
 
   return (
     <div
