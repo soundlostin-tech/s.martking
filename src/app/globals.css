@@ -128,7 +128,7 @@
   /* Main Text: Evergreen (#0D2818) for readability on light */
   --foreground: #0d2818;
   
-  /* Surfaces & Cards: Match background per requirements */
+  /* Surfaces & Cards: Solid color on neutral bg */
   --card: #f7ebe8;
   --card-foreground: #0d2818;
   
@@ -144,7 +144,7 @@
   --secondary: #058c42;
   --secondary-foreground: #f7ebe8;
   
-  /* Muted: seashell-200 for background, seashell-700 for text */
+  /* Muted: seashell-200 for surfaces, seashell-700 for text */
   --muted: #efe1de;
   --muted-foreground: #887b79;
   

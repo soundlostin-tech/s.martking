@@ -173,16 +173,16 @@ export default function AdminUsers() {
   };
 
   return (
-    <main className="min-h-screen pb-32 bg-background text-white">
+    <main className="min-h-screen pb-32 bg-background text-foreground">
       <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-20">
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-malachite-500/10 rounded-full blur-[120px]" />
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px]" />
       </div>
 
       <div className="px-6 pt-24 relative z-10 space-y-10 max-w-6xl mx-auto">
         {/* Header */}
         <div className="space-y-1">
-          <h4 className="text-[10px] font-bold text-malachite-500 uppercase tracking-[0.4em]">Registry Command</h4>
-          <h1 className="text-4xl font-heading text-white">Warrior <span className="italic font-serif text-white/60">Registry</span></h1>
+          <h4 className="text-[10px] font-bold text-secondary uppercase tracking-[0.4em]">Registry Command</h4>
+          <h1 className="text-4xl font-heading text-foreground">Warrior <span className="italic font-serif opacity-60">Registry</span></h1>
         </div>
 
         {/* KPI Strip */}
@@ -197,29 +197,29 @@ export default function AdminUsers() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: i * 0.1 }}
-              className="bg-evergreen-900/40 rounded-[2.5rem] p-8 border border-evergreen-800 shadow-lg relative overflow-hidden group"
+              className="bg-card rounded-[2.5rem] p-8 border border-border shadow-lg relative overflow-hidden group"
             >
               <div className="flex justify-between items-start relative z-10">
                 <div className="space-y-1">
-                  <p className="text-[10px] text-evergreen-500 uppercase font-bold tracking-[0.2em]">{stat.label}</p>
-                  <h3 className="text-3xl font-heading text-white">{stat.value.toLocaleString()}</h3>
-                  <p className="text-[9px] text-evergreen-600 font-bold uppercase tracking-widest">{stat.sub}</p>
+                  <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-[0.2em]">{stat.label}</p>
+                  <h3 className="text-3xl font-heading text-foreground">{stat.value.toLocaleString()}</h3>
+                  <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest">{stat.sub}</p>
                 </div>
-                <div className="p-4 rounded-2xl bg-evergreen-950 text-malachite-500 group-hover:scale-110 transition-transform duration-500 border border-white/5">
+                <div className="p-4 rounded-2xl bg-muted text-accent group-hover:scale-110 transition-transform duration-500 border border-border">
                   <stat.icon size={24} />
                 </div>
               </div>
-              <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-white/5 rounded-full blur-[60px]" />
+              <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-accent/5 rounded-full blur-[60px]" />
             </motion.div>
           ))}
         </div>
 
         {/* Filter Bar */}
-        <div className="bg-evergreen-900/40 rounded-[2.5rem] border border-evergreen-800 p-6 shadow-lg flex flex-col md:flex-row gap-4">
+        <div className="bg-card rounded-[2.5rem] border border-border p-6 shadow-lg flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-evergreen-500" size={18} />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
             <Input 
-              className="bg-evergreen-950 border-none pl-14 rounded-2xl h-14 text-xs font-bold tracking-wide focus-visible:ring-malachite-500 placeholder:text-evergreen-700 text-white" 
+              className="bg-muted border-none pl-14 rounded-2xl h-14 text-xs font-bold tracking-wide focus-visible:ring-accent placeholder:text-muted-foreground/50 text-foreground" 
               placeholder="SEARCH BY NAME, USERNAME, OR EMAIL..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -227,10 +227,10 @@ export default function AdminUsers() {
           </div>
           <div className="flex gap-2">
             <Select value={roleFilter} onValueChange={setRoleFilter}>
-              <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-evergreen-950 border-none font-bold text-[10px] tracking-widest text-evergreen-400">
+              <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-muted border-none font-bold text-[10px] tracking-widest text-muted-foreground">
                 <SelectValue placeholder="ROLE" />
               </SelectTrigger>
-              <SelectContent className="rounded-2xl border-evergreen-800 bg-evergreen-950 text-white">
+              <SelectContent className="rounded-2xl border-border bg-popover text-popover-foreground">
                 <SelectItem value="all">ALL ROLES</SelectItem>
                 <SelectItem value="Pro Player">PLAYER</SelectItem>
                 <SelectItem value="Organizer">ORGANIZER</SelectItem>
@@ -238,10 +238,10 @@ export default function AdminUsers() {
               </SelectContent>
             </Select>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-evergreen-950 border-none font-bold text-[10px] tracking-widest text-evergreen-400">
+              <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-muted border-none font-bold text-[10px] tracking-widest text-muted-foreground">
                 <SelectValue placeholder="STATUS" />
               </SelectTrigger>
-              <SelectContent className="rounded-2xl border-evergreen-800 bg-evergreen-950 text-white">
+              <SelectContent className="rounded-2xl border-border bg-popover text-popover-foreground">
                 <SelectItem value="all">ALL STATUS</SelectItem>
                 <SelectItem value="Active">ACTIVE</SelectItem>
                 <SelectItem value="Inactive">INACTIVE</SelectItem>
@@ -256,15 +256,15 @@ export default function AdminUsers() {
         <div className="space-y-6">
           <div className="flex items-end justify-between px-2">
             <div className="space-y-1">
-              <h3 className="text-2xl font-heading text-white">Arena <span className="italic font-serif text-white/60">Directory</span></h3>
-              <p className="text-[10px] font-bold text-evergreen-500 uppercase tracking-[0.2em]">{filteredUsers.length} MEMBERS FOUND</p>
+              <h3 className="text-2xl font-heading text-foreground">Arena <span className="italic font-serif opacity-60">Directory</span></h3>
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">{filteredUsers.length} MEMBERS FOUND</p>
             </div>
           </div>
 
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-32 gap-6 bg-evergreen-900/40 rounded-[3rem] border border-evergreen-800 shadow-sm">
-              <Loader2 className="w-12 h-12 animate-spin text-malachite-500" />
-              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-evergreen-500">Accessing Data Chambers...</p>
+            <div className="flex flex-col items-center justify-center py-32 gap-6 bg-card rounded-[3rem] border border-border shadow-sm">
+              <Loader2 className="w-12 h-12 animate-spin text-accent" />
+              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Accessing Data Chambers...</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-4">
@@ -277,28 +277,28 @@ export default function AdminUsers() {
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: idx * 0.05 }}
                       layout
-                      className="bg-evergreen-900/40 rounded-[2.5rem] p-6 flex items-center justify-between border border-evergreen-800 hover:border-malachite-500/30 hover:bg-evergreen-900/60 transition-all duration-500 group cursor-pointer"
+                      className="bg-card rounded-[2.5rem] p-6 flex items-center justify-between border border-border hover:border-accent/30 hover:bg-muted/30 transition-all duration-500 group cursor-pointer"
                       onClick={() => {
                         setSelectedUser(user);
                         setIsDetailOpen(true);
                       }}
                     >
                       <div className="flex items-center gap-6">
-                        <Avatar className="w-16 h-16 border-2 border-evergreen-800 shadow-xl transition-transform duration-500 group-hover:scale-110">
+                        <Avatar className="w-16 h-16 border-2 border-border shadow-xl transition-transform duration-500 group-hover:scale-110">
                           <AvatarImage src={user.avatar_url} />
-                          <AvatarFallback className="bg-malachite-500 text-black font-heading text-lg">
+                          <AvatarFallback className="bg-accent text-primary font-heading text-lg">
                             {user.full_name?.substring(0, 2).toUpperCase() || "SK"}
                           </AvatarFallback>
                         </Avatar>
                         <div className="space-y-1.5">
                           <div className="flex items-center gap-3">
-                            <h4 className="text-lg font-heading text-white leading-none">{user.full_name}</h4>
+                            <h4 className="text-lg font-heading text-foreground leading-none">{user.full_name}</h4>
                             {getStatusBadge(user.status)}
                           </div>
-                          <p className="text-[10px] font-bold text-evergreen-500 tracking-widest uppercase">@{user.username || user.email.split('@')[0]}</p>
+                          <p className="text-[10px] font-bold text-muted-foreground tracking-widest uppercase">@{user.username || user.email.split('@')[0]}</p>
                           <div className="flex items-center gap-3">
                             {getRoleBadge(user.role)}
-                            <span className="text-[9px] text-evergreen-600 flex items-center gap-1 font-bold uppercase tracking-widest">
+                            <span className="text-[9px] text-muted-foreground flex items-center gap-1 font-bold uppercase tracking-widest">
                               <Clock size={10} strokeWidth={3} /> {user.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString() : 'NEVER'}
                             </span>
                           </div>
@@ -307,41 +307,41 @@ export default function AdminUsers() {
 
                       <div className="flex items-center gap-6">
                         <div className="hidden md:flex flex-col items-end mr-8 text-right">
-                          <p className="text-[9px] text-evergreen-600 uppercase font-bold tracking-[0.2em]">Earnings</p>
-                          <p className="text-lg font-heading text-white">₹{user.lifetime_earnings?.toLocaleString() || 0}</p>
+                          <p className="text-[9px] text-muted-foreground uppercase font-bold tracking-[0.2em]">Earnings</p>
+                          <p className="text-lg font-heading text-foreground">₹{user.lifetime_earnings?.toLocaleString() || 0}</p>
                         </div>
                         <div className="flex items-center gap-2">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                              <Button variant="ghost" size="icon" className="rounded-2xl w-12 h-12 hover:bg-evergreen-800">
-                                <MoreVertical size={20} className="text-evergreen-600" />
+                              <Button variant="ghost" size="icon" className="rounded-2xl w-12 h-12 hover:bg-muted">
+                                <MoreVertical size={20} className="text-muted-foreground" />
                               </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="rounded-[1.5rem] border-evergreen-800 w-52 p-2 bg-evergreen-950 text-white shadow-2xl">
-                              <DropdownMenuLabel className="text-[9px] uppercase tracking-[0.2em] text-evergreen-600 font-bold px-3 py-2">ACTIONS</DropdownMenuLabel>
+                            <DropdownMenuContent align="end" className="rounded-[1.5rem] border-border w-52 p-2 bg-popover text-popover-foreground shadow-2xl">
+                              <DropdownMenuLabel className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground font-bold px-3 py-2">ACTIONS</DropdownMenuLabel>
                               <DropdownMenuItem 
                                 onClick={() => { setSelectedUser(user); setIsDetailOpen(true); }}
-                                className="rounded-xl flex gap-3 cursor-pointer py-3 text-xs font-bold tracking-wide hover:bg-evergreen-900"
+                                className="rounded-xl flex gap-3 cursor-pointer py-3 text-xs font-bold tracking-wide hover:bg-muted"
                               >
                                 <Eye size={16} /> VIEW PROFILE
                               </DropdownMenuItem>
-                              <DropdownMenuSeparator className="bg-evergreen-800" />
-                              <DropdownMenuLabel className="text-[9px] uppercase tracking-[0.2em] text-evergreen-600 font-bold px-3 py-2">MANAGEMENT</DropdownMenuLabel>
+                              <DropdownMenuSeparator className="bg-border" />
+                              <DropdownMenuLabel className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground font-bold px-3 py-2">MANAGEMENT</DropdownMenuLabel>
                               <DropdownMenuItem 
                                 onClick={() => handleUpdateUser(user.id, { role: user.role === 'Admin' ? 'Pro Player' : 'Admin' })}
-                                className="rounded-xl flex gap-3 cursor-pointer py-3 text-xs font-bold tracking-wide hover:bg-evergreen-900"
+                                className="rounded-xl flex gap-3 cursor-pointer py-3 text-xs font-bold tracking-wide hover:bg-muted"
                               >
                                 <Shield size={16} /> CHANGE ROLE
                               </DropdownMenuItem>
                               <DropdownMenuItem 
                                 onClick={() => handleUpdateUser(user.id, { status: user.status === 'Suspended' ? 'Active' : 'Suspended' })}
-                                className="rounded-xl flex gap-3 cursor-pointer py-3 text-xs font-bold tracking-wide hover:bg-evergreen-900"
+                                className="rounded-xl flex gap-3 cursor-pointer py-3 text-xs font-bold tracking-wide hover:bg-muted"
                               >
                                 <UserMinus size={16} /> {user.status === 'Suspended' ? 'UNSUSPEND' : 'SUSPEND'}
                               </DropdownMenuItem>
                               <DropdownMenuItem 
                                 onClick={() => handleUpdateUser(user.id, { status: 'Banned' })}
-                                className="rounded-xl flex gap-3 cursor-pointer py-3 text-xs font-bold tracking-wide text-red-400 focus:text-red-400 focus:bg-red-950"
+                                className="rounded-xl flex gap-3 cursor-pointer py-3 text-xs font-bold tracking-wide text-destructive focus:text-destructive focus:bg-destructive/10"
                               >
                                 <Ban size={16} /> BAN PLAYER
                               </DropdownMenuItem>
@@ -352,10 +352,10 @@ export default function AdminUsers() {
                     </motion.div>
                   ))
                 ) : (
-                  <div className="flex flex-col items-center justify-center py-32 bg-evergreen-900/40 rounded-[3rem] border border-dashed border-evergreen-800 text-center">
-                    <Users size={64} strokeWidth={1} className="text-evergreen-800 mb-6" />
-                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-evergreen-600">No matching warriors found</p>
-                    <Button variant="link" onClick={() => { setSearch(""); setRoleFilter("all"); setStatusFilter("all"); }} className="text-malachite-500 font-bold mt-4 text-[10px] tracking-widest uppercase">
+                  <div className="flex flex-col items-center justify-center py-32 bg-card rounded-[3rem] border border-dashed border-border text-center">
+                    <Users size={64} strokeWidth={1} className="text-muted-foreground/30 mb-6" />
+                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">No matching warriors found</p>
+                    <Button variant="link" onClick={() => { setSearch(""); setRoleFilter("all"); setStatusFilter("all"); }} className="text-accent font-bold mt-4 text-[10px] tracking-widest uppercase">
                       CLEAR ALL FILTERS
                     </Button>
                   </div>
@@ -368,35 +368,35 @@ export default function AdminUsers() {
 
       {/* User Detail Sheet */}
       <Sheet open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-        <SheetContent className="bg-evergreen-950 border-evergreen-800 w-full sm:max-w-xl p-0 overflow-y-auto no-scrollbar text-white">
+        <SheetContent className="bg-popover border-border w-full sm:max-w-xl p-0 overflow-y-auto no-scrollbar text-popover-foreground">
           {selectedUser && (
             <div className="flex flex-col h-full">
-              <div className="p-10 bg-evergreen-900 border-b border-evergreen-800 relative overflow-hidden">
+              <div className="p-10 bg-muted/30 border-b border-border relative overflow-hidden">
                 <SheetHeader className="relative z-10">
                   <div className="flex justify-between items-start mb-10">
                     {getStatusBadge(selectedUser.status)}
-                    <Button variant="ghost" size="icon" className="text-evergreen-600 hover:text-white transition-colors">
+                    <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground transition-colors">
                       <ShieldAlert size={22} />
                     </Button>
                   </div>
                   <div className="flex items-center gap-8">
-                    <Avatar className="w-28 h-28 border-4 border-evergreen-800 shadow-2xl">
+                    <Avatar className="w-28 h-28 border-4 border-border shadow-2xl">
                       <AvatarImage src={selectedUser.avatar_url} />
-                      <AvatarFallback className="bg-evergreen-950 text-white text-3xl font-heading">
+                      <AvatarFallback className="bg-accent text-primary text-3xl font-heading">
                         {selectedUser.full_name?.substring(0, 2).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
                     <div className="space-y-2">
-                      <SheetTitle className="text-white text-4xl font-heading leading-tight">{selectedUser.full_name}</SheetTitle>
-                      <p className="text-evergreen-500 text-[10px] font-bold uppercase tracking-[0.3em] flex items-center gap-3">
+                      <SheetTitle className="text-foreground text-4xl font-heading leading-tight">{selectedUser.full_name}</SheetTitle>
+                      <p className="text-secondary text-[10px] font-bold uppercase tracking-[0.3em] flex items-center gap-3">
                         @{selectedUser.username || selectedUser.email.split('@')[0]}
-                        <span className="w-1 h-1 bg-evergreen-700 rounded-full" />
+                        <span className="w-1 h-1 bg-border rounded-full" />
                         {selectedUser.role.toUpperCase()}
                       </p>
                     </div>
                   </div>
                 </SheetHeader>
-                <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-malachite-500/10 blur-[100px] rounded-full" />
+                <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-accent/10 blur-[100px] rounded-full" />
               </div>
 
               <div className="p-10 space-y-12 flex-1">
@@ -408,13 +408,13 @@ export default function AdminUsers() {
                     { label: "Earnings", value: `₹${(selectedUser.lifetime_earnings || 0).toLocaleString()}`, icon: Trophy },
                     { label: "Balance", value: `₹${(selectedUser.balance || 0).toLocaleString()}`, icon: Wallet },
                   ].map((stat, i) => (
-                    <div key={i} className="bg-evergreen-900/40 p-6 rounded-[2rem] border border-evergreen-800 flex flex-col gap-3">
-                      <div className="w-12 h-12 rounded-2xl bg-evergreen-950 text-malachite-500 flex items-center justify-center border border-white/5">
+                    <div key={i} className="bg-muted/20 p-6 rounded-[2rem] border border-border flex flex-col gap-3">
+                      <div className="w-12 h-12 rounded-2xl bg-muted text-accent flex items-center justify-center border border-border">
                         <stat.icon size={24} />
                       </div>
                       <div className="space-y-0.5">
-                        <p className="text-[9px] text-evergreen-500 uppercase font-bold tracking-widest">{stat.label}</p>
-                        <p className="text-2xl font-heading text-white">{stat.value}</p>
+                        <p className="text-[9px] text-muted-foreground uppercase font-bold tracking-widest">{stat.label}</p>
+                        <p className="text-2xl font-heading text-foreground">{stat.value}</p>
                       </div>
                     </div>
                   ))}
@@ -423,8 +423,8 @@ export default function AdminUsers() {
                 {/* Information Sections */}
                 <div className="space-y-10">
                   <div>
-                    <h4 className="text-[10px] text-evergreen-500 uppercase font-bold tracking-[0.3em] ml-2 mb-4">ACCOUNT DOSSIER</h4>
-                    <div className="bg-evergreen-900/40 rounded-[2.5rem] border border-evergreen-800 divide-y divide-evergreen-800 overflow-hidden shadow-2xl">
+                    <h4 className="text-[10px] text-muted-foreground uppercase font-bold tracking-[0.3em] ml-2 mb-4">ACCOUNT DOSSIER</h4>
+                    <div className="bg-card rounded-[2.5rem] border border-border divide-y divide-border overflow-hidden shadow-2xl">
                       {[
                         { label: "Email Address", value: selectedUser.email, icon: Mail },
                         { label: "Phone Number", value: selectedUser.phone || 'NOT VERIFIED', icon: Phone },
@@ -432,14 +432,14 @@ export default function AdminUsers() {
                         { label: "Member Since", value: new Date(selectedUser.created_at).toLocaleDateString(undefined, { dateStyle: 'long' }), icon: Calendar },
                         { label: "Last Active", value: selectedUser.last_sign_in_at ? new Date(selectedUser.last_sign_in_at).toLocaleString() : 'N/A', icon: Clock },
                       ].map((item, i) => (
-                        <div key={i} className="flex items-center justify-between p-6 hover:bg-white/[0.02] transition-colors">
+                        <div key={i} className="flex items-center justify-between p-6 hover:bg-muted/20 transition-colors">
                           <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-xl bg-evergreen-950 flex items-center justify-center text-evergreen-600 border border-white/5">
+                            <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center text-muted-foreground border border-border">
                               <item.icon size={18} />
                             </div>
-                            <span className="text-[10px] text-evergreen-500 font-bold uppercase tracking-widest">{item.label}</span>
+                            <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{item.label}</span>
                           </div>
-                          <span className="text-[11px] font-bold text-white uppercase tracking-wide text-right max-w-[200px]">{item.value}</span>
+                          <span className="text-[11px] font-bold text-foreground uppercase tracking-wide text-right max-w-[200px]">{item.value}</span>
                         </div>
                       ))}
                     </div>
@@ -448,11 +448,11 @@ export default function AdminUsers() {
               </div>
 
               {/* Admin Actions Footer */}
-              <div className="p-10 bg-evergreen-900 border-t border-evergreen-800 shadow-2xl">
+              <div className="p-10 bg-muted/30 border-t border-border shadow-2xl">
                 <div className="grid grid-cols-2 gap-4">
                   <Button 
                     variant="outline"
-                    className="h-16 rounded-[2rem] border-evergreen-800 bg-evergreen-950 text-white font-bold uppercase tracking-[0.2em] text-[10px] gap-3 hover:bg-evergreen-800"
+                    className="h-16 rounded-[2rem] border-border bg-background text-foreground font-bold uppercase tracking-[0.2em] text-[10px] gap-3 hover:bg-muted"
                     onClick={() => toast.info("Security scan protocol initialized...")}
                   >
                     <Zap size={20} fill="currentColor" /> SECURITY RESET
@@ -461,21 +461,21 @@ export default function AdminUsers() {
                     <DropdownMenuTrigger asChild>
                       <Button 
                         disabled={updatingId !== null}
-                        className="h-16 rounded-[2rem] bg-malachite-500 hover:bg-malachite-400 text-black font-bold uppercase tracking-[0.2em] text-[10px] gap-3 shadow-2xl shadow-malachite-500/20 border-none"
+                        className="h-16 rounded-[2rem] bg-accent hover:bg-accent/90 text-primary font-bold uppercase tracking-[0.2em] text-[10px] gap-3 shadow-2xl shadow-accent/20 border-none"
                       >
                         {updatingId === selectedUser.id ? <Loader2 className="animate-spin" size={20} /> : <ShieldCheck size={20} />}
                         MANAGE ACCESS
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-64 rounded-[2rem] p-3 border-evergreen-800 shadow-2xl bg-evergreen-950 text-white">
-                      <DropdownMenuItem onClick={() => handleUpdateUser(selectedUser.id, { status: 'Active' })} className="rounded-xl py-4 px-4 text-[10px] font-bold tracking-widest uppercase hover:bg-white/10">
-                        <CheckCircle2 size={16} className="mr-3 text-malachite-500" /> MARK AS ACTIVE
+                    <DropdownMenuContent align="end" className="w-64 rounded-[2rem] p-3 border-border shadow-2xl bg-popover text-popover-foreground">
+                      <DropdownMenuItem onClick={() => handleUpdateUser(selectedUser.id, { status: 'Active' })} className="rounded-xl py-4 px-4 text-[10px] font-bold tracking-widest uppercase hover:bg-muted">
+                        <CheckCircle2 size={16} className="mr-3 text-accent" /> MARK AS ACTIVE
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleUpdateUser(selectedUser.id, { status: 'Suspended' })} className="rounded-xl py-4 px-4 text-[10px] font-bold tracking-widest uppercase hover:bg-white/10">
-                        <UserMinus size={16} className="mr-3 text-evergreen-500" /> SUSPEND ACCESS
+                      <DropdownMenuItem onClick={() => handleUpdateUser(selectedUser.id, { status: 'Suspended' })} className="rounded-xl py-4 px-4 text-[10px] font-bold tracking-widest uppercase hover:bg-muted">
+                        <UserMinus size={16} className="mr-3 text-muted-foreground" /> SUSPEND ACCESS
                       </DropdownMenuItem>
-                      <DropdownMenuSeparator className="bg-evergreen-800" />
-                      <DropdownMenuItem onClick={() => handleUpdateUser(selectedUser.id, { status: 'Banned' })} className="rounded-xl py-4 px-4 text-[10px] font-bold tracking-widest uppercase text-red-400 focus:text-red-400 focus:bg-red-950">
+                      <DropdownMenuSeparator className="bg-border" />
+                      <DropdownMenuItem onClick={() => handleUpdateUser(selectedUser.id, { status: 'Banned' })} className="rounded-xl py-4 px-4 text-[10px] font-bold tracking-widest uppercase text-destructive focus:text-destructive focus:bg-destructive/10">
                         <XCircle size={16} className="mr-3" /> BAN FROM ARENA
                       </DropdownMenuItem>
                     </DropdownMenuContent>
