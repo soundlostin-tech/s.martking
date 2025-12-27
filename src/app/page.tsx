@@ -173,9 +173,9 @@ export default function Home() {
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 whileHover={{ y: -6, rotateY: 2, rotateX: 2 }}
                 style={{ perspective: "1000px" }}
-                className="relative h-72 rounded-[48px] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.4)] group cursor-pointer transition-all duration-700 border border-white/5 bg-[#020617]"
+                className="relative h-72 rounded-[48px] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.4)] group cursor-pointer transition-all duration-700 border border-white/5 bg-gradient-to-br from-evergreen-900 to-evergreen-800"
               >
-                {/* Cyber-Luxe Ambient Glows */}
+                {/* Forest-Elite Ambient Glows */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                   <motion.div 
                     animate={{ 
@@ -184,7 +184,7 @@ export default function Home() {
                       rotate: [0, 45, 0]
                     }}
                     transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                    className="absolute -top-1/2 -right-1/4 w-[600px] h-[600px] bg-cyan-500/20 blur-[150px] rounded-full" 
+                    className="absolute -top-1/2 -right-1/4 w-[600px] h-[600px] bg-malachite-500/20 blur-[150px] rounded-full" 
                   />
                   <motion.div 
                     animate={{ 
@@ -193,7 +193,7 @@ export default function Home() {
                       rotate: [0, -45, 0]
                     }}
                     transition={{ duration: 18, repeat: Infinity, ease: "linear", delay: 2 }}
-                    className="absolute -bottom-1/2 -left-1/4 w-[600px] h-[600px] bg-purple-500/20 blur-[150px] rounded-full" 
+                    className="absolute -bottom-1/2 -left-1/4 w-[600px] h-[600px] bg-sea-green-500/20 blur-[150px] rounded-full" 
                   />
                   {/* Scanning Grid Line */}
                   <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)]" />
@@ -213,11 +213,11 @@ export default function Home() {
                             key={i}
                             animate={{ opacity: [0.3, 1, 0.3] }}
                             transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
-                            className="w-1.5 h-1.5 rounded-full bg-cyan-400" 
+                            className="w-1.5 h-1.5 rounded-full bg-malachite-400" 
                           />
                         ))}
                       </div>
-                      <span className="text-[9px] font-black text-cyan-400 uppercase tracking-[0.5em] drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]">NEURAL NET ACTIVE</span>
+                      <span className="text-[9px] font-black text-malachite-400 uppercase tracking-[0.5em] drop-shadow-[0_0_8px_rgba(22,219,101,0.5)]">NEURAL NET ACTIVE</span>
                     </motion.div>
                     
                     <div className="space-y-2">
@@ -227,7 +227,7 @@ export default function Home() {
                         transition={{ delay: 0.5, duration: 0.8 }}
                         className="text-4xl md:text-7xl font-outfit font-extrabold text-white leading-[0.9] tracking-tighter"
                       >
-                        WIN <span className="text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 via-white to-purple-400 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">₹1.00L</span>
+                        WIN <span className="text-transparent bg-clip-text bg-gradient-to-br from-malachite-400 via-white to-sea-green-400 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">₹1.00L</span>
                       </motion.h2>
                       <motion.h2 
                         initial={{ x: -30, opacity: 0 }}
@@ -247,11 +247,11 @@ export default function Home() {
                     >
                       <div className="flex -space-x-2">
                         {[1,2,3].map(i => (
-                          <div key={i} className="w-5 h-5 rounded-full border border-black bg-slate-800" />
+                          <div key={i} className="w-5 h-5 rounded-full border border-black bg-evergreen-900" />
                         ))}
                       </div>
                       <span className="text-[10px] text-white/60 font-medium uppercase tracking-widest">
-                        <span className="text-cyan-400 font-bold">2.4K+</span> WARRIORS IN QUEUE
+                        <span className="text-malachite-400 font-bold">2.4K+</span> WARRIORS IN QUEUE
                       </span>
                     </motion.div>
                   </div>
@@ -269,7 +269,7 @@ export default function Home() {
                         ENTER ARENA
                         <ChevronRight size={18} strokeWidth={3} className="group-hover/btn:translate-x-1 transition-transform" />
                       </span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 opacity-0 group-hover/btn:opacity-100 transition-opacity" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-malachite-400 to-sea-green-500 opacity-0 group-hover/btn:opacity-100 transition-opacity" />
                       <div className="absolute inset-0 bg-white group-hover/btn:scale-x-0 transition-transform origin-left duration-500" />
                     </motion.button>
 
@@ -283,8 +283,8 @@ export default function Home() {
                 </div>
                 
                 {/* Tech Decoration */}
-                <div className="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-cyan-500/5 to-transparent pointer-events-none" />
-                <div className="absolute top-8 right-8 text-white/5 pointer-events-none group-hover:text-cyan-500/20 transition-colors duration-1000">
+                <div className="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-malachite-500/5 to-transparent pointer-events-none" />
+                <div className="absolute top-8 right-8 text-white/5 pointer-events-none group-hover:text-malachite-500/10 transition-colors duration-1000">
                   <Activity size={240} strokeWidth={0.5} />
                 </div>
               </motion.div>
@@ -317,14 +317,14 @@ export default function Home() {
             {/* Section Header */}
             <section className="px-8 pb-6 flex items-center justify-between">
               <div className="space-y-1">
-                <h2 className="text-2xl font-outfit font-black text-foreground uppercase tracking-tight">Active <span className="text-cyan-500 italic">Operations</span></h2>
+                <h2 className="text-2xl font-outfit font-black text-foreground uppercase tracking-tight">Active <span className="text-malachite-500 italic">Operations</span></h2>
                 <div className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-cyan-500 animate-pulse" />
+                  <div className="w-1 h-1 rounded-full bg-malachite-500 animate-pulse" />
                   <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em]">BATTLE SIGNALS DETECTED</p>
                 </div>
               </div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href="/matches" className="p-3.5 bg-card rounded-2xl text-muted-foreground hover:text-cyan-500 shadow-sm transition-all border border-border flex items-center gap-2 group">
+                <Link href="/matches" className="p-3.5 bg-card rounded-2xl text-muted-foreground hover:text-malachite-500 shadow-sm transition-all border border-border flex items-center gap-2 group">
                   <LayoutGrid size={20} />
                   <span className="text-[10px] font-black uppercase tracking-widest overflow-hidden w-0 group-hover:w-16 transition-all duration-300">BROWSE</span>
                 </Link>
@@ -344,13 +344,13 @@ export default function Home() {
                   className="card-premium rounded-[32px] p-5 group flex items-center gap-6 cursor-pointer relative overflow-hidden"
                 >
                   {/* Card Background Accent */}
-                  <div className="absolute top-0 left-0 w-1 h-full bg-cyan-500 opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                  <div className="absolute top-0 left-0 w-1 h-full bg-malachite-500 opacity-0 group-hover:opacity-100 transition-all duration-300" />
                   
-                  <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-[24px] md:rounded-[28px] bg-muted/50 overflow-hidden flex-shrink-0 shadow-inner border border-border group-hover:border-cyan-500/20 transition-colors">
+                  <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-[24px] md:rounded-[28px] bg-muted/50 overflow-hidden flex-shrink-0 shadow-inner border border-border group-hover:border-malachite-500/20 transition-colors">
                      {match.status === 'live' ? (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-cyan-500/10 flex items-center justify-center animate-pulse">
-                          <Play size={20} className="text-cyan-500 translate-x-0.5 md:size-[24px]" fill="currentColor" />
+                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-malachite-500/10 flex items-center justify-center animate-pulse">
+                          <Play size={20} className="text-malachite-500 translate-x-0.5 md:size-[24px]" fill="currentColor" />
                         </div>
                       </div>
                     ) : (
@@ -359,24 +359,24 @@ export default function Home() {
                       </div>
                     )}
                     <div className="absolute bottom-1.5 left-1.5 right-1.5 md:bottom-2 md:left-2 md:right-2 px-2 md:px-2.5 py-0.5 md:py-1 rounded-lg md:rounded-xl bg-background/90 backdrop-blur-md border border-border flex items-center justify-center gap-1 md:gap-1.5 shadow-sm">
-                      <div className={`w-1 h-1 md:w-1.5 md:h-1.5 rounded-full ${match.status === 'live' ? 'bg-cyan-500 animate-pulse' : 'bg-muted-foreground'}`} />
+                      <div className={`w-1 h-1 md:w-1.5 md:h-1.5 rounded-full ${match.status === 'live' ? 'bg-malachite-500 animate-pulse' : 'bg-muted-foreground'}`} />
                       <span className="text-[8px] md:text-[9px] font-black uppercase tracking-tighter text-foreground">{match.status}</span>
                     </div>
                   </div>
                   
                   <div className="flex-1 min-w-0 space-y-1.5 md:space-y-2.5">
                     <div className="flex items-center gap-2 md:gap-3">
-                      <Badge variant="outline" className="rounded-md md:rounded-lg bg-cyan-500/5 border-cyan-500/10 text-cyan-500 text-[7px] md:text-[8px] font-black uppercase tracking-widest px-1.5 md:px-2 py-0 md:py-0.5">
+                      <Badge variant="outline" className="rounded-md md:rounded-lg bg-malachite-500/5 border-malachite-500/10 text-malachite-500 text-[7px] md:text-[8px] font-black uppercase tracking-widest px-1.5 md:px-2 py-0 md:py-0.5">
                         {match.mode}
                       </Badge>
                       <span className="text-[8px] md:text-[9px] font-bold text-muted-foreground uppercase tracking-[0.15em] md:tracking-[0.2em]">{match.map || 'Bermuda'}</span>
                     </div>
                     
-                    <h3 className="text-lg md:text-xl font-outfit font-bold text-foreground truncate group-hover:text-cyan-500 transition-colors">{match.title}</h3>
+                    <h3 className="text-lg md:text-xl font-outfit font-bold text-foreground truncate group-hover:text-malachite-500 transition-colors">{match.title}</h3>
                     
                     <div className="flex items-center gap-3 md:gap-5">
                       <div className="flex items-center gap-1.5 md:gap-2">
-                        <Trophy size={12} className="text-cyan-500 md:size-[14px]" />
+                        <Trophy size={12} className="text-malachite-500 md:size-[14px]" />
                         <span className="text-[11px] md:text-[12px] font-bold text-foreground">₹{match.tournament?.prize_pool.toLocaleString()}</span>
                       </div>
                       <div className="flex items-center gap-1.5 md:gap-2">
@@ -388,15 +388,15 @@ export default function Home() {
                     </div>
                   </div>
     
-                  <div className="flex flex-col items-end justify-center gap-1 md:gap-1.5 pl-4 md:pl-6 border-l border-border group-hover:border-cyan-500/10 transition-colors">
+                  <div className="flex flex-col items-end justify-center gap-1 md:gap-1.5 pl-4 md:pl-6 border-l border-border group-hover:border-malachite-500/10 transition-colors">
                     <span className="text-[8px] md:text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] md:tracking-[0.3em]">ENTRY</span>
                     <div className="flex items-baseline gap-1">
-                      <span className="text-[11px] md:text-[12px] font-bold text-cyan-500">₹</span>
-                      <span className="text-2xl md:text-3xl font-outfit font-black text-cyan-500">{match.tournament?.entry_fee}</span>
+                      <span className="text-[11px] md:text-[12px] font-bold text-malachite-500">₹</span>
+                      <span className="text-2xl md:text-3xl font-outfit font-black text-malachite-500">{match.tournament?.entry_fee}</span>
                     </div>
                     <motion.div 
                       whileHover={{ scale: 1.1 }}
-                      className="w-8 h-8 rounded-xl bg-cyan-500 text-white flex items-center justify-center shadow-lg shadow-cyan-500/20 mt-1 opacity-0 group-hover:opacity-100 transition-all duration-300"
+                      className="w-8 h-8 rounded-xl bg-malachite-500 text-white flex items-center justify-center shadow-lg shadow-malachite-500/20 mt-1 opacity-0 group-hover:opacity-100 transition-all duration-300"
                     >
                       <ChevronRight size={18} />
                     </motion.div>
