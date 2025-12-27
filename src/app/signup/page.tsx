@@ -121,10 +121,9 @@ export default function Signup() {
   };
 
   return (
-    <main className="min-h-screen bg-transparent flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden py-24">
+    <main className="min-h-screen bg-evergreen-950 flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden py-24">
       {/* Background Decor */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-30">
-        <div className="absolute top-[-10%] left-[-10%] w-[120%] h-[120%] bg-evergreen-950" />
+      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-50">
         <div className="absolute top-0 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-sea-green-500/10 rounded-full blur-[80px] sm:blur-[120px]" />
         <div className="absolute bottom-0 left-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-malachite-400/10 rounded-full blur-[80px] sm:blur-[120px]" />
       </div>
@@ -137,10 +136,10 @@ export default function Signup() {
       >
         <Link 
           href="/"
-          className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest hover:text-foreground transition-colors group"
+          className="flex items-center gap-2 text-[10px] font-bold text-evergreen-300 uppercase tracking-widest hover:text-white transition-colors group"
         >
-          <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-accent transition-colors">
-            <ArrowLeft size={14} />
+          <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-malachite-500 transition-colors">
+            <ArrowLeft size={14} className="text-white" />
           </div>
           <span className="hidden sm:inline">Back to Arena</span>
         </Link>
@@ -151,7 +150,7 @@ export default function Signup() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative w-full max-w-[500px] bg-background/40 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden z-10"
+        className="relative w-full max-w-[500px] bg-evergreen-900/80 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden z-10"
       >
         <div className="bg-gradient-to-br from-malachite-500/10 to-transparent p-8 sm:p-10 border-b border-white/5 relative overflow-hidden text-center">
           <div className="relative z-10 flex flex-col items-center space-y-4">
@@ -163,7 +162,7 @@ export default function Signup() {
             </motion.div>
             <div className="space-y-1">
               <h4 className="text-[9px] sm:text-[10px] font-bold text-malachite-400 uppercase tracking-[0.4em]">Enlistment Protocol</h4>
-              <h1 className="text-3xl sm:text-4xl font-outfit font-extrabold text-foreground leading-tight tracking-tight">
+              <h1 className="text-3xl sm:text-4xl font-outfit font-extrabold text-white leading-tight tracking-tight">
                 Create <span className="text-malachite-400 italic">Identity.</span>
               </h1>
             </div>
@@ -176,13 +175,13 @@ export default function Signup() {
             {/* Identity Name */}
             <div className="space-y-2.5">
               <div className="flex items-center justify-between px-1">
-                <Label className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] ml-1">Identity Name</Label>
-                <User size={12} className="text-muted-foreground/30" />
+                <Label className="text-[9px] sm:text-[10px] font-bold text-evergreen-300 uppercase tracking-[0.2em] ml-1">Identity Name</Label>
+                <User size={12} className="text-evergreen-500" />
               </div>
               <div className="relative group">
                 <input 
                   placeholder="COMMANDER NAME" 
-                  className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.fullname ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-foreground font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 transition-all placeholder:text-muted-foreground/30`}
+                  className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.fullname ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-white font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 transition-all placeholder:text-evergreen-700`}
                   value={formData.fullname}
                   onChange={(e) => {
                     setFormData({ ...formData, fullname: e.target.value });
@@ -198,14 +197,14 @@ export default function Signup() {
             {/* Deployment Email */}
             <div className="space-y-2.5">
               <div className="flex items-center justify-between px-1">
-                <Label className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] ml-1">Deployment Email</Label>
-                <Mail size={12} className="text-muted-foreground/30" />
+                <Label className="text-[9px] sm:text-[10px] font-bold text-evergreen-300 uppercase tracking-[0.2em] ml-1">Deployment Email</Label>
+                <Mail size={12} className="text-evergreen-500" />
               </div>
               <div className="relative group">
                 <input 
                   type="email" 
                   placeholder="WARRIOR@ARENA.COM" 
-                  className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.email ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-foreground font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 transition-all placeholder:text-muted-foreground/30`}
+                  className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.email ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-white font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 transition-all placeholder:text-evergreen-700`}
                   value={formData.email}
                   onChange={(e) => {
                     setFormData({ ...formData, email: e.target.value });
@@ -221,15 +220,15 @@ export default function Signup() {
             {/* Signal Connection (Phone) */}
             <div className="space-y-2.5">
               <div className="flex items-center justify-between px-1">
-                <Label className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] ml-1">Signal Connection</Label>
-                <Phone size={12} className="text-muted-foreground/30" />
+                <Label className="text-[9px] sm:text-[10px] font-bold text-evergreen-300 uppercase tracking-[0.2em] ml-1">Signal Connection</Label>
+                <Phone size={12} className="text-evergreen-500" />
               </div>
               <div className="flex gap-3">
                 <Select value={countryCode} onValueChange={setCountryCode}>
-                  <SelectTrigger className="w-[85px] h-14 sm:h-16 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 bg-white/5 font-bold text-xs text-foreground focus:ring-malachite-500/20">
+                  <SelectTrigger className="w-[85px] h-14 sm:h-16 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 bg-white/5 font-bold text-xs text-white focus:ring-malachite-500/20">
                     <SelectValue placeholder="+91" />
                   </SelectTrigger>
-                  <SelectContent className="bg-background/95 backdrop-blur-xl border-white/10 text-foreground rounded-2xl">
+                  <SelectContent className="bg-evergreen-900 border-white/10 text-white rounded-2xl">
                     <SelectItem value="+91">+91</SelectItem>
                     <SelectItem value="+1">+1</SelectItem>
                     <SelectItem value="+44">+44</SelectItem>
@@ -238,7 +237,7 @@ export default function Signup() {
                 <div className="relative group flex-1">
                   <input 
                     placeholder="9876543210" 
-                    className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.phone ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-foreground font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 transition-all placeholder:text-muted-foreground/30`}
+                    className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.phone ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-white font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 transition-all placeholder:text-evergreen-700`}
                     value={formData.phone}
                     onChange={(e) => {
                       setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) });
@@ -256,14 +255,14 @@ export default function Signup() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between px-1">
-                  <Label className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] ml-1">Access Protocol</Label>
-                  <Lock size={12} className="text-muted-foreground/30" />
+                  <Label className="text-[9px] sm:text-[10px] font-bold text-evergreen-300 uppercase tracking-[0.2em] ml-1">Access Protocol</Label>
+                  <Lock size={12} className="text-evergreen-500" />
                 </div>
                 <div className="relative group">
                   <input 
                     type={showPassword ? "text" : "password"} 
                     placeholder="••••••" 
-                    className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.password ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-foreground font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 transition-all placeholder:text-muted-foreground/30`}
+                    className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.password ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-white font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 transition-all placeholder:text-evergreen-700`}
                     value={formData.password}
                     onChange={(e) => {
                       setFormData({ ...formData, password: e.target.value });
@@ -273,7 +272,7 @@ export default function Signup() {
                   <button 
                     type="button" 
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground/50 hover:text-foreground transition-colors"
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-evergreen-400 hover:text-white transition-colors"
                   >
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
@@ -284,14 +283,14 @@ export default function Signup() {
               </div>
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between px-1">
-                  <Label className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] ml-1">Confirm Keys</Label>
-                  <CheckCircle2 size={12} className="text-muted-foreground/30" />
+                  <Label className="text-[9px] sm:text-[10px] font-bold text-evergreen-300 uppercase tracking-[0.2em] ml-1">Confirm Keys</Label>
+                  <CheckCircle2 size={12} className="text-evergreen-500" />
                 </div>
                 <div className="relative group">
                   <input 
                     type={showPassword ? "text" : "password"} 
                     placeholder="••••••" 
-                    className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.confirmPassword ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-foreground font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 transition-all placeholder:text-muted-foreground/30`}
+                    className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.confirmPassword ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-white font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 transition-all placeholder:text-evergreen-700`}
                     value={formData.confirmPassword}
                     onChange={(e) => {
                       setFormData({ ...formData, confirmPassword: e.target.value });
@@ -313,7 +312,7 @@ export default function Signup() {
                 checked={formData.terms}
                 onCheckedChange={(checked) => setFormData({ ...formData, terms: checked as boolean })}
               />
-              <label htmlFor="terms" className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-widest cursor-pointer group-hover:text-foreground transition-colors">
+              <label htmlFor="terms" className="text-[9px] sm:text-[10px] font-bold text-evergreen-300 uppercase tracking-widest cursor-pointer group-hover:text-white transition-colors">
                 I accept the <span className="text-malachite-400">Terms of Engagement</span>
               </label>
             </div>
@@ -335,7 +334,7 @@ export default function Signup() {
           </form>
 
           <div className="pt-2 text-center">
-            <p className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
+            <p className="text-[9px] sm:text-[10px] font-bold text-evergreen-400 uppercase tracking-[0.2em]">
               ALREADY ENLISTED?{" "}
               <Link href="/signin" className="text-malachite-400 hover:text-white transition-colors underline underline-offset-4 decoration-malachite-400/30 font-extrabold">
                 ESTABLISH UPLINK
@@ -348,11 +347,11 @@ export default function Signup() {
         <div className="bg-white/5 p-5 sm:p-6 flex items-center justify-center gap-6 sm:gap-10 border-t border-white/5">
           <div className="flex items-center gap-2">
             <ShieldCheck size={14} className="text-malachite-400" />
-            <span className="text-[8px] sm:text-[9px] font-bold text-muted-foreground uppercase tracking-widest">ENCRYPTED</span>
+            <span className="text-[8px] sm:text-[9px] font-bold text-evergreen-400 uppercase tracking-widest">ENCRYPTED</span>
           </div>
           <div className="flex items-center gap-2">
             <Zap size={14} className="text-malachite-400" />
-            <span className="text-[8px] sm:text-[9px] font-bold text-muted-foreground uppercase tracking-widest">FAST SYNC</span>
+            <span className="text-[8px] sm:text-[9px] font-bold text-evergreen-400 uppercase tracking-widest">FAST SYNC</span>
           </div>
         </div>
       </motion.div>

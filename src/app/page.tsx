@@ -195,8 +195,8 @@ export default function Home() {
                   <h2 className="text-3xl sm:text-5xl font-outfit font-extrabold text-white leading-none tracking-tight">
                     WIN <span className="text-transparent bg-clip-text bg-gradient-to-br from-malachite-400 via-white to-sea-green-400">₹1.00L</span>
                   </h2>
-                  <h3 className="text-lg sm:text-2xl font-outfit font-light tracking-[0.1em] sm:tracking-[0.2em] uppercase text-white/40">
-                    Mega <span className="font-bold text-white/80 italic">Vault</span>
+                  <h3 className="text-lg sm:text-2xl font-outfit font-light tracking-[0.1em] sm:tracking-[0.2em] uppercase text-white/60">
+                    Mega <span className="font-bold text-white/90 italic">Vault</span>
                   </h3>
                 </div>
                 

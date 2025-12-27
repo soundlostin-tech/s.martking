@@ -150,8 +150,8 @@
   --secondary-foreground: #ffffff;
   
     /* Muted: Light Gray for subtle surfaces */
-    --muted: #f4f4f4;
-    --muted-foreground: #64748b;
+    --muted: #f8fafc;
+    --muted-foreground: #475569;
     
     /* Accent: Sea Green (#058C42) */
     --accent: #058c42;

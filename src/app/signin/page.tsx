@@ -71,10 +71,9 @@ export default function Signin() {
   };
 
   return (
-    <main className="min-h-screen bg-transparent flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+    <main className="min-h-screen bg-evergreen-950 flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden">
       {/* Background Decor - Refined for better mobile performance */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-30">
-        <div className="absolute top-[-10%] left-[-10%] w-[120%] h-[120%] bg-evergreen-950" />
+      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-50">
         <div className="absolute top-0 left-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-malachite-400/10 rounded-full blur-[80px] sm:blur-[120px]" />
         <div className="absolute bottom-0 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-sea-green-500/10 rounded-full blur-[80px] sm:blur-[120px]" />
       </div>
@@ -87,10 +86,10 @@ export default function Signin() {
       >
         <Link 
           href="/"
-          className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest hover:text-foreground transition-colors group"
+          className="flex items-center gap-2 text-[10px] font-bold text-evergreen-300 uppercase tracking-widest hover:text-white transition-colors group"
         >
-          <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-accent transition-colors">
-            <ArrowLeft size={14} />
+          <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-malachite-500 transition-colors">
+            <ArrowLeft size={14} className="text-white" />
           </div>
           <span>Back to Arena</span>
         </Link>
@@ -101,7 +100,7 @@ export default function Signin() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative w-full max-w-[440px] bg-background/40 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden z-10"
+        className="relative w-full max-w-[440px] bg-evergreen-900/80 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden z-10"
       >
         <div className="bg-gradient-to-br from-malachite-500/10 to-transparent p-8 sm:p-10 border-b border-white/5 relative overflow-hidden text-center">
           <div className="relative z-10 flex flex-col items-center space-y-4">
@@ -113,7 +112,7 @@ export default function Signin() {
             </motion.div>
             <div className="space-y-1">
               <h4 className="text-[9px] sm:text-[10px] font-bold text-malachite-400 uppercase tracking-[0.4em]">Combat Uplink</h4>
-              <h1 className="text-3xl sm:text-4xl font-outfit font-extrabold text-foreground leading-tight tracking-tight">
+              <h1 className="text-3xl sm:text-4xl font-outfit font-extrabold text-white leading-tight tracking-tight">
                 Welcome <span className="text-malachite-400 italic">Back.</span>
               </h1>
             </div>
@@ -126,15 +125,15 @@ export default function Signin() {
           <form className="space-y-6" onSubmit={handleSignin}>
             <div className="space-y-2.5">
               <div className="flex items-center justify-between px-1">
-                <Label htmlFor="email" className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] ml-1">Deployment Email</Label>
-                <Mail size={12} className="text-muted-foreground/30" />
+                <Label htmlFor="email" className="text-[9px] sm:text-[10px] font-bold text-evergreen-300 uppercase tracking-[0.2em] ml-1">Deployment Email</Label>
+                <Mail size={12} className="text-evergreen-500" />
               </div>
               <div className="relative group">
                 <input 
                   id="email" 
                   type="email" 
                   placeholder="warrior@arena.com" 
-                  className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.email ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-foreground font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 focus:border-malachite-500/50 transition-all placeholder:text-muted-foreground/30`}
+                  className={`w-full h-14 sm:h-16 px-6 sm:px-8 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.email ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-white font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 focus:border-malachite-500/50 transition-all placeholder:text-evergreen-700`}
                   value={formData.email}
                   onChange={(e) => {
                     setFormData({ ...formData, email: e.target.value });
@@ -149,7 +148,7 @@ export default function Signin() {
 
             <div className="space-y-2.5">
               <div className="flex justify-between items-center px-1">
-                <Label htmlFor="password" className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] ml-1">Access Protocol</Label>
+                <Label htmlFor="password" className="text-[9px] sm:text-[10px] font-bold text-evergreen-300 uppercase tracking-[0.2em] ml-1">Access Protocol</Label>
                 <button type="button" className="text-[9px] sm:text-[10px] text-malachite-400 hover:text-white font-bold uppercase tracking-widest transition-colors haptic-tap">Recover Keys?</button>
               </div>
               <div className="relative group">
@@ -157,7 +156,7 @@ export default function Signin() {
                   id="password" 
                   type={showPassword ? "text" : "password"} 
                   placeholder="••••••••" 
-                  className={`w-full h-14 sm:h-16 px-6 sm:px-8 pr-14 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.password ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-foreground font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 focus:border-malachite-500/50 transition-all placeholder:text-muted-foreground/30`}
+                  className={`w-full h-14 sm:h-16 px-6 sm:px-8 pr-14 rounded-[1.5rem] sm:rounded-[2rem] border ${errors.password ? 'border-destructive/50 ring-destructive/10' : 'border-white/10 group-hover:border-malachite-500/50'} bg-white/5 shadow-inner text-white font-bold text-xs sm:text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-malachite-500/20 focus:border-malachite-500/50 transition-all placeholder:text-evergreen-700`}
                   value={formData.password}
                   onChange={(e) => {
                     setFormData({ ...formData, password: e.target.value });
@@ -167,7 +166,7 @@ export default function Signin() {
                 <button 
                   type="button" 
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-5 sm:right-6 top-1/2 -translate-y-1/2 text-muted-foreground/50 hover:text-foreground transition-colors p-2"
+                  className="absolute right-5 sm:right-6 top-1/2 -translate-y-1/2 text-evergreen-400 hover:text-white transition-colors p-2"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -193,7 +192,7 @@ export default function Signin() {
           </form>
 
           <div className="pt-2 text-center">
-            <p className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
+            <p className="text-[9px] sm:text-[10px] font-bold text-evergreen-400 uppercase tracking-[0.2em]">
               NEW TO THE ARENA?{" "}
               <Link href="/signup" className="text-malachite-400 hover:text-white transition-colors underline underline-offset-4 decoration-malachite-400/30 font-extrabold">
                 CREATE IDENTITY
@@ -206,11 +205,11 @@ export default function Signin() {
         <div className="bg-white/5 p-5 sm:p-6 flex items-center justify-center gap-6 sm:gap-10 border-t border-white/5">
           <div className="flex items-center gap-2">
             <ShieldCheck size={14} className="text-malachite-400" />
-            <span className="text-[8px] sm:text-[9px] font-bold text-muted-foreground uppercase tracking-widest">ENCRYPTED</span>
+            <span className="text-[8px] sm:text-[9px] font-bold text-evergreen-400 uppercase tracking-widest">ENCRYPTED</span>
           </div>
           <div className="flex items-center gap-2">
             <Zap size={14} className="text-malachite-400" />
-            <span className="text-[8px] sm:text-[9px] font-bold text-muted-foreground uppercase tracking-widest">FAST SYNC</span>
+            <span className="text-[8px] sm:text-[9px] font-bold text-evergreen-400 uppercase tracking-widest">FAST SYNC</span>
           </div>
         </div>
       </motion.div>
