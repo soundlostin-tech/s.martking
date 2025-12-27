@@ -71,60 +71,60 @@ export default function Signin() {
     <main className="min-h-screen bg-seashell-50 flex items-center justify-center p-6 relative overflow-hidden">
       {/* Background Decor */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-40">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-tangerine-dream-400/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-tangerine-dream-500/15 rounded-full blur-[120px]" />
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-malachite-400/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-malachite-500/15 rounded-full blur-[120px]" />
       </div>
 
       {/* Auth Card */}
       <motion.div 
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="relative max-w-lg w-full bg-seashell-100 border border-shadow-grey-200 shadow-2xl rounded-[3rem] overflow-hidden animate-fadeIn"
+        className="relative max-w-lg w-full bg-seashell-100 border border-shadow-green-200 shadow-2xl rounded-[3rem] overflow-hidden animate-fadeIn"
       >
-        <div className="bg-tangerine-dream-400/10 p-10 border-b border-shadow-grey-200 relative overflow-hidden">
+        <div className="bg-malachite-400/10 p-10 border-b border-shadow-green-200 relative overflow-hidden">
           <div className="relative z-10 flex flex-col items-center text-center space-y-4">
-            <div className="w-16 h-16 bg-tangerine-dream-400 text-white rounded-2xl flex items-center justify-center shadow-xl shadow-tangerine-dream-400/20 mb-2">
+            <div className="w-16 h-16 bg-malachite-400 text-white rounded-2xl flex items-center justify-center shadow-xl shadow-malachite-400/20 mb-2">
               <Swords size={32} />
             </div>
             <div className="space-y-1">
-              <h4 className="text-[10px] font-bold text-tangerine-dream-500 uppercase tracking-[0.4em]">Combat Uplink</h4>
-              <h1 className="text-4xl font-heading text-graphite-900 leading-tight">
+              <h4 className="text-[10px] font-bold text-malachite-500 uppercase tracking-[0.4em]">Combat Uplink</h4>
+              <h1 className="text-4xl font-heading text-evergreen-950 leading-tight">
                 Welcome <span className="italic font-serif opacity-60">Back.</span>
               </h1>
             </div>
           </div>
-          <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-tangerine-dream-400/20 blur-[80px] rounded-full" />
+          <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-malachite-400/20 blur-[80px] rounded-full" />
         </div>
 
         <div className="p-10 md:p-12 space-y-10">
           <form className="space-y-8" onSubmit={handleSignin}>
             <div className="space-y-3">
-              <Label htmlFor="email" className="text-[10px] font-bold text-shadow-grey-400 uppercase tracking-[0.3em] ml-4">Deployment Email</Label>
+              <Label htmlFor="email" className="text-[10px] font-bold text-shadow-green-400 uppercase tracking-[0.3em] ml-4">Deployment Email</Label>
               <input 
                 id="email" 
                 type="email" 
                 placeholder="warrior@arena.com" 
-                className={`w-full h-16 px-8 rounded-[2rem] border-none bg-seashell-50 shadow-inner text-graphite-800 font-bold text-xs tracking-wide focus:ring-2 focus:ring-tangerine-dream-400/20 placeholder:text-shadow-grey-300 ${errors.email ? 'ring-2 ring-strawberry-red-500/50' : ''}`}
+                className={`w-full h-16 px-8 rounded-[2rem] border-none bg-seashell-50 shadow-inner text-evergreen-800 font-bold text-xs tracking-wide focus:ring-2 focus:ring-malachite-400/20 placeholder:text-shadow-green-300 ${errors.email ? 'ring-2 ring-sea-green-600/50' : ''}`}
                 value={formData.email}
                 onChange={(e) => {
                   setFormData({ ...formData, email: e.target.value });
                   if (errors.email) setErrors({ ...errors, email: "" });
                 }}
               />
-              {errors.email && <p className="text-[10px] text-strawberry-red-500 px-6 mt-1 font-bold">{errors.email}</p>}
+              {errors.email && <p className="text-[10px] text-sea-green-600 px-6 mt-1 font-bold">{errors.email}</p>}
             </div>
 
             <div className="space-y-3">
               <div className="flex justify-between items-center px-4">
-                <Label htmlFor="password" className="text-[10px] font-bold text-shadow-grey-400 uppercase tracking-[0.3em]">Access Protocol</Label>
-                <button type="button" className="text-[10px] text-tangerine-dream-500/60 hover:text-tangerine-dream-500 font-bold uppercase tracking-widest transition-colors">Recover Keys?</button>
+                <Label htmlFor="password" className="text-[10px] font-bold text-shadow-green-400 uppercase tracking-[0.3em]">Access Protocol</Label>
+                <button type="button" className="text-[10px] text-malachite-500/60 hover:text-malachite-500 font-bold uppercase tracking-widest transition-colors">Recover Keys?</button>
               </div>
               <div className="relative">
                 <input 
                   id="password" 
                   type={showPassword ? "text" : "password"} 
                   placeholder="••••••••" 
-                  className={`w-full h-16 px-8 pr-16 rounded-[2rem] border-none bg-seashell-50 shadow-inner text-graphite-800 font-bold text-xs tracking-wide focus:ring-2 focus:ring-tangerine-dream-400/20 placeholder:text-shadow-grey-300 ${errors.password ? 'ring-2 ring-strawberry-red-500/50' : ''}`}
+                  className={`w-full h-16 px-8 pr-16 rounded-[2rem] border-none bg-seashell-50 shadow-inner text-evergreen-800 font-bold text-xs tracking-wide focus:ring-2 focus:ring-malachite-400/20 placeholder:text-shadow-green-300 ${errors.password ? 'ring-2 ring-sea-green-600/50' : ''}`}
                   value={formData.password}
                   onChange={(e) => {
                     setFormData({ ...formData, password: e.target.value });
@@ -134,17 +134,17 @@ export default function Signin() {
                 <button 
                   type="button" 
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-6 top-1/2 -translate-y-1/2 text-shadow-grey-400 hover:text-graphite-800 transition-colors"
+                  className="absolute right-6 top-1/2 -translate-y-1/2 text-shadow-green-400 hover:text-evergreen-800 transition-colors"
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              {errors.password && <p className="text-[10px] text-strawberry-red-500 px-6 mt-1 font-bold">{errors.password}</p>}
+              {errors.password && <p className="text-[10px] text-sea-green-600 px-6 mt-1 font-bold">{errors.password}</p>}
             </div>
 
             <Button 
               type="submit" 
-              className="w-full h-16 rounded-[2rem] bg-strawberry-red-500 hover:bg-strawberry-red-400 text-white font-bold text-[11px] uppercase tracking-[0.3em] shadow-xl shadow-strawberry-red-500/20 mt-4 border-none" 
+              className="w-full h-16 rounded-[2rem] bg-sea-green-600 hover:bg-sea-green-500 text-white font-bold text-[11px] uppercase tracking-[0.3em] shadow-xl shadow-sea-green-600/20 mt-4 border-none" 
               disabled={loading}
             >
               {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "ESTABLISH UPLINK"}
@@ -152,9 +152,9 @@ export default function Signin() {
           </form>
 
           <div className="pt-4 text-center">
-            <p className="text-[10px] font-bold text-shadow-grey-400 uppercase tracking-[0.2em]">
+            <p className="text-[10px] font-bold text-shadow-green-400 uppercase tracking-[0.2em]">
               NEW TO THE ARENA?{" "}
-              <Link href="/signup" className="text-tangerine-dream-500 hover:text-strawberry-red-500 transition-colors">
+              <Link href="/signup" className="text-malachite-500 hover:text-sea-green-600 transition-colors">
                 CREATE IDENTITY
               </Link>
             </p>
@@ -162,14 +162,14 @@ export default function Signin() {
         </div>
 
         {/* Security Badges */}
-        <div className="bg-seashell-50 p-6 flex items-center justify-center gap-8 border-t border-shadow-grey-200">
+        <div className="bg-seashell-50 p-6 flex items-center justify-center gap-8 border-t border-shadow-green-200">
           <div className="flex items-center gap-2">
-            <ShieldCheck size={14} className="text-tangerine-dream-500" />
-            <span className="text-[8px] font-bold text-shadow-grey-400 uppercase tracking-widest">ENCRYPTED</span>
+            <ShieldCheck size={14} className="text-malachite-500" />
+            <span className="text-[8px] font-bold text-shadow-green-400 uppercase tracking-widest">ENCRYPTED</span>
           </div>
           <div className="flex items-center gap-2">
-            <Zap size={14} className="text-tangerine-dream-500" />
-            <span className="text-[8px] font-bold text-shadow-grey-400 uppercase tracking-widest">FAST UPLINK</span>
+            <Zap size={14} className="text-malachite-500" />
+            <span className="text-[8px] font-bold text-shadow-green-400 uppercase tracking-widest">FAST UPLINK</span>
           </div>
         </div>
       </motion.div>

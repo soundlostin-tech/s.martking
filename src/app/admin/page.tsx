@@ -235,39 +235,39 @@ export default function AdminOverview() {
             <div className="h-[280px]">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={revenueData}>
-                  <defs>
-                    <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#e56b6f" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#e56b6f" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(236, 180, 150, 0.1)" />
-                  <XAxis 
-                    dataKey="name" 
-                    axisLine={false} 
-                    tickLine={false} 
-                    tick={{fontSize: 10, fontWeight: 'bold', fill: '#ecb49640'}}
-                  />
-                  <YAxis hide />
-                  <Tooltip 
-                    contentStyle={{
-                      borderRadius: '24px', 
-                      border: '1px solid rgba(236, 180, 150, 0.1)', 
-                      boxShadow: '0 20px 40px rgba(0,0,0,0.3)', 
-                      background: '#355070', 
-                      color: '#ecb496',
-                      padding: '16px'
-                    }}
-                    labelStyle={{fontWeight: 'bold', fontSize: '12px', color: '#e56b6f', marginBottom: '8px'}}
-                  />
-                  <Area 
-                    type="monotone" 
-                    dataKey="value" 
-                    stroke="#e56b6f" 
-                    strokeWidth={4}
-                    fillOpacity={1} 
-                    fill="url(#colorValue)" 
-                  />
+                    <defs>
+                      <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#16DB65" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="#16DB65" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(13, 40, 24, 0.1)" />
+                    <XAxis 
+                      dataKey="name" 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{fontSize: 10, fontWeight: 'bold', fill: '#80918740'}}
+                    />
+                    <YAxis hide />
+                    <Tooltip 
+                      contentStyle={{
+                        borderRadius: '24px', 
+                        border: '1px solid rgba(13, 40, 24, 0.1)', 
+                        boxShadow: '0 20px 40px rgba(0,0,0,0.3)', 
+                        background: '#0D2818', 
+                        color: '#16DB65',
+                        padding: '16px'
+                      }}
+                      labelStyle={{fontWeight: 'bold', fontSize: '12px', color: '#16DB65', marginBottom: '8px'}}
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey="value" 
+                      stroke="#16DB65" 
+                      strokeWidth={4}
+                      fillOpacity={1} 
+                      fill="url(#colorValue)" 
+                    />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
@@ -282,31 +282,31 @@ export default function AdminOverview() {
             <div className="h-[280px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={playerData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(236, 180, 150, 0.1)" />
-                  <XAxis 
-                    dataKey="name" 
-                    axisLine={false} 
-                    tickLine={false} 
-                    tick={{fontSize: 10, fontWeight: 'bold', fill: '#ecb49640'}}
-                  />
-                  <YAxis hide />
-                  <Tooltip 
-                    cursor={{fill: 'rgba(236, 180, 150, 0.05)'}}
-                    contentStyle={{
-                      borderRadius: '24px', 
-                      border: '1px solid rgba(236, 180, 150, 0.1)', 
-                      boxShadow: '0 20px 40px rgba(0,0,0,0.3)', 
-                      background: '#355070', 
-                      color: '#ecb496',
-                      padding: '16px'
-                    }}
-                  />
-                  <Bar 
-                    dataKey="players" 
-                    fill="#e56b6f" 
-                    radius={[12, 12, 0, 0]} 
-                    barSize={24}
-                  />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(13, 40, 24, 0.1)" />
+                    <XAxis 
+                      dataKey="name" 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{fontSize: 10, fontWeight: 'bold', fill: '#80918740'}}
+                    />
+                    <YAxis hide />
+                    <Tooltip 
+                      cursor={{fill: 'rgba(5, 140, 66, 0.05)'}}
+                      contentStyle={{
+                        borderRadius: '24px', 
+                        border: '1px solid rgba(13, 40, 24, 0.1)', 
+                        boxShadow: '0 20px 40px rgba(0,0,0,0.3)', 
+                        background: '#0D2818', 
+                        color: '#16DB65',
+                        padding: '16px'
+                      }}
+                    />
+                    <Bar 
+                      dataKey="players" 
+                      fill="#058C42" 
+                      radius={[12, 12, 0, 0]} 
+                      barSize={24}
+                    />
                 </BarChart>
               </ResponsiveContainer>
             </div>

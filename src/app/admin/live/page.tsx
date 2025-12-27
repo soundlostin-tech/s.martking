@@ -162,31 +162,31 @@ export default function AdminLive() {
 
   if (loading && tournaments.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-yale-blue">
+      <div className="min-h-screen flex items-center justify-center bg-evergreen-950">
         <div className="space-y-4 text-center">
-          <Signal className="w-12 h-12 animate-pulse text-light-coral mx-auto" />
-          <p className="text-[10px] font-bold text-peach-glow/40 uppercase tracking-[0.3em]">Acquiring Live Signal...</p>
+          <Signal className="w-12 h-12 animate-pulse text-malachite-500 mx-auto" />
+          <p className="text-[10px] font-bold text-shadow-green-400 uppercase tracking-[0.3em]">Acquiring Live Signal...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen pb-32 bg-yale-blue bg-[radial-gradient(circle_at_50%_0%,_#355070_0%,_#304966_100%)]">
+    <main className="min-h-screen pb-32 bg-evergreen-950 bg-[radial-gradient(circle_at_50%_0%,_#0D2818_0%,_#0a2013_100%)]">
       <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-20">
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-light-coral/10 rounded-full blur-[120px]" />
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-malachite-500/10 rounded-full blur-[120px]" />
       </div>
 
       <div className="px-6 pt-24 relative z-10 space-y-10 max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-1">
-            <h4 className="text-[10px] font-bold text-light-coral uppercase tracking-[0.4em]">Combat Oversight</h4>
+            <h4 className="text-[10px] font-bold text-malachite-500 uppercase tracking-[0.4em]">Combat Oversight</h4>
             <h1 className="text-4xl font-heading text-white">Live <span className="italic font-serif text-white/60">Control</span></h1>
           </div>
           <div className="flex items-center gap-3 bg-white/5 backdrop-blur-xl p-4 rounded-2xl border border-white/10 shadow-2xl">
-            <div className="w-2 h-2 rounded-full bg-light-coral animate-pulse" />
-            <p className="text-[9px] font-bold text-light-coral uppercase tracking-widest">System Feed Operational</p>
+            <div className="w-2 h-2 rounded-full bg-malachite-500 animate-pulse" />
+            <p className="text-[9px] font-bold text-malachite-500 uppercase tracking-widest">System Feed Operational</p>
           </div>
         </div>
 
@@ -202,20 +202,20 @@ export default function AdminLive() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: i * 0.1 }}
               className={`rounded-[2.5rem] p-8 border border-white/10 shadow-2xl relative overflow-hidden group ${
-                stat.primary ? "bg-light-coral/20 backdrop-blur-xl border-light-coral/30" : "bg-white/5 backdrop-blur-xl"
+                stat.primary ? "bg-malachite-500/20 backdrop-blur-xl border-malachite-500/30" : "bg-white/5 backdrop-blur-xl"
               }`}
             >
               <div className="flex justify-between items-start relative z-10">
                 <div className="space-y-1">
-                  <p className={`text-[10px] uppercase font-bold tracking-[0.2em] ${stat.primary ? "text-light-coral" : "text-white/40"}`}>{stat.label}</p>
+                  <p className={`text-[10px] uppercase font-bold tracking-[0.2em] ${stat.primary ? "text-malachite-500" : "text-white/40"}`}>{stat.label}</p>
                   <h3 className="text-4xl font-heading text-white">{stat.value}</h3>
                   <p className="text-[9px] text-white/20 font-bold uppercase tracking-widest mt-2">REAL-TIME TELEMETRY</p>
                 </div>
-                <div className={`p-4 rounded-2xl ${stat.primary ? "bg-light-coral text-white shadow-[0_0_20px_rgba(229,107,111,0.3)]" : "bg-white/10 text-light-coral"} group-hover:scale-110 transition-transform duration-500`}>
+                <div className={`p-4 rounded-2xl ${stat.primary ? "bg-malachite-500 text-white shadow-[0_0_20px_rgba(229,107,111,0.3)]" : "bg-white/10 text-malachite-500"} group-hover:scale-110 transition-transform duration-500`}>
                   <stat.icon size={24} />
                 </div>
               </div>
-              <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-light-coral/20" : "bg-white/5"}`} />
+              <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-malachite-500/20" : "bg-white/5"}`} />
             </motion.div>
           ))}
         </div>
@@ -237,16 +237,16 @@ export default function AdminLive() {
                 onClick={() => setSelectedTournament(t.id)}
                 className={`flex-shrink-0 w-80 p-8 rounded-[2.5rem] border transition-all duration-500 cursor-pointer relative overflow-hidden group ${
                   selectedTournament === t.id 
-                    ? 'bg-light-coral/20 border-light-coral/50 shadow-2xl' 
+                    ? 'bg-malachite-500/20 border-malachite-500/50 shadow-2xl' 
                     : 'bg-white/5 border-white/10 opacity-60 hover:opacity-100'
                 }`}
               >
                 <div className="relative z-10 space-y-6">
                   <div className="flex justify-between items-start">
-                    <div className={`p-3 rounded-2xl transition-colors duration-500 ${selectedTournament === t.id ? 'bg-light-coral text-white' : 'bg-white/10 text-white/20'}`}>
+                    <div className={`p-3 rounded-2xl transition-colors duration-500 ${selectedTournament === t.id ? 'bg-malachite-500 text-white' : 'bg-white/10 text-white/20'}`}>
                       <Trophy size={20} />
                     </div>
-                    <Badge className={`border-none font-bold text-[8px] tracking-[0.2em] px-3 py-1 rounded-full ${selectedTournament === t.id ? 'bg-light-coral text-white' : 'bg-white/10 text-white/40'}`}>
+                    <Badge className={`border-none font-bold text-[8px] tracking-[0.2em] px-3 py-1 rounded-full ${selectedTournament === t.id ? 'bg-malachite-500 text-white' : 'bg-white/10 text-white/40'}`}>
                       ACTIVE
                     </Badge>
                   </div>
@@ -276,7 +276,7 @@ export default function AdminLive() {
                     <button 
                       onClick={(e) => { e.stopPropagation(); updateTournamentStatus(t.id, 'completed'); }}
                       className={`flex-1 py-3 rounded-xl text-[9px] font-bold uppercase tracking-[0.2em] transition-all ${
-                        selectedTournament === t.id ? 'bg-light-coral text-white hover:bg-light-coral/80 shadow-lg shadow-light-coral/20' : 'bg-white/[0.02] text-white/20'
+                        selectedTournament === t.id ? 'bg-malachite-500 text-white hover:bg-malachite-500/80 shadow-lg shadow-malachite-500/20' : 'bg-white/[0.02] text-white/20'
                       }`}
                     >
                       End
@@ -285,7 +285,7 @@ export default function AdminLive() {
                 </div>
                 {selectedTournament === t.id && (
                   <div className="absolute inset-0 opacity-20 pointer-events-none">
-                    <div className="absolute top-[-20%] right-[-10%] w-full h-full bg-light-coral blur-[80px] rounded-full" />
+                    <div className="absolute top-[-20%] right-[-10%] w-full h-full bg-malachite-500 blur-[80px] rounded-full" />
                   </div>
                 )}
               </motion.div>
@@ -319,11 +319,11 @@ export default function AdminLive() {
                     </div>
                     <div className="flex -space-x-3">
                       {[1,2,3,4].map((i) => (
-                        <div key={i} className="w-12 h-12 rounded-full border-4 border-yale-blue bg-white/5 shadow-xl overflow-hidden">
+                        <div key={i} className="w-12 h-12 rounded-full border-4 border-evergreen-950 bg-white/5 shadow-xl overflow-hidden">
                           <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+10}`} alt="warrior" />
                         </div>
                       ))}
-                      <div className="w-12 h-12 rounded-full border-4 border-yale-blue bg-light-coral flex items-center justify-center text-[10px] font-bold text-white shadow-xl">
+                      <div className="w-12 h-12 rounded-full border-4 border-evergreen-950 bg-malachite-500 flex items-center justify-center text-[10px] font-bold text-white shadow-xl">
                         +{currentTournament.players_count! > 4 ? currentTournament.players_count! - 4 : 0}
                       </div>
                     </div>
@@ -337,7 +337,7 @@ export default function AdminLive() {
                       { label: "System Viewers", value: statsSummary?.totalViewers.toLocaleString() || 0, icon: Eye },
                     ].map((stat, i) => (
                       <div key={i} className="p-6 bg-white/5 rounded-[2rem] border border-white/10 flex items-center gap-6 shadow-2xl">
-                        <div className="w-14 h-14 rounded-2xl bg-white/5 text-light-coral flex items-center justify-center">
+                        <div className="w-14 h-14 rounded-2xl bg-white/5 text-malachite-500 flex items-center justify-center">
                           <stat.icon size={22} />
                         </div>
                         <div className="space-y-0.5">
@@ -351,23 +351,23 @@ export default function AdminLive() {
                   {/* Live Matches List */}
                   <div className="space-y-8">
                     <div className="flex items-center gap-3 px-2">
-                      <div className="w-2 h-2 rounded-full bg-light-coral animate-pulse" />
+                      <div className="w-2 h-2 rounded-full bg-malachite-500 animate-pulse" />
                       <h3 className="text-[10px] font-bold text-white uppercase tracking-[0.3em]">ONGOING BATTLES</h3>
                     </div>
                     <div className="grid grid-cols-1 gap-6">
                       {tournamentMatches.map((m) => (
                         <div 
                           key={m.id}
-                          className="p-8 bg-white/5 rounded-[2.5rem] border border-white/10 hover:border-light-coral/30 transition-all duration-500 group flex flex-col md:flex-row md:items-center justify-between gap-8 shadow-2xl"
+                          className="p-8 bg-white/5 rounded-[2.5rem] border border-white/10 hover:border-malachite-500/30 transition-all duration-500 group flex flex-col md:flex-row md:items-center justify-between gap-8 shadow-2xl"
                         >
                           <div className="flex items-center gap-8">
-                            <div className="w-20 h-20 bg-white/5 rounded-[2rem] flex items-center justify-center text-white/20 group-hover:text-light-coral group-hover:bg-light-coral/10 transition-all duration-500 shadow-inner border border-white/5">
+                            <div className="w-20 h-20 bg-white/5 rounded-[2rem] flex items-center justify-center text-white/20 group-hover:text-malachite-500 group-hover:bg-malachite-500/10 transition-all duration-500 shadow-inner border border-white/5">
                               <Gamepad2 size={32} />
                             </div>
                             <div className="space-y-1.5">
                               <div className="flex items-center gap-3">
                                 <h4 className="text-xl font-heading text-white">{m.title}</h4>
-                                <Badge className="bg-light-coral text-white border-none px-3 py-1 text-[8px] font-bold tracking-widest rounded-full shadow-lg shadow-light-coral/20">
+                                <Badge className="bg-malachite-500 text-white border-none px-3 py-1 text-[8px] font-bold tracking-widest rounded-full shadow-lg shadow-malachite-500/20">
                                   ROUND {m.current_round}
                                 </Badge>
                               </div>
@@ -391,7 +391,7 @@ export default function AdminLive() {
                               </div>
                             </div>
                             <button 
-                              className="px-8 py-4 bg-light-coral text-white rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-light-coral/80 transition-all shadow-2xl shadow-light-coral/20 flex items-center gap-2"
+                              className="px-8 py-4 bg-malachite-500 text-white rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-malachite-500/80 transition-all shadow-2xl shadow-malachite-500/20 flex items-center gap-2"
                               onClick={() => window.location.href = `/live?match=${m.id}`}
                             >
                               ENTER FEED <ChevronRight size={14} strokeWidth={3} />
@@ -409,7 +409,7 @@ export default function AdminLive() {
                   </div>
                 </div>
                 {/* Visual Glows */}
-                <div className="absolute top-[-20%] left-[-10%] w-full h-full bg-light-coral/10 blur-[100px] rounded-full pointer-events-none" />
+                <div className="absolute top-[-20%] left-[-10%] w-full h-full bg-malachite-500/10 blur-[100px] rounded-full pointer-events-none" />
               </div>
             </motion.section>
           )}
