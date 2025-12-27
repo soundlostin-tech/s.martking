@@ -47,37 +47,48 @@
   --radius-xl: calc(var(--radius) + 4px);
 
   /* ============================================
-     SMARTKING'S ARENA - UNIFIED LIGHT THEME
-     Color Palette: Sunset Elite
+     SMARTKING'S ARENA - GREEN & BLACK THEME
+     Color Palette: Forest Elite
      ============================================ */
 
-  /* Strawberry Red Scale (Primary Actions & Highlights) */
-  --color-strawberry-red-50: #fef2f2;
-  --color-strawberry-red-100: #fee2e2;
-  --color-strawberry-red-200: #fecaca;
-  --color-strawberry-red-300: #fca5a5;
-  --color-strawberry-red-400: #f36c6c;
-  --color-strawberry-red-500: #e54b4b;
-  --color-strawberry-red-600: #ce4444;
-  --color-strawberry-red-700: #b73c3c;
-  --color-strawberry-red-800: #a03535;
-  --color-strawberry-red-900: #892d2d;
-  --color-strawberry-red-950: #451717;
+  /* Evergreen Scale (Primary elements, text, surfaces) */
+  --color-evergreen-50: #e7e9e8;
+  --color-evergreen-100: #cfd4d1;
+  --color-evergreen-200: #9faaaa;
+  --color-evergreen-300: #6f7f76;
+  --color-evergreen-400: #3f5449;
+  --color-evergreen-500: #0D2818;
+  --color-evergreen-600: #0c2416;
+  --color-evergreen-700: #0a2013;
+  --color-evergreen-800: #08180e;
+  --color-evergreen-900: #051009;
+  --color-evergreen-950: #020202;
 
-  /* Tangerine Dream Scale (Secondary Accents & Status States) */
-  --color-tangerine-dream-50: #fff6f3;
-  --color-tangerine-dream-100: #ffede7;
-  --color-tangerine-dream-200: #ffdccc;
-  --color-tangerine-dream-300: #ffc4ab;
-  --color-tangerine-dream-400: #ffa987;
-  --color-tangerine-dream-500: #e6987a;
-  --color-tangerine-dream-600: #cc876d;
-  --color-tangerine-dream-700: #b3765f;
-  --color-tangerine-dream-800: #996551;
-  --color-tangerine-dream-900: #805444;
-  --color-tangerine-dream-950: #402a22;
+  /* Sea Green Scale (Interactive elements, buttons) */
+  --color-sea-green-50: #e6f4ec;
+  --color-sea-green-100: #cde8d9;
+  --color-sea-green-200: #9bd1b3;
+  --color-sea-green-300: #69ba8d;
+  --color-sea-green-400: #37a367;
+  --color-sea-green-500: #058C42;
+  --color-sea-green-600: #047e3b;
+  --color-sea-green-700: #046a32;
+  --color-sea-green-800: #035428;
+  --color-sea-green-900: #024320;
 
-  /* Seashell Scale (Backgrounds, Surfaces & Cards) */
+  /* Malachite Scale (Accent elements, highlights) */
+  --color-malachite-50: #e8fbf0;
+  --color-malachite-100: #d1f7e0;
+  --color-malachite-200: #a3efc2;
+  --color-malachite-300: #75e7a3;
+  --color-malachite-400: #47df85;
+  --color-malachite-500: #16DB65;
+  --color-malachite-600: #14c55b;
+  --color-malachite-700: #11a54c;
+  --color-malachite-800: #0d833c;
+  --color-malachite-900: #0a6930;
+
+  /* Seashell Scale (Constraint: F7EBE8 Background) */
   --color-seashell-50: #fdfbfb;
   --color-seashell-100: #f7ebe8;
   --color-seashell-200: #efe1de;
@@ -90,95 +101,82 @@
   --color-seashell-900: #383332;
   --color-seashell-950: #1c1919;
 
-  /* Graphite Scale (Primary & Main Text) */
-  --color-graphite-50: #f4f4f4;
-  --color-graphite-100: #e9e9e8;
-  --color-graphite-200: #d3d2d1;
-  --color-graphite-300: #bdbbb9;
-  --color-graphite-400: #a7a4a2;
-  --color-graphite-500: #6b6866;
-  --color-graphite-600: #5a5755;
-  --color-graphite-700: #494744;
-  --color-graphite-800: #444140;
-  --color-graphite-900: #302e2d;
-  --color-graphite-950: #1a1918;
-
-  /* Shadow Grey Scale (Secondary Text & Borders) */
-  --color-shadow-grey-50: #f2f2f3;
-  --color-shadow-grey-100: #e5e5e6;
-  --color-shadow-grey-200: #cccccc;
-  --color-shadow-grey-300: #b3b3b6;
-  --color-shadow-grey-400: #99999f;
-  --color-shadow-grey-500: #808089;
-  --color-shadow-grey-600: #66666e;
-  --color-shadow-grey-700: #4d4d52;
-  --color-shadow-grey-800: #333337;
-  --color-shadow-grey-900: #1e1e24;
-  --color-shadow-grey-950: #0f0f12;
+  /* Shadow Green Scale (Secondary Text & Borders) */
+  --color-shadow-green-50: #f2f4f3;
+  --color-shadow-green-100: #e5e9e7;
+  --color-shadow-green-200: #ccd3cf;
+  --color-shadow-green-300: #b3bdb7;
+  --color-shadow-green-400: #99a79f;
+  --color-shadow-green-500: #809187;
+  --color-shadow-green-600: #66746c;
+  --color-shadow-green-700: #4d5751;
+  --color-shadow-green-800: #333a36;
+  --color-shadow-green-900: #1a1d1b;
+  --color-shadow-green-950: #0d0e0d;
 }
 
 :root {
   --radius: 2rem;
   
   /* ============================================
-     SEMANTIC COLOR MAPPINGS - LIGHT THEME
+     SEMANTIC COLOR MAPPINGS - GREEN & BLACK THEME
      ============================================ */
   
-  /* Global App Background: seashell-50 */
+  /* Global App Background: near white, but using seashell-50 for consistency */
   --background: #fdfbfb;
   
-  /* Main Text: graphite-800 and graphite-900 */
-  --foreground: #444140;
+  /* Main Text: Black (#020202) */
+  --foreground: #020202;
   
-  /* Surfaces & Cards: seashell-100 */
+  /* Surfaces & Cards: Keep F7EBE8 */
   --card: #f7ebe8;
-  --card-foreground: #444140;
+  --card-foreground: #020202;
   
-  /* Popover: seashell-200 */
-  --popover: #efe1de;
-  --popover-foreground: #302e2d;
+  /* Popover: sea-green-50 */
+  --popover: #e6f4ec;
+  --popover-foreground: #0d2818;
   
-  /* Primary Actions: strawberry-red-500 */
-  --primary: #e54b4b;
+  /* Primary Actions: Evergreen (#0D2818) */
+  --primary: #0d2818;
   --primary-foreground: #ffffff;
   
-  /* Secondary Accents: tangerine-dream-400 */
-  --secondary: #ffa987;
-  --secondary-foreground: #444140;
+  /* Secondary Accents: Sea Green (#058C42) */
+  --secondary: #058c42;
+  --secondary-foreground: #ffffff;
   
-  /* Muted: shadow-grey-100 */
-  --muted: #e5e5e6;
-  --muted-foreground: #808089;
+  /* Muted: shadow-green-100 */
+  --muted: #e5e9e7;
+  --muted-foreground: #809187;
   
-  /* Accent: tangerine-dream-500 */
-  --accent: #e6987a;
-  --accent-foreground: #ffffff;
+  /* Accent: Malachite (#16DB65) */
+  --accent: #16db65;
+  --accent-foreground: #020202;
   
-  /* Destructive: strawberry-red-600 */
-  --destructive: #ce4444;
+  /* Destructive: #892d2d (keeping a dark red for destructive) */
+  --destructive: #892d2d;
   --destructive-foreground: #ffffff;
   
-  /* Borders: shadow-grey-500 */
-  --border: #e5e5e6;
-  --input: #cccccc;
-  --ring: #e54b4b;
+  /* Borders: shadow-green-200 */
+  --border: #ccd3cf;
+  --input: #b3bdb7;
+  --ring: #16db65;
   
   /* Chart Colors */
-  --chart-1: #e54b4b;
-  --chart-2: #ffa987;
-  --chart-3: #444140;
-  --chart-4: #808089;
+  --chart-1: #0d2818;
+  --chart-2: #058c42;
+  --chart-3: #16db65;
+  --chart-4: #809187;
   --chart-5: #f7ebe8;
   
   /* Sidebar */
-  --sidebar: #f7ebe8;
-  --sidebar-foreground: #444140;
-  --sidebar-primary: #e54b4b;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #ffa987;
-  --sidebar-accent-foreground: #444140;
-  --sidebar-border: #e5e5e6;
-  --sidebar-ring: #e54b4b;
+  --sidebar: #0d2818;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #16db65;
+  --sidebar-primary-foreground: #020202;
+  --sidebar-accent: #058c42;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #0a2013;
+  --sidebar-ring: #16db65;
 }
 
 @layer base {
@@ -187,10 +185,10 @@
     -webkit-tap-highlight-color: transparent;
   }
   html, body {
-    @apply bg-seashell-50 text-graphite-800 font-sans antialiased selection:bg-strawberry-red-500/20 selection:text-strawberry-red-600 overflow-x-hidden;
+    @apply bg-background text-foreground font-sans antialiased selection:bg-malachite-500/20 selection:text-malachite-600 overflow-x-hidden;
     background-image: 
-      radial-gradient(at 0% 0%, rgba(229, 75, 75, 0.03) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, rgba(255, 169, 135, 0.05) 0px, transparent 50%);
+      radial-gradient(at 0% 0%, rgba(13, 40, 24, 0.03) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(22, 219, 101, 0.05) 0px, transparent 50%);
     background-attachment: fixed;
     touch-action: manipulation;
     overscroll-behavior-y: none;
@@ -198,10 +196,10 @@
     user-select: none;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-normal tracking-tight text-graphite-900;
+    @apply font-heading font-normal tracking-tight text-evergreen-950;
   }
   input, textarea, select {
-    @apply selection:bg-strawberry-red-500/20 selection:text-strawberry-red-600;
+    @apply selection:bg-malachite-500/20 selection:text-malachite-600;
     -webkit-user-select: text;
     user-select: text;
   }
@@ -216,19 +214,7 @@
   scrollbar-width: none;
 }
 
-/* Pull to refresh simulation */
-.pull-to-refresh {
-  position: absolute;
-  top: -60px;
-  left: 0;
-  right: 0;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
+/* Mesh Background */
 .mesh-bg {
   position: fixed;
   top: 0;
@@ -237,7 +223,7 @@
   height: 100%;
   z-index: -1;
   overflow: hidden;
-  background-color: var(--color-seashell-50);
+  background-color: var(--background);
 }
 
 .mesh-bg::before {
@@ -265,7 +251,7 @@
 }
 
 .glass {
-  @apply bg-seashell-100/80 backdrop-blur-2xl border border-shadow-grey-200 shadow-xl;
+  @apply bg-white/40 backdrop-blur-2xl border border-shadow-green-200 shadow-xl;
 }
 
 @keyframes fadeIn {
