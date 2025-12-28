@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { TopHeader } from "@/components/layout/TopHeader";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
@@ -68,12 +69,13 @@ export default function Home() {
   const featured = featuredMatches[0];
   const userName = user?.user_metadata?.full_name?.split(' ')[0] || 'Warrior';
 
-  return (
-    <div className="min-h-screen bg-background text-onyx font-sans">
-      <main className="pb-32 relative z-10">
-
-        {/* Hero Section with Layered Blobs */}
-        <section className="sticker-header relative pt-12 pb-14 px-8 overflow-hidden">
+    return (
+      <div className="min-h-screen bg-background text-onyx font-sans">
+        <main className="pb-32 relative z-10">
+          <TopHeader />
+  
+          {/* Hero Section with Layered Blobs */}
+        <section className="sticker-header relative pb-14 px-8 overflow-hidden">
           <div className="absolute top-[-100px] right-[-100px] w-[300px] h-[300px] bg-[#F4F9F9] rounded-full blur-[100px] opacity-80" />
           <div className="absolute top-[-50px] left-[-50px] w-[200px] h-[200px] bg-[#FEF9C3]/40 rounded-full blur-[60px]" />
           
