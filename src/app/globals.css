@@ -1,4 +1,5 @@
 @import "tailwindcss";
+/* Trigger re-compile */
 
 @custom-variant dark (&:is(.dark *));
 
@@ -10,7 +11,7 @@
   font-display: swap;
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: 'Citynight', var(--font-geist-sans);
