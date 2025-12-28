@@ -4,12 +4,11 @@ import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { Eye, EyeOff, Loader2, ChevronLeft, Globe2 as Globe } from "lucide-react";
+import { Eye, EyeOff, Loader2, ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -44,13 +43,7 @@ export default function Signin() {
       });
 
       if (error) {
-        if (error.message === "Email not confirmed") {
-          toast.error("Please confirm your email address before signing in.");
-        } else if (error.message.includes("Invalid login credentials")) {
-          toast.error("Invalid email or password. Please try again.");
-        } else {
-          toast.error(error.message || "An error occurred during signin");
-        }
+        toast.error(error.message || "An error occurred during signin");
         return;
       }
 
@@ -59,130 +52,100 @@ export default function Signin() {
       router.refresh();
     } catch (error: any) {
       toast.error("An unexpected error occurred. Please try again.");
-      console.error("Signin error:", error);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
-      {/* Left Side - Brand Identity */}
-      <div className="hidden lg:flex flex-col justify-between p-16 bg-gradient-to-br from-[#D7FD03] to-[#C7E323] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#11130D 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }} />
-        
-        <div className="relative z-10">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-[#11130D] rounded-xl flex items-center justify-center shadow-2xl">
-              <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" className="w-6 h-6">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-              </svg>
+    <main className="min-h-screen bg-background text-onyx overflow-x-hidden">
+      {/* Sticker Header */}
+      <section className="sticker-header pt-20">
+        <div className="sticker-blob bg-pastel-coral" />
+        <Link href="/onboarding" className="inline-flex items-center gap-2 text-[10px] font-bold text-charcoal/30 uppercase tracking-widest mb-6">
+          <ChevronLeft size={14} strokeWidth={3} /> Back
+        </Link>
+        <h1 className="text-[40px] font-black leading-none mb-2">Welcome Back</h1>
+        <p className="text-[14px] font-bold text-charcoal/40 uppercase tracking-tighter">Sign in to Smartking's Arena</p>
+      </section>
+
+      <div className="px-8 pb-20 max-w-md mx-auto">
+        <form onSubmit={handleSignin} className="space-y-6">
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <Label className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Email or Phone</Label>
+              <Input 
+                type="email"
+                placeholder="warrior@arena.com"
+                className="h-14 rounded-[20px] bg-white border border-black/5 text-onyx font-bold px-6 focus-visible:ring-onyx shadow-sm"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              />
             </div>
-            <h1 className="text-2xl font-heading text-[#11130D]">Smartking's Arena</h1>
-          </div>
-        </div>
-
-        <div className="relative z-10 space-y-6">
-          <h2 className="text-7xl font-heading text-[#11130D] leading-[0.9]">
-            Compete.<br />
-            <span className="text-[#11130D]/50">Win. Withdraw.</span>
-          </h2>
-          <p className="text-[#11130D]/70 text-lg font-medium max-w-sm">
-            Join verified Free Fire tournaments and win real cash prizes.
-          </p>
-        </div>
-
-        <div className="relative z-10 flex items-center gap-4">
-          <div className="flex -space-x-3">
-            {[1,2,3,4].map(i => (
-              <div key={i} className="w-10 h-10 rounded-full border-4 border-[#D7FD03] bg-[#11130D]/20 backdrop-blur-md" />
-            ))}
-          </div>
-          <p className="text-[#11130D]/60 text-[11px] font-bold uppercase tracking-wide">
-            <span className="text-[#11130D]">2.4K+</span> warriors online now
-          </p>
-        </div>
-      </div>
-
-      {/* Right Side - Form */}
-      <div className="bg-[#D4D7DE] flex flex-col justify-center px-8 lg:px-24 py-12 relative blob-header blob-header-coral">
-        <nav className="absolute top-8 left-8 lg:left-24">
-          <Link href="/" className="text-[#11130D] flex items-center gap-2 text-[10px] font-bold uppercase tracking-wide hover:opacity-70 transition-opacity">
-            <ChevronLeft size={16} strokeWidth={3} /> Back
-          </Link>
-        </nav>
-
-        <div className="max-w-md w-full mx-auto space-y-8 relative z-10">
-          {/* Mobile Logo */}
-          <div className="lg:hidden flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-[#D7FD03] rounded-xl flex items-center justify-center shadow-lg shadow-[#D7FD03]/30">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#11130D" strokeWidth="2.5" className="w-5 h-5">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-              </svg>
-            </div>
-            <h1 className="text-lg font-heading text-[#11130D]">Smartking's Arena</h1>
-          </div>
-
-          <div className="space-y-2">
-            <h1 className="text-3xl sm:text-4xl font-heading text-[#11130D]">Welcome Back</h1>
-            <p className="text-[#4A4B48] text-sm font-medium">Sign in to your account</p>
-          </div>
-
-          <form onSubmit={handleSignin} className="space-y-5">
-            <div className="space-y-4">
-              <div className="space-y-1.5">
-                <Label className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wide ml-1">Email</Label>
+            
+            <div className="space-y-2">
+              <div className="flex justify-between items-center ml-1">
+                <Label className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest">Password</Label>
+                <Link href="#" className="text-[10px] font-bold text-onyx underline uppercase tracking-widest">Forgot?</Link>
+              </div>
+              <div className="relative">
                 <Input 
-                  type="email"
-                  placeholder="name@example.com"
-                  className="h-14 rounded-xl bg-white border border-[#C8C8C4]/30 text-[#11130D] font-medium px-5 focus-visible:ring-[#D7FD03]"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  className="h-14 rounded-[20px] bg-white border border-black/5 text-onyx font-bold px-6 pr-14 focus-visible:ring-onyx shadow-sm"
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 />
-              </div>
-              <div className="space-y-1.5">
-                <Label className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wide ml-1">Password</Label>
-                <div className="relative">
-                  <Input 
-                    type={showPassword ? "text" : "password"}
-                    placeholder="••••••••"
-                    className="h-14 rounded-xl bg-white border border-[#C8C8C4]/30 text-[#11130D] font-medium px-5 pr-12 focus-visible:ring-[#D7FD03]"
-                    value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  />
-                  <button 
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4A4B48] hover:text-[#11130D] transition-colors"
-                  >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
-                </div>
+                <button 
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-5 top-1/2 -translate-y-1/2 text-charcoal/30 hover:text-onyx transition-colors"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
             </div>
+          </div>
 
-            <div className="flex justify-end">
-              <Link href="#" className="text-[10px] font-bold text-[#868935] uppercase tracking-wide hover:underline">
-                Forgot password?
-              </Link>
-            </div>
-
+          <div className="pt-4 space-y-6">
             <motion.button
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
-              className="w-full h-14 bg-[#D7FD03] text-[#11130D] rounded-xl font-bold uppercase tracking-wide text-[11px] shadow-lg shadow-[#D7FD03]/30"
+              className="w-full h-14 bg-lime-yellow text-onyx rounded-[24px] font-black uppercase tracking-[0.2em] text-[11px] shadow-xl shadow-lime-yellow/20 flex items-center justify-center"
             >
-              {loading ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Sign In"}
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Sign In"}
             </motion.button>
 
-            <p className="text-center text-[11px] font-medium text-[#4A4B48]">
-              Don't have an account? <Link href="/signup" className="text-[#868935] font-bold hover:underline">Sign up</Link>
+            <div className="relative flex items-center justify-center py-4">
+              <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-black/5"></span></div>
+              <span className="relative bg-background px-4 text-[10px] font-bold text-charcoal/20 uppercase tracking-widest">or continue with</span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <motion.button 
+                whileTap={{ scale: 0.95 }}
+                type="button"
+                className="h-14 rounded-[20px] border border-black/5 bg-white flex items-center justify-center gap-3 shadow-sm"
+              >
+                <div className="w-5 h-5 bg-onyx/5 rounded-md" />
+                <span className="text-[10px] font-bold uppercase tracking-widest">Google</span>
+              </motion.button>
+              <motion.button 
+                whileTap={{ scale: 0.95 }}
+                type="button"
+                className="h-14 rounded-[20px] border border-black/5 bg-white flex items-center justify-center gap-3 shadow-sm"
+              >
+                <div className="w-5 h-5 bg-onyx/5 rounded-md" />
+                <span className="text-[10px] font-bold uppercase tracking-widest">Phone</span>
+              </motion.button>
+            </div>
+
+            <p className="text-center text-[11px] font-bold text-charcoal/40 uppercase tracking-widest">
+              Don't have an account? <Link href="/signup" className="text-onyx underline">Sign up</Link>
             </p>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </main>
   );

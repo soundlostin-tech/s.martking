@@ -4,26 +4,20 @@ import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import Link from "next/link";
 import { Loader2, Eye, EyeOff, ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { BentoCard } from "@/components/ui/BentoCard";
 
 export default function Signup() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [countryCode, setCountryCode] = useState("+91");
   const [formData, setFormData] = useState({
     fullname: "",
+    ff_uid: "",
     email: "",
     phone: "",
     password: "",
@@ -36,12 +30,12 @@ export default function Signup() {
       toast.error("Name is required");
       return false;
     }
-    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
-      toast.error("Please enter a valid email");
+    if (!formData.ff_uid.trim()) {
+      toast.error("Free Fire UID is required");
       return false;
     }
-    if (!formData.phone || !/^\d{10}$/.test(formData.phone)) {
-      toast.error("Phone must be 10 digits");
+    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
+      toast.error("Please enter a valid email");
       return false;
     }
     if (formData.password.length < 6) {
@@ -61,15 +55,13 @@ export default function Signup() {
 
     setLoading(true);
     try {
-      const fullPhone = `${countryCode}${formData.phone}`;
-      
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
           data: {
             full_name: formData.fullname,
-            phone: fullPhone,
+            ff_uid: formData.ff_uid,
           },
         },
       });
@@ -80,7 +72,8 @@ export default function Signup() {
         const { error: profileError } = await supabase.from("profiles").insert({
           id: authData.user.id,
           full_name: formData.fullname,
-          phone: fullPhone,
+          ff_uid: formData.ff_uid,
+          phone: formData.phone,
           username: formData.fullname.toLowerCase().replace(/\s+/g, '_') + Math.floor(Math.random() * 1000),
           role: "Player",
           status: "Active",
@@ -104,166 +97,106 @@ export default function Signup() {
       }
     } catch (error: any) {
       toast.error(error.message || "Signup failed. Please try again.");
-      console.error("Signup error:", error);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
-      {/* Left Side - Brand Identity */}
-      <div className="hidden lg:flex flex-col justify-between p-16 bg-gradient-to-br from-[#D7FD03] to-[#C7E323] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#11130D 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }} />
-        
-        <div className="relative z-10">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-[#11130D] rounded-xl flex items-center justify-center shadow-2xl">
-              <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" className="w-6 h-6">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-              </svg>
-            </div>
-            <h1 className="text-2xl font-heading text-[#11130D]">Smartking's Arena</h1>
-          </div>
-        </div>
+    <main className="min-h-screen bg-background text-onyx overflow-x-hidden">
+      {/* Sticker Header */}
+      <section className="sticker-header pt-20">
+        <div className="sticker-blob bg-pastel-mint" />
+        <Link href="/signin" className="inline-flex items-center gap-2 text-[10px] font-bold text-charcoal/30 uppercase tracking-widest mb-6">
+          <ChevronLeft size={14} strokeWidth={3} /> Back
+        </Link>
+        <h1 className="text-[40px] font-black leading-none mb-2">Join the Arena</h1>
+        <p className="text-[14px] font-bold text-charcoal/40 uppercase tracking-tighter">Create your warrior profile</p>
+      </section>
 
-        <div className="relative z-10 space-y-6">
-          <h2 className="text-7xl font-heading text-[#11130D] leading-[0.9]">
-            Join the<br />
-            <span className="text-[#11130D]/50">Arena Today</span>
-          </h2>
-          <p className="text-[#11130D]/70 text-lg font-medium max-w-sm">
-            Create your account and start competing in Free Fire tournaments for real prizes.
-          </p>
-        </div>
-
-        <div className="relative z-10 flex items-center gap-4">
-          <div className="flex -space-x-3">
-            {[1,2,3,4].map(i => (
-              <div key={i} className="w-10 h-10 rounded-full border-4 border-[#D7FD03] bg-[#11130D]/20 backdrop-blur-md" />
-            ))}
-          </div>
-          <p className="text-[#11130D]/60 text-[11px] font-bold uppercase tracking-wide">
-            <span className="text-[#11130D]">12K+</span> warriors already enlisted
-          </p>
-        </div>
-      </div>
-
-      {/* Right Side - Form */}
-      <div className="bg-[#D4D7DE] flex flex-col justify-center px-8 lg:px-24 py-12 relative blob-header blob-header-mint overflow-y-auto">
-        <nav className="absolute top-8 left-8 lg:left-24">
-          <Link href="/" className="text-[#11130D] flex items-center gap-2 text-[10px] font-bold uppercase tracking-wide hover:opacity-70 transition-opacity">
-            <ChevronLeft size={16} strokeWidth={3} /> Back
-          </Link>
-        </nav>
-
-        <div className="max-w-md w-full mx-auto space-y-6 relative z-10 pt-12 lg:pt-0">
-          {/* Mobile Logo */}
-          <div className="lg:hidden flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-[#D7FD03] rounded-xl flex items-center justify-center shadow-lg shadow-[#D7FD03]/30">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#11130D" strokeWidth="2.5" className="w-5 h-5">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-              </svg>
-            </div>
-            <h1 className="text-lg font-heading text-[#11130D]">Smartking's Arena</h1>
-          </div>
-
-          <div className="space-y-2">
-            <h1 className="text-3xl sm:text-4xl font-heading text-[#11130D]">Create Account</h1>
-            <p className="text-[#4A4B48] text-sm font-medium">Join the arena and start winning</p>
-          </div>
-
-          <form onSubmit={handleSignup} className="space-y-4">
-            <div className="space-y-1.5">
-              <Label className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wide ml-1">Full Name</Label>
+      <div className="px-8 pb-20 max-w-md mx-auto">
+        <form onSubmit={handleSignup} className="space-y-6">
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <Label className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Username / Name</Label>
               <Input 
-                placeholder="Your name"
-                className="h-14 rounded-xl bg-white border border-[#C8C8C4]/30 text-[#11130D] font-medium px-5 focus-visible:ring-[#D7FD03]"
+                placeholder="Elite_Warrior"
+                className="h-14 rounded-[20px] bg-white border border-black/5 text-onyx font-bold px-6 focus-visible:ring-onyx shadow-sm"
                 value={formData.fullname}
                 onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
               />
             </div>
 
-            <div className="space-y-1.5">
-              <Label className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wide ml-1">Email</Label>
+            <div className="space-y-2">
+              <Label className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Free Fire UID</Label>
+              <Input 
+                placeholder="1234567890"
+                className="h-14 rounded-[20px] bg-white border border-black/5 text-onyx font-bold px-6 focus-visible:ring-onyx shadow-sm"
+                value={formData.ff_uid}
+                onChange={(e) => setFormData({ ...formData, ff_uid: e.target.value })}
+              />
+              <p className="text-[9px] font-bold text-charcoal/30 uppercase tracking-widest ml-1">Find this in your FF profile</p>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Email</Label>
               <Input 
                 type="email"
-                placeholder="name@example.com"
-                className="h-14 rounded-xl bg-white border border-[#C8C8C4]/30 text-[#11130D] font-medium px-5 focus-visible:ring-[#D7FD03]"
+                placeholder="warrior@arena.com"
+                className="h-14 rounded-[20px] bg-white border border-black/5 text-onyx font-bold px-6 focus-visible:ring-onyx shadow-sm"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
             </div>
-
-            <div className="space-y-1.5">
-              <Label className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wide ml-1">Phone</Label>
-              <div className="flex gap-2">
-                <Select value={countryCode} onValueChange={setCountryCode}>
-                  <SelectTrigger className="w-[90px] h-14 rounded-xl bg-white border border-[#C8C8C4]/30 font-bold text-[#11130D] focus:ring-[#D7FD03]">
-                    <SelectValue placeholder="+91" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border-[#C8C8C4]/30 text-[#11130D] rounded-xl">
-                    <SelectItem value="+91">+91</SelectItem>
-                    <SelectItem value="+1">+1</SelectItem>
-                    <SelectItem value="+44">+44</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Input 
-                  placeholder="9876543210"
-                  className="h-14 rounded-xl bg-white border border-[#C8C8C4]/30 text-[#11130D] font-medium px-5 flex-1 focus-visible:ring-[#D7FD03]"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-1.5">
-              <Label className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wide ml-1">Password</Label>
+            
+            <div className="space-y-2">
+              <Label className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Password</Label>
               <div className="relative">
                 <Input 
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
-                  className="h-14 rounded-xl bg-white border border-[#C8C8C4]/30 text-[#11130D] font-medium px-5 pr-12 focus-visible:ring-[#D7FD03]"
+                  className="h-14 rounded-[20px] bg-white border border-black/5 text-onyx font-bold px-6 pr-14 focus-visible:ring-onyx shadow-sm"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 />
                 <button 
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4A4B48] hover:text-[#11130D] transition-colors"
+                  className="absolute right-5 top-1/2 -translate-y-1/2 text-charcoal/30 hover:text-onyx transition-colors"
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
             </div>
+          </div>
 
-            <div className="flex items-start space-x-3 cursor-pointer" onClick={() => setFormData({ ...formData, terms: !formData.terms })}>
-              <Checkbox 
-                id="terms" 
-                className="mt-1 w-5 h-5 rounded-md border-[#C8C8C4] data-[state=checked]:bg-[#D7FD03] data-[state=checked]:border-[#D7FD03] data-[state=checked]:text-[#11130D]" 
-                checked={formData.terms}
-              />
-              <label className="text-[10px] font-medium text-[#4A4B48] leading-tight cursor-pointer">
-                I agree to the <span className="text-[#868935] font-bold">Terms of Service</span> and <span className="text-[#868935] font-bold">Privacy Policy</span>
-              </label>
-            </div>
+          <BentoCard className="p-4 flex items-start gap-4 border border-black/5 shadow-sm">
+            <Checkbox 
+              id="terms" 
+              className="mt-1 w-5 h-5 rounded-md border-silver data-[state=checked]:bg-onyx data-[state=checked]:border-onyx" 
+              checked={formData.terms}
+              onCheckedChange={(checked) => setFormData({ ...formData, terms: checked as boolean })}
+            />
+            <label htmlFor="terms" className="text-[10px] font-bold text-charcoal/60 leading-tight uppercase tracking-widest cursor-pointer">
+              I agree to the <span className="text-onyx underline">Terms of Service</span> and <span className="text-onyx underline">Privacy Policy</span>
+            </label>
+          </BentoCard>
 
+          <div className="pt-4">
             <motion.button
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
-              className="w-full h-14 bg-[#D7FD03] text-[#11130D] rounded-xl font-bold uppercase tracking-wide text-[11px] shadow-lg shadow-[#D7FD03]/30"
+              className="w-full h-14 bg-onyx text-white rounded-[24px] font-black uppercase tracking-[0.2em] text-[11px] shadow-xl shadow-onyx/20 flex items-center justify-center"
             >
-              {loading ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Create Account"}
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Create Account"}
             </motion.button>
 
-            <p className="text-center text-[11px] font-medium text-[#4A4B48]">
-              Already have an account? <Link href="/signin" className="text-[#868935] font-bold hover:underline">Sign in</Link>
+            <p className="text-center mt-8 text-[11px] font-bold text-charcoal/40 uppercase tracking-widest">
+              Already have an account? <Link href="/signin" className="text-onyx underline">Sign in</Link>
             </p>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </main>
   );
