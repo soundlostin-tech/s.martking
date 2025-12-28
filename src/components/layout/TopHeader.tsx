@@ -1,27 +1,69 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Search, Bell } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export function TopHeader() {
   const { scrollY } = useScroll();
-  const [isScrolled, setIsScrolled] = useState(false);
+  
+  // Create a smoother spring-based scroll value for premium feel
+  const smoothY = useSpring(scrollY, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   // Transform values for scroll animations
-  const headerHeight = useTransform(scrollY, [0, 50], ["76px", "64px"]);
-  const headerPadding = useTransform(scrollY, [0, 50], ["16px", "12px"]);
-  const borderOpacity = useTransform(scrollY, [0, 50], [0.04, 0.1]);
-  const logoScale = useTransform(scrollY, [0, 50], [1, 0.9]);
+  const headerHeight = useTransform(smoothY, [0, 80], ["76px", "62px"]);
+  const headerPadding = useTransform(smoothY, [0, 80], ["16px", "10px"]);
+  const logoScale = useTransform(smoothY, [0, 80], [1, 0.85]);
+  const blurAmount = useTransform(smoothY, [0, 80], ["20px", "28px"]);
+  const shadowOpacity = useTransform(smoothY, [0, 80], [0, 0.05]);
+  
+  // Background and Border dynamic colors
+  const bgColor = useTransform(
+    smoothY,
+    [0, 80],
+    ["rgba(244, 249, 249, 0.8)", "rgba(255, 255, 255, 0.92)"]
+  );
+  
+  const borderColor = useTransform(
+    smoothY,
+    [0, 80],
+    ["rgba(0, 0, 0, 0.04)", "rgba(0, 0, 0, 0.08)"]
+  );
 
-  useEffect(() => {
-    const updateScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", updateScroll);
-    return () => window.removeEventListener("scroll", updateScroll);
-  }, []);
+  const boxShadow = useTransform(
+    shadowOpacity,
+    (opacity) => `0 4px 24px rgba(0, 0, 0, ${opacity})`
+  );
+
+  const backdropFilter = useTransform(
+    blurAmount,
+    (blur) => `blur(${blur})`
+  );
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1,
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+    }
+  };
 
   return (
     <motion.header 
@@ -29,70 +71,83 @@ export function TopHeader() {
         height: headerHeight,
         paddingTop: headerPadding,
         paddingBottom: headerPadding,
-        borderBottomColor: `rgba(0, 0, 0, ${borderOpacity.get()})`
+        backgroundColor: bgColor,
+        borderBottomColor: borderColor,
+        boxShadow: boxShadow,
+        backdropFilter: backdropFilter,
       }}
-      className={cn(
-        "sticky top-0 z-40 w-full flex items-center justify-between px-5 sm:px-8 transition-colors duration-300 border-b",
-        isScrolled 
-          ? "bg-white/90 backdrop-blur-2xl shadow-sm" 
-          : "bg-[#F4F9F9]/80 backdrop-blur-xl"
-      )}
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="sticky top-0 z-50 w-full flex items-center justify-between px-5 sm:px-8 border-b"
     >
         <motion.div 
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          variants={itemVariants}
           className="flex items-center gap-3.5"
         >
           <motion.div 
             style={{ scale: logoScale }}
-            className="w-11 h-11 rounded-full bg-[#11130D] flex items-center justify-center text-white shadow-lg shadow-black/10"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-11 h-11 rounded-full bg-[#11130D] flex items-center justify-center text-white shadow-lg shadow-black/10 cursor-pointer"
           >
             <motion.svg 
               animate={{ rotate: [0, 360] }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
               viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5"
             >
               <circle cx="12" cy="12" r="10" />
               <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
             </motion.svg>
           </motion.div>
+          
           <div className="flex flex-col">
-            <h1 className="text-xl font-black text-[#11130D] tracking-tight leading-none flex items-center gap-1">
+            <motion.h1 
+              className="text-xl font-black text-[#11130D] tracking-tight leading-none flex items-center gap-1"
+            >
               Smartking&apos;s <span className="text-[#A0A0A0] font-bold">Arena</span>
-            </h1>
-            <p className="text-[7px] font-bold text-[#A0A0A0] uppercase tracking-[0.3em] mt-1.5 leading-none">
+            </motion.h1>
+            <motion.p 
+              className="text-[7px] font-bold text-[#A0A0A0] uppercase tracking-[0.3em] mt-1.5 leading-none"
+            >
               Where Skill Meets Fortune
-            </p>
+            </motion.p>
           </div>
         </motion.div>
         
         <motion.div 
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          variants={itemVariants}
           className="flex items-center gap-3"
         >
           <motion.button 
-            whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 1)" }}
+            whileHover={{ 
+              scale: 1.05, 
+              backgroundColor: "rgba(255, 255, 255, 1)",
+              boxShadow: "0 10px 20px rgba(0,0,0,0.06)"
+            }}
             whileTap={{ scale: 0.95 }}
-            className="w-11 h-11 rounded-full bg-white/80 border border-black/[0.05] shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex items-center justify-center text-[#11130D] transition-all"
+            className="w-11 h-11 rounded-full bg-white/60 border border-black/[0.03] flex items-center justify-center text-[#11130D] transition-shadow"
           >
             <Search size={18} strokeWidth={2.5} />
           </motion.button>
+          
           <motion.button 
-            whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 1)" }}
+            whileHover={{ 
+              scale: 1.05, 
+              backgroundColor: "rgba(255, 255, 255, 1)",
+              boxShadow: "0 10px 20px rgba(0,0,0,0.06)"
+            }}
             whileTap={{ scale: 0.95 }}
-            className="relative w-11 h-11 rounded-full bg-white/80 border border-black/[0.05] shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex items-center justify-center text-[#11130D] transition-all"
+            className="relative w-11 h-11 rounded-full bg-white/60 border border-black/[0.03] flex items-center justify-center text-[#11130D] transition-shadow"
           >
             <Bell size={18} strokeWidth={2.5} />
             <motion.span 
               animate={{ 
-                scale: [1, 1.2, 1],
-                opacity: [1, 0.8, 1]
+                scale: [1, 1.4, 1],
+                opacity: [1, 0.6, 1]
               }}
               transition={{ 
-                duration: 2, 
+                duration: 3, 
                 repeat: Infinity, 
                 ease: "easeInOut" 
               }}
