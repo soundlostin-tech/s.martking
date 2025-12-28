@@ -17,8 +17,8 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-6 left-4 right-4 z-50 bg-white/95 backdrop-blur-xl rounded-[24px] shadow-[0_4px_32px_rgba(0,0,0,0.12)] border border-[#C8C8C4]/30 max-w-lg mx-auto">
-      <div className="flex justify-around items-center h-16 px-2">
+    <nav className="bottom-nav-floating max-w-lg mx-auto left-4 right-4 sm:left-6 sm:right-6">
+      <div className="flex justify-around items-center h-14">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
@@ -28,33 +28,33 @@ export function BottomNav() {
             <Link
               key={item.label}
               href={item.href}
-              className="relative flex flex-col items-center justify-center flex-1 h-full touch-target"
+              className="relative flex flex-col items-center justify-center flex-1 h-full"
             >
               <motion.div
                 initial={false}
                 animate={{ 
-                  scale: isActive ? 1.05 : 1,
-                  y: isActive ? -2 : 0 
+                  scale: isActive ? 1.1 : 1,
+                  y: isActive ? -4 : 0 
                 }}
-                transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                className="relative flex flex-col items-center gap-1"
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                className="relative flex flex-col items-center"
               >
-                  <div className={`relative z-10 p-2.5 rounded-2xl transition-all duration-300 ${
-                    isActive 
-                      ? "bg-foreground text-white shadow-xl shadow-foreground/20" 
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}>
-                    <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
-                    {isLive && !isActive && (
-                      <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white" />
-                    )}
-                  </div>
-    
-                  <span className={`text-[9px] font-bold uppercase tracking-widest transition-colors duration-200 ${
-                    isActive ? "text-foreground" : "text-muted-foreground"
-                  }`}>
-                    {item.label}
-                  </span>
+                <div className={`p-2.5 rounded-2xl transition-all duration-300 ${
+                  isActive 
+                    ? "bg-lime-vibrant text-onyx" 
+                    : "text-white/50 hover:text-white"
+                }`}>
+                  <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+                  {isLive && !isActive && (
+                    <span className="absolute top-2 right-2 w-2 h-2 bg-lime-vibrant rounded-full border border-onyx" />
+                  )}
+                </div>
+                {isActive && (
+                  <motion.div 
+                    layoutId="nav-dot"
+                    className="absolute -bottom-2 w-1 h-1 bg-lime-vibrant rounded-full"
+                  />
+                )}
               </motion.div>
             </Link>
           );

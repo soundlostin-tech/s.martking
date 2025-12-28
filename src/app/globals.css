@@ -54,79 +54,72 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-    /* ============================================
-       SMARTKING'S ARENA - PASTEL BENTO PALETTE
-       (Referenced from health/lifestyle app style)
-       ============================================ */
-    --color-onyx: #11130D;
-    --color-carbon-black: #1D1E13;
-    --color-charcoal-brown: #30312A;
-    --color-charcoal: #4A4B48;
-    --color-silver: #C8C8C4;
-    --color-alabaster: #F2F4F7;
-    --color-lemon-lime: #D7FD03;
-    --color-lime-yellow: #FEF38B;
-    --color-olive: #868935;
-    
-    /* Pastel Palette from Reference */
-    --color-pastel-yellow: #FEF38B;
-    --color-pastel-mint: #CCF5E6;
-    --color-pastel-coral: #FFD6D1;
-    --color-pastel-lavender: #D0D1FF;
-    --color-pastel-peach: #FFE3D1;
-  }
+  /* ============================================
+     SMARTKING'S ARENA - VIBRANT BENTO PALETTE
+     Reference: Pastel Vibrant Aesthetic
+     ============================================ */
+  --color-onyx: #111111;
+  --color-carbon-black: #1D1E13;
+  --color-charcoal-brown: #30312A;
+  --color-charcoal: #4A4B48;
+  --color-silver: #C8C8C4;
+  --color-off-white: #F7F7F7;
+  --color-lemon-lime: #C7E323;
+  --color-lime-vibrant: #D6FF3D;
+  --color-olive: #868935;
   
-  :root {
-    --radius: 20px;
-    
-    /* Backgrounds - Light Pastel Base */
-    --background: #F2F4F7;
-    --foreground: #11130D;
-    
-    /* Surfaces */
-    --card: #ffffff;
-    --card-foreground: #11130D;
-    
-    --popover: #ffffff;
-    --popover-foreground: #11130D;
-    
-    /* Actions */
-    --primary: #11130D;
-    --primary-foreground: #ffffff;
-    
-    --secondary: #D4D7DE;
-    --secondary-foreground: #4A4B48;
-    
-    --muted: #E8E9EC;
-    --muted-foreground: #5F6368;
-    
-    --accent: #D7FD03;
-    --accent-foreground: #11130D;
-    
-    --destructive: #F5A8A8;
-    --destructive-foreground: #8A2020;
-    
-    /* Borders */
-    --border: rgba(200, 200, 196, 0.4);
-    --input: #E8E9EC;
-    --ring: #11130D;
+  /* Pastel Accent Colors from Reference */
+  --color-pastel-yellow: #FDFB97;
+  --color-pastel-mint: #CCF8B0;
+  --color-pastel-coral: #FF8E7E;
+  --color-pastel-lavender: #E2D9FF;
+  --color-pastel-peach: #FFD7CC;
+}
+
+:root {
+  --radius: 24px;
+  
+  /* Backgrounds - Clean White Base */
+  --background: #FFFFFF;
+  --foreground: #111111;
+  
+  /* Surfaces */
+  --card: #ffffff;
+  --card-foreground: #111111;
+  
+  --popover: #ffffff;
+  --popover-foreground: #111111;
+  
+  /* Actions */
+  --primary: #D6FF3D;
+  --primary-foreground: #111111;
+  
+  --secondary: #F7F7F7;
+  --secondary-foreground: #111111;
+  
+  --muted: #F7F7F7;
+  --muted-foreground: #4A4B48;
+  
+  --accent: #D6FF3D;
+  --accent-foreground: #111111;
+  
+  --destructive: #FF8E7E;
+  --destructive-foreground: #111111;
+  
+  /* Borders */
+  --border: #F0F0F0;
+  --input: #F7F7F7;
+  --ring: #D6FF3D;
 
   /* Sidebar */
   --sidebar: #ffffff;
-  --sidebar-foreground: #11130D;
-  --sidebar-primary: #D7FD03;
-  --sidebar-primary-foreground: #11130D;
-  --sidebar-accent: #E8E9EC;
-  --sidebar-accent-foreground: #11130D;
-  --sidebar-border: rgba(200, 200, 196, 0.3);
-  --sidebar-ring: #D7FD03;
-
-  /* Charts */
-  --chart-1: #D7FD03;
-  --chart-2: #C7E323;
-  --chart-3: #868935;
-  --chart-4: #C8C8C4;
-  --chart-5: #4A4B48;
+  --sidebar-foreground: #111111;
+  --sidebar-primary: #D6FF3D;
+  --sidebar-primary-foreground: #111111;
+  --sidebar-accent: #F7F7F7;
+  --sidebar-accent-foreground: #111111;
+  --sidebar-border: #F0F0F0;
+  --sidebar-ring: #D6FF3D;
 }
 
 @layer base {
@@ -135,7 +128,7 @@
     -webkit-tap-highlight-color: transparent;
   }
   html, body {
-    @apply bg-alabaster text-onyx font-sans antialiased selection:bg-lime-yellow/30 selection:text-onyx overflow-x-hidden;
+    @apply bg-white text-onyx font-sans antialiased selection:bg-lime-vibrant/30 selection:text-onyx overflow-x-hidden;
     background-attachment: fixed;
     touch-action: manipulation;
     overscroll-behavior-y: none;
@@ -149,18 +142,42 @@
 
 /* Bento Card Component */
 .bento-card {
-  @apply bg-white rounded-[28px] p-5 shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-silver/20;
+  @apply bg-white rounded-[28px] p-5 shadow-[0_8px_32px_rgba(0,0,0,0.04)] border border-border;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .bento-card:active {
-  transform: scale(0.97);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  @apply scale-[0.98] shadow-sm;
+}
+
+/* Color Variants */
+.bento-dark {
+  @apply bg-onyx text-white border-none;
+}
+
+.bento-peach {
+  @apply bg-pastel-peach text-onyx border-none;
+}
+
+.bento-lavender {
+  @apply bg-pastel-lavender text-onyx border-none;
+}
+
+.bento-mint {
+  @apply bg-pastel-mint text-onyx border-none;
+}
+
+.bento-coral {
+  @apply bg-pastel-coral text-onyx border-none;
+}
+
+.bento-yellow {
+  @apply bg-pastel-yellow text-onyx border-none;
 }
 
 /* Hero Bento Card */
 .bento-hero {
-  @apply bg-gradient-to-br from-pastel-yellow/40 to-white rounded-[28px] p-6 shadow-[0_4px_32px_rgba(0,0,0,0.08)] border border-lime-yellow/20;
+  @apply rounded-[32px] p-6 shadow-[0_12px_48px_rgba(0,0,0,0.08)];
 }
 
 /* Pastel Blob Headers */
@@ -170,79 +187,53 @@
 
 .blob-header::before {
   content: '';
-  @apply absolute -top-1/2 -right-1/4 w-[80%] h-[200%] rounded-full blur-[80px] opacity-40 pointer-events-none;
+  @apply absolute -top-1/2 -right-1/4 w-[80%] h-[200%] rounded-full blur-[100px] opacity-30 pointer-events-none;
 }
 
-.blob-header-yellow::before {
-  background: linear-gradient(135deg, #F5F3C7 0%, #D7FD03 100%);
-}
-
-.blob-header-mint::before {
-  background: linear-gradient(135deg, #C7F5E3 0%, #C7E323 100%);
-}
-
-.blob-header-coral::before {
-  background: linear-gradient(135deg, #F5D4C7 0%, #F5E3C7 100%);
-}
-
-.blob-header-lavender::before {
-  background: linear-gradient(135deg, #D4C7F5 0%, #E8E9EC 100%);
-}
-
-.blob-header-peach::before {
-  background: linear-gradient(135deg, #F5E3C7 0%, #F5D4C7 100%);
-}
+.blob-header-yellow::before { background: #FDFB97; }
+.blob-header-mint::before { background: #CCF8B0; }
+.blob-header-coral::before { background: #FF8E7E; }
+.blob-header-lavender::before { background: #E2D9FF; }
+.blob-header-peach::before { background: #FFD7CC; }
 
 /* Chip Styles */
 .chip {
-  @apply inline-flex items-center justify-center px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-wide transition-all;
+  @apply inline-flex items-center justify-center px-5 py-2.5 rounded-full text-[12px] font-bold transition-all;
 }
 
 .chip-default {
-  @apply bg-silver/30 text-charcoal;
+  @apply bg-white text-onyx border border-border;
 }
 
 .chip-selected {
-  @apply bg-lime-yellow/15 text-onyx border-b-2 border-lime-yellow;
+  @apply bg-onyx text-white border-none;
 }
 
 /* Badge Styles */
 .badge-live {
-  @apply bg-lime-yellow text-onyx px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider;
+  @apply bg-lime-vibrant text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
 }
 
 .badge-pending {
-  @apply bg-[#F5D68A] text-[#7A5C00] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider;
+  @apply bg-pastel-yellow text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
 }
 
 .badge-completed {
-  @apply bg-olive/20 text-olive px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider;
+  @apply bg-pastel-mint text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
 }
 
 .badge-failed {
-  @apply bg-[#F5A8A8] text-[#8A2020] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider;
-}
-
-/* List Row */
-.list-row {
-  @apply flex items-center gap-4 p-4 bg-white rounded-[20px] border border-silver/20;
+  @apply bg-pastel-coral text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
 }
 
 /* Bottom Nav Floating Bar */
 .bottom-nav-floating {
-  @apply fixed bottom-6 left-4 right-4 z-50 bg-white/95 backdrop-blur-xl rounded-[24px] shadow-[0_-4px_32px_rgba(0,0,0,0.12)] border border-silver/30;
+  @apply fixed bottom-8 left-6 right-6 z-50 bg-onyx text-white rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] px-6 py-4;
 }
 
-/* Mobile Card */
-.mobile-card {
-  @apply bg-white border border-silver/20 rounded-[20px] p-4 shadow-sm active:scale-[0.98] transition-transform duration-150;
-}
-
-/* GPU Acceleration for Animations */
-.gpu-accelerate {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000px;
+/* Premium Gradients */
+.premium-gradient {
+  background: linear-gradient(135deg, #D6FF3D 0%, #C7E323 100%);
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -252,131 +243,4 @@
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-/* Touch Target */
-.touch-target {
-  min-height: 44px;
-  min-width: 44px;
-}
-
-/* Haptic Tap Feedback */
-.haptic-tap:active {
-  transform: scale(0.96);
-}
-
-/* Header Height */
-.header-height {
-  height: 64px;
-}
-
-/* Premium Gradients */
-.premium-gradient {
-  background: linear-gradient(135deg, #D7FD03 0%, #C7E323 100%);
-}
-
-.premium-hero-gradient {
-  background: radial-gradient(circle at 50% 50%, #F5F3C7 0%, #D4D7DE 100%);
-}
-
-/* Vintage TV Styles */
-.vintage-tv {
-  @apply relative bg-gradient-to-b from-[#8B7355] to-[#6B5344] rounded-[24px] p-4 shadow-2xl;
-}
-
-.vintage-tv-screen {
-  @apply relative bg-black rounded-[16px] overflow-hidden;
-  box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
-}
-
-.vintage-tv-screen::before {
-  content: '';
-  @apply absolute inset-0 pointer-events-none z-10;
-  background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.05) 50%, transparent 100%);
-}
-
-.vintage-tv-knob {
-  @apply w-10 h-10 rounded-full bg-gradient-to-b from-[#C4A87C] to-[#8B7355] shadow-lg cursor-pointer;
-  border: 2px solid #6B5344;
-}
-
-.vintage-tv-knob:active {
-  transform: scale(0.95);
-}
-
-/* Static Noise Animation */
-@keyframes noise {
-  0%, 100% { background-position: 0 0; }
-  10% { background-position: -5% -10%; }
-  20% { background-position: -15% 5%; }
-  30% { background-position: 7% -25%; }
-  40% { background-position: 20% 25%; }
-  50% { background-position: -25% 10%; }
-  60% { background-position: 15% 5%; }
-  70% { background-position: 0% 15%; }
-  80% { background-position: 25% 35%; }
-  90% { background-position: -10% 10%; }
-}
-
-.tv-static {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  animation: noise 0.3s infinite;
-}
-
-/* Scanlines */
-.scanlines::after {
-  content: '';
-  @apply absolute inset-0 pointer-events-none z-20;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.15),
-    rgba(0, 0, 0, 0.15) 1px,
-    transparent 1px,
-    transparent 2px
-  );
-}
-
-/* LED Indicator */
-.led-on {
-  @apply w-3 h-3 rounded-full bg-lime-yellow shadow-[0_0_10px_#D7FD03];
-  animation: pulse 2s infinite;
-}
-
-.led-off {
-  @apply w-3 h-3 rounded-full bg-red-500 shadow-[0_0_10px_#ef4444];
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
-
-/* Story Ring */
-.story-ring {
-  @apply p-[3px] rounded-full;
-  background: linear-gradient(135deg, #D7FD03 0%, #C7E323 50%, #868935 100%);
-}
-
-.story-ring-unseen {
-  background: linear-gradient(135deg, #D7FD03 0%, #C7E323 100%);
-}
-
-.story-ring-seen {
-  @apply bg-silver/50;
-}
-
-/* Skeleton Loading */
-.skeleton {
-  @apply bg-silver/30 rounded-[20px] animate-pulse;
-}
-
-/* Chart Styles */
-.chart-gridline {
-  stroke: rgba(200, 200, 196, 0.2);
-}
-
-.chart-active-point {
-  fill: #D7FD03;
-  stroke: #11130D;
-  stroke-width: 2;
 }
