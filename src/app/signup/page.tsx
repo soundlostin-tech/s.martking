@@ -101,17 +101,19 @@ export default function Signup() {
     }
   };
 
-  return (
-    <main className="min-h-screen bg-background text-onyx overflow-x-hidden" suppressHydrationWarning>
-      {/* Sticker Header */}
-        <section className="sticker-header pt-20">
-          <div className="sticker-blob bg-pastel-mint" suppressHydrationWarning={true} />
-          <Link href="/signin" className="inline-flex items-center gap-2 text-[10px] font-bold text-charcoal/30 uppercase tracking-widest mb-6">
-          <ChevronLeft size={14} strokeWidth={3} /> Back
-        </Link>
-        <h1 className="text-[40px] font-black leading-none mb-2">Join the Arena</h1>
-        <p className="text-[14px] font-bold text-charcoal/40 uppercase tracking-tighter">Create your warrior profile</p>
-      </section>
+    return (
+      <main className="min-h-screen text-onyx overflow-x-hidden" suppressHydrationWarning>
+        {/* Header Section */}
+          <section className="relative pt-20 px-8 pb-12 overflow-hidden bg-transparent">
+            <Link href="/signin" className="relative z-10 inline-flex items-center gap-2 text-[10px] font-bold text-charcoal/30 uppercase tracking-widest mb-6">
+            <ChevronLeft size={14} strokeWidth={3} /> Back
+          </Link>
+          <div className="relative z-10">
+            <h1 className="text-[40px] font-black leading-none mb-2">Join the Arena</h1>
+            <p className="text-[14px] font-bold text-charcoal/40 uppercase tracking-tighter">Create your warrior profile</p>
+          </div>
+        </section>
+
 
       <div className="px-8 pb-20 max-w-md mx-auto" suppressHydrationWarning>
         <form onSubmit={handleSignup} className="space-y-6" suppressHydrationWarning>

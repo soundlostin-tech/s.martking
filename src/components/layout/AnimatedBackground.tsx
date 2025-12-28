@@ -12,43 +12,62 @@ export function AnimatedBackground() {
 
   if (!mounted) return null;
 
-    return (
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 bg-[#F8FAFC]">
-        {/* Neutral subtle blob - top right */}
-        <motion.div 
-          animate={{ 
-            x: [0, 30, 0], 
-            y: [0, 20, 0],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-[20%] -right-[20%] w-[60%] h-[60%] rounded-full blur-[100px] opacity-20"
-          style={{ background: 'linear-gradient(135deg, #E2E8F0 0%, #CBD5E0 100%)' }}
-        />
-        
-        {/* Neutral subtle blob - bottom left */}
-        <motion.div 
-          animate={{ 
-            x: [0, -30, 0], 
-            y: [0, 30, 0],
-            scale: [1.1, 1, 1.1],
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -bottom-[20%] -left-[20%] w-[60%] h-[60%] rounded-full blur-[120px] opacity-15"
-          style={{ background: 'linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%)' }}
-        />
+  return (
+    <div className="fixed inset-0 pointer-events-none overflow-hidden -z-20 bg-[#F8FAFC]">
+      {/* Top Right - Yellow/Mint Glow */}
+      <motion.div 
+        animate={{ 
+          x: [0, 40, 0], 
+          y: [0, -20, 0],
+          scale: [1, 1.15, 1],
+          opacity: [0.15, 0.25, 0.15],
+        }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-[10%] -right-[10%] w-[70%] h-[70%] rounded-full blur-[120px]"
+        style={{ background: 'radial-gradient(circle, #FEFCBF 0%, #C6F6D5 100%)' }}
+      />
+      
+      {/* Bottom Right - Purple/Lavender Glow */}
+      <motion.div 
+        animate={{ 
+          x: [0, -30, 0], 
+          y: [0, 40, 0],
+          scale: [1.1, 1, 1.1],
+          opacity: [0.1, 0.2, 0.1],
+        }}
+        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -bottom-[15%] -right-[10%] w-[60%] h-[60%] rounded-full blur-[130px]"
+        style={{ background: 'radial-gradient(circle, #E9D8FD 0%, #BEE3F8 100%)' }}
+      />
 
-
-      {/* Accent blob - center */}
+      {/* Top Left - Subtle Mint Glow */}
       <motion.div 
         animate={{ 
           x: [-20, 20, -20], 
           y: [10, -10, 10],
+          scale: [0.9, 1.05, 0.9],
+          opacity: [0.1, 0.18, 0.1],
+        }}
+        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-[5%] -left-[10%] w-[45%] h-[45%] rounded-full blur-[100px]"
+        style={{ background: 'radial-gradient(circle, #C6F6D5 0%, #F8FAFC 100%)' }}
+      />
+
+      {/* Center/Middle - Very faint Sky Blue */}
+      <motion.div 
+        animate={{ 
+          x: [30, -30, 30], 
+          y: [-20, 20, -20],
+          opacity: [0.05, 0.12, 0.05],
         }}
         transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[30%] left-[40%] w-[40%] h-[40%] rounded-full blur-[80px] opacity-20"
-        style={{ background: 'linear-gradient(135deg, #D4C7F5 0%, #F5D4C7 100%)' }}
+        className="absolute top-[30%] left-[20%] w-[50%] h-[50%] rounded-full blur-[150px]"
+        style={{ background: 'radial-gradient(circle, #BEE3F8 0%, transparent 80%)' }}
       />
+
+      {/* Noise/Texture Overlay (Optional but adds premium feel) */}
+      <div className="absolute inset-0 opacity-[0.02] mix-blend-overlay pointer-events-none" 
+           style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/p6.png")' }} />
     </div>
   );
 }

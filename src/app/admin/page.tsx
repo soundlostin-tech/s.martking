@@ -98,7 +98,7 @@ export default function AdminOverview() {
   }
 
     return (
-      <main className="min-h-screen pb-32 bg-off-white text-onyx font-sans">
+      <main className="min-h-screen pb-32 bg-transparent text-onyx font-sans">
         <div className="px-8 pt-24 relative z-10 max-w-6xl mx-auto space-y-16">
           {/* Hero Header */}
           <header className="relative">

@@ -72,16 +72,12 @@ export default function LeaderboardPage() {
   const restOfLeaderboard = leaderboard.slice(3);
 
     return (
-      <div className="min-h-screen bg-background text-onyx" suppressHydrationWarning={true}>
-        <ArenaBackground />
+      <div className="min-h-screen text-onyx" suppressHydrationWarning={true}>
         <main className="pb-32 relative z-10" suppressHydrationWarning={true}>
           <TopHeader />
   
           {/* Header Section */}
-        <section className="sticker-header relative border-none bg-transparent" suppressHydrationWarning={true}>
-
-          <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-pastel-yellow)' }} />
-          <div className="sticker-blob sticker-blob-2" style={{ background: 'var(--color-pastel-peach)' }} />
+        <section className="relative pt-12 pb-14 px-8 overflow-hidden bg-transparent" suppressHydrationWarning={true}>
           
           <div className="relative z-10" suppressHydrationWarning={true}>
             <p className="text-[10px] font-bold text-charcoal/50 uppercase tracking-[0.2em] mb-2">

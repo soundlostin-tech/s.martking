@@ -91,12 +91,13 @@
     --color-surface-tertiary: #EDF2F7;
   }
   
-  :root {
-    --radius: 24px;
-    
-    /* Neutral High-Contrast Backgrounds */
-    --background: #F8FAFC; /* Slate 50 */
-    --foreground: #1A202C; /* Slate 900 */
+    :root {
+      --radius: 24px;
+      
+      /* Neutral High-Contrast Backgrounds */
+      --background: transparent; /* Changed to transparent to show AnimatedBackground */
+      --foreground: #1A202C; /* Slate 900 */
+
     
     /* Surfaces - Solid White Cards */
     --card: #FFFFFF;

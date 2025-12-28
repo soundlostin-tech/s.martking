@@ -127,17 +127,16 @@ export default function Profile() {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-background text-onyx" suppressHydrationWarning>
-      <main className="pb-32 relative z-10">
-        
-
-        {/* Sticker Header */}
-        <section className="sticker-header relative">
-          <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-pastel-peach)' }} />
-          <div className="sticker-blob sticker-blob-2" style={{ background: 'var(--color-pastel-pink)' }} />
+    return (
+      <div className="min-h-screen text-onyx" suppressHydrationWarning>
+        <main className="pb-32 relative z-10">
           
-          <div className="relative z-10">
+  
+          {/* Header Section */}
+          <section className="relative pt-12 pb-14 px-8 overflow-hidden bg-transparent">
+            
+            <div className="relative z-10">
+
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

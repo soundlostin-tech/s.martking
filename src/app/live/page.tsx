@@ -4,7 +4,6 @@ import { BottomNav } from "@/components/layout/BottomNav";
 import { VintageTV } from "@/components/ui/VintageTV";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { ArenaBackground } from "@/components/ui/ArenaBackground";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Clock, 
@@ -78,10 +77,8 @@ function LiveContent() {
 
   return (
     <main className="pb-32 relative z-10" suppressHydrationWarning={true}>
-      {/* Sticker Header with Blobs */}
-      <section className="sticker-header relative" suppressHydrationWarning={true}>
-        <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-pastel-coral)' }} />
-        <div className="sticker-blob sticker-blob-2" style={{ background: 'var(--color-pastel-pink)' }} />
+      {/* Header Section */}
+      <section className="relative pt-12 pb-14 px-8 overflow-hidden bg-transparent" suppressHydrationWarning={true}>
         
         <div className="relative z-10" suppressHydrationWarning={true}>
           <motion.h1 
@@ -253,8 +250,7 @@ function LiveContent() {
 
 export default function Live() {
   return (
-    <div className="min-h-screen bg-background text-onyx" suppressHydrationWarning={true}>
-      <ArenaBackground />
+    <div className="min-h-screen text-onyx" suppressHydrationWarning={true}>
       <Suspense fallback={
         <div className="min-h-screen flex items-center justify-center bg-background" suppressHydrationWarning={true}>
           <Loader2 className="w-10 h-10 animate-spin text-onyx/20" />

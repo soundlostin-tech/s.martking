@@ -191,17 +191,16 @@ export default function WalletPage() {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-background text-onyx" suppressHydrationWarning={true}>
-      <main className="pb-32 relative z-10" suppressHydrationWarning={true}>
-        
-
-        {/* Sticker Header */}
-        <section className="sticker-header relative" suppressHydrationWarning={true}>
-          <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-soft-yellow)' }} />
-          <div className="sticker-blob sticker-blob-2" style={{ background: 'var(--color-pastel-lavender)' }} />
+    return (
+      <div className="min-h-screen text-onyx" suppressHydrationWarning={true}>
+        <main className="pb-32 relative z-10" suppressHydrationWarning={true}>
           
-          <div className="relative z-10" suppressHydrationWarning={true}>
+  
+          {/* Header Section */}
+          <section className="relative pt-12 pb-14 px-8 overflow-hidden bg-transparent" suppressHydrationWarning={true}>
+            
+            <div className="relative z-10" suppressHydrationWarning={true}>
+
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

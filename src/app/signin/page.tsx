@@ -58,16 +58,18 @@ export default function Signin() {
   };
 
     return (
-      <main className="min-h-screen bg-background text-onyx overflow-x-hidden" suppressHydrationWarning={true}>
-        {/* Sticker Header */}
-        <section className="sticker-header pt-20" suppressHydrationWarning={true}>
-          <div className="sticker-blob bg-pastel-coral" suppressHydrationWarning={true} />
-          <Link href="/onboarding" className="inline-flex items-center gap-2 text-[10px] font-bold text-charcoal/30 uppercase tracking-widest mb-6">
-            <ChevronLeft size={14} strokeWidth={3} /> Back
-          </Link>
-          <h1 className="text-[40px] font-black leading-none mb-2">Welcome Back</h1>
-          <p className="text-[14px] font-bold text-charcoal/40 uppercase tracking-tighter">Sign in to Smartking's Arena</p>
-        </section>
+        <main className="min-h-screen text-onyx overflow-x-hidden" suppressHydrationWarning={true}>
+          {/* Header Section */}
+          <section className="relative pt-20 px-8 pb-12 overflow-hidden bg-transparent" suppressHydrationWarning={true}>
+            <Link href="/onboarding" className="relative z-10 inline-flex items-center gap-2 text-[10px] font-bold text-charcoal/30 uppercase tracking-widest mb-6">
+              <ChevronLeft size={14} strokeWidth={3} /> Back
+            </Link>
+            <div className="relative z-10">
+              <h1 className="text-[40px] font-black leading-none mb-2">Welcome Back</h1>
+              <p className="text-[14px] font-bold text-charcoal/40 uppercase tracking-tighter">Sign in to Smartking's Arena</p>
+            </div>
+          </section>
+
   
         <div className="px-8 pb-20 max-w-md mx-auto" suppressHydrationWarning={true}>
           <form onSubmit={handleSignin} className="space-y-6" suppressHydrationWarning={true}>

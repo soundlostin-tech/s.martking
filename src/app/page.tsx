@@ -71,16 +71,12 @@ export default function Home() {
   const userName = user?.user_metadata?.full_name?.split(' ')[0] || 'Warrior';
 
     return (
-      <div className="min-h-screen bg-background text-onyx font-sans" suppressHydrationWarning={true}>
-        <ArenaBackground />
+      <div className="min-h-screen text-onyx font-sans" suppressHydrationWarning={true}>
         <main className="pb-32 relative z-10" suppressHydrationWarning={true}>
           <TopHeader />
   
           {/* Hero Section */}
-        <section className="sticker-header relative pb-14 px-8 overflow-hidden bg-transparent border-none">
-          <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-pastel-sky)' }} />
-          <div className="sticker-blob sticker-blob-2" style={{ background: 'var(--color-pastel-mint)' }} />
-          
+        <section className="relative pt-12 pb-14 px-8 overflow-hidden bg-transparent">
           <div className="relative z-10">
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
