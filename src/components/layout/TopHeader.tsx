@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { Search, Bell, Menu } from "lucide-react";
+import { Search, Bell } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -191,14 +191,7 @@ export function TopHeader() {
             />
           </motion.button>
 
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="md:hidden w-12 h-12 rounded-2xl bg-[#11130D] flex items-center justify-center text-white shadow-lg"
-          >
-            <Menu size={20} />
-          </motion.button>
-        </motion.div>
+          </motion.div>
 
         {/* Scroll Progress Indicator */}
         <motion.div 
