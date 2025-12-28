@@ -20,8 +20,8 @@ export function AdminNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-lg" suppressHydrationWarning={true}>
-      <div className="bg-white/80 backdrop-blur-xl border border-white/20 rounded-[32px] shadow-[0_12px_48px_rgba(0,0,0,0.06)] px-4 py-3" suppressHydrationWarning={true}>
+    <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-lg" suppressHydrationWarning={true}>
+      <div className="bg-white/80 backdrop-blur-xl border border-white/20 rounded-[32px] shadow-[0_12px_48px_rgba(0,0,0,0.08)] px-4 py-3" suppressHydrationWarning={true}>
         <div className="flex justify-between items-center h-12" suppressHydrationWarning={true}>
           {navItems.map((item) => {
             const isActive = pathname === item.href;
@@ -44,15 +44,15 @@ export function AdminNav() {
                     suppressHydrationWarning={true}
                   >
                         <div className={cn(
-                          "p-2 rounded-full transition-all duration-300",
+                          "p-2.5 rounded-full transition-all duration-300",
                           isActive 
-                            ? "bg-[#11130D] text-white shadow-[0_4px_12px_rgba(0,0,0,0.1)]" 
-                            : "text-[#A0A0A0] hover:text-[#11130D]"
+                            ? "bg-onyx text-white shadow-[0_4px_12px_rgba(0,0,0,0.15)]" 
+                            : "text-charcoal/40 hover:text-onyx"
                         )} suppressHydrationWarning={true}>
                         <Icon size={18} strokeWidth={isActive ? 2.5 : 2} />
                       </div>
                   {isActive && (
-                    <span className="text-[8px] font-bold text-onyx uppercase tracking-tighter">
+                    <span className="text-[8px] font-black text-onyx uppercase tracking-tighter">
                       {item.label}
                     </span>
                   )}

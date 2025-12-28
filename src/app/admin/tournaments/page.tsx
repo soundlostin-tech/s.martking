@@ -122,179 +122,213 @@ export default function AdminTournaments() {
     t.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  return (
-    <main className="p-8 space-y-10 max-w-7xl mx-auto">
-      {/* Header Area */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
-        <div className="space-y-1">
-          <p className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em]">Arena Hub</p>
-          <h1 className="text-[40px] font-black leading-none">Tournaments</h1>
-        </div>
-        
-        <div className="flex items-center gap-4">
-          <div className="relative w-full md:w-72">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-charcoal opacity-20" size={18} />
-            <Input 
-              placeholder="Search registry..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-14 rounded-2xl border-black/[0.03] bg-white pl-12 pr-4 shadow-sm focus-visible:ring-onyx/5"
-            />
-          </div>
-          <motion.button 
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setIsCreateOpen(true)}
-            className="h-14 px-8 bg-onyx text-white rounded-2xl text-[11px] font-bold uppercase tracking-widest shadow-xl flex items-center gap-3 whitespace-nowrap"
-          >
-            <Plus size={18} strokeWidth={3} />
-            Initialize Event
-          </motion.button>
-        </div>
-      </div>
-
-      {/* Grid List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {loading ? (
-          [...Array(6)].map((_, i) => (
-            <div key={i} className="h-64 bg-white/50 rounded-[2.5rem] animate-pulse" />
-          ))
-        ) : filteredTournaments.length > 0 ? (
-          filteredTournaments.map((t, i) => (
-            <motion.div
-              key={t.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-            >
-              <BentoCard className="p-8 space-y-8 border-none shadow-sm hover:shadow-xl transition-all group">
-                <div className="flex justify-between items-start">
-                  <div className="w-14 h-14 rounded-2xl bg-off-white flex items-center justify-center group-hover:bg-pastel-mint transition-colors">
-                    <Trophy size={24} className="text-onyx/30 group-hover:text-onyx transition-colors" />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <StatusBadge variant={t.status === 'active' ? 'live' : 'upcoming'} className="text-[8px] px-3 py-1" />
-                    <button className="p-2 hover:bg-off-white rounded-xl transition-colors">
-                      <MoreVertical size={16} className="opacity-20" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="text-xl font-black leading-tight truncate">{t.title}</h3>
-                  <div className="flex items-center gap-3">
-                    <span className="px-2 py-0.5 bg-onyx text-white text-[9px] font-bold rounded uppercase tracking-widest">{t.mode}</span>
-                    <span className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest flex items-center gap-1">
-                      <Users size={12} /> {t.slots} SLOTS
-                    </span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-black/[0.03]">
-                  <div>
-                    <p className="text-[9px] font-bold text-charcoal/30 uppercase tracking-widest mb-1">Entry</p>
-                    <p className="text-lg font-black text-onyx">₹{t.entry_fee}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-[9px] font-bold text-charcoal/30 uppercase tracking-widest mb-1">Prize</p>
-                    <p className="text-lg font-black text-onyx">₹{t.prize_pool.toLocaleString()}</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-2">
-                  <button className="flex-1 py-3 bg-off-white hover:bg-silver/20 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-colors">Edit Parameters</button>
-                  <button className="w-12 h-12 flex items-center justify-center bg-off-white hover:bg-pastel-coral/30 rounded-xl text-onyx transition-colors">
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              </BentoCard>
-            </motion.div>
-          ))
-        ) : (
-          <div className="col-span-full py-32 text-center space-y-6">
-            <div className="w-20 h-20 bg-off-white rounded-full flex items-center justify-center mx-auto opacity-20">
-              <Zap size={40} />
+    return (
+      <main className="min-h-screen pb-32 bg-off-white text-onyx font-sans">
+        <div className="px-8 pt-24 relative z-10 max-w-6xl mx-auto space-y-16">
+          {/* Hero Header */}
+          <header className="relative flex flex-col md:flex-row md:items-end justify-between gap-10">
+            <div className="absolute -top-20 -left-10 w-64 h-64 bg-soft-yellow/30 rounded-full blur-[100px] pointer-events-none" />
+            <div className="relative z-10 space-y-4">
+              <div className="flex items-center gap-2">
+                <span className="w-8 h-[2px] bg-onyx/10" />
+                <p className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.4em]">Event Registry</p>
+              </div>
+              <h1 className="text-[64px] font-black leading-[0.85] tracking-[-0.04em]">
+                Tournament<br />
+                <span className="text-onyx/20">Control</span>
+              </h1>
             </div>
-            <p className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em]">No matches discovered in registry</p>
-          </div>
-        )}
-      </div>
-
-      {/* Initialization Modal */}
-      <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-        <DialogContent className="p-0 border-none bg-white rounded-[3rem] overflow-hidden max-w-[500px]">
-          <div className="bg-lime-yellow p-10">
-            <DialogTitle className="text-3xl font-black mb-1">Initialize Event</DialogTitle>
-            <DialogDescription className="text-[10px] font-bold opacity-40 uppercase tracking-widest">Deploy a new arena deployment</DialogDescription>
-          </div>
-          <div className="p-10 space-y-6">
-            <div className="grid grid-cols-2 gap-6">
-              <div className="col-span-2 space-y-2">
-                <label className="text-[9px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Event Title</label>
+            
+            <div className="relative z-10 flex flex-col sm:flex-row items-center gap-4">
+              <div className="relative w-full sm:w-72 group">
+                <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-charcoal/20 group-focus-within:text-onyx transition-colors" size={18} />
                 <Input 
-                  placeholder="e.g. Pro League Elite" 
-                  value={formData.title}
-                  onChange={(e) => setFormData({...formData, title: e.target.value})}
-                  className="h-14 rounded-xl border-black/[0.05] bg-off-white font-bold"
+                  placeholder="Filter Registry..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="h-16 rounded-[24px] border-none bg-white pl-14 pr-6 shadow-soft focus-visible:ring-onyx/5 font-black text-[12px] uppercase tracking-wider"
                 />
               </div>
-              <div className="space-y-2">
-                <label className="text-[9px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Combat Mode</label>
-                <select 
-                  className="w-full h-14 rounded-xl border-black/[0.05] bg-off-white font-bold px-4 text-sm"
-                  value={formData.mode}
-                  onChange={(e) => setFormData({...formData, mode: e.target.value})}
-                >
-                  <option>SQUAD</option>
-                  <option>DUO</option>
-                  <option>SOLO</option>
-                </select>
-              </div>
-              <div className="space-y-2">
-                <label className="text-[9px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Capacity</label>
-                <Input 
-                  type="number"
-                  value={formData.slots}
-                  onChange={(e) => setFormData({...formData, slots: Number(e.target.value)})}
-                  className="h-14 rounded-xl border-black/[0.05] bg-off-white font-bold"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-[9px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Entry Fee (₹)</label>
-                <Input 
-                  type="number"
-                  value={formData.entry_fee}
-                  onChange={(e) => setFormData({...formData, entry_fee: Number(e.target.value)})}
-                  className="h-14 rounded-xl border-black/[0.05] bg-off-white font-bold"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-[9px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Prize Pool (₹)</label>
-                <Input 
-                  type="number"
-                  value={formData.prize_pool}
-                  onChange={(e) => setFormData({...formData, prize_pool: Number(e.target.value)})}
-                  className="h-14 rounded-xl border-black/[0.05] bg-off-white font-bold"
-                />
-              </div>
-            </div>
-            <DialogFooter className="pt-6 border-t border-black/[0.03]">
               <motion.button 
-                whileTap={{ scale: 0.98 }}
-                onClick={handleCreate}
-                disabled={creating}
-                className="w-full py-5 bg-onyx text-white rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-xl flex items-center justify-center gap-3"
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.96 }}
+                onClick={() => setIsCreateOpen(true)}
+                className="h-16 px-10 bg-onyx text-white rounded-[24px] text-[11px] font-black uppercase tracking-[0.2em] shadow-2xl flex items-center gap-3 whitespace-nowrap hover:bg-carbon-black transition-all"
               >
-                {creating ? <Loader2 className="animate-spin" /> : (
-                  <>
-                    <Globe size={18} />
-                    Confirm Deployment
-                  </>
-                )}
+                <Plus size={20} strokeWidth={3} />
+                Deploy Mission
               </motion.button>
-            </DialogFooter>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </main>
-  );
+            </div>
+          </header>
+  
+          {/* Grid List */}
+          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {loading ? (
+              [...Array(6)].map((_, i) => (
+                <div key={i} className="h-80 bg-white rounded-[40px] shadow-soft animate-pulse" />
+              ))
+            ) : filteredTournaments.length > 0 ? (
+              filteredTournaments.map((t, i) => (
+                <motion.div
+                  key={t.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                >
+                  <BentoCard className="p-10 space-y-10 border-none shadow-soft hover:shadow-soft-lg transition-all duration-500 group relative overflow-hidden bg-white">
+                    <div className="relative z-10 flex justify-between items-start">
+                      <div className={cn(
+                        "w-16 h-16 rounded-[24px] flex items-center justify-center transition-all duration-500 group-hover:scale-110 shadow-sm",
+                        i % 3 === 0 ? "bg-pastel-mint/20" : i % 3 === 1 ? "bg-pastel-lavender/20" : "bg-pastel-coral/20"
+                      )}>
+                        <Trophy size={28} className="text-onyx/40 group-hover:text-onyx transition-colors" />
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <StatusBadge variant={t.status === 'active' ? 'live' : 'upcoming'} className="text-[8px] font-black px-4 py-1.5" />
+                        <button className="w-10 h-10 flex items-center justify-center hover:bg-off-white rounded-full transition-colors">
+                          <MoreVertical size={18} className="opacity-20" />
+                        </button>
+                      </div>
+                    </div>
+  
+                    <div className="relative z-10 space-y-4">
+                      <h3 className="text-2xl font-black leading-tight tracking-tight line-clamp-2 min-h-[3.5rem]">{t.title}</h3>
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <span className="px-4 py-1.5 bg-onyx text-white text-[9px] font-black rounded-full uppercase tracking-[0.2em] shadow-lg">{t.mode}</span>
+                        <div className="flex items-center gap-2 px-3 py-1 bg-off-white rounded-full">
+                          <Users size={14} className="text-onyx/20" />
+                          <span className="text-[10px] font-black text-charcoal/40 uppercase tracking-widest">{t.slots} PERSONNEL</span>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div className="relative z-10 grid grid-cols-2 gap-8 pt-8 border-t border-black/[0.03]">
+                      <div>
+                        <p className="text-[9px] font-black text-charcoal/20 uppercase tracking-[0.2em] mb-2">Entry Credit</p>
+                        <p className="text-2xl font-black text-onyx">₹{t.entry_fee}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-[9px] font-black text-charcoal/20 uppercase tracking-[0.2em] mb-2">Prize Bounty</p>
+                        <p className="text-2xl font-black text-onyx">₹{t.prize_pool.toLocaleString()}</p>
+                      </div>
+                    </div>
+  
+                    <div className="relative z-10 flex gap-3">
+                      <button className="flex-1 py-4 bg-off-white hover:bg-black/[0.03] rounded-[20px] text-[10px] font-black uppercase tracking-widest transition-all">Configure</button>
+                      <button className="w-14 h-14 flex items-center justify-center bg-off-white hover:bg-pastel-coral/30 rounded-[20px] text-onyx/20 hover:text-onyx transition-all">
+                        <Trash2 size={20} />
+                      </button>
+                    </div>
+                    {/* Decorative Card Blob */}
+                    <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-off-white/50 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700" />
+                  </BentoCard>
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-full py-40 text-center flex flex-col items-center gap-8 bg-white/50 rounded-[48px] border-2 border-dashed border-black/[0.03]">
+                <div className="w-24 h-24 bg-off-white rounded-[32px] flex items-center justify-center opacity-20 rotate-12">
+                  <Zap size={48} />
+                </div>
+                <div className="space-y-2">
+                  <p className="text-[14px] font-black uppercase tracking-[0.4em] text-charcoal/40">Registry Deserted</p>
+                  <p className="text-[10px] font-bold text-charcoal/20 uppercase tracking-widest italic">No deployments found in the current sector</p>
+                </div>
+              </div>
+            )}
+          </section>
+        </div>
+  
+        {/* Initialization Modal */}
+        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+          <DialogContent className="p-0 border-none bg-off-white rounded-[48px] overflow-hidden max-w-[540px] shadow-2xl">
+            <div className="bg-onyx p-12 text-white relative overflow-hidden">
+              <div className="relative z-10 space-y-2">
+                <DialogTitle className="text-[42px] font-black leading-none tracking-tight">Initialize<br />Event</DialogTitle>
+                <DialogDescription className="text-[10px] font-black opacity-40 uppercase tracking-[0.4em]">Arena Deployment Protocol</DialogDescription>
+              </div>
+              <Trophy size={140} className="absolute -bottom-10 -right-10 text-white/5 rotate-[-15deg]" />
+            </div>
+            
+            <div className="p-12 space-y-10">
+              <div className="grid grid-cols-2 gap-8">
+                <div className="col-span-2 space-y-3">
+                  <label className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em] ml-2">Operation Title</label>
+                  <Input 
+                    placeholder="e.g. TITAN ASCENDANCY" 
+                    value={formData.title}
+                    onChange={(e) => setFormData({...formData, title: e.target.value})}
+                    className="h-16 rounded-[24px] border-none bg-white font-black text-[13px] px-6 shadow-soft placeholder:text-charcoal/10"
+                  />
+                </div>
+                
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em] ml-2">Combat Mode</label>
+                  <div className="relative">
+                    <select 
+                      className="w-full h-16 rounded-[24px] border-none bg-white font-black px-6 text-[13px] shadow-soft appearance-none cursor-pointer"
+                      value={formData.mode}
+                      onChange={(e) => setFormData({...formData, mode: e.target.value})}
+                    >
+                      <option>SQUAD</option>
+                      <option>DUO</option>
+                      <option>SOLO</option>
+                    </select>
+                    <ChevronRight size={18} className="absolute right-6 top-1/2 -translate-y-1/2 rotate-90 text-onyx/20 pointer-events-none" />
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em] ml-2">Personnel Limit</label>
+                  <Input 
+                    type="number"
+                    value={formData.slots}
+                    onChange={(e) => setFormData({...formData, slots: Number(e.target.value)})}
+                    className="h-16 rounded-[24px] border-none bg-white font-black text-[13px] px-6 shadow-soft"
+                  />
+                </div>
+                
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em] ml-2">Entry Credit (₹)</label>
+                  <Input 
+                    type="number"
+                    value={formData.entry_fee}
+                    onChange={(e) => setFormData({...formData, entry_fee: Number(e.target.value)})}
+                    className="h-16 rounded-[24px] border-none bg-white font-black text-[13px] px-6 shadow-soft"
+                  />
+                </div>
+                
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em] ml-2">Bounty Pool (₹)</label>
+                  <Input 
+                    type="number"
+                    value={formData.prize_pool}
+                    onChange={(e) => setFormData({...formData, prize_pool: Number(e.target.value)})}
+                    className="h-16 rounded-[24px] border-none bg-white font-black text-[13px] px-6 shadow-soft"
+                  />
+                </div>
+              </div>
+              
+              <DialogFooter className="pt-8 border-t border-black/[0.03]">
+                <motion.button 
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleCreate}
+                  disabled={creating}
+                  className="w-full py-6 bg-onyx text-white rounded-[24px] text-[12px] font-black uppercase tracking-[0.3em] shadow-2xl flex items-center justify-center gap-4 disabled:opacity-50 transition-all hover:bg-carbon-black"
+                >
+                  {creating ? <Loader2 className="animate-spin" /> : (
+                    <>
+                      <Zap size={20} className="text-soft-yellow" fill="currentColor" />
+                      Execute Deployment
+                    </>
+                  )}
+                </motion.button>
+              </DialogFooter>
+            </div>
+          </DialogContent>
+        </Dialog>
+  
+        <AdminNav />
+      </main>
+    );
 }
