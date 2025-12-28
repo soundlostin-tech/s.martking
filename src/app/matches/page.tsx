@@ -176,9 +176,9 @@ export default function MatchesPage() {
         )}
 
         {/* Match List */}
-        <section className="px-6 space-y-4">
+        <section className="px-6 space-y-4" suppressHydrationWarning={true}>
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-20 gap-4">
+            <div className="flex flex-col items-center justify-center py-20 gap-4" suppressHydrationWarning={true}>
               <Loader2 className="w-12 h-12 animate-spin text-onyx/20" />
               <p className="text-[10px] text-charcoal/40 font-bold uppercase tracking-widest">Entering Lobby...</p>
             </div>
