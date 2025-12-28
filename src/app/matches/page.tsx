@@ -272,8 +272,3 @@ export default function MatchesPage() {
     </div>
   );
 }
-
-      <BottomNav />
-    </div>
-  );
-}
