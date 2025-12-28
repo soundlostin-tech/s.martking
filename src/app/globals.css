@@ -14,9 +14,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: 'Citynight', var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-outfit);
+  --font-heading: 'Citynight', var(--font-outfit);
   --font-serif: var(--font-playfair);
   --font-outfit: var(--font-outfit);
 
@@ -55,71 +55,70 @@
   --radius-xl: calc(var(--radius) + 4px);
 
     /* ============================================
-       SMARTKING'S ARENA - VIBRANT BENTO PALETTE
-       Reference: Pastel Vibrant Aesthetic
+       SMARTKING'S ARENA - REDESIGN PALETTE
        ============================================ */
-    --color-onyx: #000000;
-    --color-carbon-black: #111111;
+    --color-onyx: #11130D;
+    --color-carbon-black: #1D1E13;
     --color-charcoal-brown: #30312A;
     --color-charcoal: #4A4B48;
     --color-silver: #C8C8C4;
-    --color-off-white: #F3F0F8;
-    --color-lemon-lime: #A8F29A;
-    --color-lime-vibrant: #A8F29A;
-    --color-olive: #000000;
+    --color-alabaster-grey: #D4D7DE;
+    --color-olive: #868935;
+    --color-lemon-lime: #C7E323;
+    --color-lime-yellow: #D7FD03;
     
-    /* Pastel Accent Colors from Reference */
-    --color-pastel-yellow: #FFF5CC;
+    /* Pastel Accent Colors for Stickers/Bento */
     --color-pastel-mint: #D7F5D1;
     --color-pastel-coral: #FFD7BE;
     --color-pastel-lavender: #E6E1FF;
-    --color-pastel-peach: #FFD7BE;
+    --color-pastel-peach: #FFE5D9;
+    --color-pastel-yellow: #FFF5CC;
   }
   
   :root {
     --radius: 28px;
     
-    /* Backgrounds - Clean Light Base from Image */
-    --background: #F3F0F8;
-    --foreground: #000000;
+    /* Backgrounds - Alabaster Grey (Soft White feel) */
+    --background: #D4D7DE;
+    --foreground: #30312A;
     
     /* Surfaces */
     --card: #ffffff;
-    --card-foreground: #000000;
+    --card-foreground: #30312A;
     
     --popover: #ffffff;
-    --popover-foreground: #000000;
+    --popover-foreground: #30312A;
     
     /* Actions */
-    --primary: #000000;
-    --primary-foreground: #ffffff;
+    --primary: #D7FD03;
+    --primary-foreground: #11130D;
     
-    --secondary: #ffffff;
-    --secondary-foreground: #000000;
+    --secondary: #C7E323;
+    --secondary-foreground: #11130D;
     
-    --muted: #F3F0F8;
+    --muted: #C8C8C4;
     --muted-foreground: #4A4B48;
     
-    --accent: #A8F29A;
-    --accent-foreground: #000000;
+    --accent: #D7FD03;
+    --accent-foreground: #11130D;
     
     --destructive: #FFD7BE;
-    --destructive-foreground: #000000;
+    --destructive-foreground: #11130D;
     
     /* Borders */
-    --border: #E5E5E5;
+    --border: #C8C8C4;
     --input: #ffffff;
-    --ring: #000000;
+    --ring: #D7FD03;
 
   /* Sidebar */
   --sidebar: #ffffff;
-  --sidebar-foreground: #000000;
-  --sidebar-primary: #000000;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #F3F0F8;
-  --sidebar-accent-foreground: #000000;
-  --sidebar-border: #E5E5E5;
-  --sidebar-ring: #000000;
+  --sidebar-foreground: #30312A;
+  --sidebar-primary: #D7FD03;
+  --sidebar-primary-foreground: #11130D;
+  --sidebar-accent: #D4D7DE;
+  --sidebar-accent-foreground: #11130D;
+  --sidebar-border: #C8C8C4;
+  --sidebar-ring: #D7FD03;
 }
 
 @layer base {
@@ -128,7 +127,7 @@
     -webkit-tap-highlight-color: transparent;
   }
   html, body {
-    @apply bg-background text-onyx font-sans antialiased selection:bg-lemon-lime/30 selection:text-onyx overflow-x-hidden;
+    @apply bg-background text-charcoal-brown font-sans antialiased selection:bg-lime-yellow/30 selection:text-onyx overflow-x-hidden;
     background-attachment: fixed;
     touch-action: manipulation;
     overscroll-behavior-y: none;
@@ -136,13 +135,13 @@
     user-select: none;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-bold tracking-tight text-onyx;
+    @apply font-heading font-bold tracking-tight text-charcoal-brown;
   }
 }
 
 /* Bento Card Component */
 .bento-card {
-  @apply bg-white rounded-[32px] p-5 shadow-[0_4px_24px_rgba(0,0,0,0.04)] border border-black/[0.03];
+  @apply bg-white rounded-[28px] p-5 shadow-[0_4px_24px_rgba(0,0,0,0.04)] border border-black/[0.03];
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -155,46 +154,23 @@
   @apply bg-onyx text-white border-none;
 }
 
-.bento-peach {
-  @apply bg-pastel-peach text-onyx border-none;
+.bento-vibrant {
+  @apply bg-lime-yellow text-onyx border-none;
 }
 
-.bento-lavender {
-  @apply bg-pastel-lavender text-onyx border-none;
+.bento-pastel-mint { @apply bg-pastel-mint text-charcoal-brown border-none; }
+.bento-pastel-coral { @apply bg-pastel-coral text-charcoal-brown border-none; }
+.bento-pastel-lavender { @apply bg-pastel-lavender text-charcoal-brown border-none; }
+.bento-pastel-peach { @apply bg-pastel-peach text-charcoal-brown border-none; }
+
+/* Sticker Header Styles */
+.sticker-header {
+  @apply relative pt-16 pb-8 px-6 overflow-hidden;
 }
 
-.bento-mint {
-  @apply bg-pastel-mint text-onyx border-none;
+.sticker-blob {
+  @apply absolute -top-12 -left-12 w-48 h-48 rounded-full opacity-20 blur-3xl pointer-events-none;
 }
-
-.bento-coral {
-  @apply bg-pastel-coral text-onyx border-none;
-}
-
-.bento-yellow {
-  @apply bg-pastel-yellow text-onyx border-none;
-}
-
-/* Hero Bento Card */
-.bento-hero {
-  @apply rounded-[32px] p-6 shadow-[0_12px_48px_rgba(0,0,0,0.08)];
-}
-
-/* Pastel Blob Headers */
-.blob-header {
-  @apply relative overflow-hidden;
-}
-
-.blob-header::before {
-  content: '';
-  @apply absolute -top-1/2 -right-1/4 w-[80%] h-[200%] rounded-full blur-[100px] opacity-30 pointer-events-none;
-}
-
-.blob-header-yellow::before { background: #FDFB97; }
-.blob-header-mint::before { background: #CCF8B0; }
-.blob-header-coral::before { background: #FF8E7E; }
-.blob-header-lavender::before { background: #E2D9FF; }
-.blob-header-peach::before { background: #FFD7CC; }
 
 /* Chip Styles */
 .chip {
@@ -202,7 +178,7 @@
 }
 
 .chip-default {
-  @apply bg-white text-onyx border border-border;
+  @apply bg-silver/20 text-charcoal border border-transparent;
 }
 
 .chip-selected {
@@ -211,31 +187,22 @@
 
 /* Badge Styles */
 .badge-live {
-  @apply bg-lime-vibrant text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
+  @apply bg-lime-yellow text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5;
 }
 
-.badge-pending {
-  @apply bg-pastel-yellow text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
+.badge-live .pulse-dot {
+  @apply w-2 h-2 rounded-full bg-onyx animate-pulse;
+}
+
+.badge-upcoming {
+  @apply bg-lemon-lime text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider;
 }
 
 .badge-completed {
-  @apply bg-pastel-mint text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
+  @apply bg-silver text-charcoal px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider;
 }
 
-.badge-failed {
-  @apply bg-pastel-coral text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
-}
-
-/* Bottom Nav Floating Bar */
-.bottom-nav-floating {
-  @apply fixed bottom-8 left-6 right-6 z-50 bg-onyx text-white rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] px-6 py-4;
-}
-
-/* Premium Gradients */
-.premium-gradient {
-  background: linear-gradient(135deg, #D6FF3D 0%, #C7E323 100%);
-}
-
+/* Custom Scrollbar */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

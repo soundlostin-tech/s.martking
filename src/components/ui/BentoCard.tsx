@@ -7,7 +7,7 @@ interface BentoCardProps {
   children: React.ReactNode;
   className?: string;
   variant?: "default" | "hero" | "pastel" | "dark" | "vibrant";
-  pastelColor?: "yellow" | "mint" | "coral" | "lavender" | "peach";
+  pastelColor?: "mint" | "coral" | "lavender" | "peach" | "yellow";
   onClick?: () => void;
 }
 
@@ -15,32 +15,34 @@ export function BentoCard({
   children, 
   className, 
   variant = "default",
-  pastelColor = "yellow",
+  pastelColor = "mint",
   onClick 
 }: BentoCardProps) {
   const pastelVariants = {
-    yellow: "bento-yellow",
-    mint: "bento-mint",
-    coral: "bento-coral",
-    lavender: "bento-lavender",
-    peach: "bento-peach",
+    mint: "bento-pastel-mint",
+    coral: "bento-pastel-coral",
+    lavender: "bento-pastel-lavender",
+    peach: "bento-pastel-peach",
+    yellow: "bento-pastel-yellow",
   };
 
-  const baseClasses = "bento-card";
-  
   const variantClasses = {
-    default: "",
+    default: "bg-white text-charcoal-brown",
     dark: "bento-dark",
-    vibrant: "bg-lime-vibrant text-onyx border-none shadow-[0_8px_32px_rgba(168,242,154,0.3)]",
-    hero: `bento-hero ${pastelVariants[pastelColor]}`,
+    vibrant: "bento-vibrant shadow-[0_8px_32px_rgba(215,253,3,0.2)]",
+    hero: cn("shadow-[0_12px_48px_rgba(0,0,0,0.06)]", pastelVariants[pastelColor]),
     pastel: pastelVariants[pastelColor],
   };
 
   return (
     <motion.div
-      whileTap={{ scale: 0.97 }}
+      whileTap={onClick ? { scale: 0.97 } : undefined}
       onClick={onClick}
-      className={cn(baseClasses, variantClasses[variant], className)}
+      className={cn(
+        "bento-card",
+        variantClasses[variant],
+        className
+      )}
     >
       {children}
     </motion.div>

@@ -1,148 +1,112 @@
 "use client";
 
-import { AdminNav } from "@/components/layout/AdminNav";
-import { Badge } from "@/components/ui/badge";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { supabase } from "@/lib/supabase";
 import { 
   ArrowUpRight, 
   ArrowDownLeft, 
   Search, 
-  Filter, 
-  Download, 
   Loader2, 
-  Eye, 
-  CheckCircle2, 
-  XCircle, 
-  Clock,
-  ExternalLink,
   ChevronRight,
-  TrendingUp,
-  Wallet,
+  Clock,
+  CheckCircle2,
+  XCircle,
   AlertCircle,
-  IndianRupee,
-  User as UserIcon
+  TrendingUp,
+  Banknote,
+  MoreVertical,
+  Calendar,
+  Filter
 } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { useEffect, useState, useMemo } from "react";
-import { supabase } from "@/lib/supabase";
-import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
+import { BentoCard } from "@/components/ui/BentoCard";
+import { StatusBadge } from "@/components/ui/StatusBadge";
+import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import { 
+  Sheet, 
+  SheetContent, 
+  SheetHeader, 
   SheetTitle,
+  SheetDescription 
 } from "@/components/ui/sheet";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-
-interface Transaction {
-  id: string;
-  user_id: string;
-  amount: number;
-  type: string;
-  status: string;
-  description: string;
-  created_at: string;
-  metadata: any;
-  profiles?: {
-    full_name: string;
-    avatar_url?: string;
-  };
-}
 
 export default function AdminTransactions() {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [transactions, setTransactions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const [typeFilter, setTypeFilter] = useState<string>("all");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [selectedTx, setSelectedTx] = useState<Transaction | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTx, setSelectedTx] = useState<any>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [processingId, setProcessingId] = useState<string | null>(null);
 
-  const [stats, setStats] = useState({
-    totalRevenue: 0,
-    totalPayouts: 0,
-    pendingPayouts: 0,
-  });
-
-  useEffect(() => {
-    fetchTransactions();
-  }, []);
-
-  const fetchTransactions = async () => {
+  const fetchTransactions = useCallback(async () => {
     setLoading(true);
     try {
       const { data, error } = await supabase
         .from("transactions")
-        .select(`
-          *,
-          profiles:user_id (
-            full_name,
-            avatar_url
-          )
-        `)
+        .select(`*, profiles:profiles(full_name, avatar_url)`)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
       setTransactions(data || []);
-      
-      const revenue = data?.filter(t => ['entry_fee', 'fee', 'deposit'].includes(t.type)).reduce((acc, t) => acc + Number(t.amount), 0) || 0;
-      const payouts = data?.filter(t => (t.type === 'withdrawal' || t.type === 'prize') && t.status === 'completed').reduce((acc, t) => acc + Number(t.amount), 0) || 0;
-      const pending = data?.filter(t => t.type === 'withdrawal' && t.status === 'pending').reduce((acc, t) => acc + Number(t.amount), 0) || 0;
-
-      setStats({ 
-        totalRevenue: revenue, 
-        totalPayouts: payouts, 
-        pendingPayouts: pending 
-      });
     } catch (error: any) {
       toast.error(error.message);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const handleUpdateStatus = async (id: string, userId: string, amount: number, newStatus: 'completed' | 'failed') => {
-    setProcessingId(id);
+  useEffect(() => {
+    fetchTransactions();
+  }, [fetchTransactions]);
+
+  const handleUpdateStatus = async (tx: any, newStatus: 'completed' | 'failed') => {
+    setProcessingId(tx.id);
     try {
+      // Update transaction status
       const { error: txError } = await supabase
         .from("transactions")
         .update({ status: newStatus, updated_at: new Date().toISOString() })
-        .eq("id", id);
+        .eq("id", tx.id);
 
       if (txError) throw txError;
 
-      const { data: wallet, error: walletFetchError } = await supabase
-        .from("wallets")
-        .select("*")
-        .eq("user_id", userId)
-        .single();
-      
-      if (walletFetchError) throw walletFetchError;
-
-      const updates: any = {
-        pending_withdrawals: Math.max(0, Number(wallet.pending_withdrawals) - amount),
-      };
-
-      if (newStatus === 'failed') {
-        updates.balance = Number(wallet.balance) + amount;
+      // If it's a withdrawal and it failed, refund the wallet
+      if (tx.type === 'withdrawal' && newStatus === 'failed') {
+        const { data: wallet } = await supabase
+          .from("wallets")
+          .select("*")
+          .eq("user_id", tx.user_id)
+          .single();
+        
+        if (wallet) {
+          await supabase
+            .from("wallets")
+            .update({ 
+              balance: Number(wallet.balance) + Number(tx.amount),
+              pending_withdrawals: Math.max(0, Number(wallet.pending_withdrawals) - Number(tx.amount))
+            })
+            .eq("user_id", tx.user_id);
+        }
+      } else if (tx.type === 'withdrawal' && newStatus === 'completed') {
+        const { data: wallet } = await supabase
+          .from("wallets")
+          .select("*")
+          .eq("user_id", tx.user_id)
+          .single();
+        
+        if (wallet) {
+          await supabase
+            .from("wallets")
+            .update({ 
+              pending_withdrawals: Math.max(0, Number(wallet.pending_withdrawals) - Number(tx.amount))
+            })
+            .eq("user_id", tx.user_id);
+        }
       }
 
-      const { error: walletUpdateError } = await supabase
-        .from("wallets")
-        .update(updates)
-        .eq("user_id", userId);
-
-      if (walletUpdateError) throw walletUpdateError;
-
-      toast.success(`Payout ${newStatus === 'completed' ? 'approved' : 'rejected'} successfully`);
+      toast.success(`Transaction marked as ${newStatus}`);
       setIsDetailOpen(false);
       fetchTransactions();
     } catch (error: any) {
@@ -153,299 +117,199 @@ export default function AdminTransactions() {
   };
 
   const filteredTransactions = useMemo(() => {
-    return transactions.filter(t => {
-      const matchesSearch = 
-        t.profiles?.full_name?.toLowerCase().includes(search.toLowerCase()) ||
-        t.id.toLowerCase().includes(search.toLowerCase()) ||
-        t.description?.toLowerCase().includes(search.toLowerCase());
-      
-      const matchesType = typeFilter === "all" || t.type === typeFilter;
-      const matchesStatus = statusFilter === "all" || t.status === statusFilter;
-      
-      return matchesSearch && matchesType && matchesStatus;
-    });
-  }, [transactions, search, typeFilter, statusFilter]);
+    return transactions.filter(t => 
+      t.profiles?.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.type.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [transactions, searchQuery]);
 
-  const getTypeBadge = (type: string) => {
-    const baseClass = "text-[9px] font-bold px-3 py-1 rounded-full border-none shadow-sm";
-    switch (type) {
-      case 'deposit': return <Badge className={`${baseClass} bg-malachite-500/20 text-malachite-500`}>DEPOSIT</Badge>;
-      case 'withdrawal': return <Badge className={`${baseClass} bg-white/10 text-white/60`}>WITHDRAWAL</Badge>;
-      case 'prize': return <Badge className={`${baseClass} bg-malachite-500 text-white`}>PRIZE</Badge>;
-      case 'entry_fee': return <Badge className={`${baseClass} bg-white/5 text-white/40`}>ENTRY FEE</Badge>;
-      default: return <Badge className={`${baseClass} bg-white/5 text-white/40`}>{type.replace('_', ' ').toUpperCase()}</Badge>;
-    }
-  };
-
-  const getStatusBadge = (status: string) => {
-    const baseClass = "text-[9px] font-bold px-3 py-1 rounded-full border-none shadow-sm";
-    switch (status) {
-      case 'completed': return <Badge className={`${baseClass} bg-malachite-500 text-white`}>COMPLETED</Badge>;
-      case 'pending': return <Badge className={`${baseClass} bg-white/20 text-white`}>PENDING</Badge>;
-      case 'failed': return <Badge className={`${baseClass} bg-red-500/20 text-red-400`}>FAILED</Badge>;
-      default: return <Badge className={`${baseClass} bg-white/5 text-white/40`}>{status.toUpperCase()}</Badge>;
-    }
-  };
+  const stats = useMemo(() => {
+    const pending = transactions.filter(t => t.status === 'pending').length;
+    const completed = transactions.filter(t => t.status === 'completed').length;
+    const totalVolume = transactions.reduce((acc, t) => acc + (t.status === 'completed' ? Number(t.amount) : 0), 0);
+    return { pending, completed, totalVolume };
+  }, [transactions]);
 
   return (
-    <main className="min-h-screen pb-32 bg-background text-foreground">
-      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-20">
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px]" />
-      </div>
-
-      <div className="px-6 pt-24 relative z-10 space-y-10 max-w-6xl mx-auto">
-        {/* Header */}
+    <main className="p-8 space-y-10 max-w-7xl mx-auto">
+      {/* Header Area */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
         <div className="space-y-1">
-          <h4 className="text-[10px] font-bold text-secondary uppercase tracking-[0.4em]">Financial Command</h4>
-          <h1 className="text-4xl font-heading text-foreground">Capital <span className="italic font-serif opacity-60">Flow</span></h1>
+          <p className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em]">Ledger Oversight</p>
+          <h1 className="text-[40px] font-black leading-none">Transactions</h1>
         </div>
-
-        {/* KPI Strip */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { label: "Total Revenue", value: stats.totalRevenue, icon: TrendingUp, primary: true },
-            { label: "Total Payouts", value: stats.totalPayouts, icon: ArrowDownLeft },
-            { label: "Pending Requests", value: stats.pendingPayouts, icon: Clock },
-          ].map((stat, i) => (
-            <motion.div 
-              key={i}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: i * 0.1 }}
-              className={`rounded-[2.5rem] p-8 border border-border shadow-lg relative overflow-hidden group ${
-                stat.primary ? "bg-accent/10 border-accent/30" : "bg-card"
-              }`}
-            >
-              <div className="flex justify-between items-start relative z-10">
-                <div className="space-y-1">
-                  <p className={`text-[10px] uppercase font-bold tracking-[0.2em] ${stat.primary ? "text-accent-foreground" : "text-muted-foreground"}`}>{stat.label}</p>
-                  <h3 className="text-3xl font-heading text-foreground">₹{stat.value.toLocaleString()}</h3>
-                </div>
-                <div className={`p-4 rounded-2xl ${stat.primary ? "bg-accent text-primary shadow-lg shadow-accent/20" : "bg-muted text-accent"} group-hover:scale-110 transition-transform duration-500 border border-border`}>
-                  <stat.icon size={24} />
-                </div>
-              </div>
-              <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-accent/10" : "bg-accent/5"}`} />
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Filter Bar */}
-        <div className="bg-card rounded-[2.5rem] border border-border p-6 shadow-lg flex flex-col md:flex-row gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
+        
+        <div className="flex items-center gap-4">
+          <div className="relative w-full md:w-72">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-charcoal opacity-20" size={18} />
             <Input 
-              className="bg-muted border-none pl-14 rounded-2xl h-14 text-xs font-bold tracking-wide focus-visible:ring-accent placeholder:text-muted-foreground/50 text-foreground" 
-              placeholder="SEARCH BY ID OR PLAYER NAME..." 
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by name or ID..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="h-14 rounded-2xl border-black/[0.03] bg-white pl-12 pr-4 shadow-sm focus-visible:ring-onyx/5"
             />
           </div>
-          <div className="flex gap-2">
-            <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-muted border-none font-bold text-[10px] tracking-widest text-muted-foreground">
-                <SelectValue placeholder="TYPE" />
-              </SelectTrigger>
-              <SelectContent className="rounded-2xl border-border bg-popover text-popover-foreground">
-                <SelectItem value="all">ALL TYPES</SelectItem>
-                <SelectItem value="deposit">DEPOSIT</SelectItem>
-                <SelectItem value="withdrawal">WITHDRAWAL</SelectItem>
-                <SelectItem value="prize">PRIZE</SelectItem>
-                <SelectItem value="entry_fee">ENTRY FEE</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-muted border-none font-bold text-[10px] tracking-widest text-muted-foreground">
-                <SelectValue placeholder="STATUS" />
-              </SelectTrigger>
-              <SelectContent className="rounded-2xl border-border bg-popover text-popover-foreground">
-                <SelectItem value="all">ALL STATUS</SelectItem>
-                <SelectItem value="pending">PENDING</SelectItem>
-                <SelectItem value="completed">COMPLETED</SelectItem>
-                <SelectItem value="failed">FAILED</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        {/* Transaction List */}
-        <div className="space-y-6">
-          <div className="flex items-end justify-between px-2">
-            <div className="space-y-1">
-              <h3 className="text-2xl font-heading text-foreground">Arena <span className="italic font-serif opacity-60">Ledger</span></h3>
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">{filteredTransactions.length} ENTRIES DETECTED</p>
-            </div>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-[10px] font-bold text-primary hover:text-accent uppercase tracking-[0.2em]"
-              onClick={() => toast.info("Exporting data feature coming soon")}
-            >
-              DOWNLOAD CSV <Download size={14} className="ml-1" />
-            </Button>
-          </div>
-
-          {loading ? (
-            <div className="flex flex-col items-center justify-center py-32 gap-6 bg-card rounded-[3rem] border border-border shadow-sm">
-              <Loader2 className="w-12 h-12 animate-spin text-accent" />
-              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Accessing Data Chambers...</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-4">
-              <AnimatePresence mode="popLayout">
-                {filteredTransactions.length > 0 ? (
-                  filteredTransactions.map((tx, idx) => (
-                    <motion.div 
-                      key={tx.id}
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: idx * 0.05 }}
-                      layout
-                      onClick={() => {
-                        setSelectedTx(tx);
-                        setIsDetailOpen(true);
-                      }}
-                      className="bg-card rounded-[2.5rem] p-6 flex flex-col md:flex-row justify-between md:items-center border border-border hover:border-accent/30 hover:bg-muted/30 transition-all duration-500 group cursor-pointer shadow-md"
-                    >
-                      <div className="flex items-center gap-6">
-                        <div className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center transition-transform duration-500 group-hover:scale-110 bg-muted text-muted-foreground group-hover:text-accent shadow-inner border border-border`}>
-                          {['deposit', 'prize'].includes(tx.type) ? <ArrowUpRight size={28} /> : <ArrowDownLeft size={28} />}
-                        </div>
-                        <div className="space-y-1.5">
-                          <div className="flex items-center gap-3">
-                            <h4 className="text-lg font-heading text-foreground leading-none">{tx.profiles?.full_name || 'Arena System'}</h4>
-                            {getStatusBadge(tx.status)}
-                          </div>
-                          <div className="flex items-center gap-3">
-                            {getTypeBadge(tx.type)}
-                            <span className="text-[9px] text-muted-foreground flex items-center gap-1 font-bold uppercase tracking-widest">
-                              <Clock size={10} strokeWidth={3} /> {new Date(tx.created_at).toLocaleDateString()}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between md:justify-end gap-10 mt-6 md:mt-0">
-                        <div className="text-right">
-                          <p className={`text-2xl font-heading ${['deposit', 'prize'].includes(tx.type) ? "text-accent" : "text-primary"}`}>
-                            {['deposit', 'prize'].includes(tx.type) ? "+" : "-"}₹{Number(tx.amount).toLocaleString()}
-                          </p>
-                          <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">ID: {tx.id.slice(0, 8)}</p>
-                        </div>
-                        <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground group-hover:bg-accent group-hover:text-primary transition-all border border-border shadow-inner">
-                          <ChevronRight size={20} strokeWidth={3} />
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))
-                ) : (
-                  <div className="flex flex-col items-center justify-center py-32 bg-card rounded-[3rem] border border-dashed border-border text-center shadow-sm">
-                    <AlertCircle size={64} strokeWidth={1} className="text-muted-foreground/30 mb-6" />
-                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">No matching signals found</p>
-                    <Button variant="link" onClick={() => { setSearch(""); setTypeFilter("all"); setStatusFilter("all"); }} className="text-accent font-bold mt-4 text-[10px] tracking-widest uppercase">
-                      CLEAR ALL FILTERS
-                    </Button>
-                  </div>
-                )}
-              </AnimatePresence>
-            </div>
-          )}
         </div>
       </div>
 
-      {/* Transaction Detail Sheet */}
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[
+          { label: "Pending Approvals", value: stats.pending, icon: Clock, color: "coral" },
+          { label: "Successful Trades", value: stats.completed, icon: CheckCircle2, color: "mint" },
+          { label: "Total Volume", value: `₹${stats.totalVolume.toLocaleString()}`, icon: Banknote, color: "yellow" },
+        ].map((stat, i) => (
+          <BentoCard key={i} variant="pastel" pastelColor={stat.color as any} className="p-6 flex items-center gap-6 border-none shadow-sm">
+            <div className="w-14 h-14 rounded-2xl bg-white/50 flex items-center justify-center">
+              <stat.icon size={24} />
+            </div>
+            <div>
+              <p className="text-[10px] font-bold text-onyx/40 uppercase tracking-widest leading-none mb-1.5">{stat.label}</p>
+              <h3 className="text-2xl font-black">{stat.value}</h3>
+            </div>
+          </BentoCard>
+        ))}
+      </div>
+
+      {/* Transactions Table/List */}
+      <div className="space-y-4">
+        {loading ? (
+          [...Array(5)].map((_, i) => (
+            <div key={i} className="h-20 bg-white/50 rounded-3xl animate-pulse" />
+          ))
+        ) : filteredTransactions.length > 0 ? (
+          filteredTransactions.map((tx, i) => (
+            <motion.div
+              key={tx.id}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.02 }}
+              onClick={() => { setSelectedTx(tx); setIsDetailOpen(true); }}
+              className="bg-white rounded-[2rem] p-5 flex items-center justify-between group cursor-pointer border border-black/[0.03] shadow-sm hover:shadow-xl transition-all"
+            >
+              <div className="flex items-center gap-5">
+                <div className={cn(
+                  "w-12 h-12 rounded-2xl flex items-center justify-center",
+                  ['deposit', 'prize'].includes(tx.type) ? 'bg-pastel-mint' : 'bg-pastel-coral'
+                )}>
+                  {['deposit', 'prize'].includes(tx.type) ? <ArrowUpRight size={20} /> : <ArrowDownLeft size={20} />}
+                </div>
+                <div>
+                  <h4 className="text-sm font-black text-onyx leading-tight">
+                    {tx.profiles?.full_name || 'System'}
+                  </h4>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-[9px] font-bold text-charcoal/40 uppercase tracking-widest">{tx.type.replace('_', ' ')}</span>
+                    <div className="w-1 h-1 rounded-full bg-black/10" />
+                    <span className="text-[9px] font-bold text-charcoal/40 uppercase tracking-widest">#{tx.id.slice(0, 8)}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-8">
+                <div className="text-right hidden md:block">
+                  <p className="text-[9px] font-bold text-charcoal/30 uppercase tracking-widest mb-0.5">Date</p>
+                  <p className="text-xs font-bold">{new Date(tx.created_at).toLocaleDateString()}</p>
+                </div>
+                <div className="text-right w-24">
+                  <p className={cn(
+                    "text-lg font-black leading-none",
+                    ['deposit', 'prize'].includes(tx.type) ? 'text-onyx' : 'text-charcoal/40'
+                  )}>
+                    {['deposit', 'prize'].includes(tx.type) ? '+' : '-'}₹{tx.amount}
+                  </p>
+                  <StatusBadge variant={tx.status} className="text-[7px] px-2 py-0.5 mt-1.5" />
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-off-white flex items-center justify-center group-hover:bg-onyx group-hover:text-white transition-all">
+                  <ChevronRight size={18} />
+                </div>
+              </div>
+            </motion.div>
+          ))
+        ) : (
+          <div className="py-32 text-center space-y-6">
+            <div className="w-20 h-20 bg-off-white rounded-full flex items-center justify-center mx-auto opacity-20">
+              <Banknote size={40} />
+            </div>
+            <p className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em]">No capital flow records detected</p>
+          </div>
+        )}
+      </div>
+
+      {/* Detail Sheet */}
       <Sheet open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-        <SheetContent className="bg-popover border-border w-full sm:max-w-xl p-0 overflow-y-auto no-scrollbar text-popover-foreground">
+        <SheetContent className="bg-white border-none sm:max-w-md p-0 overflow-y-auto no-scrollbar rounded-l-[3rem]">
           {selectedTx && (
             <div className="flex flex-col h-full">
-              <div className="p-10 bg-muted/30 border-b border-border relative overflow-hidden">
-                <SheetHeader className="relative z-10">
-                  <div className="flex justify-between items-start mb-10">
-                    {getStatusBadge(selectedTx.status)}
-                    <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground transition-colors">
-                      <ExternalLink size={22} />
-                    </Button>
+              <div className={cn(
+                "p-10",
+                selectedTx.status === 'completed' ? 'bg-pastel-mint' : 
+                selectedTx.status === 'pending' ? 'bg-pastel-yellow' : 'bg-pastel-coral'
+              )}>
+                <SheetHeader>
+                  <div className="flex justify-between items-center mb-8">
+                    <StatusBadge variant={selectedTx.status} />
+                    <button onClick={() => setIsDetailOpen(false)} className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                      <XCircle size={20} />
+                    </button>
                   </div>
-                  <div className="space-y-4">
-                    <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-[0.3em]">AUDIT RECORD</p>
-                    <SheetTitle className="text-foreground text-4xl font-heading leading-tight">Transaction Detail</SheetTitle>
-                    <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-[0.2em] font-mono">#{selectedTx.id}</p>
-                  </div>
+                  <SheetTitle className="text-3xl font-black mb-1">Transaction Detail</SheetTitle>
+                  <SheetDescription className="text-[10px] font-bold opacity-40 uppercase tracking-widest">Full audit audit record</SheetDescription>
                 </SheetHeader>
-                <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-accent/10 blur-[100px] rounded-full" />
               </div>
 
-              <div className="p-10 space-y-12 flex-1">
-                {/* Financial Overview */}
-                <div className="bg-card p-10 rounded-[2.5rem] border border-border flex flex-col items-center text-center gap-4 shadow-2xl">
-                  <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-[0.3em]">TRANSACTION VALUE</p>
-                  <h2 className="text-6xl font-heading text-foreground">₹{Number(selectedTx.amount).toLocaleString()}</h2>
-                  {getTypeBadge(selectedTx.type)}
+              <div className="p-10 space-y-10">
+                <div className="flex flex-col items-center text-center gap-4 py-8 bg-background rounded-[2.5rem] shadow-inner">
+                  <p className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest">Net Value</p>
+                  <h2 className="text-5xl font-black">₹{selectedTx.amount}</h2>
+                  <div className="px-4 py-1.5 bg-white rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm">
+                    {selectedTx.type.replace('_', ' ')}
+                  </div>
                 </div>
 
-                {/* Information Sections */}
-                <div className="space-y-10">
-                  <div>
-                    <h4 className="text-[10px] text-muted-foreground uppercase font-bold tracking-[0.3em] ml-2 mb-4">DOSSIER DETAILS</h4>
-                    <div className="bg-muted/20 rounded-[2.5rem] border border-border divide-y divide-border overflow-hidden shadow-2xl">
-                      {[
-                        { label: "Beneficiary", value: selectedTx.profiles?.full_name || 'ARENA SYSTEM', icon: UserIcon },
-                        { label: "Timestamp", value: new Date(selectedTx.created_at).toLocaleString(), icon: Clock },
-                        { label: "Classification", value: selectedTx.type.toUpperCase(), icon: Filter },
-                        { label: "Description", value: selectedTx.description || 'OPERATIONAL LEDGER ENTRY', icon: Eye },
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-center justify-between p-6 hover:bg-muted/30 transition-colors">
-                          <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center text-muted-foreground border border-border shadow-inner">
-                              <item.icon size={18} />
-                            </div>
-                            <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{item.label}</span>
-                          </div>
-                          <span className="text-[11px] font-bold text-foreground uppercase tracking-wide text-right max-w-[200px]">{item.value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {selectedTx.metadata && (
-                    <div>
-                      <h4 className="text-[10px] text-muted-foreground uppercase font-bold tracking-[0.3em] ml-2 mb-4">TECHNICAL LOG</h4>
-                      <div className="bg-muted/30 rounded-[2.5rem] p-8 text-muted-foreground font-mono text-[10px] leading-loose break-all border border-border">
-                        {JSON.stringify(selectedTx.metadata, null, 2)}
+                <div className="space-y-6">
+                  <h4 className="text-[10px] font-black text-charcoal/20 uppercase tracking-[0.3em] ml-2">Dossier</h4>
+                  <div className="bg-background rounded-[2rem] overflow-hidden divide-y divide-black/[0.03]">
+                    {[
+                      { label: "Account", value: selectedTx.profiles?.full_name || "System", icon: TrendingUp },
+                      { label: "Timestamp", value: new Date(selectedTx.created_at).toLocaleString(), icon: Calendar },
+                      { label: "Description", value: selectedTx.description || "Operational Entry", icon: Filter },
+                      { label: "Record ID", value: selectedTx.id, icon: MoreVertical },
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-center justify-between p-5">
+                        <span className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest">{item.label}</span>
+                        <span className="text-[11px] font-black text-onyx">{item.value}</span>
                       </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Admin Actions Footer for Withdrawals */}
-              {selectedTx.type === 'withdrawal' && selectedTx.status === 'pending' && (
-                <div className="p-10 bg-muted/30 border-t border-border shadow-2xl">
-                  <div className="grid grid-cols-2 gap-4">
-                    <Button 
-                      variant="outline"
-                      disabled={processingId !== null}
-                      className="h-16 rounded-[2rem] border-border bg-background text-foreground font-bold uppercase tracking-[0.2em] text-[10px] gap-3 hover:bg-muted"
-                      onClick={() => handleUpdateStatus(selectedTx.id, selectedTx.user_id, selectedTx.amount, 'failed')}
-                    >
-                      {processingId === selectedTx.id ? <Loader2 className="animate-spin" /> : <XCircle size={20} />} REJECT PAYOUT
-                    </Button>
-                    <Button 
-                      disabled={processingId !== null}
-                      className="h-16 rounded-[2rem] bg-accent hover:bg-accent/90 text-primary font-bold uppercase tracking-[0.2em] text-[10px] gap-3 shadow-2xl shadow-accent/20 border-none"
-                      onClick={() => handleUpdateStatus(selectedTx.id, selectedTx.user_id, selectedTx.amount, 'completed')}
-                    >
-                      {processingId === selectedTx.id ? <Loader2 className="animate-spin" /> : <CheckCircle2 size={20} />} APPROVE PAYOUT
-                    </Button>
+                    ))}
                   </div>
                 </div>
-              )}
+
+                {selectedTx.status === 'pending' && selectedTx.type === 'withdrawal' && (
+                  <div className="grid grid-cols-2 gap-4 pt-10 border-t border-black/[0.03]">
+                    <motion.button
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => handleUpdateStatus(selectedTx, 'failed')}
+                      disabled={processingId === selectedTx.id}
+                      className="py-5 bg-off-white hover:bg-pastel-coral/30 text-onyx rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all"
+                    >
+                      {processingId === selectedTx.id ? <Loader2 size={16} className="animate-spin mx-auto" /> : "Decline Payout"}
+                    </motion.button>
+                    <motion.button
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => handleUpdateStatus(selectedTx, 'completed')}
+                      disabled={processingId === selectedTx.id}
+                      className="py-5 bg-onyx text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl"
+                    >
+                      {processingId === selectedTx.id ? <Loader2 size={16} className="animate-spin mx-auto" /> : "Approve Payout"}
+                    </motion.button>
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </SheetContent>
       </Sheet>
-
-      <AdminNav />
     </main>
   );
 }

@@ -6,12 +6,13 @@ import { BentoCard } from "@/components/ui/BentoCard";
 import { ChipGroup } from "@/components/ui/Chip";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { useState, useEffect, useCallback } from "react";
-import { Search, Loader2, Trophy, Calendar, Users, ChevronRight, AlertCircle } from "lucide-react";
+import { Search, Loader2, Trophy, Calendar, Users, ChevronRight, AlertCircle, Swords } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 const filters = ["All", "Upcoming", "Live", "Completed"];
 
@@ -21,7 +22,6 @@ export default function MatchesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [matches, setMatches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [joining, setJoining] = useState<string | null>(null);
 
   const fetchMatches = useCallback(async () => {
     try {
@@ -56,7 +56,6 @@ export default function MatchesPage() {
       setMatches(withCounts);
     } catch (error) {
       console.error("Error fetching matches:", error);
-      toast.error("Failed to load matches");
     } finally {
       setLoading(false);
     }
@@ -66,53 +65,17 @@ export default function MatchesPage() {
     fetchMatches();
   }, [fetchMatches]);
 
-  const handleJoinMatch = async (tournamentId: string, matchId: string) => {
-    if (!user) {
-      toast.error("Please sign in to join");
-      return;
-    }
-
-    setJoining(matchId);
-    try {
-      const { data, error } = await supabase.rpc('join_tournament', {
-        p_tournament_id: tournamentId,
-        p_match_id: matchId
-      });
-
-      if (error) throw error;
-
-      const result = typeof data === 'string' ? JSON.parse(data) : data;
-
-      if (result.success) {
-        toast.success(result.message);
-        fetchMatches();
-      } else {
-        toast.error(result.message);
-      }
-    } catch (error: any) {
-      console.error("Error joining match:", error);
-      toast.error(error.message || "Failed to join");
-    } finally {
-      setJoining(null);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-background text-onyx">
       <main className="pb-32 relative z-10">
         <TopHeader />
 
-        {/* Header Section */}
-        <section className="relative px-6 pt-10 pb-6">
-          <div className="relative z-10">
-            <p className="text-[10px] font-bold text-charcoal/50 uppercase tracking-[0.2em] mb-2">
-              Arena Lobby
-            </p>
-            <h2 className="text-[32px] font-heading text-onyx leading-tight font-black">
-              Available <br />
-              <span className="text-onyx">Tournaments</span>
-            </h2>
-          </div>
+        {/* Sticker Header */}
+        <section className="sticker-header">
+          <div className="sticker-blob bg-pastel-mint" />
+          <p className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest leading-none mb-3">Arena Lobby</p>
+          <h1 className="text-[48px] font-black leading-none mb-2">Matches</h1>
+          <p className="text-[12px] font-bold text-charcoal/40 uppercase tracking-tighter">Join the action today</p>
         </section>
 
         {/* Search & Filter */}
@@ -128,11 +91,20 @@ export default function MatchesPage() {
             />
           </div>
 
-          <ChipGroup 
-            options={filters}
-            selected={activeFilter}
-            onChange={setActiveFilter}
-          />
+          <div className="flex gap-2 overflow-x-auto no-scrollbar py-2">
+            {filters.map((filter) => (
+              <button
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
+                className={cn(
+                  "chip",
+                  activeFilter === filter ? "chip-selected" : "chip-default"
+                )}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
         </section>
 
         {/* Match List */}
@@ -152,117 +124,82 @@ export default function MatchesPage() {
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ delay: i * 0.05 }}
                 >
-                  <BentoCard className="p-6 space-y-6 border-none shadow-[0_10px_40px_rgba(0,0,0,0.03)]">
-                    {/* Header */}
-                    <div className="flex justify-between items-start">
-                      <div className="flex items-center gap-4">
-                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${
-                          match.status === 'live' 
-                            ? 'bg-lime-vibrant shadow-lg shadow-lime-vibrant/20' 
-                            : 'bg-off-white'
-                        }`}>
-                          <Trophy size={24} className="text-onyx" />
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-heading text-onyx font-black leading-tight">{match.title}</h3>
-                          <div className="flex items-center gap-2 mt-1.5">
-                            <span className="text-[9px] font-black text-white bg-onyx px-2 py-0.5 rounded-md uppercase tracking-widest">{match.mode}</span>
-                            <span className="text-[10px] text-charcoal/60 font-bold uppercase tracking-wider">{match.tournament?.title}</span>
+                  <Link href={`/matches/${match.id}`}>
+                    <BentoCard className="p-6 space-y-4 border-none shadow-[0_4px_24px_rgba(0,0,0,0.02)]">
+                      <div className="flex justify-between items-start">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-2xl bg-pastel-yellow flex items-center justify-center">
+                            <Trophy size={20} className="text-onyx" />
+                          </div>
+                          <div>
+                            <h3 className="text-lg font-black leading-tight">{match.title}</h3>
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className="text-[9px] font-black bg-onyx text-white px-2 py-0.5 rounded-md uppercase tracking-widest">{match.mode}</span>
+                              <span className="text-[10px] text-charcoal/40 font-bold uppercase tracking-wider">₹{match.tournament?.entry_fee} Entry</span>
+                            </div>
                           </div>
                         </div>
+                        <StatusBadge variant={match.status as any} />
                       </div>
-                      <StatusBadge variant={match.status === 'live' ? 'live' : match.status === 'upcoming' ? 'upcoming' : 'completed'} />
-                    </div>
 
-                    {/* Info Grid */}
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-background rounded-2xl p-4 flex items-center gap-4">
-                        <Calendar size={18} className="text-charcoal/40" />
+                      <div className="flex justify-between items-end pt-4 border-t border-black/[0.03]">
                         <div>
-                          <p className="text-[9px] font-bold text-charcoal/40 uppercase tracking-widest mb-0.5">Starts</p>
-                          <p className="text-xs font-black text-onyx">
+                          <p className="text-[9px] font-bold text-charcoal/30 uppercase tracking-widest leading-none mb-1">Prize Pool</p>
+                          <p className="text-xl font-black leading-none text-onyx">₹{match.tournament?.prize_pool?.toLocaleString()}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-[9px] font-bold text-charcoal/30 uppercase tracking-widest leading-none mb-1">Starts</p>
+                          <p className="text-sm font-black text-onyx">
                             {match.start_time ? new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'TBD'}
                           </p>
                         </div>
                       </div>
-                      <div className="bg-background rounded-2xl p-4 flex items-center gap-4">
-                        <Users size={18} className="text-charcoal/40" />
-                        <div>
-                          <p className="text-[9px] font-bold text-charcoal/40 uppercase tracking-widest mb-0.5">Joined</p>
-                          <p className="text-xs font-black text-onyx">{match.current_slots || 0} / {match.tournament?.slots || 48}</p>
+
+                      <div className="space-y-2 pt-2">
+                        <div className="w-full h-1.5 bg-background rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-onyx/20 rounded-full"
+                            style={{ width: `${Math.min(100, ((match.current_slots || 0) / (match.tournament?.slots || 48)) * 100)}%` }}
+                          />
+                        </div>
+                        <div className="flex justify-between items-center text-[8px] font-bold text-charcoal/30 uppercase tracking-widest">
+                          <span>{match.current_slots || 0} / {match.tournament?.slots || 48} Slots Filled</span>
+                          <span className="text-onyx">{Math.round(((match.current_slots || 0) / (match.tournament?.slots || 48)) * 100)}%</span>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Progress Bar */}
-                    <div className="space-y-2">
-                      <div className="w-full h-2 bg-background rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-onyx rounded-full transition-all duration-700 ease-out"
-                          style={{ width: `${Math.min(100, ((match.current_slots || 0) / (match.tournament?.slots || 48)) * 100)}%` }}
-                        />
-                      </div>
-                      <div className="flex justify-between items-center text-[9px] font-bold text-charcoal/40 uppercase tracking-widest">
-                        <span>Lobby Capacity</span>
-                        <span className="text-onyx">{Math.round(((match.current_slots || 0) / (match.tournament?.slots || 48)) * 100)}%</span>
-                      </div>
-                    </div>
-
-                    {/* Footer */}
-                    <div className="flex items-center justify-between pt-6 border-t border-black/[0.03]">
-                      <div>
-                        <p className="text-[9px] font-bold text-charcoal/40 uppercase tracking-widest mb-1">Total Prize</p>
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-2xl font-heading text-onyx font-black">₹{match.tournament?.prize_pool?.toLocaleString() || 0}</span>
-                        </div>
-                      </div>
-                    
-                      {match.status === "upcoming" ? (
+                      <div className="flex justify-end pt-2">
                         <motion.button 
                           whileTap={{ scale: 0.95 }}
-                          onClick={() => handleJoinMatch(match.tournament_id, match.id)}
-                          disabled={joining === match.id}
-                          className="bg-onyx text-white px-6 py-4 rounded-2xl text-[11px] font-bold uppercase tracking-widest shadow-xl shadow-onyx/10 flex items-center gap-2 disabled:opacity-50"
-                        >
-                          {joining === match.id ? <Loader2 size={16} className="animate-spin" /> : (
-                            <>Enter ₹{match.tournament?.entry_fee} <ChevronRight size={16} /></>
+                          className={cn(
+                            "px-6 py-3 rounded-2xl text-[11px] font-bold uppercase tracking-widest flex items-center gap-2 shadow-sm",
+                            match.status === 'upcoming' ? "bg-onyx text-white" : "bg-silver/20 text-charcoal"
                           )}
-                        </motion.button>
-                      ) : match.status === 'live' ? (
-                        <Link href={`/live?match=${match.id}`}>
-                          <motion.button 
-                            whileTap={{ scale: 0.95 }}
-                            className="bg-lime-vibrant text-onyx px-6 py-4 rounded-2xl text-[11px] font-bold uppercase tracking-widest shadow-xl shadow-lime-vibrant/20 flex items-center gap-2"
-                          >
-                            Watch Live <ChevronRight size={18} />
-                          </motion.button>
-                        </Link>
-                      ) : (
-                        <motion.button 
-                          whileTap={{ scale: 0.95 }}
-                          className="bg-off-white text-charcoal px-6 py-4 rounded-2xl text-[11px] font-bold uppercase tracking-widest flex items-center gap-2"
                         >
-                          Results <ChevronRight size={18} />
+                          {match.status === 'upcoming' ? 'Join Tournament' : match.status === 'live' ? 'Watch Live' : 'Results'}
+                          <ChevronRight size={16} />
                         </motion.button>
-                      )}
-                    </div>
-                  </BentoCard>
+                      </div>
+                    </BentoCard>
+                  </Link>
                 </motion.div>
               ))}
             </AnimatePresence>
           ) : (
-            <BentoCard className="p-16 text-center border-none bg-white shadow-sm">
-              <div className="w-20 h-20 rounded-full bg-off-white flex items-center justify-center mx-auto mb-6 shadow-sm">
-                <AlertCircle size={40} className="text-charcoal/20" />
+            <BentoCard className="p-12 text-center border-none shadow-sm flex flex-col items-center">
+              <div className="w-20 h-20 rounded-full bg-off-white flex items-center justify-center mb-6">
+                <AlertCircle size={40} className="text-charcoal/10" />
               </div>
-              <h3 className="text-xl font-heading text-onyx mb-3 font-black">No Arenas Found</h3>
-              <p className="text-xs text-charcoal/50 mb-8 font-bold uppercase tracking-widest">Check back later!</p>
+              <h3 className="text-2xl font-black mb-2">No Matches Found</h3>
+              <p className="text-xs text-charcoal/40 mb-8 font-bold uppercase tracking-widest">
+                Try adjusting your filters
+              </p>
               <motion.button 
                 whileTap={{ scale: 0.95 }}
                 onClick={() => { setActiveFilter("All"); setSearchQuery(""); }}
-                className="px-8 py-4 bg-onyx text-white rounded-2xl text-[11px] font-bold uppercase tracking-widest shadow-xl shadow-onyx/10"
+                className="px-8 py-4 bg-onyx text-white rounded-2xl text-[10px] font-bold uppercase tracking-widest shadow-xl"
               >
-                Refresh Hub
+                Refresh
               </motion.button>
             </BentoCard>
           )}
