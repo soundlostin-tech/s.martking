@@ -8,6 +8,7 @@ import { supabase } from "@/lib/supabase";
 import { 
   ChevronRight, Plus, Wallet, Zap, Trophy, TrendingUp, Users, Clock, Swords
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { StoryViewer } from "@/components/StoryViewer";
 import { StoryUpload } from "@/components/StoryUpload";
 import { TopHeader } from "@/components/layout/TopHeader";
