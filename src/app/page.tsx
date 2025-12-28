@@ -84,41 +84,39 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#D4D7DE] text-[#11130D]">
+    <div className="min-h-screen bg-background text-foreground">
       <main className="pb-28 relative z-10">
         <TopHeader />
 
         {/* Greeting Section with Pastel Blob */}
         <section className="relative px-4 sm:px-6 pt-6 pb-4 blob-header blob-header-yellow">
           <div className="relative z-10">
-            <p className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-[0.2em] mb-1">
+            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] mb-1">
               {user ? `Hello, ${user.user_metadata?.full_name?.split(' ')[0] || 'Warrior'}` : 'Welcome back'}
             </p>
-            <h2 className="text-2xl sm:text-3xl font-heading text-[#11130D]">
-              Ready for today's <span className="text-[#868935]">matches?</span>
+            <h2 className="text-3xl sm:text-4xl font-heading text-foreground leading-tight">
+              Discover, Create, <br />
+              <span className="text-muted-foreground italic">Enjoy</span>
             </h2>
           </div>
         </section>
 
         {/* Stories Row */}
         <section className="py-4 overflow-hidden">
-          <div className="flex gap-3 overflow-x-auto no-scrollbar px-4 sm:px-6 items-start">
+          <div className="flex gap-4 overflow-x-auto no-scrollbar px-4 sm:px-6 items-start">
             {/* Arena Official Story */}
             <div className="flex-shrink-0 flex flex-col items-center gap-2">
               <motion.div 
                 whileTap={{ scale: 0.92 }}
-                className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full p-[3px] bg-gradient-to-tr from-[#D7FD03] to-[#C7E323]"
+                className="w-[72px] h-[72px] rounded-full p-[3px] bg-gradient-to-tr from-[#FEF38B] to-[#D7FD03]"
               >
                 <div className="w-full h-full rounded-full bg-white p-0.5">
-                  <div className="w-full h-full rounded-full bg-[#D7FD03] flex items-center justify-center overflow-hidden">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#11130D" strokeWidth="2" className="w-7 h-7">
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                    </svg>
+                  <div className="w-full h-full rounded-full bg-[#FEF38B] flex items-center justify-center overflow-hidden">
+                    <Trophy size={28} className="text-foreground" />
                   </div>
                 </div>
               </motion.div>
-              <span className="text-[9px] font-bold text-[#868935] uppercase tracking-wide">Arena</span>
+              <span className="text-[9px] font-bold text-foreground/60 uppercase tracking-wide">Arena</span>
             </div>
 
             {/* User's own story */}
@@ -131,28 +129,28 @@ export default function Home() {
                     if (myStories.length > 0) openStory(user.id);
                     else setIsUploadOpen(true);
                   }}
-                  className={`relative w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full p-[3px] ${
+                  className={`relative w-[72px] h-[72px] rounded-full p-[3px] ${
                     stories.some(s => s.user_id === user.id) 
-                      ? 'bg-gradient-to-tr from-[#D7FD03] to-[#C7E323]' 
-                      : 'border-2 border-dashed border-[#C8C8C4]'
+                      ? 'bg-gradient-to-tr from-[#D0D1FF] to-[#CCF5E6]' 
+                      : 'border-2 border-dashed border-muted-foreground/30'
                   }`}
                 >
                   <div className="w-full h-full rounded-full bg-white p-0.5">
-                    <div className="w-full h-full rounded-full bg-[#E8E9EC] flex items-center justify-center overflow-hidden">
+                    <div className="w-full h-full rounded-full bg-muted flex items-center justify-center overflow-hidden">
                       {user.user_metadata?.avatar_url ? (
                         <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover" />
                       ) : (
-                        <span className="text-lg font-heading text-[#4A4B48]">{user.email?.[0].toUpperCase()}</span>
+                        <span className="text-xl font-heading text-muted-foreground">{user.email?.[0].toUpperCase()}</span>
                       )}
                     </div>
                   </div>
                   {!stories.some(s => s.user_id === user.id) && (
-                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-[#D7FD03] rounded-full border-2 border-white flex items-center justify-center shadow-lg">
-                      <Plus size={14} strokeWidth={3} className="text-[#11130D]" />
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-foreground text-white rounded-full border-2 border-white flex items-center justify-center shadow-lg">
+                      <Plus size={14} strokeWidth={3} />
                     </div>
                   )}
                 </motion.div>
-                <span className="text-[9px] font-bold text-[#4A4B48] uppercase tracking-wide">You</span>
+                <span className="text-[9px] font-bold text-foreground/60 uppercase tracking-wide">You</span>
               </div>
             )}
 
@@ -167,26 +165,26 @@ export default function Home() {
                 >
                   <motion.div 
                     whileTap={{ scale: 0.92 }}
-                    className={`w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full p-[3px] ${
+                    className={`w-[72px] h-[72px] rounded-full p-[3px] ${
                       hasStory 
-                        ? 'bg-gradient-to-tr from-[#D7FD03] to-[#C7E323]' 
-                        : 'bg-[#C8C8C4]/50'
+                        ? 'bg-gradient-to-tr from-[#FFD6D1] to-[#D0D1FF]' 
+                        : 'bg-muted/50'
                     }`}
                   >
                     <div className="w-full h-full rounded-full bg-white p-0.5">
-                      <div className="w-full h-full rounded-full bg-[#E8E9EC] flex items-center justify-center overflow-hidden">
+                      <div className="w-full h-full rounded-full bg-muted flex items-center justify-center overflow-hidden">
                         {profile.avatar_url ? (
                           <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
                         ) : (
-                          <span className="text-lg font-heading text-[#4A4B48]">{profile.full_name?.[0]?.toUpperCase()}</span>
+                          <span className="text-xl font-heading text-muted-foreground">{profile.full_name?.[0]?.toUpperCase()}</span>
                         )}
                       </div>
                     </div>
                   </motion.div>
                   <span className={`text-[9px] font-bold uppercase tracking-wide ${
-                    hasStory ? 'text-[#868935]' : 'text-[#4A4B48]'
+                    hasStory ? 'text-foreground' : 'text-foreground/40'
                   }`}>
-                    {profile.full_name?.split(' ')[0]?.slice(0, 6)}
+                    {profile.full_name?.split(' ')[0]?.slice(0, 8)}
                   </span>
                 </div>
               );
@@ -196,42 +194,44 @@ export default function Home() {
 
         {/* Featured Tournament Hero Card */}
         {featuredMatches[0] && (
-          <section className="px-4 sm:px-6 mb-6">
-            <BentoCard variant="hero" pastelColor="yellow" className="p-6">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <StatusBadge variant={featuredMatches[0].status === 'live' ? 'live' : 'upcoming'} />
-                </div>
+          <section className="px-4 sm:px-6 mb-8">
+            <BentoCard variant="hero" pastelColor="yellow" className="p-8">
+              <div className="flex items-start justify-between mb-6">
+                <StatusBadge variant={featuredMatches[0].status === 'live' ? 'live' : 'upcoming'} />
                 <div className="text-right">
-                  <p className="text-[9px] font-bold text-[#4A4B48] uppercase tracking-wide">Prize Pool</p>
-                  <p className="text-xl font-heading text-[#11130D]">₹{featuredMatches[0].tournament?.prize_pool?.toLocaleString()}</p>
+                  <p className="text-[10px] font-bold text-foreground/60 uppercase tracking-widest mb-1">Prize Pool</p>
+                  <p className="text-2xl font-heading text-foreground">₹{featuredMatches[0].tournament?.prize_pool?.toLocaleString()}</p>
                 </div>
               </div>
               
-              <h3 className="text-xl sm:text-2xl font-heading text-[#11130D] mb-2">{featuredMatches[0].title}</h3>
-              <p className="text-[11px] text-[#4A4B48] font-medium mb-4">{featuredMatches[0].tournament?.title}</p>
+              <h3 className="text-2xl sm:text-3xl font-heading text-foreground mb-3 leading-tight">
+                {featuredMatches[0].title}
+              </h3>
+              <p className="text-xs text-foreground/60 font-medium mb-6 uppercase tracking-wider">
+                {featuredMatches[0].tournament?.title}
+              </p>
               
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1.5">
-                    <Clock size={14} className="text-[#868935]" />
-                    <span className="text-[11px] font-bold text-[#4A4B48]">
+                <div className="flex items-center gap-6">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-bold text-foreground/40 uppercase tracking-widest mb-1">Starts</span>
+                    <span className="text-sm font-heading text-foreground">
                       {featuredMatches[0].start_time 
                         ? new Date(featuredMatches[0].start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                         : 'TBD'}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <Users size={14} className="text-[#868935]" />
-                    <span className="text-[11px] font-bold text-[#4A4B48]">{featuredMatches[0].mode}</span>
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-bold text-foreground/40 uppercase tracking-widest mb-1">Mode</span>
+                    <span className="text-sm font-heading text-foreground">{featuredMatches[0].mode}</span>
                   </div>
                 </div>
                 <Link href={`/matches`}>
                   <motion.button 
                     whileTap={{ scale: 0.95 }}
-                    className="px-5 py-2.5 bg-[#D7FD03] text-[#11130D] rounded-xl text-[11px] font-bold uppercase tracking-wide shadow-lg shadow-[#D7FD03]/30 flex items-center gap-1"
+                    className="px-6 py-3 bg-foreground text-white rounded-2xl text-xs font-bold uppercase tracking-widest shadow-xl shadow-foreground/10 flex items-center gap-2"
                   >
-                    Join Now <ChevronRight size={14} />
+                    Enter <ChevronRight size={16} />
                   </motion.button>
                 </Link>
               </div>
@@ -239,120 +239,100 @@ export default function Home() {
           </section>
         )}
 
-        {/* Quick Actions */}
-        <section className="px-4 sm:px-6 mb-6">
-          <div className="grid grid-cols-3 gap-3">
+        {/* Quick Actions - Match Reference Image Grid */}
+        <section className="px-4 sm:px-6 mb-8">
+          <div className="grid grid-cols-2 gap-4">
             <Link href="/matches">
-              <BentoCard className="p-4 flex flex-col items-center text-center">
-                <div className="w-10 h-10 rounded-xl bg-[#D7FD03]/20 flex items-center justify-center mb-2">
-                  <Zap size={18} className="text-[#868935]" />
+              <BentoCard variant="pastel" pastelColor="coral" className="p-6 h-40 flex flex-col justify-between">
+                <div className="w-12 h-12 rounded-2xl bg-white/40 flex items-center justify-center">
+                  <Zap size={24} className="text-foreground" />
                 </div>
-                <span className="text-[10px] font-bold text-[#11130D] uppercase tracking-wide">Join Match</span>
+                <div>
+                  <h4 className="text-lg font-heading text-foreground leading-tight">Fast<br />Matches</h4>
+                  <p className="text-[10px] font-bold text-foreground/50 uppercase tracking-wide mt-1">Play Now</p>
+                </div>
               </BentoCard>
             </Link>
-            <Link href="/wallet">
-              <BentoCard className="p-4 flex flex-col items-center text-center">
-                <div className="w-10 h-10 rounded-xl bg-[#C7F5E3]/50 flex items-center justify-center mb-2">
-                  <Wallet size={18} className="text-[#868935]" />
-                </div>
-                <span className="text-[10px] font-bold text-[#11130D] uppercase tracking-wide">Add Funds</span>
-              </BentoCard>
-            </Link>
-            <Link href="/matches">
-              <BentoCard className="p-4 flex flex-col items-center text-center">
-                <div className="w-10 h-10 rounded-xl bg-[#F5D4C7]/50 flex items-center justify-center mb-2">
-                  <Trophy size={18} className="text-[#868935]" />
-                </div>
-                <span className="text-[10px] font-bold text-[#11130D] uppercase tracking-wide">My Entries</span>
-              </BentoCard>
-            </Link>
+            <div className="grid grid-rows-2 gap-4">
+              <Link href="/wallet">
+                <BentoCard variant="pastel" pastelColor="mint" className="p-4 flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-white/40 flex items-center justify-center flex-shrink-0">
+                    <Wallet size={20} className="text-foreground" />
+                  </div>
+                  <span className="text-sm font-heading text-foreground">Add Funds</span>
+                </BentoCard>
+              </Link>
+              <Link href="/leaderboard">
+                <BentoCard variant="pastel" pastelColor="lavender" className="p-4 flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-white/40 flex items-center justify-center flex-shrink-0">
+                    <Trophy size={20} className="text-foreground" />
+                  </div>
+                  <span className="text-sm font-heading text-foreground">Rankings</span>
+                </BentoCard>
+              </Link>
+            </div>
           </div>
         </section>
 
-        {/* Performance Stats */}
-        <section className="px-4 sm:px-6 mb-6">
-          <BentoCard className="p-5">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-heading text-[#11130D]">My Performance</h3>
-              <Link href="/leaderboard" className="text-[10px] font-bold text-[#868935] uppercase tracking-wide flex items-center gap-1">
-                Leaderboard <ChevronRight size={12} />
-              </Link>
+        {/* Performance - Reference Image Stats Card */}
+        <section className="px-4 sm:px-6 mb-8">
+          <BentoCard className="p-6 bg-white">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h3 className="text-lg font-heading text-foreground">Your Progress</h3>
+                <p className="text-xs text-muted-foreground">This week's activity</p>
+              </div>
+              <div className="w-12 h-12 rounded-full border-4 border-[#D0D1FF] flex items-center justify-center">
+                <span className="text-[10px] font-bold">95%</span>
+              </div>
             </div>
-            <div className="grid grid-cols-3 gap-4">
+            
+            <div className="grid grid-cols-3 gap-6">
               {[
-                { label: "Wins", value: userStats.wins, icon: Trophy },
-                { label: "Rank", value: userStats.rank, icon: Award },
-                { label: "Growth", value: userStats.growth, icon: TrendingUp },
+                { label: "Wins", value: userStats.wins, color: "#FEF38B" },
+                { label: "Rank", value: userStats.rank, color: "#D0D1FF" },
+                { label: "Growth", value: userStats.growth, color: "#CCF5E6" },
               ].map((stat, i) => (
-                <div key={i} className="text-center">
-                  <div className="w-10 h-10 rounded-xl bg-[#E8E9EC] flex items-center justify-center mx-auto mb-2">
-                    <stat.icon size={18} className="text-[#868935]" />
+                <div key={i} className="flex flex-col">
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">{stat.label}</span>
+                  <p className="text-xl font-heading text-foreground">{stat.value}</p>
+                  <div className="w-full h-1 bg-muted rounded-full mt-2 overflow-hidden">
+                    <motion.div 
+                      initial={{ width: 0 }}
+                      animate={{ width: "70%" }}
+                      className="h-full rounded-full"
+                      style={{ backgroundColor: stat.color }}
+                    />
                   </div>
-                  <p className="text-lg font-heading text-[#11130D]">{stat.value}</p>
-                  <p className="text-[9px] font-bold text-[#4A4B48] uppercase tracking-wide">{stat.label}</p>
                 </div>
               ))}
             </div>
           </BentoCard>
         </section>
 
-        {/* Upcoming Tournaments */}
-        <section className="px-4 sm:px-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-base font-heading text-[#11130D]">Upcoming Matches</h3>
-            <Link href="/matches" className="text-[10px] font-bold text-[#868935] uppercase tracking-wide flex items-center gap-1">
-              View All <ChevronRight size={12} />
-            </Link>
-          </div>
-          
-          <div className="flex gap-3 overflow-x-auto no-scrollbar -mx-4 px-4">
-            {featuredMatches.slice(1, 5).map((match, i) => (
-              <motion.div
-                key={match.id}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="flex-shrink-0 w-64"
-              >
-                <BentoCard className="p-4">
-                  <div className="flex items-start justify-between mb-3">
-                    <StatusBadge variant={match.status === 'live' ? 'live' : 'upcoming'} />
-                    <span className="text-[10px] font-bold text-[#4A4B48]">{match.mode}</span>
-                  </div>
-                  <h4 className="text-sm font-heading text-[#11130D] mb-1 truncate">{match.title}</h4>
-                  <p className="text-[10px] text-[#4A4B48] mb-3">{match.tournament?.title}</p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1">
-                      <Trophy size={12} className="text-[#868935]" />
-                      <span className="text-[11px] font-bold text-[#11130D]">₹{match.tournament?.prize_pool?.toLocaleString()}</span>
-                    </div>
-                    <span className="text-[10px] font-bold text-[#868935]">₹{match.tournament?.entry_fee}</span>
-                  </div>
-                </BentoCard>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* Live Now Card */}
+        {/* Live Event Highlight - Reference Image Middle Bottom Style */}
         {featuredMatches.some(m => m.status === 'live') && (
-          <section className="px-4 sm:px-6 mb-6">
+          <section className="px-4 sm:px-6 mb-8">
             <Link href="/live">
-              <BentoCard variant="pastel" pastelColor="mint" className="p-5">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-[#D7FD03] flex items-center justify-center">
-                      <Play size={20} className="text-[#11130D] translate-x-0.5" fill="currentColor" />
+              <BentoCard variant="pastel" pastelColor="peach" className="p-6 flex items-center justify-between group">
+                <div className="flex items-center gap-4">
+                  <div className="relative">
+                    <div className="w-14 h-14 rounded-2xl bg-white/60 flex items-center justify-center overflow-hidden">
+                      <Play size={24} className="text-foreground fill-foreground ml-1" />
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <StatusBadge variant="live" />
-                      </div>
-                      <p className="text-[11px] font-bold text-[#4A4B48]">Tournament in progress</p>
-                    </div>
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white animate-pulse" />
                   </div>
-                  <ChevronRight size={20} className="text-[#4A4B48]" />
+                  <div>
+                    <h4 className="text-lg font-heading text-foreground leading-tight">Live Tournament</h4>
+                    <p className="text-xs text-foreground/60">Watch and participate now</p>
+                  </div>
                 </div>
+                <motion.div 
+                  whileHover={{ x: 5 }}
+                  className="w-10 h-10 rounded-full bg-foreground/5 flex items-center justify-center"
+                >
+                  <ChevronRight size={20} className="text-foreground" />
+                </motion.div>
               </BentoCard>
             </Link>
           </section>

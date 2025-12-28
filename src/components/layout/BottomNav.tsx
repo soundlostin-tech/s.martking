@@ -39,22 +39,22 @@ export function BottomNav() {
                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 className="relative flex flex-col items-center gap-1"
               >
-                <div className={`relative z-10 p-2.5 rounded-xl transition-all duration-300 ${
-                  isActive 
-                    ? "bg-[#D7FD03] text-[#11130D] shadow-lg shadow-[#D7FD03]/30" 
-                    : "text-[#4A4B48] hover:text-[#11130D]"
-                }`}>
-                  <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
-                  {isLive && !isActive && (
-                    <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-[#D7FD03] rounded-full border-2 border-white" />
-                  )}
-                </div>
-  
-                <span className={`text-[9px] font-bold uppercase tracking-[0.15em] transition-colors duration-200 ${
-                  isActive ? "text-[#11130D]" : "text-[#4A4B48]"
-                }`}>
-                  {item.label}
-                </span>
+                  <div className={`relative z-10 p-2.5 rounded-2xl transition-all duration-300 ${
+                    isActive 
+                      ? "bg-foreground text-white shadow-xl shadow-foreground/20" 
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}>
+                    <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
+                    {isLive && !isActive && (
+                      <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white" />
+                    )}
+                  </div>
+    
+                  <span className={`text-[9px] font-bold uppercase tracking-widest transition-colors duration-200 ${
+                    isActive ? "text-foreground" : "text-muted-foreground"
+                  }`}>
+                    {item.label}
+                  </span>
               </motion.div>
             </Link>
           );

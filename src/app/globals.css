@@ -54,61 +54,62 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* ============================================
-     SMARTKING'S ARENA - PASTEL BENTO PALETTE
-     ============================================ */
-  --color-onyx: #11130D;
-  --color-carbon-black: #1D1E13;
-  --color-charcoal-brown: #30312A;
-  --color-charcoal: #4A4B48;
-  --color-silver: #C8C8C4;
-  --color-alabaster: #D4D7DE;
-  --color-lemon-lime: #C7E323;
-  --color-lime-yellow: #D7FD03;
-  --color-olive: #868935;
+    /* ============================================
+       SMARTKING'S ARENA - PASTEL BENTO PALETTE
+       (Referenced from health/lifestyle app style)
+       ============================================ */
+    --color-onyx: #11130D;
+    --color-carbon-black: #1D1E13;
+    --color-charcoal-brown: #30312A;
+    --color-charcoal: #4A4B48;
+    --color-silver: #C8C8C4;
+    --color-alabaster: #F2F4F7;
+    --color-lemon-lime: #D7FD03;
+    --color-lime-yellow: #FEF38B;
+    --color-olive: #868935;
+    
+    /* Pastel Palette from Reference */
+    --color-pastel-yellow: #FEF38B;
+    --color-pastel-mint: #CCF5E6;
+    --color-pastel-coral: #FFD6D1;
+    --color-pastel-lavender: #D0D1FF;
+    --color-pastel-peach: #FFE3D1;
+  }
   
-  /* Pastel Blob Colors */
-  --color-pastel-yellow: #F5F3C7;
-  --color-pastel-mint: #C7F5E3;
-  --color-pastel-coral: #F5D4C7;
-  --color-pastel-lavender: #D4C7F5;
-  --color-pastel-peach: #F5E3C7;
-}
-
-:root {
-  --radius: 20px;
-  
-  /* Backgrounds - Light Pastel Base */
-  --background: #D4D7DE;
-  --foreground: #11130D;
-  
-  /* Surfaces */
-  --card: #ffffff;
-  --card-foreground: #11130D;
-  
-  --popover: #ffffff;
-  --popover-foreground: #11130D;
-  
-  /* Actions */
-  --primary: #D7FD03;
-  --primary-foreground: #11130D;
-  
-  --secondary: #C8C8C4;
-  --secondary-foreground: #30312A;
-  
-  --muted: #E8E9EC;
-  --muted-foreground: #4A4B48;
-  
-  --accent: #D7FD03;
-  --accent-foreground: #11130D;
-  
-  --destructive: #F5A8A8;
-  --destructive-foreground: #8A2020;
-  
-  /* Borders */
-  --border: rgba(200, 200, 196, 0.5);
-  --input: #E8E9EC;
-  --ring: #D7FD03;
+  :root {
+    --radius: 20px;
+    
+    /* Backgrounds - Light Pastel Base */
+    --background: #F2F4F7;
+    --foreground: #11130D;
+    
+    /* Surfaces */
+    --card: #ffffff;
+    --card-foreground: #11130D;
+    
+    --popover: #ffffff;
+    --popover-foreground: #11130D;
+    
+    /* Actions */
+    --primary: #11130D;
+    --primary-foreground: #ffffff;
+    
+    --secondary: #D4D7DE;
+    --secondary-foreground: #4A4B48;
+    
+    --muted: #E8E9EC;
+    --muted-foreground: #5F6368;
+    
+    --accent: #D7FD03;
+    --accent-foreground: #11130D;
+    
+    --destructive: #F5A8A8;
+    --destructive-foreground: #8A2020;
+    
+    /* Borders */
+    --border: rgba(200, 200, 196, 0.4);
+    --input: #E8E9EC;
+    --ring: #11130D;
 
   /* Sidebar */
   --sidebar: #ffffff;
