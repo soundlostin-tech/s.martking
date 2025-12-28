@@ -8,32 +8,28 @@ import { cn } from "@/lib/utils";
 export function TopHeader() {
   const { scrollYProgress, scrollY } = useScroll();
   
-  // Smooth scroll progress for the progress bar
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
   });
 
-  // Create a smoother spring-based scroll value for premium feel
   const smoothY = useSpring(scrollY, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
   });
 
-  // Transform values for scroll animations
   const headerHeight = useTransform(smoothY, [0, 80], ["80px", "68px"]);
   const headerPadding = useTransform(smoothY, [0, 80], ["20px", "12px"]);
   const logoScale = useTransform(smoothY, [0, 80], [1, 0.9]);
   const blurAmount = useTransform(smoothY, [0, 80], ["0px", "16px"]);
-  const shadowOpacity = useTransform(smoothY, [0, 80], [0, 0.08]);
+  const shadowOpacity = useTransform(smoothY, [0, 80], [0, 0.06]);
   
-  // Background and Border dynamic colors
   const bgColor = useTransform(
     smoothY,
     [0, 80],
-    ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.85)"]
+    ["rgba(248, 249, 250, 0)", "rgba(255, 255, 255, 0.95)"]
   );
   
   const borderColor = useTransform(
@@ -44,7 +40,7 @@ export function TopHeader() {
 
   const boxShadow = useTransform(
     shadowOpacity,
-    (opacity) => `0 10px 30px -10px rgba(0, 0, 0, ${opacity})`
+    (opacity) => `0 4px 20px -4px rgba(0, 0, 0, ${opacity})`
   );
 
   const backdropFilter = useTransform(
@@ -100,7 +96,7 @@ export function TopHeader() {
             style={{ scale: logoScale }}
             whileHover={{ scale: 1.05, rotate: 5 }}
             whileTap={{ scale: 0.95 }}
-            className="group relative w-12 h-12 rounded-2xl bg-gradient-to-br from-[#11130D] to-[#2D3127] flex items-center justify-center text-white shadow-xl shadow-black/20 cursor-pointer overflow-hidden"
+            className="group relative w-12 h-12 rounded-2xl bg-gradient-to-br from-[#2D3436] to-[#4A5568] flex items-center justify-center text-white shadow-lg cursor-pointer overflow-hidden"
           >
             <motion.div 
               className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"
@@ -127,16 +123,16 @@ export function TopHeader() {
           
           <div className="flex flex-col">
             <motion.h1 
-              className="text-xl font-black text-[#11130D] tracking-tight leading-none flex items-center gap-1.5"
+              className="text-xl font-black text-[#2D3436] tracking-tight leading-none flex items-center gap-1.5"
             >
               Smartking&apos;s 
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#A0A0A0] to-[#606060] font-black">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#636E72] to-[#95A5A6] font-black">
                 Arena
               </span>
             </motion.h1>
             <motion.div className="flex items-center gap-1.5 mt-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-pastel-mint animate-pulse" />
-              <p className="text-[8px] font-bold text-[#A0A0A0] uppercase tracking-[0.25em] leading-none">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#A8E6CF] animate-pulse" />
+              <p className="text-[8px] font-bold text-[#95A5A6] uppercase tracking-[0.25em] leading-none">
                 Elite Competition
               </p>
             </motion.div>
@@ -148,9 +144,9 @@ export function TopHeader() {
           className="flex items-center gap-3"
         >
           <motion.div className="hidden md:flex items-center gap-1 mr-4">
-            <div className="px-3 py-1.5 rounded-full bg-onyx/5 border border-onyx/5 flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-pastel-coral animate-pulse" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-onyx/40">2.4k Live</span>
+            <div className="px-3 py-1.5 rounded-full bg-gray-50 border border-gray-100 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#FFB8B8] animate-pulse" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#636E72]">2.4k Live</span>
             </div>
           </motion.div>
 
@@ -161,7 +157,7 @@ export function TopHeader() {
               y: -2
             }}
             whileTap={{ scale: 0.95 }}
-            className="w-12 h-12 rounded-2xl bg-white/40 backdrop-blur-md border border-black/[0.05] flex items-center justify-center text-[#11130D] shadow-sm transition-all duration-300"
+            className="w-12 h-12 rounded-2xl bg-white border border-gray-100 flex items-center justify-center text-[#2D3436] shadow-sm transition-all duration-300"
           >
             <Search size={20} strokeWidth={2} />
           </motion.button>
@@ -173,10 +169,10 @@ export function TopHeader() {
               y: -2
             }}
             whileTap={{ scale: 0.95 }}
-            className="relative w-12 h-12 rounded-2xl bg-white/40 backdrop-blur-md border border-black/[0.05] flex items-center justify-center text-[#11130D] shadow-sm transition-all duration-300"
+            className="relative w-12 h-12 rounded-2xl bg-white border border-gray-100 flex items-center justify-center text-[#2D3436] shadow-sm transition-all duration-300"
           >
             <Bell size={20} strokeWidth={2} />
-            <span className="absolute top-3.5 right-3.5 w-2.5 h-2.5 bg-pastel-coral rounded-full border-2 border-white shadow-sm" />
+            <span className="absolute top-3.5 right-3.5 w-2.5 h-2.5 bg-[#FFB8B8] rounded-full border-2 border-white shadow-sm" />
             <motion.span 
               animate={{ 
                 scale: [1, 1.8, 1],
@@ -187,7 +183,7 @@ export function TopHeader() {
                 repeat: Infinity, 
                 ease: "easeOut" 
               }}
-              className="absolute top-3.5 right-3.5 w-2.5 h-2.5 bg-pastel-coral rounded-full" 
+              className="absolute top-3.5 right-3.5 w-2.5 h-2.5 bg-[#FFB8B8] rounded-full" 
             />
           </motion.button>
 
@@ -195,12 +191,11 @@ export function TopHeader() {
 
         {/* Scroll Progress Indicator */}
         <motion.div 
-          className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-pastel-lavender via-pastel-sky to-pastel-mint origin-left"
+          className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#C3AED6] via-[#AED9E0] to-[#A8E6CF] origin-left"
           style={{ scaleX }}
         />
       </motion.header>
       
-      {/* Spacer to prevent layout jump as header is now fixed */}
       <div className="h-[80px]" />
     </>
   );

@@ -19,19 +19,19 @@ export function BentoCard({
   onClick 
 }: BentoCardProps) {
   const pastelVariants = {
-    mint: "bento-pastel-mint",
-    coral: "bento-pastel-coral",
-    lavender: "bento-pastel-lavender",
-    peach: "bento-pastel-peach",
-    yellow: "bento-pastel-yellow",
+    mint: "bg-[#E8F5E9] text-[#2D3436]",
+    coral: "bg-[#FFEBEE] text-[#2D3436]",
+    lavender: "bg-[#EDE7F6] text-[#2D3436]",
+    peach: "bg-[#FFF3E0] text-[#2D3436]",
+    yellow: "bg-[#FFF8E1] text-[#2D3436]",
   };
 
     const variantClasses = {
-      default: "bg-white text-charcoal-brown",
-      dark: "bento-dark",
-      vibrant: "bento-vibrant shadow-soft-lg",
-      hero: cn("shadow-[0_12px_48px_rgba(0,0,0,0.06)]", pastelVariants[pastelColor]),
-      pastel: pastelVariants[pastelColor],
+      default: "bg-white text-[#2D3436] border border-gray-100",
+      dark: "bg-[#2D3436] text-white border-none shadow-lg",
+      vibrant: "bg-[#FFF8E1] text-[#2D3436] border-none shadow-md",
+      hero: cn("shadow-md border-none", pastelVariants[pastelColor]),
+      pastel: cn("border-none", pastelVariants[pastelColor]),
     };
 
   return (

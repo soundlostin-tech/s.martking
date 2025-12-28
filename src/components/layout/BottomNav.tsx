@@ -19,7 +19,7 @@ export function BottomNav() {
 
   return (
     <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md" suppressHydrationWarning={true}>
-      <div className="bg-white/80 backdrop-blur-xl border border-white/20 rounded-[32px] shadow-[0_12px_48px_rgba(0,0,0,0.06)] px-4 py-3" suppressHydrationWarning={true}>
+      <div className="bg-white/95 backdrop-blur-xl border border-gray-100 rounded-[32px] shadow-[0_4px_24px_rgba(0,0,0,0.08)] px-4 py-3" suppressHydrationWarning={true}>
         <div className="flex justify-between items-center h-12" suppressHydrationWarning={true}>
           {navItems.map((item) => {
             const isActive = pathname === item.href;
@@ -44,13 +44,13 @@ export function BottomNav() {
                         <div className={cn(
                           "p-2.5 rounded-full transition-all duration-300",
                           isActive 
-                            ? "bg-[#11130D] text-white shadow-[0_4px_12px_rgba(0,0,0,0.1)]" 
-                            : "text-[#A0A0A0] hover:text-[#11130D]"
+                            ? "bg-[#2D3436] text-white shadow-md" 
+                            : "text-[#95A5A6] hover:text-[#2D3436]"
                         )} suppressHydrationWarning={true}>
                         <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
                       </div>
                   {isActive && (
-                    <span className="text-[9px] font-bold text-onyx uppercase tracking-tighter">
+                    <span className="text-[9px] font-bold text-[#2D3436] uppercase tracking-tighter">
                       {item.label}
                     </span>
                   )}

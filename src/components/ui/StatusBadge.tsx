@@ -11,11 +11,11 @@ interface StatusBadgeProps {
 }
 
 const variantClasses: Record<StatusBadgeVariant, string> = {
-  live: "badge-live",
-  pending: "badge-pending",
-  completed: "badge-completed",
-  failed: "badge-failed",
-  upcoming: "bg-off-white text-charcoal",
+  live: "bg-[#FFF8E1] text-[#2D3436]",
+  pending: "bg-[#FFF3CD] text-[#2D3436]",
+  completed: "bg-gray-100 text-[#636E72]",
+  failed: "bg-[#FFEBEE] text-[#C62828]",
+  upcoming: "bg-[#E3F2FD] text-[#2D3436]",
 };
 
 const variantLabels: Record<StatusBadgeVariant, string> = {
@@ -36,7 +36,7 @@ export function StatusBadge({ variant, children, className }: StatusBadgeProps) 
       )}
     >
       {variant === "live" && (
-        <span className="w-2 h-2 rounded-full bg-onyx animate-pulse" />
+        <span className="w-2 h-2 rounded-full bg-[#2D3436] animate-pulse" />
       )}
       {children || variantLabels[variant]}
     </span>
