@@ -40,7 +40,7 @@ export default function AdminStory() {
   const [creating, setCreating] = useState(false);
   
   const [formData, setFormData] = useState({
-    title: "",
+    caption: "",
     media_url: "",
     media_type: "image",
     expires_at: new Date(Date.now() + 86400000).toISOString(),
@@ -169,7 +169,7 @@ export default function AdminStory() {
 
                   <div className="space-y-4">
                     <div className="space-y-1">
-                      <h3 className="text-lg font-black leading-tight drop-shadow-lg">{s.title || "Arena Highlight"}</h3>
+                      <h3 className="text-lg font-black leading-tight drop-shadow-lg">{s.caption || "Arena Highlight"}</h3>
                       <p className="text-[9px] font-bold opacity-60 uppercase tracking-[0.2em]">By {s.profiles?.full_name}</p>
                     </div>
                     
@@ -210,11 +210,11 @@ export default function AdminStory() {
               <div className="space-y-2">
                 <label className="text-[9px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Narrative Title</label>
                 <Input 
-                  placeholder="e.g. Pro League Warmup" 
-                  value={formData.title}
-                  onChange={(e) => setFormData({...formData, title: e.target.value})}
-                  className="h-14 rounded-xl border-black/[0.05] bg-off-white font-bold px-6"
-                />
+                    placeholder="e.g. Pro League Warmup" 
+                    value={formData.caption}
+                    onChange={(e) => setFormData({...formData, caption: e.target.value})}
+                    className="h-14 rounded-xl border-black/[0.05] bg-off-white font-bold px-6"
+                  />
               </div>
               
               <div className="grid grid-cols-2 gap-4">

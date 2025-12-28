@@ -11,7 +11,7 @@ const navItems = [
   { label: "Tournaments", icon: Trophy, href: "/admin/tournaments" },
   { label: "Leaderboard", icon: BarChart3, href: "/admin/leaderboard" },
   { label: "Transactions", icon: ReceiptIndianRupee, href: "/admin/transactions" },
-  { label: "Stories", icon: ImageIcon, href: "/admin/stories" },
+  { label: "Stories", icon: ImageIcon, href: "/admin/story" },
 ];
 
 export function AdminNav() {

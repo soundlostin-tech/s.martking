@@ -4,7 +4,7 @@ import { use, useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   ChevronLeft, Calendar, Clock, Trophy, Users, Shield, 
-  ChevronDown, CheckCircle2, AlertCircle, Loader2, ArrowRight
+  ChevronDown, CheckCircle2, AlertCircle, Loader2, ArrowRight, Play
 } from "lucide-react";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { TopHeader } from "@/components/layout/TopHeader";

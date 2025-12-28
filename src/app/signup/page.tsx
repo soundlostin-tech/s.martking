@@ -68,18 +68,17 @@ export default function Signup() {
 
       if (authError) throw authError;
 
-      if (authData.user) {
-        const { error: profileError } = await supabase.from("profiles").insert({
-          id: authData.user.id,
-          full_name: formData.fullname,
-          ff_uid: formData.ff_uid,
-          phone: formData.phone,
-          username: formData.fullname.toLowerCase().replace(/\s+/g, '_') + Math.floor(Math.random() * 1000),
-          role: "Player",
-          status: "Active",
-          win_rate: 0,
-          matches_played: 0,
-        });
+        if (authData.user) {
+          const { error: profileError } = await supabase.from("profiles").insert({
+            id: authData.user.id,
+            full_name: formData.fullname,
+            phone: formData.phone,
+            username: formData.ff_uid || formData.fullname.toLowerCase().replace(/\s+/g, '_') + Math.floor(Math.random() * 1000),
+            role: "Player",
+            status: "Active",
+            win_rate: 0,
+            matches_played: 0,
+          });
         
         if (profileError) console.error("Profile creation error:", profileError);
 
