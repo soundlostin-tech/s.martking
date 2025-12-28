@@ -186,7 +186,7 @@
    STICKER HEADER - Refined (No Washout)
    ============================================ */
 .sticker-header {
-  @apply relative pt-10 pb-12 px-6 overflow-hidden bg-white border-b border-slate-100;
+  @apply relative pt-10 pb-12 px-6 overflow-hidden bg-transparent border-b border-slate-100;
 }
 
 .sticker-blob {

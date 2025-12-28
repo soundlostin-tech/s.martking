@@ -26,11 +26,11 @@ export function TopHeader() {
   const blurAmount = useTransform(smoothY, [0, 80], ["0px", "16px"]);
   const shadowOpacity = useTransform(smoothY, [0, 80], [0, 0.06]);
   
-    const bgColor = useTransform(
-      smoothY,
-      [0, 80],
-      ["rgba(255, 255, 255, 0.9)", "rgba(255, 255, 255, 1)"]
-    );
+      const bgColor = useTransform(
+        smoothY,
+        [0, 80],
+        ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.8)"]
+      );
     
     const borderColor = useTransform(
       smoothY,

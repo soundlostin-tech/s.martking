@@ -14,7 +14,6 @@ import { StoryViewer } from "@/components/StoryViewer";
 import { StoryUpload } from "@/components/StoryUpload";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { ArenaBackground } from "@/components/ui/ArenaBackground";
 import Link from "next/link";
 
 export default function Home() {

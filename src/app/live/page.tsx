@@ -68,7 +68,7 @@ function LiveContent() {
 
     if (loading) {
       return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-background" suppressHydrationWarning={true}>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-transparent" suppressHydrationWarning={true}>
           <Loader2 className="w-12 h-12 animate-spin text-onyx/20 mb-4" />
           <p className="text-[10px] font-bold text-charcoal/40 uppercase tracking-[0.3em]">Tuning in...</p>
         </div>
@@ -252,7 +252,7 @@ export default function Live() {
   return (
     <div className="min-h-screen text-onyx" suppressHydrationWarning={true}>
       <Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center bg-background" suppressHydrationWarning={true}>
+        <div className="min-h-screen flex items-center justify-center bg-transparent" suppressHydrationWarning={true}>
           <Loader2 className="w-10 h-10 animate-spin text-onyx/20" />
         </div>
       }>

@@ -185,7 +185,7 @@ export default function WalletPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background" suppressHydrationWarning={true}>
+      <div className="min-h-screen flex items-center justify-center bg-transparent" suppressHydrationWarning={true}>
         <Loader2 className="w-10 h-10 animate-spin text-onyx/20" />
       </div>
     );

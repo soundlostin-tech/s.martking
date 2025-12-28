@@ -4,7 +4,6 @@ import { BottomNav } from "@/components/layout/BottomNav";
 import { TopHeader } from "@/components/layout/TopHeader";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { ChipGroup } from "@/components/ui/Chip";
-import { ArenaBackground } from "@/components/ui/ArenaBackground";
 import { useState, useEffect, useCallback } from "react";
 import { Trophy, Medal, TrendingUp, ChevronUp, ChevronDown, Loader2, Users } from "lucide-react";
 import { supabase } from "@/lib/supabase";
