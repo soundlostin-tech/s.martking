@@ -2,15 +2,18 @@
 
 import { BottomNav } from "@/components/layout/BottomNav";
 import { TopHeader } from "@/components/layout/TopHeader";
+import { BentoCard } from "@/components/ui/BentoCard";
+import { StatusBadge } from "@/components/ui/StatusBadge";
+import { ChipGroup } from "@/components/ui/Chip";
 import { 
   ArrowDownLeft, 
   Plus, 
   Loader2, 
   Wallet as WalletIcon, 
   TrendingUp,
-  Activity,
-  AlertCircle,
-  Clock
+  Clock,
+  CreditCard,
+  Banknote
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState, useCallback } from "react";
@@ -19,7 +22,6 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 
 export default function WalletPage() {
   const { user, loading: authLoading } = useAuth(true);
@@ -27,6 +29,7 @@ export default function WalletPage() {
   const [transactions, setTransactions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
+  const [txFilter, setTxFilter] = useState("All");
   
   const [isDepositOpen, setIsDepositOpen] = useState(false);
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
@@ -99,7 +102,7 @@ export default function WalletPage() {
         amount,
         type: "deposit",
         status: "completed",
-        description: "Arena Balance Recharge",
+        description: "Wallet Deposit",
       });
 
       if (txError) throw txError;
@@ -170,198 +173,249 @@ export default function WalletPage() {
     }
   };
 
+  const filteredTransactions = transactions.filter(tx => {
+    if (txFilter === "All") return true;
+    if (txFilter === "Deposits") return tx.type === "deposit";
+    if (txFilter === "Withdrawals") return tx.type === "withdrawal";
+    return true;
+  });
+
   if (authLoading) return null;
 
   return (
-    <div className="min-h-screen bg-transparent text-foreground">
-      <main className="pb-24 relative z-10">
+    <div className="min-h-screen bg-[#D4D7DE] text-[#11130D]">
+      <main className="pb-28 relative z-10">
         <TopHeader />
 
-          <div className="px-4 sm:px-6 pt-4 sm:pt-6 space-y-6 sm:space-y-10">
-            {/* Balance Card - Clean White Design */}
-            <section>
-              <motion.div 
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="relative h-48 sm:h-56 rounded-[32px] bg-white overflow-hidden shadow-2xl p-8 flex flex-col justify-between border border-dark-emerald/10"
-              >
-                <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#066839 1px, transparent 1px)', backgroundSize: '12px 12px' }} />
-                
-                <div className="relative z-10 flex justify-between items-start">
-                  <div className="space-y-1">
-                    <p className="text-[10px] font-black text-dark-emerald/60 uppercase tracking-[0.3em]">AVAILABLE FUNDS</p>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-2xl font-heading text-dark-emerald/40">₹</span>
-                      <h2 className="text-5xl sm:text-6xl font-heading text-dark-emerald tracking-tight">
-                        {(wallet?.balance || 0).toLocaleString()}
-                      </h2>
-                    </div>
-                  </div>
-                  <div className="w-14 h-14 rounded-2xl bg-dark-emerald/5 flex items-center justify-center text-dark-emerald border border-dark-emerald/10">
-                    <WalletIcon size={28} strokeWidth={2.5} />
-                  </div>
-                </div>
+        {/* Pastel Blob Header */}
+        <section className="relative px-4 sm:px-6 pt-6 pb-4 blob-header blob-header-lavender">
+          <div className="relative z-10">
+            <p className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-[0.2em] mb-1">
+              Your Funds
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-heading text-[#11130D]">
+              <span className="text-[#868935]">Wallet</span>
+            </h2>
+          </div>
+        </section>
 
-                <div className="relative z-10 flex items-center gap-6 pt-6 border-t border-dark-emerald/10">
-                  <div>
-                    <p className="text-[9px] font-black text-dark-emerald/40 uppercase tracking-widest">LIFE EARNINGS</p>
-                    <p className="text-xl font-heading text-dark-emerald">₹{(wallet?.lifetime_earnings || 0).toLocaleString()}</p>
-                  </div>
-                  <div className="h-8 w-[1px] bg-dark-emerald/10" />
-                  <div>
-                    <p className="text-[9px] font-black text-dark-emerald/40 uppercase tracking-widest">PENDING</p>
-                    <p className="text-xl font-heading text-dark-emerald/60">₹{(wallet?.pending_withdrawals || 0).toLocaleString()}</p>
-                  </div>
+        <div className="px-4 sm:px-6 pt-4 space-y-6">
+          {/* Balance Hero Card */}
+          <BentoCard variant="hero" pastelColor="lavender" className="p-6">
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <p className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wide mb-1">Available Balance</p>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-xl text-[#868935]">₹</span>
+                  <h2 className="text-4xl sm:text-5xl font-heading text-[#11130D]">
+                    {(wallet?.balance || 0).toLocaleString()}
+                  </h2>
                 </div>
-              </motion.div>
-            </section>
-
-            {/* Deposit Actions - Dark Emerald Focus */}
-            <section className="grid grid-cols-2 gap-4">
-              <motion.button 
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsDepositOpen(true)}
-                className="bg-dark-emerald text-white rounded-[24px] py-6 flex flex-col items-center gap-3 shadow-xl shadow-dark-emerald/20 border-none"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-white">
-                  <Plus size={24} strokeWidth={3} />
-                </div>
-                <span className="text-[11px] font-black uppercase tracking-widest">DEPOSIT CASH</span>
-              </motion.button>
-              <motion.button 
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsWithdrawOpen(true)}
-                className="bg-jet-black text-white rounded-[24px] py-6 flex flex-col items-center gap-3 shadow-lg border border-emerald-depths/20"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-dark-emerald/10 flex items-center justify-center text-dark-emerald">
-                  <ArrowDownLeft size={24} strokeWidth={3} />
-                </div>
-                <span className="text-[11px] font-black uppercase tracking-widest">WITHDRAW</span>
-              </motion.button>
-            </section>
-
-
-          {/* Transaction History - Mobile Optimized */}
-          <section className="space-y-4">
-            <div className="flex items-center justify-between px-1">
-              <div className="space-y-0.5">
-                <h3 className="text-base sm:text-lg font-outfit font-semibold text-foreground">Transactions</h3>
-                <p className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Recent Activity</p>
               </div>
-              <Activity size={18} className="text-muted-foreground" />
+              <div className="w-14 h-14 rounded-2xl bg-[#D7FD03] flex items-center justify-center shadow-lg shadow-[#D7FD03]/30">
+                <WalletIcon size={24} className="text-[#11130D]" />
+              </div>
             </div>
 
-            <div className="space-y-2 sm:space-y-3">
+            <div className="flex items-center gap-6 pt-4 border-t border-[#C8C8C4]/30">
+              <div>
+                <p className="text-[9px] font-bold text-[#4A4B48] uppercase tracking-wide">Lifetime Earnings</p>
+                <p className="text-lg font-heading text-[#11130D]">₹{(wallet?.lifetime_earnings || 0).toLocaleString()}</p>
+              </div>
+              <div className="h-8 w-px bg-[#C8C8C4]/30" />
+              <div>
+                <p className="text-[9px] font-bold text-[#4A4B48] uppercase tracking-wide">Pending</p>
+                <p className="text-lg font-heading text-[#4A4B48]">₹{(wallet?.pending_withdrawals || 0).toLocaleString()}</p>
+              </div>
+            </div>
+          </BentoCard>
+
+          {/* Action Buttons */}
+          <div className="grid grid-cols-2 gap-4">
+            <motion.button 
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsDepositOpen(true)}
+              className="bg-[#D7FD03] text-[#11130D] rounded-[20px] py-5 flex flex-col items-center gap-3 shadow-lg shadow-[#D7FD03]/30"
+            >
+              <div className="w-12 h-12 rounded-xl bg-[#11130D]/10 flex items-center justify-center">
+                <Plus size={24} strokeWidth={3} />
+              </div>
+              <span className="text-[11px] font-bold uppercase tracking-wide">Deposit</span>
+            </motion.button>
+            <motion.button 
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsWithdrawOpen(true)}
+              className="bg-white text-[#11130D] rounded-[20px] py-5 flex flex-col items-center gap-3 border border-[#C8C8C4]/30 shadow-sm"
+            >
+              <div className="w-12 h-12 rounded-xl bg-[#E8E9EC] flex items-center justify-center">
+                <ArrowDownLeft size={24} strokeWidth={3} className="text-[#868935]" />
+              </div>
+              <span className="text-[11px] font-bold uppercase tracking-wide">Withdraw</span>
+            </motion.button>
+          </div>
+
+          {/* Add Bank/UPI */}
+          <BentoCard className="p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#E8E9EC] flex items-center justify-center">
+                <CreditCard size={18} className="text-[#868935]" />
+              </div>
+              <div>
+                <p className="text-[12px] font-semibold text-[#11130D]">Add Bank / UPI</p>
+                <p className="text-[10px] text-[#4A4B48]">For faster withdrawals</p>
+              </div>
+            </div>
+            <motion.button 
+              whileTap={{ scale: 0.95 }}
+              className="px-4 py-2 bg-[#E8E9EC] text-[#11130D] rounded-xl text-[10px] font-bold uppercase tracking-wide"
+            >
+              Setup
+            </motion.button>
+          </BentoCard>
+
+          {/* Transactions */}
+          <section className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-heading text-[#11130D]">Transactions</h3>
+            </div>
+
+            <ChipGroup 
+              options={["All", "Deposits", "Withdrawals"]}
+              selected={txFilter}
+              onChange={setTxFilter}
+            />
+
+            <div className="space-y-3">
               {loading ? (
-                <div className="flex flex-col items-center justify-center py-12 gap-3 bg-card rounded-[20px] border border-border">
-                  <Loader2 className="w-8 h-8 animate-spin text-accent" />
-                  <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Loading...</p>
+                <div className="flex flex-col items-center justify-center py-12 gap-3">
+                  <Loader2 className="w-8 h-8 animate-spin text-[#868935]" />
+                  <p className="text-[10px] text-[#4A4B48] font-bold uppercase tracking-wider">Loading...</p>
                 </div>
-              ) : transactions.length > 0 ? (
-                transactions.map((tx, i) => (
+              ) : filteredTransactions.length > 0 ? (
+                filteredTransactions.map((tx, i) => (
                   <motion.div 
                     key={tx.id}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.03 }}
-                    className="mobile-card p-3.5 sm:p-4 flex items-center justify-between"
                   >
-                    <div className="flex items-center gap-3 sm:gap-4">
-                      <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center ${
-                        ['deposit', 'prize'].includes(tx.type) ? 'bg-accent/15 text-accent' : 'bg-muted text-muted-foreground'
-                      }`}>
-                        {tx.type === 'deposit' ? <Plus size={18} strokeWidth={3} /> : tx.type === 'withdrawal' ? <ArrowDownLeft size={18} strokeWidth={3} /> : <TrendingUp size={18} strokeWidth={3} />}
-                      </div>
-                      <div>
-                        <h4 className="text-[12px] sm:text-[13px] font-semibold text-foreground capitalize">{tx.description || tx.type}</h4>
-                        <div className="flex items-center gap-2">
-                          <span className="text-[9px] font-medium text-muted-foreground flex items-center gap-1">
-                            <Clock size={10} /> {new Date(tx.created_at).toLocaleDateString()}
-                          </span>
-                          <Badge variant="outline" className={`border-none rounded-full text-[7px] sm:text-[8px] px-1.5 py-0 h-4 font-bold ${
-                            tx.status === 'completed' ? 'bg-accent/15 text-accent' : 'bg-muted text-muted-foreground'
-                          }`}>
-                            {tx.status.toUpperCase()}
-                          </Badge>
+                    <BentoCard className="p-4 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                          ['deposit', 'prize'].includes(tx.type) ? 'bg-[#D7FD03]/20' : 'bg-[#E8E9EC]'
+                        }`}>
+                          {tx.type === 'deposit' ? <Plus size={18} className="text-[#868935]" /> : 
+                           tx.type === 'withdrawal' ? <ArrowDownLeft size={18} className="text-[#4A4B48]" /> : 
+                           <TrendingUp size={18} className="text-[#868935]" />}
+                        </div>
+                        <div>
+                          <h4 className="text-[12px] font-semibold text-[#11130D] capitalize">{tx.description || tx.type}</h4>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <span className="text-[9px] text-[#4A4B48] flex items-center gap-1">
+                              <Clock size={10} /> {new Date(tx.created_at).toLocaleDateString()}
+                            </span>
+                            <StatusBadge 
+                              variant={tx.status === 'completed' ? 'completed' : tx.status === 'pending' ? 'pending' : 'failed'} 
+                              className="text-[8px] px-2"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="text-right">
-                      <p className={`text-base sm:text-lg font-outfit font-bold ${
-                        ['deposit', 'prize'].includes(tx.type) ? 'text-accent' : 'text-foreground/60'
+                      <p className={`text-base font-heading ${
+                        ['deposit', 'prize'].includes(tx.type) ? 'text-[#868935]' : 'text-[#4A4B48]'
                       }`}>
                         {['deposit', 'prize'].includes(tx.type) ? '+' : '-'}₹{tx.amount}
                       </p>
-                    </div>
+                    </BentoCard>
                   </motion.div>
                 ))
               ) : (
-                <div className="text-center py-12 bg-card rounded-[20px] border border-dashed border-border space-y-3">
-                  <AlertCircle size={32} className="text-muted-foreground/30 mx-auto" />
-                  <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">No transactions yet</p>
-                </div>
+                <BentoCard className="p-8 text-center">
+                  <Banknote size={32} className="text-[#C8C8C4] mx-auto mb-3" />
+                  <p className="text-[11px] text-[#4A4B48] font-medium">No transactions yet</p>
+                </BentoCard>
               )}
             </div>
           </section>
         </div>
       </main>
 
-      {/* Deposit Modal - Mobile Optimized */}
+      {/* Deposit Modal */}
       <Dialog open={isDepositOpen} onOpenChange={setIsDepositOpen}>
-        <DialogContent className="p-0 border-none bg-popover text-popover-foreground rounded-t-[28px] sm:rounded-[28px] overflow-hidden max-w-[100vw] sm:max-w-[400px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0 sm:m-auto">
-          <div className="premium-gradient p-6 sm:p-8 relative overflow-hidden">
-            <DialogTitle className="text-2xl sm:text-3xl font-heading text-white mb-1">Add Funds</DialogTitle>
-            <DialogDescription className="text-white/60 text-[10px] sm:text-[11px] font-medium uppercase tracking-wide">Add money to your wallet</DialogDescription>
-            <div className="absolute top-[-20%] right-[-10%] w-32 h-32 bg-white/10 blur-[50px] rounded-full" />
+        <DialogContent className="p-0 border-none bg-white rounded-t-[28px] sm:rounded-[28px] overflow-hidden max-w-[100vw] sm:max-w-[400px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0">
+          <div className="bg-gradient-to-br from-[#D7FD03] to-[#C7E323] p-6 relative">
+            <DialogTitle className="text-2xl font-heading text-[#11130D] mb-1">Add Funds</DialogTitle>
+            <DialogDescription className="text-[#11130D]/60 text-[11px] font-medium uppercase tracking-wide">Deposit money to your wallet</DialogDescription>
           </div>
-          <div className="p-6 sm:p-8 space-y-6">
+          <div className="p-6 space-y-6">
             <div className="space-y-2">
-              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider ml-1">Amount (₹)</label>
+              <label className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wider ml-1">Amount (₹)</label>
               <Input 
                 type="number" 
                 placeholder="Enter amount" 
-                className="h-14 rounded-xl border border-border bg-muted text-xl font-outfit font-semibold px-5 focus-visible:ring-accent text-foreground placeholder:text-muted-foreground/40"
+                className="h-14 rounded-xl border border-[#C8C8C4]/30 bg-[#E8E9EC] text-xl font-heading px-5 focus-visible:ring-[#D7FD03] text-[#11130D] placeholder:text-[#4A4B48]/40"
                 value={depositAmount}
                 onChange={(e) => setDepositAmount(e.target.value)}
               />
             </div>
-            <button 
+            <div className="flex gap-2">
+              {[100, 200, 500, 1000].map(amt => (
+                <motion.button
+                  key={amt}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setDepositAmount(String(amt))}
+                  className={`flex-1 py-2.5 rounded-xl text-[11px] font-bold ${
+                    depositAmount === String(amt) 
+                      ? 'bg-[#D7FD03] text-[#11130D]' 
+                      : 'bg-[#E8E9EC] text-[#4A4B48]'
+                  }`}
+                >
+                  ₹{amt}
+                </motion.button>
+              ))}
+            </div>
+            <motion.button 
+              whileTap={{ scale: 0.98 }}
               onClick={handleDeposit}
               disabled={processing}
-              className="w-full h-14 bg-primary text-primary-foreground rounded-xl text-[11px] font-bold uppercase tracking-wider shadow-lg active:scale-[0.98] transition-transform haptic-tap touch-target"
+              className="w-full h-14 bg-[#D7FD03] text-[#11130D] rounded-xl text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#D7FD03]/30"
             >
               {processing ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Add Funds"}
-            </button>
+            </motion.button>
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* Withdraw Modal - Mobile Optimized */}
+      {/* Withdraw Modal */}
       <Dialog open={isWithdrawOpen} onOpenChange={setIsWithdrawOpen}>
-        <DialogContent className="p-0 border-none bg-popover text-popover-foreground rounded-t-[28px] sm:rounded-[28px] overflow-hidden max-w-[100vw] sm:max-w-[400px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0 sm:m-auto">
-          <div className="bg-muted p-6 sm:p-8 relative overflow-hidden">
-            <DialogTitle className="text-2xl sm:text-3xl font-heading text-foreground mb-1">Withdraw</DialogTitle>
-            <DialogDescription className="text-muted-foreground text-[10px] sm:text-[11px] font-medium uppercase tracking-wide">Withdraw your winnings</DialogDescription>
-            <div className="absolute top-[-20%] right-[-10%] w-32 h-32 bg-accent/10 blur-[50px] rounded-full" />
+        <DialogContent className="p-0 border-none bg-white rounded-t-[28px] sm:rounded-[28px] overflow-hidden max-w-[100vw] sm:max-w-[400px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0">
+          <div className="bg-[#E8E9EC] p-6 relative">
+            <DialogTitle className="text-2xl font-heading text-[#11130D] mb-1">Withdraw</DialogTitle>
+            <DialogDescription className="text-[#4A4B48] text-[11px] font-medium uppercase tracking-wide">Withdraw your winnings</DialogDescription>
           </div>
-          <div className="p-6 sm:p-8 space-y-6">
+          <div className="p-6 space-y-6">
             <div className="space-y-2">
-              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider ml-1">Amount (₹)</label>
+              <label className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wider ml-1">Amount (₹)</label>
               <Input 
                 type="number" 
                 placeholder="Min ₹100" 
-                className="h-14 rounded-xl border border-border bg-muted text-xl font-outfit font-semibold px-5 focus-visible:ring-accent text-foreground placeholder:text-muted-foreground/40"
+                className="h-14 rounded-xl border border-[#C8C8C4]/30 bg-[#E8E9EC] text-xl font-heading px-5 focus-visible:ring-[#D7FD03] text-[#11130D] placeholder:text-[#4A4B48]/40"
                 value={withdrawAmount}
                 onChange={(e) => setWithdrawAmount(e.target.value)}
               />
             </div>
-            <button 
+            <div className="bg-[#F5E3C7]/50 rounded-xl p-3 flex items-center gap-2">
+              <Clock size={14} className="text-[#7A5C00]" />
+              <p className="text-[10px] text-[#7A5C00] font-medium">Processing time: 24 hours</p>
+            </div>
+            <motion.button 
+              whileTap={{ scale: 0.98 }}
               onClick={handleWithdraw}
               disabled={processing}
-              className="w-full h-14 bg-secondary text-secondary-foreground rounded-xl text-[11px] font-bold uppercase tracking-wider shadow-lg active:scale-[0.98] transition-transform haptic-tap touch-target"
+              className="w-full h-14 bg-[#11130D] text-white rounded-xl text-[11px] font-bold uppercase tracking-wider shadow-lg"
             >
               {processing ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Request Withdrawal"}
-            </button>
+            </motion.button>
           </div>
         </DialogContent>
       </Dialog>

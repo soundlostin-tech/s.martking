@@ -2,8 +2,9 @@
 
 import { BottomNav } from "@/components/layout/BottomNav";
 import { TopHeader } from "@/components/layout/TopHeader";
+import { BentoCard } from "@/components/ui/BentoCard";
+import { ListRow } from "@/components/ui/ListRow";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { 
   ChevronRight, 
   Bell, 
@@ -19,7 +20,8 @@ import {
   CreditCard,
   Award,
   Gamepad2,
-  Activity
+  HelpCircle,
+  FileText
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useState, useEffect, useCallback } from "react";
@@ -27,6 +29,7 @@ import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 export default function Profile() {
   const { user, loading: authLoading } = useAuth(true);
@@ -104,66 +107,67 @@ export default function Profile() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <Activity className="w-10 h-10 animate-pulse text-dark-emerald" />
+      <div className="min-h-screen flex items-center justify-center bg-[#D4D7DE]">
+        <Loader2 className="w-10 h-10 animate-spin text-[#868935]" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-transparent text-foreground">
-      <main className="pb-24 relative z-10">
+    <div className="min-h-screen bg-[#D4D7DE] text-[#11130D]">
+      <main className="pb-28 relative z-10">
         <TopHeader />
 
-          <div className="px-4 sm:px-6 pt-10 space-y-10">
-            {/* Profile Header - Centered & Little Planet Style */}
-            <section className="flex flex-col items-center text-center space-y-6">
+        {/* Pastel Blob Header */}
+        <section className="relative px-4 sm:px-6 pt-6 pb-4 blob-header blob-header-peach">
+          <div className="relative z-10">
+            <p className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-[0.2em] mb-1">
+              Your Account
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-heading text-[#11130D]">
+              <span className="text-[#868935]">Profile</span>
+            </h2>
+          </div>
+        </section>
+
+        <div className="px-4 sm:px-6 pt-4 space-y-6">
+          {/* Profile Card */}
+          <BentoCard variant="hero" pastelColor="peach" className="p-6">
+            <div className="flex items-center gap-4">
               <div className="relative">
-                <motion.div 
-                  whileTap={{ scale: 0.95 }}
-                  className="w-32 h-32 sm:w-40 sm:h-40 rounded-full p-1 bg-gradient-to-tr from-dark-emerald to-emerald-depths shadow-2xl relative"
-                >
-                  <div className="w-full h-full rounded-full bg-background p-1">
-                    <Avatar className="w-full h-full rounded-full border-none bg-jet-black flex items-center justify-center overflow-hidden">
+                <div className="w-20 h-20 rounded-full p-[3px] bg-gradient-to-br from-[#D7FD03] to-[#C7E323]">
+                  <div className="w-full h-full rounded-full bg-white p-0.5">
+                    <Avatar className="w-full h-full rounded-full">
                       {profile?.avatar_url ? (
                         <AvatarImage src={profile?.avatar_url} className="object-cover" />
                       ) : (
-                        <div className="text-dark-emerald">
-                           {/* Little Planet Icon Placeholder */}
-                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-16 h-16">
-                             <circle cx="12" cy="12" r="10" />
-                             <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                           </svg>
-                        </div>
+                        <AvatarFallback className="bg-[#E8E9EC] text-[#868935] text-2xl font-heading">
+                          {profile?.full_name?.[0]?.toUpperCase() || user?.email?.[0].toUpperCase()}
+                        </AvatarFallback>
                       )}
                     </Avatar>
                   </div>
-                  
-                  {/* Orbiting Badge */}
-                  <div className="absolute -top-2 -right-2 w-10 h-10 rounded-full bg-dark-emerald text-white flex items-center justify-center border-4 border-background shadow-xl">
-                    <Trophy size={16} strokeWidth={2.5} />
-                  </div>
-                </motion.div>
-
-                <button 
-                  onClick={() => setIsEditing(true)}
-                  className="absolute bottom-2 right-2 w-10 h-10 bg-white text-dark-emerald rounded-full shadow-lg flex items-center justify-center active:scale-90 transition-transform border-4 border-background touch-target"
-                >
-                  <Edit2 size={16} strokeWidth={3} />
-                </button>
-              </div>
-              
-              <div className="space-y-2">
-                <h2 className="text-4xl font-heading text-foreground tracking-tight">{profile?.full_name || "WARRIOR"}</h2>
-                <div className="flex items-center justify-center gap-2">
-                  <span className="text-[10px] font-black text-dark-emerald uppercase tracking-[0.3em]">ARENA ID: {profile?.username || user?.email?.split('@')[0].toUpperCase()}</span>
                 </div>
+                <motion.button 
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setIsEditing(true)}
+                  className="absolute -bottom-1 -right-1 w-8 h-8 bg-[#D7FD03] rounded-full flex items-center justify-center shadow-lg"
+                >
+                  <Edit2 size={14} className="text-[#11130D]" />
+                </motion.button>
               </div>
-            </section>
+              <div className="flex-1">
+                <h3 className="text-xl font-heading text-[#11130D]">{profile?.full_name || "Warrior"}</h3>
+                <p className="text-[11px] text-[#4A4B48] font-medium">@{profile?.username || user?.email?.split('@')[0]}</p>
+                {profile?.free_fire_uid && (
+                  <p className="text-[10px] text-[#868935] font-bold uppercase tracking-wide mt-1">UID: {profile.free_fire_uid}</p>
+                )}
+              </div>
+            </div>
+          </BentoCard>
 
-
-          {/* Stats Grid - Mobile Optimized */}
-          <section className="grid grid-cols-2 gap-3 sm:gap-4">
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 gap-3">
             {[
               { label: "Wins", value: Math.floor((profile?.matches_played || 0) * (parseFloat(profile?.win_rate || "0") / 100)), icon: Award },
               { label: "Win Rate", value: `${profile?.win_rate || 0}%`, icon: TrendingUp },
@@ -175,133 +179,162 @@ export default function Profile() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: i * 0.05 }}
-                className="mobile-card p-4 sm:p-5"
               >
-                <div className="flex items-center gap-3 mb-2 sm:mb-3">
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-accent/15 flex items-center justify-center text-accent">
-                    <stat.icon size={16} className="sm:w-[18px] sm:h-[18px]" />
+                <BentoCard className="p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-9 h-9 rounded-xl bg-[#D7FD03]/20 flex items-center justify-center">
+                      <stat.icon size={16} className="text-[#868935]" />
+                    </div>
+                    <span className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wide">{stat.label}</span>
                   </div>
-                  <span className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-wide">{stat.label}</span>
-                </div>
-                <h4 className="text-xl sm:text-2xl font-outfit font-bold text-foreground">{stat.value}</h4>
+                  <h4 className="text-xl font-heading text-[#11130D]">{stat.value}</h4>
+                </BentoCard>
               </motion.div>
             ))}
-          </section>
+          </div>
 
-          {/* Menu - Mobile Optimized */}
-          <section className="bg-card rounded-[24px] sm:rounded-[28px] overflow-hidden border border-border shadow-sm">
-            <div className="p-2 sm:p-3 space-y-1">
-              {[
-                { label: "Settings", icon: Settings, href: "#", accent: true },
-                { label: "Notifications", icon: Bell, href: "#" },
-                { label: "Wallet", icon: CreditCard, href: "/wallet", accent: true },
-                { label: "Security", icon: ShieldCheck, href: "#" },
-              ].map((item, i) => (
-                <button 
-                  key={i}
-                  className="w-full flex items-center justify-between p-3.5 sm:p-4 active:bg-muted transition-colors rounded-xl sm:rounded-2xl text-left touch-target"
-                >
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl flex items-center justify-center border border-border ${item.accent ? 'bg-accent/10 text-accent' : 'bg-muted text-muted-foreground'}`}>
-                      <item.icon size={18} className="sm:w-5 sm:h-5" />
-                    </div>
-                    <span className="text-[12px] sm:text-[13px] font-semibold text-foreground">{item.label}</span>
-                  </div>
-                  <ChevronRight size={18} className="text-muted-foreground" />
-                </button>
-              ))}
-              
-              <div className="h-[1px] bg-border mx-3 my-2" />
-              
-              <button 
-                onClick={handleLogout}
-                className="w-full flex items-center justify-between p-3.5 sm:p-4 active:bg-destructive/10 transition-colors rounded-xl sm:rounded-2xl text-left touch-target"
-              >
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-destructive/10 flex items-center justify-center text-destructive border border-destructive/10">
-                    <LogOut size={18} className="sm:w-5 sm:h-5" />
-                  </div>
-                  <span className="text-[12px] sm:text-[13px] font-semibold text-destructive">Sign Out</span>
-                </div>
-                <ChevronRight size={18} className="text-destructive/30" />
-              </button>
+          {/* Settings Menu */}
+          <section className="space-y-3">
+            <h3 className="text-sm font-heading text-[#11130D] px-1">Settings</h3>
+            
+            <div className="space-y-2">
+              <ListRow 
+                icon={<Settings size={18} />}
+                title="Account & Security"
+                meta="Manage your account settings"
+              />
+              <ListRow 
+                icon={<Bell size={18} />}
+                title="Notifications"
+                meta="Match reminders, results, wallet"
+              />
+              <Link href="/wallet">
+                <ListRow 
+                  icon={<CreditCard size={18} />}
+                  title="Wallet"
+                  meta="Manage funds and withdrawals"
+                />
+              </Link>
+              <ListRow 
+                icon={<ShieldCheck size={18} />}
+                title="KYC Verification"
+                meta="Verify your identity"
+                rightContent={
+                  <span className="text-[9px] font-bold text-[#7A5C00] bg-[#F5D68A] px-2 py-1 rounded-full uppercase">Pending</span>
+                }
+              />
             </div>
           </section>
+
+          {/* Support Menu */}
+          <section className="space-y-3">
+            <h3 className="text-sm font-heading text-[#11130D] px-1">Support</h3>
+            
+            <div className="space-y-2">
+              <ListRow 
+                icon={<HelpCircle size={18} />}
+                title="Help & Support"
+                meta="FAQs and contact us"
+              />
+              <ListRow 
+                icon={<FileText size={18} />}
+                title="Terms & Privacy"
+                meta="Legal information"
+              />
+            </div>
+          </section>
+
+          {/* Logout */}
+          <BentoCard 
+            className="p-4 flex items-center justify-between cursor-pointer border-[#F5A8A8]/30"
+            onClick={handleLogout}
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#F5A8A8]/20 flex items-center justify-center">
+                <LogOut size={18} className="text-[#8A2020]" />
+              </div>
+              <span className="text-[13px] font-semibold text-[#8A2020]">Sign Out</span>
+            </div>
+            <ChevronRight size={18} className="text-[#8A2020]/30" />
+          </BentoCard>
         </div>
 
-        {/* Edit Profile Modal - Mobile Optimized */}
+        {/* Edit Profile Modal */}
         <AnimatePresence>
           {isEditing && (
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-lg flex items-end sm:items-center justify-center"
+              className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center"
             >
               <motion.div 
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}
                 exit={{ y: "100%" }}
                 transition={{ type: "spring", damping: 30, stiffness: 300 }}
-                className="bg-background border border-border w-full max-w-md rounded-t-[28px] sm:rounded-[28px] p-6 sm:p-8 space-y-6 sm:space-y-8 shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto"
+                className="bg-white w-full max-w-md rounded-t-[28px] sm:rounded-[28px] p-6 space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto"
               >
-                <div className="relative z-10 flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <h3 className="text-xl sm:text-2xl font-heading text-foreground">Edit Profile</h3>
-                    <p className="text-[10px] sm:text-[11px] font-medium text-muted-foreground uppercase tracking-wide">Update your information</p>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-heading text-[#11130D]">Edit Profile</h3>
+                    <p className="text-[10px] text-[#4A4B48] font-medium uppercase tracking-wide">Update your information</p>
                   </div>
-                  <button onClick={() => setIsEditing(false)} className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center text-muted-foreground active:bg-muted/80 transition-colors border border-border touch-target">
-                    <X size={20} />
-                  </button>
+                  <motion.button 
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setIsEditing(false)} 
+                    className="w-10 h-10 rounded-xl bg-[#E8E9EC] flex items-center justify-center"
+                  >
+                    <X size={20} className="text-[#4A4B48]" />
+                  </motion.button>
                 </div>
 
-                <form onSubmit={handleUpdateProfile} className="relative z-10 space-y-5 sm:space-y-6">
-                  <div className="space-y-4 sm:space-y-5">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider ml-1">Name</label>
-                      <Input 
-                        value={formData.full_name} 
-                        onChange={(e) => setFormData({ ...formData, full_name: e.target.value })} 
-                        className="h-12 sm:h-14 rounded-xl border border-border bg-muted font-medium px-4 text-foreground focus-visible:ring-accent"
-                        placeholder="Your Name"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider ml-1">Username</label>
-                      <Input 
-                        value={formData.username} 
-                        onChange={(e) => setFormData({ ...formData, username: e.target.value })} 
-                        className="h-12 sm:h-14 rounded-xl border border-border bg-muted font-medium px-4 text-foreground focus-visible:ring-accent"
-                        placeholder="Username"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider ml-1">Phone</label>
-                      <Input 
-                        value={formData.phone} 
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })} 
-                        className="h-12 sm:h-14 rounded-xl border border-border bg-muted font-medium px-4 text-foreground focus-visible:ring-accent"
-                        placeholder="+91"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider ml-1">Avatar URL</label>
-                      <Input 
-                        value={formData.avatar_url} 
-                        onChange={(e) => setFormData({ ...formData, avatar_url: e.target.value })} 
-                        className="h-12 sm:h-14 rounded-xl border border-border bg-muted font-medium px-4 text-foreground focus-visible:ring-accent"
-                        placeholder="https://..."
-                      />
-                    </div>
+                <form onSubmit={handleUpdateProfile} className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wider ml-1">Name</label>
+                    <Input 
+                      value={formData.full_name} 
+                      onChange={(e) => setFormData({ ...formData, full_name: e.target.value })} 
+                      className="h-12 rounded-xl border border-[#C8C8C4]/30 bg-[#E8E9EC] font-medium px-4 text-[#11130D] focus-visible:ring-[#D7FD03]"
+                      placeholder="Your Name"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wider ml-1">Username</label>
+                    <Input 
+                      value={formData.username} 
+                      onChange={(e) => setFormData({ ...formData, username: e.target.value })} 
+                      className="h-12 rounded-xl border border-[#C8C8C4]/30 bg-[#E8E9EC] font-medium px-4 text-[#11130D] focus-visible:ring-[#D7FD03]"
+                      placeholder="Username"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wider ml-1">Phone</label>
+                    <Input 
+                      value={formData.phone} 
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })} 
+                      className="h-12 rounded-xl border border-[#C8C8C4]/30 bg-[#E8E9EC] font-medium px-4 text-[#11130D] focus-visible:ring-[#D7FD03]"
+                      placeholder="+91"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wider ml-1">Avatar URL</label>
+                    <Input 
+                      value={formData.avatar_url} 
+                      onChange={(e) => setFormData({ ...formData, avatar_url: e.target.value })} 
+                      className="h-12 rounded-xl border border-[#C8C8C4]/30 bg-[#E8E9EC] font-medium px-4 text-[#11130D] focus-visible:ring-[#D7FD03]"
+                      placeholder="https://..."
+                    />
                   </div>
 
-                  <button 
+                  <motion.button 
+                    whileTap={{ scale: 0.98 }}
                     type="submit" 
                     disabled={saving}
-                    className="w-full h-12 sm:h-14 bg-primary text-primary-foreground rounded-xl text-[11px] sm:text-[12px] font-bold uppercase tracking-wider shadow-lg active:scale-[0.98] transition-transform haptic-tap touch-target"
+                    className="w-full h-14 bg-[#D7FD03] text-[#11130D] rounded-xl text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#D7FD03]/30"
                   >
                     {saving ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Save Changes"}
-                  </button>
+                  </motion.button>
                 </form>
               </motion.div>
             </motion.div>

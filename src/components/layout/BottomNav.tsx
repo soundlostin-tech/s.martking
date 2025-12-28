@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 const navItems = [
   { label: "Home", icon: Home, href: "/" },
-  { label: "Live", icon: Play, href: "/live" },
+  { label: "LIVE", icon: Play, href: "/live" },
   { label: "Matches", icon: Swords, href: "/matches" },
   { label: "Wallet", icon: Wallet, href: "/wallet" },
   { label: "Profile", icon: User, href: "/profile" },
@@ -17,42 +17,47 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
-      <div className="flex justify-around items-center h-16 max-w-lg mx-auto">
+    <nav className="fixed bottom-6 left-4 right-4 z-50 bg-white/95 backdrop-blur-xl rounded-[24px] shadow-[0_4px_32px_rgba(0,0,0,0.12)] border border-[#C8C8C4]/30 max-w-lg mx-auto">
+      <div className="flex justify-around items-center h-16 px-2">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
+          const isLive = item.label === "LIVE";
           
-            return (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="relative flex flex-col items-center justify-center flex-1 h-full touch-target"
+          return (
+            <Link
+              key={item.label}
+              href={item.href}
+              className="relative flex flex-col items-center justify-center flex-1 h-full touch-target"
+            >
+              <motion.div
+                initial={false}
+                animate={{ 
+                  scale: isActive ? 1.05 : 1,
+                  y: isActive ? -2 : 0 
+                }}
+                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                className="relative flex flex-col items-center gap-1"
               >
-                <motion.div
-                  initial={false}
-                  animate={{ 
-                    scale: isActive ? 1.05 : 1,
-                    y: isActive ? -4 : 0 
-                  }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  className="relative flex flex-col items-center gap-1"
-                >
-                  <div className={`relative z-10 p-2 rounded-xl transition-all duration-300 ${
-                    isActive ? "bg-dark-emerald text-white shadow-lg shadow-dark-emerald/20" : "text-muted-foreground hover:text-foreground"
-                  }`}>
-                    <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
-                  </div>
-    
-                  <span className={`text-[9px] font-bold uppercase tracking-[0.15em] transition-colors duration-200 ${
-                    isActive ? "text-dark-emerald" : "text-muted-foreground"
-                  }`}>
-                    {item.label}
-                  </span>
-                </motion.div>
-              </Link>
-            );
-
+                <div className={`relative z-10 p-2.5 rounded-xl transition-all duration-300 ${
+                  isActive 
+                    ? "bg-[#D7FD03] text-[#11130D] shadow-lg shadow-[#D7FD03]/30" 
+                    : "text-[#4A4B48] hover:text-[#11130D]"
+                }`}>
+                  <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+                  {isLive && !isActive && (
+                    <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-[#D7FD03] rounded-full border-2 border-white" />
+                  )}
+                </div>
+  
+                <span className={`text-[9px] font-bold uppercase tracking-[0.15em] transition-colors duration-200 ${
+                  isActive ? "text-[#11130D]" : "text-[#4A4B48]"
+                }`}>
+                  {item.label}
+                </span>
+              </motion.div>
+            </Link>
+          );
         })}
       </div>
       <div className="h-[env(safe-area-inset-bottom,0px)]" />

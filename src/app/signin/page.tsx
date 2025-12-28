@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { Eye, EyeOff, Loader2, Swords, ShieldCheck, Zap, ArrowLeft, Mail, Lock, ChevronLeft } from "lucide-react";
+import { Eye, EyeOff, Loader2, ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
@@ -18,23 +18,18 @@ export default function Signin() {
     email: "",
     password: "",
   });
-  const [errors, setErrors] = useState<Record<string, string>>({});
   const router = useRouter();
 
   const validate = () => {
-    const newErrors: Record<string, string> = {};
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Invalid email format";
+    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
+      toast.error("Please enter a valid email");
+      return false;
     }
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+    if (!formData.password || formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return false;
     }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return true;
   };
 
   const handleSignin = async (e: React.FormEvent) => {
@@ -59,7 +54,7 @@ export default function Signin() {
         return;
       }
 
-      toast.success("Welcome back to the Arena!");
+      toast.success("Welcome back to Smartking's Arena!");
       router.push("/");
       router.refresh();
     } catch (error: any) {
@@ -70,103 +65,125 @@ export default function Signin() {
     }
   };
 
-    return (
-      <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2 selection:bg-dark-emerald/30">
-        {/* Left Side - Brand Identity */}
-        <div className="hidden lg:flex flex-col justify-between p-16 bg-dark-emerald relative overflow-hidden">
-           {/* Background Pattern */}
-           <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(white 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }} />
-           
-           <div className="relative z-10">
-             <div className="flex items-center gap-3">
-               <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-dark-emerald shadow-2xl">
-                 <Globe size={28} strokeWidth={2.5} />
-               </div>
-               <h1 className="text-2xl font-heading text-white">Smartking's Arena</h1>
-             </div>
-           </div>
-
-           <div className="relative z-10 space-y-6">
-             <h2 className="text-8xl font-heading text-white leading-[0.85] tracking-tighter">
-               STAY <br /> <span className="italic opacity-50">STRONG.</span>
-             </h2>
-             <p className="text-white/60 text-lg font-outfit font-black uppercase tracking-[0.2em] max-w-sm">
-               RE-ENTER THE PREMIER MOBILE COMBAT ARENA.
-             </p>
-           </div>
-
-           <div className="relative z-10 flex items-center gap-4">
-             <div className="flex -space-x-3">
-               {[1,2,3,4].map(i => (
-                 <div key={i} className="w-10 h-10 rounded-full border-4 border-dark-emerald bg-white/10 backdrop-blur-md" />
-               ))}
-             </div>
-             <p className="text-white/40 text-[10px] font-black uppercase tracking-widest">
-               JOINED BY <span className="text-white">2.4K+</span> WARRIORS TODAY
-             </p>
-           </div>
-        </div>
-
-        {/* Right Side - Clean White Form */}
-        <div className="bg-white flex flex-col justify-center px-8 lg:px-24 py-12 relative">
-          <nav className="absolute top-8 left-8 lg:left-24">
-             <Link href="/" className="text-dark-emerald flex items-center gap-2 text-[10px] font-black uppercase tracking-widest hover:opacity-70 transition-opacity">
-               <ChevronLeft size={16} strokeWidth={3} /> Back to Arena
-             </Link>
-          </nav>
-
-          <div className="max-w-md w-full mx-auto space-y-10">
-            <div className="space-y-2">
-              <h1 className="text-4xl font-heading text-dark-emerald">Welcome Back</h1>
-              <p className="text-slate-400 text-sm font-medium">Access your arena deployment console.</p>
+  return (
+    <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
+      {/* Left Side - Brand Identity */}
+      <div className="hidden lg:flex flex-col justify-between p-16 bg-gradient-to-br from-[#D7FD03] to-[#C7E323] relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#11130D 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }} />
+        
+        <div className="relative z-10">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-[#11130D] rounded-xl flex items-center justify-center shadow-2xl">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" className="w-6 h-6">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              </svg>
             </div>
-
-            <form onSubmit={handleSignin} className="space-y-6">
-              <div className="space-y-4">
-                <div className="space-y-1.5">
-                  <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Warrior Email</Label>
-                  <Input 
-                    placeholder="name@arena.com"
-                    className="h-14 rounded-2xl bg-slate-50 border-slate-100 text-dark-emerald font-semibold px-5 focus-visible:ring-dark-emerald/20"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Access Key</Label>
-                  <div className="relative">
-                    <Input 
-                      type={showPassword ? "text" : "password"}
-                      placeholder="••••••••"
-                      className="h-14 rounded-2xl bg-slate-50 border-slate-100 text-dark-emerald font-semibold px-5 pr-12 focus-visible:ring-dark-emerald/20"
-                      value={formData.password}
-                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    />
-                    <button 
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-dark-emerald transition-colors"
-                    >
-                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <Button 
-                type="submit"
-                disabled={loading}
-                className="w-full h-16 bg-dark-emerald hover:bg-dark-emerald/90 text-white rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-dark-emerald/20 border-none"
-              >
-                {loading ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Authorize Deployment"}
-              </Button>
-
-              <p className="text-center text-[11px] font-bold text-slate-400 uppercase tracking-widest">
-                New to the arena? <Link href="/signup" className="text-dark-emerald hover:underline">Join the fight</Link>
-              </p>
-            </form>
+            <h1 className="text-2xl font-heading text-[#11130D]">Smartking's Arena</h1>
           </div>
         </div>
-      </main>
-    );
+
+        <div className="relative z-10 space-y-6">
+          <h2 className="text-7xl font-heading text-[#11130D] leading-[0.9]">
+            Compete.<br />
+            <span className="text-[#11130D]/50">Win. Withdraw.</span>
+          </h2>
+          <p className="text-[#11130D]/70 text-lg font-medium max-w-sm">
+            Join verified Free Fire tournaments and win real cash prizes.
+          </p>
+        </div>
+
+        <div className="relative z-10 flex items-center gap-4">
+          <div className="flex -space-x-3">
+            {[1,2,3,4].map(i => (
+              <div key={i} className="w-10 h-10 rounded-full border-4 border-[#D7FD03] bg-[#11130D]/20 backdrop-blur-md" />
+            ))}
+          </div>
+          <p className="text-[#11130D]/60 text-[11px] font-bold uppercase tracking-wide">
+            <span className="text-[#11130D]">2.4K+</span> warriors online now
+          </p>
+        </div>
+      </div>
+
+      {/* Right Side - Form */}
+      <div className="bg-[#D4D7DE] flex flex-col justify-center px-8 lg:px-24 py-12 relative blob-header blob-header-coral">
+        <nav className="absolute top-8 left-8 lg:left-24">
+          <Link href="/" className="text-[#11130D] flex items-center gap-2 text-[10px] font-bold uppercase tracking-wide hover:opacity-70 transition-opacity">
+            <ChevronLeft size={16} strokeWidth={3} /> Back
+          </Link>
+        </nav>
+
+        <div className="max-w-md w-full mx-auto space-y-8 relative z-10">
+          {/* Mobile Logo */}
+          <div className="lg:hidden flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 bg-[#D7FD03] rounded-xl flex items-center justify-center shadow-lg shadow-[#D7FD03]/30">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#11130D" strokeWidth="2.5" className="w-5 h-5">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              </svg>
+            </div>
+            <h1 className="text-lg font-heading text-[#11130D]">Smartking's Arena</h1>
+          </div>
+
+          <div className="space-y-2">
+            <h1 className="text-3xl sm:text-4xl font-heading text-[#11130D]">Welcome Back</h1>
+            <p className="text-[#4A4B48] text-sm font-medium">Sign in to your account</p>
+          </div>
+
+          <form onSubmit={handleSignin} className="space-y-5">
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <Label className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wide ml-1">Email</Label>
+                <Input 
+                  type="email"
+                  placeholder="name@example.com"
+                  className="h-14 rounded-xl bg-white border border-[#C8C8C4]/30 text-[#11130D] font-medium px-5 focus-visible:ring-[#D7FD03]"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wide ml-1">Password</Label>
+                <div className="relative">
+                  <Input 
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    className="h-14 rounded-xl bg-white border border-[#C8C8C4]/30 text-[#11130D] font-medium px-5 pr-12 focus-visible:ring-[#D7FD03]"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  />
+                  <button 
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4A4B48] hover:text-[#11130D] transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end">
+              <Link href="#" className="text-[10px] font-bold text-[#868935] uppercase tracking-wide hover:underline">
+                Forgot password?
+              </Link>
+            </div>
+
+            <motion.button
+              whileTap={{ scale: 0.98 }}
+              type="submit"
+              disabled={loading}
+              className="w-full h-14 bg-[#D7FD03] text-[#11130D] rounded-xl font-bold uppercase tracking-wide text-[11px] shadow-lg shadow-[#D7FD03]/30"
+            >
+              {loading ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Sign In"}
+            </motion.button>
+
+            <p className="text-center text-[11px] font-medium text-[#4A4B48]">
+              Don't have an account? <Link href="/signup" className="text-[#868935] font-bold hover:underline">Sign up</Link>
+            </p>
+          </form>
+        </div>
+      </div>
+    </main>
+  );
 }

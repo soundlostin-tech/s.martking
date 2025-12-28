@@ -2,19 +2,21 @@
 
 import { BottomNav } from "@/components/layout/BottomNav";
 import { TopHeader } from "@/components/layout/TopHeader";
+import { BentoCard } from "@/components/ui/BentoCard";
+import { ChipGroup } from "@/components/ui/Chip";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { useState, useEffect, useCallback } from "react";
-import { Swords, Search, Loader2, Play, Trophy, Calendar, Users, Signal, ChevronRight, Radio } from "lucide-react";
+import { Search, Loader2, Trophy, Calendar, Users, ChevronRight, AlertCircle } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
 
 const filters = ["All", "Upcoming", "Live", "Completed"];
 
 export default function MatchesPage() {
-  const { user, loading: authLoading } = useAuth(false);
+  const { user } = useAuth(false);
   const [activeFilter, setActiveFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [matches, setMatches] = useState<any[]>([]);
@@ -96,57 +98,48 @@ export default function MatchesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-transparent text-foreground">
-        <main className="pb-24 relative z-10">
-          <TopHeader />
+    <div className="min-h-screen bg-[#D4D7DE] text-[#11130D]">
+      <main className="pb-28 relative z-10">
+        <TopHeader />
 
-          {/* Matches Header - Patterned */}
-          <section className="relative px-6 py-8 overflow-hidden bg-dark-emerald/5 border-b border-border">
-            <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#066839 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
-            <div className="relative z-10 space-y-1">
-              <h2 className="text-3xl font-heading text-foreground">Arena <span className="text-dark-emerald italic">Battles</span></h2>
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em]">Live Feed / Sector Alpha</p>
-            </div>
-          </section>
+        {/* Pastel Blob Header */}
+        <section className="relative px-4 sm:px-6 pt-6 pb-4 blob-header blob-header-coral">
+          <div className="relative z-10">
+            <p className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-[0.2em] mb-1">
+              Tournament Hub
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-heading text-[#11130D]">
+              All <span className="text-[#868935]">Matches</span>
+            </h2>
+          </div>
+        </section>
 
-          {/* Search & Filter - Mobile Optimized */}
-          <section className="px-4 sm:px-6 pt-6 space-y-4">
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-dark-emerald/50" size={18} />
-              <input 
-                type="text" 
-                placeholder="SEARCH ARENA..." 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-jet-black border border-emerald-depths/30 rounded-2xl py-4 pl-12 pr-4 text-[10px] font-bold tracking-widest focus:ring-2 focus:ring-dark-emerald/20 transition-all placeholder:text-muted-foreground/30 text-foreground uppercase"
-              />
-            </div>
+        {/* Search & Filter */}
+        <section className="px-4 sm:px-6 pt-4 space-y-4">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#4A4B48]" size={18} />
+            <input 
+              type="text" 
+              placeholder="Search matches..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-white border border-[#C8C8C4]/30 rounded-xl py-3.5 pl-12 pr-4 text-[13px] font-medium focus:ring-2 focus:ring-[#D7FD03]/50 focus:border-[#D7FD03] transition-all placeholder:text-[#4A4B48]/50 text-[#11130D]"
+            />
+          </div>
 
-            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
-              {filters.map((filter) => (
-                <motion.button
-                  key={filter}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setActiveFilter(filter)}
-                  className={`flex-shrink-0 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap border ${
-                    activeFilter === filter 
-                      ? "bg-dark-emerald text-white border-dark-emerald shadow-lg shadow-dark-emerald/20" 
-                      : "bg-jet-black text-muted-foreground border-emerald-depths/20"
-                  }`}
-                >
-                  {filter}
-                </motion.button>
-              ))}
-            </div>
-          </section>
+          <ChipGroup 
+            options={filters}
+            selected={activeFilter}
+            onChange={setActiveFilter}
+          />
+        </section>
 
-
-        {/* Match List - Mobile Optimized */}
-        <section className="px-4 sm:px-6 pt-6 space-y-3 sm:space-y-4">
+        {/* Match List */}
+        <section className="px-4 sm:px-6 pt-6 space-y-4">
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-20 gap-4 bg-card rounded-[24px] border border-border">
-              <Loader2 className="w-10 h-10 animate-spin text-accent" />
-              <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Loading matches...</p>
+            <div className="flex flex-col items-center justify-center py-20 gap-4">
+              <Loader2 className="w-10 h-10 animate-spin text-[#868935]" />
+              <p className="text-[10px] text-[#4A4B48] font-bold uppercase tracking-wider">Loading matches...</p>
             </div>
           ) : matches.length > 0 ? (
             <AnimatePresence mode="popLayout">
@@ -157,110 +150,113 @@ export default function MatchesPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ delay: i * 0.03 }}
-                  className="mobile-card p-4 sm:p-6 space-y-4"
                 >
-                  {/* Header */}
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-center gap-3 sm:gap-4">
-                      <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center transition-colors ${
-                        match.status === 'live' 
-                          ? 'bg-accent/15 text-accent' 
-                          : 'bg-muted text-muted-foreground'
-                      } border border-border`}>
-                        {match.status === 'live' ? <Play size={20} fill="currentColor" className="translate-x-0.5 sm:w-6 sm:h-6" /> : <Swords size={20} className="sm:w-6 sm:h-6" />}
+                  <BentoCard className="p-5 space-y-4">
+                    {/* Header */}
+                    <div className="flex justify-between items-start">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                          match.status === 'live' 
+                            ? 'bg-[#D7FD03]/20' 
+                            : 'bg-[#E8E9EC]'
+                        }`}>
+                          <Trophy size={20} className={match.status === 'live' ? 'text-[#868935]' : 'text-[#4A4B48]'} />
+                        </div>
+                        <div>
+                          <h3 className="text-[15px] font-heading text-[#11130D]">{match.title}</h3>
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="text-[10px] font-bold text-[#4A4B48] bg-[#E8E9EC] px-2 py-0.5 rounded-md">{match.mode}</span>
+                            <span className="text-[10px] text-[#4A4B48]">{match.tournament?.title}</span>
+                          </div>
+                        </div>
                       </div>
-                      <div className="min-w-0 space-y-1">
-                        <h3 className="font-outfit text-base sm:text-lg font-semibold text-foreground truncate">{match.title}</h3>
-                        <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="border-border bg-muted text-[8px] sm:text-[9px] font-bold text-muted-foreground px-2 py-0">
-                            {match.mode.toUpperCase()}
-                          </Badge>
-                          <span className="text-[9px] sm:text-[10px] text-muted-foreground font-medium">{match.tournament?.title}</span>
+                      <StatusBadge variant={match.status === 'live' ? 'live' : match.status === 'upcoming' ? 'upcoming' : 'completed'} />
+                    </div>
+
+                    {/* Info Grid */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-[#E8E9EC] rounded-xl p-3 flex items-center gap-3">
+                        <Calendar size={16} className="text-[#868935]" />
+                        <div>
+                          <p className="text-[9px] font-bold text-[#4A4B48] uppercase">Time</p>
+                          <p className="text-[11px] font-semibold text-[#11130D]">
+                            {match.start_time ? new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'TBD'}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="bg-[#E8E9EC] rounded-xl p-3 flex items-center gap-3">
+                        <Users size={16} className="text-[#868935]" />
+                        <div>
+                          <p className="text-[9px] font-bold text-[#4A4B48] uppercase">Slots</p>
+                          <p className="text-[11px] font-semibold text-[#11130D]">{match.current_slots || 0} / {match.tournament?.slots || 48}</p>
                         </div>
                       </div>
                     </div>
-                    <div className={`px-3 py-1 rounded-full text-[8px] sm:text-[9px] font-bold uppercase tracking-wide border ${
-                      match.status === 'live' 
-                        ? 'bg-accent text-primary-foreground border-accent animate-pulse' 
-                        : 'bg-muted text-muted-foreground border-border'
-                    }`}>
-                      {match.status}
-                    </div>
-                  </div>
 
-                  {/* Info Grid */}
-                  <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                    <div className="bg-muted/50 rounded-xl p-3 sm:p-4 border border-border flex items-center gap-3">
-                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-background flex items-center justify-center text-accent">
-                        <Calendar size={16} className="sm:w-[18px] sm:h-[18px]" />
-                      </div>
-                      <div>
-                        <p className="text-[8px] sm:text-[9px] font-bold text-muted-foreground uppercase">Time</p>
-                        <p className="text-[10px] sm:text-[11px] font-semibold text-foreground">
-                          {match.start_time ? new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'TBD'}
-                        </p>
-                      </div>
+                    {/* Slots Progress Bar */}
+                    <div className="w-full h-2 bg-[#E8E9EC] rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-[#D7FD03] rounded-full transition-all duration-500"
+                        style={{ width: `${((match.current_slots || 0) / (match.tournament?.slots || 48)) * 100}%` }}
+                      />
                     </div>
-                    <div className="bg-muted/50 rounded-xl p-3 sm:p-4 border border-border flex items-center gap-3">
-                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-background flex items-center justify-center text-accent">
-                        <Users size={16} className="sm:w-[18px] sm:h-[18px]" />
-                      </div>
-                      <div>
-                        <p className="text-[8px] sm:text-[9px] font-bold text-muted-foreground uppercase">Slots</p>
-                        <p className="text-[10px] sm:text-[11px] font-semibold text-foreground">{match.current_slots || 0} / {match.tournament?.slots || 48}</p>
-                      </div>
-                    </div>
-                  </div>
 
-                  {/* Footer */}
-                  <div className="flex items-center justify-between pt-3 border-t border-border">
-                    <div className="flex flex-col gap-0.5">
-                      <p className="text-[8px] sm:text-[9px] font-bold text-muted-foreground uppercase tracking-wide">Prize Pool</p>
-                      <div className="flex items-center gap-1.5">
-                        <Trophy size={14} className="text-accent sm:w-4 sm:h-4" />
-                        <span className="text-lg sm:text-xl font-outfit font-bold text-foreground">₹{match.tournament?.prize_pool.toLocaleString() || 0}</span>
+                    {/* Footer */}
+                    <div className="flex items-center justify-between pt-3 border-t border-[#C8C8C4]/20">
+                      <div>
+                        <p className="text-[9px] font-bold text-[#4A4B48] uppercase">Prize Pool</p>
+                        <div className="flex items-center gap-1">
+                          <Trophy size={14} className="text-[#868935]" />
+                          <span className="text-lg font-heading text-[#11130D]">₹{match.tournament?.prize_pool?.toLocaleString() || 0}</span>
+                        </div>
                       </div>
+                    
+                      {match.status === "upcoming" ? (
+                        <motion.button 
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => handleJoinMatch(match.tournament_id, match.id)}
+                          disabled={joining === match.id}
+                          className="bg-[#D7FD03] text-[#11130D] px-5 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wide shadow-lg shadow-[#D7FD03]/30 flex items-center gap-1.5 disabled:opacity-50"
+                        >
+                          {joining === match.id ? <Loader2 size={14} className="animate-spin" /> : (
+                            <>Join ₹{match.tournament?.entry_fee} <ChevronRight size={14} /></>
+                          )}
+                        </motion.button>
+                      ) : match.status === 'live' ? (
+                        <Link href={`/live?match=${match.id}`}>
+                          <motion.button 
+                            whileTap={{ scale: 0.95 }}
+                            className="bg-[#D7FD03] text-[#11130D] px-5 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wide shadow-lg shadow-[#D7FD03]/30 flex items-center gap-1.5"
+                          >
+                            Watch <ChevronRight size={14} />
+                          </motion.button>
+                        </Link>
+                      ) : (
+                        <motion.button 
+                          whileTap={{ scale: 0.95 }}
+                          className="bg-[#E8E9EC] text-[#4A4B48] px-5 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wide flex items-center gap-1.5"
+                        >
+                          View <ChevronRight size={14} />
+                        </motion.button>
+                      )}
                     </div>
-                  
-                    {match.status === "upcoming" ? (
-                      <motion.button 
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => handleJoinMatch(match.tournament_id, match.id)}
-                        disabled={joining === match.id}
-                        className="bg-accent text-primary-foreground px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-[10px] sm:text-[11px] font-bold uppercase tracking-wide shadow-sm flex items-center gap-2 active:bg-accent/90 transition-colors haptic-tap touch-target"
-                      >
-                        {joining === match.id ? <Loader2 size={14} className="animate-spin" /> : (
-                          <>JOIN ₹{match.tournament?.entry_fee} <ChevronRight size={12} strokeWidth={3} /></>
-                        )}
-                      </motion.button>
-                    ) : (
-                      <Link 
-                        href={match.status === 'live' ? `/live?match=${match.id}` : '#'} 
-                        className="bg-accent text-primary-foreground px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-[10px] sm:text-[11px] font-bold uppercase tracking-wide shadow-sm flex items-center gap-2 active:bg-accent/90 transition-colors touch-target"
-                      >
-                        {match.status === 'live' ? <>WATCH <Radio size={12} className="animate-pulse" /></> : "VIEW"}
-                      </Link>
-                    )}
-                  </div>
+                  </BentoCard>
                 </motion.div>
               ))}
             </AnimatePresence>
           ) : (
-            <div className="bg-card p-12 sm:p-16 rounded-[24px] border border-dashed border-border text-center space-y-4">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-muted rounded-2xl flex items-center justify-center mx-auto text-muted-foreground/30">
-                <Signal size={32} strokeWidth={1} className="sm:w-10 sm:h-10" />
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-lg sm:text-xl font-outfit font-semibold text-foreground">No Matches</h3>
-                <p className="text-[11px] sm:text-xs text-muted-foreground">No matches found for the selected filter</p>
-              </div>
-              <button 
+            <BentoCard className="p-12 text-center">
+              <AlertCircle size={40} className="text-[#C8C8C4] mx-auto mb-4" />
+              <h3 className="text-lg font-heading text-[#11130D] mb-2">No Matches Found</h3>
+              <p className="text-[11px] text-[#4A4B48] mb-4">No matches found for the selected filter</p>
+              <motion.button 
+                whileTap={{ scale: 0.95 }}
                 onClick={() => { setActiveFilter("All"); setSearchQuery(""); }}
-                className="px-6 py-2.5 bg-muted text-foreground rounded-xl text-[10px] sm:text-[11px] font-bold uppercase tracking-wide border border-border haptic-tap"
+                className="px-6 py-2.5 bg-[#E8E9EC] text-[#11130D] rounded-xl text-[10px] font-bold uppercase tracking-wide"
               >
                 Reset Filters
-              </button>
-            </div>
+              </motion.button>
+            </BentoCard>
           )}
         </section>
       </main>

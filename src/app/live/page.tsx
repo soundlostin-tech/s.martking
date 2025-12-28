@@ -2,32 +2,23 @@
 
 import { BottomNav } from "@/components/layout/BottomNav";
 import { TopHeader } from "@/components/layout/TopHeader";
-import { Badge } from "@/components/ui/badge";
-import { motion, AnimatePresence } from "framer-motion";
+import { VintageTV } from "@/components/ui/VintageTV";
+import { BentoCard } from "@/components/ui/BentoCard";
+import { StatusBadge } from "@/components/ui/StatusBadge";
+import { motion } from "framer-motion";
 import { 
-  Play, 
-  Users, 
-  Target, 
-  Map as MapIcon, 
-  Wifi, 
-  WifiOff,
+  Clock, 
   ChevronRight,
   Loader2,
-  Gamepad2,
-  Circle,
-  Activity,
-  Zap,
-  Layout,
-  Radio,
   Eye,
-  Signal,
-  LayoutGrid,
-  Trophy
+  Calendar,
+  AlertCircle
 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import Link from "next/link";
 
 function LiveContent() {
   const searchParams = useSearchParams();
@@ -36,6 +27,7 @@ function LiveContent() {
   const [activeMatch, setActiveMatch] = useState<any>(null);
   const [otherMatches, setOtherMatches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [tvOn, setTvOn] = useState(false);
 
   const fetchLiveMatches = useCallback(async () => {
     try {
@@ -56,6 +48,7 @@ function LiveContent() {
           if (selected) {
             setActiveMatch(selected);
             setOtherMatches(data.filter(m => m.id !== matchId));
+            setTvOn(true);
           } else {
             setActiveMatch(data[0]);
             setOtherMatches(data.slice(1));
@@ -77,7 +70,7 @@ function LiveContent() {
 
     const channel = supabase
       .channel('live-matches-feed')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'matches', filter: "status=eq.live" }, (payload) => {
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'matches', filter: "status=eq.live" }, () => {
         fetchLiveMatches();
       })
       .subscribe();
@@ -87,178 +80,180 @@ function LiveContent() {
     };
   }, [fetchLiveMatches]);
 
-    if (loading) {
+  if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-background">
-        <Signal className="w-12 h-12 animate-pulse text-dark-emerald mb-4" />
-        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em]">Syncing Feed...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#D4D7DE]">
+        <Loader2 className="w-12 h-12 animate-spin text-[#868935] mb-4" />
+        <p className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-[0.3em]">Tuning in...</p>
       </div>
     );
   }
 
   return (
-    <main className="pb-32 relative z-10">
+    <main className="pb-28 relative z-10">
       <TopHeader />
 
-      <div className="px-6 space-y-10 mt-8 max-w-2xl mx-auto">
+      {/* Pastel Blob Header */}
+      <section className="relative px-4 sm:px-6 pt-6 pb-4 blob-header blob-header-mint">
+        <div className="relative z-10">
+          <p className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-[0.2em] mb-1">
+            Broadcast Center
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-heading text-[#11130D]">
+            LIVE <span className="text-[#868935]">Stream</span>
+          </h2>
+        </div>
+      </section>
+
+      <div className="px-4 sm:px-6 space-y-6 mt-4">
+        {/* Vintage TV Component */}
+        <VintageTV 
+          streamUrl={activeMatch?.stream_url}
+          isOn={tvOn && !!activeMatch}
+          onToggle={(on) => setTvOn(on)}
+          title={activeMatch?.title}
+        />
+
         {activeMatch ? (
           <>
-            {/* Primary Feed - Cinematic Player */}
-            <section className="space-y-6">
-              <div className="relative aspect-video bg-black rounded-[40px] overflow-hidden shadow-2xl shadow-dark-emerald/10 border border-border group">
-                <iframe 
-                  src={activeMatch.stream_url} 
-                  className="w-full h-full"
-                  allow="autoplay; encrypted-media"
-                />
-                
-                {/* HUD Overlays */}
-                <div className="absolute top-6 left-6 z-20 flex items-center gap-3">
-                  <div className="bg-dark-emerald text-white px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-2xl text-[10px] font-bold uppercase tracking-widest border border-white/20">
-                    <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-                    LIVE
-                  </div>
-                  <div className="bg-black/40 backdrop-blur-md text-white px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-2xl text-[10px] font-bold uppercase tracking-widest border border-white/10">
-                    <Eye size={14} className="text-dark-emerald" />
-                    {activeMatch.viewers_count.toLocaleString()}
-                  </div>
+            {/* Match Info Card */}
+            <BentoCard className="p-5">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <StatusBadge variant="live" />
+                  <h3 className="text-lg font-heading text-[#11130D] mt-2">{activeMatch.title}</h3>
+                  <p className="text-[11px] text-[#4A4B48] font-medium">{activeMatch.tournament?.title}</p>
                 </div>
-
-                <div className="absolute bottom-6 left-6 right-6 z-20 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                   <div className="bg-black/40 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white/80">
-                     FEED #AX-{activeMatch.id.slice(0,4).toUpperCase()}
-                   </div>
-                   <button className="w-10 h-10 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-all">
-                     <LayoutGrid size={18} />
-                   </button>
+                <div className="flex items-center gap-2 bg-[#E8E9EC] px-3 py-1.5 rounded-full">
+                  <Eye size={14} className="text-[#868935]" />
+                  <span className="text-[11px] font-bold text-[#11130D]">{activeMatch.viewers_count?.toLocaleString() || 0}</span>
                 </div>
               </div>
 
-              {/* Transmission Intelligence */}
-              <div className="bg-card rounded-[40px] p-8 border border-border shadow-sm space-y-8">
-                <div className="flex justify-between items-start">
-                  <div className="space-y-2">
-                    <h2 className="text-2xl font-heading text-foreground leading-tight">{activeMatch.title}</h2>
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em] flex items-center gap-2">
-                      <Trophy size={12} className="text-dark-emerald" /> {activeMatch.tournament?.title}
-                    </p>
-                  </div>
-                  <Badge className="bg-dark-emerald/10 text-dark-emerald border-none rounded-full text-[10px] px-4 py-1.5 font-bold tracking-widest">
-                    ROUND {activeMatch.current_round}
-                  </Badge>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="bg-[#E8E9EC] rounded-xl p-3 text-center">
+                  <p className="text-[9px] font-bold text-[#4A4B48] uppercase tracking-wide mb-1">Mode</p>
+                  <p className="text-sm font-heading text-[#11130D]">{activeMatch.mode}</p>
                 </div>
-
-                {/* Tactical Grid */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-muted/30 p-5 rounded-[28px] border border-border flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-dark-emerald shadow-inner">
-                      <MapIcon size={20} />
-                    </div>
-                    <div>
-                      <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Sector</p>
-                      <p className="text-sm font-heading text-foreground">{activeMatch.map}</p>
-                    </div>
-                  </div>
-                  <div className="bg-muted/30 p-5 rounded-[28px] border border-border flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-dark-emerald shadow-inner">
-                      <Activity size={20} />
-                    </div>
-                    <div>
-                      <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Mode</p>
-                      <p className="text-sm font-heading text-foreground">{activeMatch.mode}</p>
-                    </div>
-                  </div>
+                <div className="bg-[#E8E9EC] rounded-xl p-3 text-center">
+                  <p className="text-[9px] font-bold text-[#4A4B48] uppercase tracking-wide mb-1">Map</p>
+                  <p className="text-sm font-heading text-[#11130D]">{activeMatch.map || 'Bermuda'}</p>
                 </div>
-
-                {/* Dynamic Telemetry */}
-                <div className="grid grid-cols-3 gap-2 pt-4 border-t border-border">
-                  <div className="text-center space-y-1">
-                    <p className="text-[28px] font-heading text-foreground">{activeMatch.live_stats?.teams_alive || 0}</p>
-                    <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Warriors</p>
-                  </div>
-                  <div className="text-center space-y-1 border-x border-border">
-                    <p className="text-[28px] font-heading text-foreground">{activeMatch.live_stats?.total_kills || 0}</p>
-                    <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Eliminations</p>
-                  </div>
-                  <div className="text-center space-y-1">
-                    <p className="text-[28px] font-heading text-foreground">{activeMatch.live_stats?.safe_zone_phase || 0}</p>
-                    <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Sector P-{activeMatch.live_stats?.safe_zone_phase || 1}</p>
-                  </div>
+                <div className="bg-[#E8E9EC] rounded-xl p-3 text-center">
+                  <p className="text-[9px] font-bold text-[#4A4B48] uppercase tracking-wide mb-1">Round</p>
+                  <p className="text-sm font-heading text-[#11130D]">{activeMatch.current_round || 1}</p>
                 </div>
               </div>
-            </section>
+            </BentoCard>
 
+            {/* Live Stats */}
+            <BentoCard className="p-5">
+              <h4 className="text-sm font-heading text-[#11130D] mb-4">Live Stats</h4>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="text-center">
+                  <p className="text-2xl font-heading text-[#11130D]">{activeMatch.live_stats?.teams_alive || 0}</p>
+                  <p className="text-[9px] font-bold text-[#4A4B48] uppercase tracking-wide">Teams Alive</p>
+                </div>
+                <div className="text-center border-x border-[#C8C8C4]/30">
+                  <p className="text-2xl font-heading text-[#11130D]">{activeMatch.live_stats?.total_kills || 0}</p>
+                  <p className="text-[9px] font-bold text-[#4A4B48] uppercase tracking-wide">Total Kills</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-heading text-[#11130D]">{activeMatch.live_stats?.safe_zone_phase || 1}</p>
+                  <p className="text-[9px] font-bold text-[#4A4B48] uppercase tracking-wide">Zone Phase</p>
+                </div>
+              </div>
+            </BentoCard>
 
-            {/* Alternative Relays */}
+            {/* Today's Schedule */}
+            <BentoCard className="p-5">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-sm font-heading text-[#11130D]">Today's Schedule</h4>
+                <Calendar size={16} className="text-[#868935]" />
+              </div>
+              <div className="space-y-3">
+                {[
+                  { time: "12:00 PM", title: "Solo Championship", status: "completed" },
+                  { time: "03:00 PM", title: "Squad Showdown", status: "live" },
+                  { time: "06:00 PM", title: "Duo Battle Royale", status: "upcoming" },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center justify-between py-2 border-b border-[#C8C8C4]/20 last:border-0">
+                    <div className="flex items-center gap-3">
+                      <Clock size={14} className="text-[#4A4B48]" />
+                      <span className="text-[11px] font-bold text-[#4A4B48]">{item.time}</span>
+                    </div>
+                    <span className="text-[12px] font-medium text-[#11130D]">{item.title}</span>
+                    <StatusBadge variant={item.status as any} className="text-[8px] px-2" />
+                  </div>
+                ))}
+              </div>
+            </BentoCard>
+
+            {/* Other Live Matches */}
             {otherMatches.length > 0 && (
-              <section className="space-y-6">
-                <div className="flex items-center justify-between px-2">
-                  <div className="space-y-1">
-                    <h3 className="text-lg font-heading text-foreground">Alternative <span className="italic font-serif opacity-60">Relays</span></h3>
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">SCANNING LIVE SIGNALS</p>
-                  </div>
-                  <div className="flex items-center gap-2 bg-secondary/10 px-3 py-1.5 rounded-full border border-secondary/20">
-                    <div className="w-1.5 h-1.5 bg-secondary rounded-full animate-pulse" />
-                    <span className="text-[9px] font-bold text-secondary uppercase tracking-widest">{otherMatches.length} RELAYS</span>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
+              <section className="space-y-4">
+                <h4 className="text-sm font-heading text-[#11130D]">Other Live Matches</h4>
+                <div className="space-y-3">
                   {otherMatches.map((match) => (
                     <motion.div 
                       key={match.id}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
                         setActiveMatch(match);
+                        setTvOn(true);
                       }}
-                      className="bg-card p-4 rounded-[32px] border border-border shadow-sm flex items-center gap-5 hover:border-secondary/30 transition-all duration-500 cursor-pointer group"
                     >
-                      <div className="relative w-20 h-20 rounded-[24px] overflow-hidden bg-black flex-shrink-0 shadow-inner">
-                         <iframe 
-                          src={match.stream_url} 
-                          className="w-full h-full pointer-events-none scale-150 opacity-40 blur-[1px]"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <Play size={24} fill="currentColor" className="text-white opacity-60 group-hover:scale-110 group-hover:opacity-100 transition-transform" />
+                      <BentoCard className="p-4 flex items-center justify-between cursor-pointer">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-xl bg-[#E8E9EC] flex items-center justify-center">
+                            <StatusBadge variant="live" className="text-[8px] px-2" />
+                          </div>
+                          <div>
+                            <h5 className="text-[13px] font-heading text-[#11130D]">{match.title}</h5>
+                            <p className="text-[10px] text-[#4A4B48]">{match.mode} • {match.viewers_count} viewers</p>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex-1 min-w-0 space-y-1.5">
-                        <h4 className="font-heading text-foreground truncate group-hover:text-secondary transition-colors">{match.title}</h4>
-                        <div className="flex items-center gap-4">
-                          <span className="text-[9px] font-bold text-secondary px-3 py-1 bg-secondary/10 rounded-full uppercase tracking-widest">
-                            {match.mode}
-                          </span>
-                          <span className="text-[9px] flex items-center gap-1.5 text-muted-foreground font-bold uppercase tracking-widest">
-                            <Eye size={12} className="text-muted-foreground" />
-                            {match.viewers_count.toLocaleString()}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground group-hover:bg-secondary group-hover:text-white transition-all">
-                        <ChevronRight size={20} strokeWidth={3} />
-                      </div>
+                        <ChevronRight size={18} className="text-[#C8C8C4]" />
+                      </BentoCard>
                     </motion.div>
                   ))}
                 </div>
               </section>
             )}
+
+            {/* Rules Reminder */}
+            <BentoCard className="p-5">
+              <h4 className="text-sm font-heading text-[#11130D] mb-3">Rules Reminder</h4>
+              <ul className="space-y-2">
+                <li className="flex items-start gap-2 text-[11px] text-[#4A4B48]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#868935] mt-1.5" />
+                  No teaming with opponents
+                </li>
+                <li className="flex items-start gap-2 text-[11px] text-[#4A4B48]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#868935] mt-1.5" />
+                  Stream sniping is prohibited
+                </li>
+                <li className="flex items-start gap-2 text-[11px] text-[#4A4B48]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#868935] mt-1.5" />
+                  Report issues immediately to admins
+                </li>
+              </ul>
+            </BentoCard>
           </>
         ) : (
-          <div className="py-24 text-center space-y-8 mt-12 bg-muted/20 rounded-[50px] border border-dashed border-border shadow-sm">
-            <div className="w-24 h-24 bg-muted rounded-[32px] flex items-center justify-center mx-auto text-muted-foreground/30 shadow-inner">
-              <WifiOff size={48} strokeWidth={1} />
-            </div>
-            <div className="space-y-2 px-10">
-              <h3 className="text-2xl font-heading text-foreground">Silent <span className="italic font-serif opacity-60">Frequencies</span></h3>
-              <p className="text-[11px] text-muted-foreground font-bold uppercase tracking-[0.2em] leading-loose">No active combat signals detected in the current sector.</p>
-            </div>
-            <div className="px-10">
-              <button className="w-full py-5 bg-secondary text-white rounded-3xl text-[11px] font-bold uppercase tracking-[0.3em] shadow-xl shadow-secondary/20 hover:scale-[1.02] transition-all border-none">
-                INITIALIZE RECON
-              </button>
-            </div>
-          </div>
+          <BentoCard className="p-8 text-center">
+            <AlertCircle size={48} className="text-[#C8C8C4] mx-auto mb-4" />
+            <h3 className="text-lg font-heading text-[#11130D] mb-2">No Live Matches</h3>
+            <p className="text-[11px] text-[#4A4B48] mb-4">There are no tournaments streaming right now.</p>
+            <Link href="/matches">
+              <motion.button 
+                whileTap={{ scale: 0.95 }}
+                className="px-6 py-3 bg-[#D7FD03] text-[#11130D] rounded-xl text-[11px] font-bold uppercase tracking-wide shadow-lg shadow-[#D7FD03]/30"
+              >
+                Browse Matches
+              </motion.button>
+            </Link>
+          </BentoCard>
         )}
       </div>
     </main>
@@ -267,20 +262,15 @@ function LiveContent() {
 
 export default function Live() {
   return (
-    <div className="min-h-screen bg-transparent text-foreground">
+    <div className="min-h-screen bg-[#D4D7DE] text-[#11130D]">
       <Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center bg-background">
-          <Loader2 className="w-8 h-8 animate-spin text-secondary" />
+        <div className="min-h-screen flex items-center justify-center bg-[#D4D7DE]">
+          <Loader2 className="w-8 h-8 animate-spin text-[#868935]" />
         </div>
       }>
         <LiveContent />
       </Suspense>
       <BottomNav />
-      {/* Background Glows - disabled for pure white look */}
-      {/* <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0 opacity-30">
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-malachite-400/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-sea-green-500/10 blur-[120px] rounded-full" />
-      </div> */}
     </div>
   );
 }
