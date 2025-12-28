@@ -68,10 +68,9 @@ export default function MatchesPage() {
 
   return (
     <div className="min-h-screen bg-background text-onyx">
-      <main className="pb-32 relative z-10">
-        <TopHeader />
-
-        {/* Sticker Header with Blobs */}
+      <main className="pb-32 relative z-10 pt-10">
+          
+          {/* Sticker Header with Blobs */}
         <section className="sticker-header relative">
           <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-pastel-mint)' }} />
           <div className="sticker-blob sticker-blob-2" style={{ background: 'var(--color-pastel-sky)' }} />
