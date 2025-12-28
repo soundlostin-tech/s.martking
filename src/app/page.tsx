@@ -78,6 +78,9 @@ export default function Home() {
   
           {/* Hero Section */}
         <section className="sticker-header relative pb-14 px-8 overflow-hidden bg-transparent border-none">
+          <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-pastel-sky)' }} />
+          <div className="sticker-blob sticker-blob-2" style={{ background: 'var(--color-pastel-mint)' }} />
+          
           <div className="relative z-10">
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
