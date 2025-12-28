@@ -70,8 +70,8 @@ export default function Home() {
   const userName = user?.user_metadata?.full_name?.split(' ')[0] || 'Warrior';
 
     return (
-      <div className="min-h-screen bg-background text-onyx font-sans">
-        <main className="pb-32 relative z-10">
+      <div className="min-h-screen bg-background text-onyx font-sans" suppressHydrationWarning={true}>
+        <main className="pb-32 relative z-10" suppressHydrationWarning={true}>
           <TopHeader />
   
           {/* Hero Section with Layered Blobs */}

@@ -51,25 +51,25 @@ function LiveContent() {
         setActiveMatch(selected || data[0]);
         if (selected) setTvOn(true);
       }
-    } catch (err) {
-      console.error("Error fetching live matches:", err);
-    } finally {
-      setLoading(false);
+      } catch (err: any) {
+        console.error("Error fetching live matches:", err.message || err);
+      } finally {
+        setLoading(false);
+      }
+    }, [matchId]);
+
+    useEffect(() => {
+      fetchLiveMatches();
+    }, [fetchLiveMatches]);
+
+    if (loading) {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-background" suppressHydrationWarning={true}>
+          <Loader2 className="w-12 h-12 animate-spin text-onyx/20 mb-4" />
+          <p className="text-[10px] font-bold text-charcoal/40 uppercase tracking-[0.3em]">Tuning in...</p>
+        </div>
+      );
     }
-  }, [matchId]);
-
-  useEffect(() => {
-    fetchLiveMatches();
-  }, [fetchLiveMatches]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-background">
-        <Loader2 className="w-12 h-12 animate-spin text-onyx/20 mb-4" />
-        <p className="text-[10px] font-bold text-charcoal/40 uppercase tracking-[0.3em]">Tuning in...</p>
-      </div>
-    );
-  }
 
   return (
     <main className="pb-32 relative z-10">
@@ -248,9 +248,9 @@ function LiveContent() {
 
 export default function Live() {
   return (
-    <div className="min-h-screen bg-background text-onyx">
+    <div className="min-h-screen bg-background text-onyx" suppressHydrationWarning={true}>
       <Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="min-h-screen flex items-center justify-center bg-background" suppressHydrationWarning={true}>
           <Loader2 className="w-10 h-10 animate-spin text-onyx/20" />
         </div>
       }>

@@ -18,9 +18,9 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md">
-      <div className="bg-white/80 backdrop-blur-xl border border-white/20 rounded-[32px] shadow-[0_12px_48px_rgba(0,0,0,0.06)] px-4 py-3">
-        <div className="flex justify-between items-center h-12">
+    <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md" suppressHydrationWarning={true}>
+      <div className="bg-white/80 backdrop-blur-xl border border-white/20 rounded-[32px] shadow-[0_12px_48px_rgba(0,0,0,0.06)] px-4 py-3" suppressHydrationWarning={true}>
+        <div className="flex justify-between items-center h-12" suppressHydrationWarning={true}>
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
@@ -31,21 +31,22 @@ export function BottomNav() {
                 href={item.href}
                 className="relative flex flex-col items-center justify-center flex-1 h-full"
               >
-                <motion.div
-                  initial={false}
-                  animate={{ 
-                    scale: isActive ? 1.1 : 1,
-                    y: isActive ? -2 : 0 
-                  }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  className="flex flex-col items-center gap-1"
-                >
-                      <div className={cn(
-                        "p-2.5 rounded-full transition-all duration-300",
-                        isActive 
-                          ? "bg-[#11130D] text-white shadow-[0_4px_12px_rgba(0,0,0,0.1)]" 
-                          : "text-[#A0A0A0] hover:text-[#11130D]"
-                      )}>
+                  <motion.div
+                    initial={false}
+                    animate={{ 
+                      scale: isActive ? 1.1 : 1,
+                      y: isActive ? -2 : 0 
+                    }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    className="flex flex-col items-center gap-1"
+                    suppressHydrationWarning={true}
+                  >
+                        <div className={cn(
+                          "p-2.5 rounded-full transition-all duration-300",
+                          isActive 
+                            ? "bg-[#11130D] text-white shadow-[0_4px_12px_rgba(0,0,0,0.1)]" 
+                            : "text-[#A0A0A0] hover:text-[#11130D]"
+                        )} suppressHydrationWarning={true}>
                         <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
                       </div>
                   {isActive && (
@@ -59,7 +60,7 @@ export function BottomNav() {
           })}
         </div>
       </div>
-      <div className="h-[env(safe-area-inset-bottom,0px)]" />
+      <div className="h-[env(safe-area-inset-bottom,0px)]" suppressHydrationWarning={true} />
     </nav>
   );
 }

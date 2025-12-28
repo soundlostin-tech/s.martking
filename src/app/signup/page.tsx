@@ -105,9 +105,9 @@ export default function Signup() {
   return (
     <main className="min-h-screen bg-background text-onyx overflow-x-hidden" suppressHydrationWarning>
       {/* Sticker Header */}
-      <section className="sticker-header pt-20">
-        <div className="sticker-blob bg-pastel-mint" />
-        <Link href="/signin" className="inline-flex items-center gap-2 text-[10px] font-bold text-charcoal/30 uppercase tracking-widest mb-6">
+        <section className="sticker-header pt-20">
+          <div className="sticker-blob bg-pastel-mint" suppressHydrationWarning={true} />
+          <Link href="/signin" className="inline-flex items-center gap-2 text-[10px] font-bold text-charcoal/30 uppercase tracking-widest mb-6">
           <ChevronLeft size={14} strokeWidth={3} /> Back
         </Link>
         <h1 className="text-[40px] font-black leading-none mb-2">Join the Arena</h1>
