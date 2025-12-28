@@ -183,17 +183,25 @@ export default function WalletPage() {
     return true;
   });
 
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background" suppressHydrationWarning={true}>
+        <Loader2 className="w-10 h-10 animate-spin text-onyx/20" />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-background text-onyx">
-      <main className="pb-32 relative z-10">
+    <div className="min-h-screen bg-background text-onyx" suppressHydrationWarning={true}>
+      <main className="pb-32 relative z-10" suppressHydrationWarning={true}>
         
 
         {/* Sticker Header */}
-        <section className="sticker-header relative">
+        <section className="sticker-header relative" suppressHydrationWarning={true}>
           <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-soft-yellow)' }} />
           <div className="sticker-blob sticker-blob-2" style={{ background: 'var(--color-pastel-lavender)' }} />
           
-          <div className="relative z-10">
+          <div className="relative z-10" suppressHydrationWarning={true}>
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -207,9 +215,9 @@ export default function WalletPage() {
           </div>
         </section>
 
-        <div className="px-6 space-y-6">
+        <div className="px-6 space-y-6" suppressHydrationWarning={true}>
             {/* Balance Hero Card */}
-            <BentoCard variant="pastel" pastelColor="yellow" className="p-7 relative overflow-hidden shadow-soft-lg">
+            <BentoCard variant="pastel" pastelColor="yellow" className="p-7 relative overflow-hidden shadow-soft-lg" suppressHydrationWarning={true}>
               <div className="relative z-10">
                 <div className="flex items-center gap-2 mb-4">
                   <Sparkles size={16} className="text-onyx/40" />

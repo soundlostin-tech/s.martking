@@ -71,13 +71,13 @@ export default function LeaderboardPage() {
   const restOfLeaderboard = leaderboard.slice(3);
 
   return (
-    <div className="min-h-screen bg-background text-onyx">
-      <main className="pb-32 relative z-10">
+    <div className="min-h-screen bg-background text-onyx" suppressHydrationWarning={true}>
+      <main className="pb-32 relative z-10" suppressHydrationWarning={true}>
         <TopHeader />
 
         {/* Header Section */}
-        <section className="relative px-6 pt-10 pb-6">
-          <div className="relative z-10">
+        <section className="relative px-6 pt-10 pb-6" suppressHydrationWarning={true}>
+          <div className="relative z-10" suppressHydrationWarning={true}>
             <p className="text-[10px] font-bold text-charcoal/50 uppercase tracking-[0.2em] mb-2">
               Arena Rankings
             </p>
@@ -88,10 +88,10 @@ export default function LeaderboardPage() {
           </div>
         </section>
 
-        <div className="px-6 space-y-6">
+        <div className="px-6 space-y-6" suppressHydrationWarning={true}>
           {/* Tournament Selector */}
           <Select value={selectedTournament} onValueChange={setSelectedTournament}>
-            <SelectTrigger className="w-full h-14 rounded-2xl bg-white border border-black/5 font-bold text-onyx focus:ring-onyx/5 shadow-sm">
+            <SelectTrigger className="w-full h-14 rounded-2xl bg-white border border-black/5 font-bold text-onyx focus:ring-onyx/5 shadow-sm" suppressHydrationWarning={true}>
               <SelectValue placeholder="Select Tournament" />
             </SelectTrigger>
             <SelectContent className="bg-white border-black/5 rounded-2xl">
@@ -110,14 +110,14 @@ export default function LeaderboardPage() {
           />
 
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-20 gap-4">
+            <div className="flex flex-col items-center justify-center py-20 gap-4" suppressHydrationWarning={true}>
               <Loader2 className="w-12 h-12 animate-spin text-onyx/20" />
               <p className="text-[10px] text-charcoal/40 font-bold uppercase tracking-widest">Scanning rankings...</p>
             </div>
           ) : (
             <>
               {/* Top 3 Podium */}
-              <BentoCard variant="hero" pastelColor="yellow" className="p-8 border-none shadow-[0_10px_40px_rgba(0,0,0,0.03)]">
+              <BentoCard variant="hero" pastelColor="yellow" className="p-8 border-none shadow-[0_10px_40px_rgba(0,0,0,0.03)]" suppressHydrationWarning={true}>
                 <div className="flex items-end justify-center gap-4 mb-4">
                   {/* 2nd Place */}
                   {topThree[1] && (

@@ -76,13 +76,13 @@ function LiveContent() {
     }
 
   return (
-    <main className="pb-32 relative z-10">
+    <main className="pb-32 relative z-10" suppressHydrationWarning={true}>
       {/* Sticker Header with Blobs */}
-      <section className="sticker-header relative">
+      <section className="sticker-header relative" suppressHydrationWarning={true}>
         <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-pastel-coral)' }} />
         <div className="sticker-blob sticker-blob-2" style={{ background: 'var(--color-pastel-pink)' }} />
         
-        <div className="relative z-10">
+        <div className="relative z-10" suppressHydrationWarning={true}>
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -96,7 +96,7 @@ function LiveContent() {
         </div>
       </section>
 
-      <div className="px-4 space-y-6">
+      <div className="px-4 space-y-6" suppressHydrationWarning={true}>
         {/* Vintage TV Component (Hero) */}
         <section className="relative">
           <VintageTV 

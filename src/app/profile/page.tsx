@@ -121,7 +121,7 @@ export default function Profile() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center bg-background" suppressHydrationWarning={true}>
         <Loader2 className="w-10 h-10 animate-spin text-onyx/20" />
       </div>
     );
