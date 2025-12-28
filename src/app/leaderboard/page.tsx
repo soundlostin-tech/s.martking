@@ -76,7 +76,10 @@ export default function LeaderboardPage() {
         <TopHeader />
 
         {/* Header Section */}
-        <section className="relative px-6 pt-10 pb-6" suppressHydrationWarning={true}>
+        <section className="sticker-header relative" suppressHydrationWarning={true}>
+          <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-pastel-yellow)' }} />
+          <div className="sticker-blob sticker-blob-2" style={{ background: 'var(--color-pastel-peach)' }} />
+          
           <div className="relative z-10" suppressHydrationWarning={true}>
             <p className="text-[10px] font-bold text-charcoal/50 uppercase tracking-[0.2em] mb-2">
               Arena Rankings

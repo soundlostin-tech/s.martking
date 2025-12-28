@@ -185,15 +185,35 @@
    STICKER HEADER - Refined (No Washout)
    ============================================ */
 .sticker-header {
-  @apply relative pt-10 pb-12 px-6 overflow-visible bg-white border-b border-slate-100;
-}
-
-.sticker-header::before, .sticker-header::after {
-  display: none; /* Remove distracting backgrounds */
+  @apply relative pt-10 pb-12 px-6 overflow-hidden bg-white border-b border-slate-100;
 }
 
 .sticker-blob {
-  display: none; /* Remove distracting blobs */
+  @apply absolute rounded-full blur-[100px] opacity-30 mix-blend-multiply transition-all duration-1000;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.sticker-blob-1 {
+  @apply w-[350px] h-[350px] -top-24 -right-24;
+  animation: blob-float 15s ease-in-out infinite alternate;
+}
+
+.sticker-blob-2 {
+  @apply w-[300px] h-[300px] -bottom-16 -left-16;
+  animation: blob-float 18s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes blob-float {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  33% { transform: translate(30px, -50px) rotate(120deg) scale(1.1); }
+  66% { transform: translate(-20px, 20px) rotate(240deg) scale(0.9); }
+  100% { transform: translate(0, 0) rotate(360deg) scale(1); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
 }
 
 /* ============================================

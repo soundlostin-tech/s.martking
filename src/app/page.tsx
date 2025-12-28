@@ -76,8 +76,8 @@ export default function Home() {
   
           {/* Hero Section with Layered Blobs */}
         <section className="sticker-header relative pb-14 px-8 overflow-hidden">
-          <div className="absolute top-[-100px] right-[-100px] w-[300px] h-[300px] bg-[#F4F9F9] rounded-full blur-[100px] opacity-80" />
-          <div className="absolute top-[-50px] left-[-50px] w-[200px] h-[200px] bg-[#FEF9C3]/40 rounded-full blur-[60px]" />
+          <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-soft-lime)' }} />
+          <div className="sticker-blob sticker-blob-2" style={{ background: 'var(--color-soft-yellow)' }} />
           
           <div className="relative z-10">
             <motion.h1 
@@ -148,8 +148,9 @@ export default function Home() {
         </section>
 
         {/* Activity Bento Grid - Reference Style */}
-        <section className="px-6 mb-6">
-          <div className="grid grid-cols-2 gap-4">
+        <section className="px-6 mb-6 relative">
+          <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-pastel-mint/10 rounded-full blur-[100px] -z-10" />
+          <div className="grid grid-cols-2 gap-4 relative z-10">
             {/* Progress Card - Like reference "Your Progress" */}
             <BentoCard variant="pastel" pastelColor="mint" className="p-5 h-[180px] flex flex-col justify-between relative overflow-hidden">
               <div className="relative z-10">
@@ -292,8 +293,9 @@ export default function Home() {
         </section>
 
         {/* Upcoming Matches Section */}
-        <section className="px-6 mb-8">
-          <div className="flex justify-between items-center mb-5">
+        <section className="px-6 mb-8 relative">
+          <div className="absolute top-0 right-0 w-40 h-40 bg-pastel-sky/10 rounded-full blur-[80px] -z-10" />
+          <div className="flex justify-between items-center mb-5 relative z-10">
             <h3 className="text-xl font-black">Upcoming</h3>
             <Link href="/matches" className="flex items-center gap-1 text-charcoal/40">
               <span className="text-[10px] font-black uppercase tracking-widest">See All</span>
@@ -301,7 +303,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="flex gap-4 overflow-x-auto no-scrollbar py-2 -mx-6 px-6">
+          <div className="flex gap-4 overflow-x-auto no-scrollbar py-2 -mx-6 px-6 relative z-10">
             {featuredMatches.slice(1, 5).map((match, i) => (
               <motion.div
                 key={match.id}
