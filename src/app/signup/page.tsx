@@ -114,10 +114,10 @@ export default function Signup() {
         <p className="text-[14px] font-bold text-charcoal/40 uppercase tracking-tighter">Create your warrior profile</p>
       </section>
 
-      <div className="px-8 pb-20 max-w-md mx-auto">
-        <form onSubmit={handleSignup} className="space-y-6">
-          <div className="space-y-5">
-            <div className="space-y-2">
+      <div className="px-8 pb-20 max-w-md mx-auto" suppressHydrationWarning>
+        <form onSubmit={handleSignup} className="space-y-6" suppressHydrationWarning>
+          <div className="space-y-5" suppressHydrationWarning>
+            <div className="space-y-2" suppressHydrationWarning>
               <Label className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Username / Name</Label>
               <Input 
                 placeholder="Elite_Warrior"
@@ -127,7 +127,7 @@ export default function Signup() {
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2" suppressHydrationWarning>
               <Label className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Free Fire UID</Label>
               <Input 
                 placeholder="1234567890"
@@ -138,7 +138,7 @@ export default function Signup() {
               <p className="text-[9px] font-bold text-charcoal/30 uppercase tracking-widest ml-1">Find this in your FF profile</p>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2" suppressHydrationWarning>
               <Label className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Email</Label>
               <Input 
                 type="email"
@@ -149,9 +149,9 @@ export default function Signup() {
               />
             </div>
             
-            <div className="space-y-2">
+            <div className="space-y-2" suppressHydrationWarning>
               <Label className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Password</Label>
-              <div className="relative">
+              <div className="relative" suppressHydrationWarning>
                 <Input 
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
@@ -182,7 +182,7 @@ export default function Signup() {
             </label>
           </BentoCard>
 
-          <div className="pt-4">
+          <div className="pt-4" suppressHydrationWarning>
             <motion.button
               whileTap={{ scale: 0.98 }}
               type="submit"

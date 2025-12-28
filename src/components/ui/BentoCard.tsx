@@ -38,6 +38,7 @@ export function BentoCard({
     <motion.div
       whileTap={onClick ? { scale: 0.97 } : undefined}
       onClick={onClick}
+      suppressHydrationWarning
       className={cn(
         "bento-card",
         variantClasses[variant],
