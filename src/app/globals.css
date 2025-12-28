@@ -54,72 +54,72 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* ============================================
-     SMARTKING'S ARENA - VIBRANT BENTO PALETTE
-     Reference: Pastel Vibrant Aesthetic
-     ============================================ */
-  --color-onyx: #111111;
-  --color-carbon-black: #1D1E13;
-  --color-charcoal-brown: #30312A;
-  --color-charcoal: #4A4B48;
-  --color-silver: #C8C8C4;
-  --color-off-white: #F7F7F7;
-  --color-lemon-lime: #C7E323;
-  --color-lime-vibrant: #D6FF3D;
-  --color-olive: #868935;
+    /* ============================================
+       SMARTKING'S ARENA - VIBRANT BENTO PALETTE
+       Reference: Pastel Vibrant Aesthetic
+       ============================================ */
+    --color-onyx: #000000;
+    --color-carbon-black: #111111;
+    --color-charcoal-brown: #30312A;
+    --color-charcoal: #4A4B48;
+    --color-silver: #C8C8C4;
+    --color-off-white: #F3F0F8;
+    --color-lemon-lime: #A8F29A;
+    --color-lime-vibrant: #A8F29A;
+    --color-olive: #000000;
+    
+    /* Pastel Accent Colors from Reference */
+    --color-pastel-yellow: #FFF5CC;
+    --color-pastel-mint: #D7F5D1;
+    --color-pastel-coral: #FFD7BE;
+    --color-pastel-lavender: #E6E1FF;
+    --color-pastel-peach: #FFD7BE;
+  }
   
-  /* Pastel Accent Colors from Reference */
-  --color-pastel-yellow: #FDFB97;
-  --color-pastel-mint: #CCF8B0;
-  --color-pastel-coral: #FF8E7E;
-  --color-pastel-lavender: #E2D9FF;
-  --color-pastel-peach: #FFD7CC;
-}
-
-:root {
-  --radius: 24px;
-  
-  /* Backgrounds - Clean White Base */
-  --background: #FFFFFF;
-  --foreground: #111111;
-  
-  /* Surfaces */
-  --card: #ffffff;
-  --card-foreground: #111111;
-  
-  --popover: #ffffff;
-  --popover-foreground: #111111;
-  
-  /* Actions */
-  --primary: #D6FF3D;
-  --primary-foreground: #111111;
-  
-  --secondary: #F7F7F7;
-  --secondary-foreground: #111111;
-  
-  --muted: #F7F7F7;
-  --muted-foreground: #4A4B48;
-  
-  --accent: #D6FF3D;
-  --accent-foreground: #111111;
-  
-  --destructive: #FF8E7E;
-  --destructive-foreground: #111111;
-  
-  /* Borders */
-  --border: #F0F0F0;
-  --input: #F7F7F7;
-  --ring: #D6FF3D;
+  :root {
+    --radius: 28px;
+    
+    /* Backgrounds - Clean Light Base from Image */
+    --background: #F3F0F8;
+    --foreground: #000000;
+    
+    /* Surfaces */
+    --card: #ffffff;
+    --card-foreground: #000000;
+    
+    --popover: #ffffff;
+    --popover-foreground: #000000;
+    
+    /* Actions */
+    --primary: #000000;
+    --primary-foreground: #ffffff;
+    
+    --secondary: #ffffff;
+    --secondary-foreground: #000000;
+    
+    --muted: #F3F0F8;
+    --muted-foreground: #4A4B48;
+    
+    --accent: #A8F29A;
+    --accent-foreground: #000000;
+    
+    --destructive: #FFD7BE;
+    --destructive-foreground: #000000;
+    
+    /* Borders */
+    --border: #E5E5E5;
+    --input: #ffffff;
+    --ring: #000000;
 
   /* Sidebar */
   --sidebar: #ffffff;
-  --sidebar-foreground: #111111;
-  --sidebar-primary: #D6FF3D;
-  --sidebar-primary-foreground: #111111;
-  --sidebar-accent: #F7F7F7;
-  --sidebar-accent-foreground: #111111;
-  --sidebar-border: #F0F0F0;
-  --sidebar-ring: #D6FF3D;
+  --sidebar-foreground: #000000;
+  --sidebar-primary: #000000;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #F3F0F8;
+  --sidebar-accent-foreground: #000000;
+  --sidebar-border: #E5E5E5;
+  --sidebar-ring: #000000;
 }
 
 @layer base {
@@ -128,7 +128,7 @@
     -webkit-tap-highlight-color: transparent;
   }
   html, body {
-    @apply bg-white text-onyx font-sans antialiased selection:bg-lime-vibrant/30 selection:text-onyx overflow-x-hidden;
+    @apply bg-background text-onyx font-sans antialiased selection:bg-lemon-lime/30 selection:text-onyx overflow-x-hidden;
     background-attachment: fixed;
     touch-action: manipulation;
     overscroll-behavior-y: none;
@@ -142,7 +142,7 @@
 
 /* Bento Card Component */
 .bento-card {
-  @apply bg-white rounded-[28px] p-5 shadow-[0_8px_32px_rgba(0,0,0,0.04)] border border-border;
+  @apply bg-white rounded-[32px] p-5 shadow-[0_4px_24px_rgba(0,0,0,0.04)] border border-black/[0.03];
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 

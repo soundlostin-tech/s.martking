@@ -71,29 +71,30 @@ export default function LeaderboardPage() {
   const restOfLeaderboard = leaderboard.slice(3);
 
   return (
-    <div className="min-h-screen bg-[#D4D7DE] text-[#11130D]">
-      <main className="pb-28 relative z-10">
+    <div className="min-h-screen bg-background text-onyx">
+      <main className="pb-32 relative z-10">
         <TopHeader />
 
-        {/* Pastel Blob Header */}
-        <section className="relative px-4 sm:px-6 pt-6 pb-4 blob-header blob-header-yellow">
+        {/* Header Section */}
+        <section className="relative px-6 pt-10 pb-6">
           <div className="relative z-10">
-            <p className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-[0.2em] mb-1">
-              Rankings
+            <p className="text-[10px] font-bold text-charcoal/50 uppercase tracking-[0.2em] mb-2">
+              Arena Rankings
             </p>
-            <h2 className="text-2xl sm:text-3xl font-heading text-[#11130D]">
-              <span className="text-[#868935]">Leaderboard</span>
+            <h2 className="text-[32px] font-heading text-onyx leading-tight font-black">
+              Elite <br />
+              <span className="text-onyx">Warriors</span>
             </h2>
           </div>
         </section>
 
-        <div className="px-4 sm:px-6 pt-4 space-y-6">
+        <div className="px-6 space-y-6">
           {/* Tournament Selector */}
           <Select value={selectedTournament} onValueChange={setSelectedTournament}>
-            <SelectTrigger className="w-full h-12 rounded-xl bg-white border border-[#C8C8C4]/30 font-medium text-[#11130D] focus:ring-[#D7FD03]">
+            <SelectTrigger className="w-full h-14 rounded-2xl bg-white border border-black/5 font-bold text-onyx focus:ring-onyx/5 shadow-sm">
               <SelectValue placeholder="Select Tournament" />
             </SelectTrigger>
-            <SelectContent className="bg-white border-[#C8C8C4]/30 rounded-xl">
+            <SelectContent className="bg-white border-black/5 rounded-2xl">
               <SelectItem value="all">All Tournaments</SelectItem>
               {tournaments.map(t => (
                 <SelectItem key={t.id} value={t.id}>{t.title}</SelectItem>
@@ -110,14 +111,14 @@ export default function LeaderboardPage() {
 
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20 gap-4">
-              <Loader2 className="w-10 h-10 animate-spin text-[#868935]" />
-              <p className="text-[10px] text-[#4A4B48] font-bold uppercase tracking-wider">Loading rankings...</p>
+              <Loader2 className="w-12 h-12 animate-spin text-onyx/20" />
+              <p className="text-[10px] text-charcoal/40 font-bold uppercase tracking-widest">Scanning rankings...</p>
             </div>
           ) : (
             <>
               {/* Top 3 Podium */}
-              <BentoCard variant="hero" pastelColor="yellow" className="p-6">
-                <div className="flex items-end justify-center gap-3 mb-4">
+              <BentoCard variant="hero" pastelColor="yellow" className="p-8 border-none shadow-[0_10px_40px_rgba(0,0,0,0.03)]">
+                <div className="flex items-end justify-center gap-4 mb-4">
                   {/* 2nd Place */}
                   {topThree[1] && (
                     <motion.div 
@@ -126,19 +127,19 @@ export default function LeaderboardPage() {
                       transition={{ delay: 0.1 }}
                       className="flex flex-col items-center"
                     >
-                      <div className="w-16 h-16 rounded-full bg-white p-1 shadow-lg mb-2">
-                        <div className="w-full h-full rounded-full bg-[#E8E9EC] flex items-center justify-center text-[#4A4B48] text-xl font-heading">
+                      <div className="w-16 h-16 rounded-full bg-white p-1 shadow-lg mb-2 border border-black/5">
+                        <div className="w-full h-full rounded-full bg-off-white flex items-center justify-center text-charcoal text-xl font-heading overflow-hidden">
                           {topThree[1].avatar_url ? (
-                            <img src={topThree[1].avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
+                            <img src={topThree[1].avatar_url} alt="" className="w-full h-full object-cover" />
                           ) : topThree[1].full_name?.[0]?.toUpperCase()}
                         </div>
                       </div>
-                      <div className="w-16 h-20 bg-[#C8C8C4] rounded-t-xl flex flex-col items-center justify-center">
-                        <Medal size={20} className="text-[#4A4B48] mb-1" />
-                        <span className="text-xl font-heading text-[#11130D]">2</span>
+                      <div className="w-16 h-20 bg-silver/30 rounded-t-[20px] flex flex-col items-center justify-center">
+                        <Medal size={20} className="text-charcoal mb-1" />
+                        <span className="text-xl font-heading text-onyx font-black">2</span>
                       </div>
-                      <p className="text-[10px] font-bold text-[#11130D] mt-2 truncate max-w-16">{topThree[1].full_name?.split(' ')[0]}</p>
-                      <p className="text-[9px] text-[#868935] font-bold">{topThree[1].points} pts</p>
+                      <p className="text-[10px] font-black text-onyx mt-2 truncate max-w-16">{topThree[1].full_name?.split(' ')[0]}</p>
+                      <p className="text-[9px] text-charcoal/40 font-bold uppercase tracking-widest">{topThree[1].points} PTS</p>
                     </motion.div>
                   )}
 
@@ -149,21 +150,21 @@ export default function LeaderboardPage() {
                       animate={{ y: 0, opacity: 1 }}
                       className="flex flex-col items-center -mt-4"
                     >
-                      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#D7FD03] to-[#C7E323] p-1 shadow-xl mb-2">
+                      <div className="w-20 h-20 rounded-full bg-onyx p-1 shadow-2xl mb-2">
                         <div className="w-full h-full rounded-full bg-white p-0.5">
-                          <div className="w-full h-full rounded-full bg-[#D7FD03] flex items-center justify-center text-[#11130D] text-2xl font-heading">
+                          <div className="w-full h-full rounded-full bg-lime-vibrant flex items-center justify-center text-onyx text-2xl font-heading overflow-hidden">
                             {topThree[0].avatar_url ? (
-                              <img src={topThree[0].avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
+                              <img src={topThree[0].avatar_url} alt="" className="w-full h-full object-cover" />
                             ) : topThree[0].full_name?.[0]?.toUpperCase()}
                           </div>
                         </div>
                       </div>
-                      <div className="w-20 h-28 bg-[#D7FD03] rounded-t-xl flex flex-col items-center justify-center shadow-lg">
-                        <Trophy size={24} className="text-[#11130D] mb-1" />
-                        <span className="text-2xl font-heading text-[#11130D]">1</span>
+                      <div className="w-20 h-28 bg-onyx rounded-t-[24px] flex flex-col items-center justify-center shadow-2xl">
+                        <Trophy size={24} className="text-lime-vibrant mb-1" />
+                        <span className="text-2xl font-heading text-white font-black">1</span>
                       </div>
-                      <p className="text-[11px] font-bold text-[#11130D] mt-2 truncate max-w-20">{topThree[0].full_name?.split(' ')[0]}</p>
-                      <p className="text-[10px] text-[#868935] font-bold">{topThree[0].points} pts</p>
+                      <p className="text-[11px] font-black text-onyx mt-2 truncate max-w-20">{topThree[0].full_name?.split(' ')[0]}</p>
+                      <p className="text-[10px] text-charcoal/40 font-bold uppercase tracking-widest">{topThree[0].points} PTS</p>
                     </motion.div>
                   )}
 
@@ -175,26 +176,26 @@ export default function LeaderboardPage() {
                       transition={{ delay: 0.2 }}
                       className="flex flex-col items-center"
                     >
-                      <div className="w-14 h-14 rounded-full bg-white p-1 shadow-lg mb-2">
-                        <div className="w-full h-full rounded-full bg-[#E8E9EC] flex items-center justify-center text-[#4A4B48] text-lg font-heading">
+                      <div className="w-14 h-14 rounded-full bg-white p-1 shadow-lg mb-2 border border-black/5">
+                        <div className="w-full h-full rounded-full bg-off-white flex items-center justify-center text-charcoal text-lg font-heading overflow-hidden">
                           {topThree[2].avatar_url ? (
-                            <img src={topThree[2].avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
+                            <img src={topThree[2].avatar_url} alt="" className="w-full h-full object-cover" />
                           ) : topThree[2].full_name?.[0]?.toUpperCase()}
                         </div>
                       </div>
-                      <div className="w-14 h-16 bg-[#F5E3C7] rounded-t-xl flex flex-col items-center justify-center">
-                        <Medal size={18} className="text-[#7A5C00] mb-1" />
-                        <span className="text-lg font-heading text-[#11130D]">3</span>
+                      <div className="w-14 h-16 bg-pastel-peach rounded-t-[18px] flex flex-col items-center justify-center">
+                        <Medal size={18} className="text-onyx mb-1" />
+                        <span className="text-lg font-heading text-onyx font-black">3</span>
                       </div>
-                      <p className="text-[10px] font-bold text-[#11130D] mt-2 truncate max-w-14">{topThree[2].full_name?.split(' ')[0]}</p>
-                      <p className="text-[9px] text-[#868935] font-bold">{topThree[2].points} pts</p>
+                      <p className="text-[10px] font-black text-onyx mt-2 truncate max-w-14">{topThree[2].full_name?.split(' ')[0]}</p>
+                      <p className="text-[9px] text-charcoal/40 font-bold uppercase tracking-widest">{topThree[2].points} PTS</p>
                     </motion.div>
                   )}
                 </div>
               </BentoCard>
 
               {/* Rankings List */}
-              <section className="space-y-3">
+              <section className="space-y-4">
                 {restOfLeaderboard.map((player, i) => (
                   <motion.div
                     key={player.id}
@@ -202,36 +203,36 @@ export default function LeaderboardPage() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.02 }}
                   >
-                    <BentoCard className={`p-4 flex items-center gap-4 ${player.id === user?.id ? 'border-[#D7FD03] border-2' : ''}`}>
+                    <BentoCard className={`p-5 flex items-center gap-5 border-none shadow-[0_4px_24px_rgba(0,0,0,0.02)] ${player.id === user?.id ? 'ring-2 ring-onyx shadow-xl' : ''}`}>
                       <div className="w-8 text-center">
-                        <span className="text-lg font-heading text-[#11130D]">{player.rank}</span>
+                        <span className="text-lg font-heading text-onyx font-black">{player.rank}</span>
                       </div>
-                      <div className="w-10 h-10 rounded-full bg-[#E8E9EC] flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-2xl bg-off-white flex items-center justify-center overflow-hidden border border-black/5">
                         {player.avatar_url ? (
-                          <img src={player.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
+                          <img src={player.avatar_url} alt="" className="w-full h-full object-cover" />
                         ) : (
-                          <span className="text-sm font-heading text-[#4A4B48]">{player.full_name?.[0]?.toUpperCase()}</span>
+                          <span className="text-sm font-heading text-charcoal font-black">{player.full_name?.[0]?.toUpperCase()}</span>
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-[13px] font-semibold text-[#11130D] truncate">{player.full_name}</p>
-                        <p className="text-[10px] text-[#4A4B48]">{player.wins} wins</p>
+                        <p className="text-[14px] font-black text-onyx truncate">{player.full_name}</p>
+                        <p className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest">{player.wins} WINS</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-heading text-[#11130D]">{player.points}</p>
-                        <div className="flex items-center justify-end gap-0.5">
+                        <p className="text-base font-heading text-onyx font-black">{player.points}</p>
+                        <div className="flex items-center justify-end gap-1 mt-0.5">
                           {player.change > 0 ? (
                             <>
-                              <ChevronUp size={12} className="text-[#868935]" />
-                              <span className="text-[9px] text-[#868935] font-bold">{player.change}</span>
+                              <ChevronUp size={12} className="text-lime-vibrant" strokeWidth={3} />
+                              <span className="text-[10px] text-lime-vibrant font-black">{player.change}</span>
                             </>
                           ) : player.change < 0 ? (
                             <>
-                              <ChevronDown size={12} className="text-[#8A2020]" />
-                              <span className="text-[9px] text-[#8A2020] font-bold">{Math.abs(player.change)}</span>
+                              <ChevronDown size={12} className="text-pastel-coral" strokeWidth={3} />
+                              <span className="text-[10px] text-pastel-coral font-black">{Math.abs(player.change)}</span>
                             </>
                           ) : (
-                            <span className="text-[9px] text-[#4A4B48] font-bold">-</span>
+                            <span className="text-[10px] text-charcoal/20 font-black">-</span>
                           )}
                         </div>
                       </div>
@@ -242,14 +243,26 @@ export default function LeaderboardPage() {
 
               {/* My Position Sticky Card */}
               {myRank && (
-                <div className="fixed bottom-28 left-4 right-4 max-w-lg mx-auto">
-                  <BentoCard className="p-3 flex items-center justify-between bg-[#D7FD03] border-none">
-                    <div className="flex items-center gap-3">
-                      <Users size={18} className="text-[#11130D]" />
-                      <span className="text-[12px] font-bold text-[#11130D]">Your Rank</span>
-                    </div>
-                    <span className="text-lg font-heading text-[#11130D]">#{myRank}</span>
-                  </BentoCard>
+                <div className="fixed bottom-32 left-6 right-6 max-w-lg mx-auto z-[60]">
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                  >
+                    <BentoCard className="p-4 flex items-center justify-between bg-onyx border-none shadow-2xl">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
+                          <Users size={20} className="text-lime-vibrant" />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-black text-white/50 uppercase tracking-widest">Your Current Position</p>
+                          <p className="text-sm font-bold text-white">Keep pushing, Warrior!</p>
+                        </div>
+                      </div>
+                      <div className="bg-lime-vibrant px-4 py-2 rounded-xl">
+                        <span className="text-xl font-heading text-onyx font-black">#{myRank}</span>
+                      </div>
+                    </BentoCard>
+                  </motion.div>
                 </div>
               )}
             </>

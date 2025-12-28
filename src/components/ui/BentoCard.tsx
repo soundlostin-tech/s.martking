@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 interface BentoCardProps {
   children: React.ReactNode;
   className?: string;
-  variant?: "default" | "hero" | "pastel" | "dark";
+  variant?: "default" | "hero" | "pastel" | "dark" | "vibrant";
   pastelColor?: "yellow" | "mint" | "coral" | "lavender" | "peach";
   onClick?: () => void;
 }
@@ -31,6 +31,7 @@ export function BentoCard({
   const variantClasses = {
     default: "",
     dark: "bento-dark",
+    vibrant: "bg-lime-vibrant text-onyx border-none shadow-[0_8px_32px_rgba(168,242,154,0.3)]",
     hero: `bento-hero ${pastelVariants[pastelColor]}`,
     pastel: pastelVariants[pastelColor],
   };
