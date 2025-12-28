@@ -66,13 +66,17 @@
     --color-olive: #868935;
     --color-lemon-lime: #C7E323;
     --color-lime-yellow: #D7FD03;
+    --color-off-white: #F8F8F6;
     
-    /* Pastel Accent Colors for Stickers/Bento */
-    --color-pastel-mint: #D7F5D1;
-    --color-pastel-coral: #FFD7BE;
-    --color-pastel-lavender: #E6E1FF;
-    --color-pastel-peach: #FFE5D9;
-    --color-pastel-yellow: #FFF5CC;
+    /* Pastel Accent Colors - Vibrant like reference */
+    --color-pastel-mint: #C1E6C0;
+    --color-pastel-coral: #FFBFA3;
+    --color-pastel-lavender: #D4CFFF;
+    --color-pastel-peach: #FFD4C4;
+    --color-pastel-yellow: #FFEFB8;
+    --color-pastel-pink: #FFD6E8;
+    --color-pastel-sky: #B8E4FF;
+    --color-pastel-sage: #D4E5D0;
   }
   
   :root {
@@ -163,46 +167,254 @@
 .bento-pastel-lavender { @apply bg-pastel-lavender text-charcoal-brown border-none; }
 .bento-pastel-peach { @apply bg-pastel-peach text-charcoal-brown border-none; }
 
-/* Sticker Header Styles */
+/* ============================================
+   STICKER HEADER - Layered Paper Cutouts
+   ============================================ */
 .sticker-header {
-  @apply relative pt-16 pb-8 px-6 overflow-hidden;
+  @apply relative pt-8 pb-10 px-6 overflow-visible;
+}
+
+.sticker-header::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  background: var(--color-pastel-mint);
+  border-radius: 50% 50% 50% 70%;
+  opacity: 0.6;
+  z-index: 0;
+}
+
+.sticker-header::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 80px;
+  height: 80px;
+  background: var(--color-pastel-lavender);
+  border-radius: 30% 70% 70% 30%;
+  opacity: 0.7;
+  z-index: 0;
 }
 
 .sticker-blob {
-  @apply absolute -top-12 -left-12 w-48 h-48 rounded-full opacity-20 blur-3xl pointer-events-none;
+  @apply absolute pointer-events-none z-0;
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
 }
 
-/* Chip Styles */
+.sticker-blob-1 {
+  top: -30px;
+  left: -20px;
+  width: 120px;
+  height: 120px;
+  background: var(--color-lime-yellow);
+  opacity: 0.5;
+}
+
+.sticker-blob-2 {
+  top: 40px;
+  right: -10px;
+  width: 80px;
+  height: 80px;
+  background: var(--color-pastel-coral);
+  opacity: 0.6;
+  border-radius: 40% 60% 65% 35% / 40% 45% 55% 60%;
+}
+
+/* ============================================
+   FLOATING SHAPE DECORATIONS
+   ============================================ */
+.floating-shape {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.shape-circle {
+  border-radius: 50%;
+}
+
+.shape-blob {
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+}
+
+.shape-squiggle {
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+}
+
+/* ============================================
+   CHIP/PILL NAVIGATION
+   ============================================ */
 .chip {
-  @apply inline-flex items-center justify-center px-5 py-2.5 rounded-full text-[12px] font-bold transition-all;
+  @apply inline-flex items-center justify-center px-5 py-3 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all duration-200;
 }
 
 .chip-default {
-  @apply bg-silver/20 text-charcoal border border-transparent;
+  @apply bg-white text-charcoal shadow-sm;
 }
 
 .chip-selected {
-  @apply bg-onyx text-white border-none;
+  @apply bg-onyx text-white shadow-lg;
 }
 
-/* Badge Styles */
+.chip:active {
+  transform: scale(0.96);
+}
+
+/* ============================================
+   STATUS BADGES
+   ============================================ */
 .badge-live {
-  @apply bg-lime-yellow text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5;
+  @apply bg-lime-yellow text-onyx px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2;
+  box-shadow: 0 4px 12px rgba(215, 253, 3, 0.3);
 }
 
 .badge-live .pulse-dot {
-  @apply w-2 h-2 rounded-full bg-onyx animate-pulse;
+  @apply w-2 h-2 rounded-full bg-onyx;
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
 }
 
 .badge-upcoming {
-  @apply bg-lemon-lime text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider;
+  @apply bg-pastel-sky text-onyx px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest;
 }
 
 .badge-completed {
-  @apply bg-silver text-charcoal px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider;
+  @apply bg-silver/40 text-charcoal px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest;
 }
 
-/* Custom Scrollbar */
+.badge-pending {
+  @apply bg-pastel-yellow text-onyx px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest;
+}
+
+/* ============================================
+   BENTO GRID ENHANCEMENTS
+   ============================================ */
+.bento-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.bento-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.bento-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.bento-hero {
+  grid-column: span 2;
+}
+
+/* ============================================
+   PASTEL CARD VARIANTS
+   ============================================ */
+.bento-pastel-pink { @apply bg-pastel-pink text-charcoal-brown border-none; }
+.bento-pastel-sky { @apply bg-pastel-sky text-charcoal-brown border-none; }
+.bento-pastel-sage { @apply bg-pastel-sage text-charcoal-brown border-none; }
+
+/* ============================================
+   ACTIVITY CARDS (Like reference)
+   ============================================ */
+.activity-card {
+  @apply bg-white rounded-[24px] p-5 shadow-[0_2px_16px_rgba(0,0,0,0.04)] border-0;
+  transition: all 0.2s ease;
+}
+
+.activity-card:active {
+  transform: scale(0.98);
+}
+
+.activity-card-highlight {
+  position: relative;
+  overflow: hidden;
+}
+
+.activity-card-highlight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: var(--color-lime-yellow);
+  border-radius: 50%;
+  opacity: 0.1;
+  transform: translate(30%, -30%);
+}
+
+/* ============================================
+   PROGRESS RINGS (Like reference)
+   ============================================ */
+.progress-ring {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring-bg {
+  stroke: var(--color-silver);
+  stroke-opacity: 0.2;
+}
+
+.progress-ring-fill {
+  stroke: var(--color-lime-yellow);
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+/* ============================================
+   MINI CHART STYLES
+   ============================================ */
+.mini-chart {
+  @apply flex items-end gap-1 h-12;
+}
+
+.mini-chart-bar {
+  @apply w-2 bg-onyx/10 rounded-full transition-all duration-300;
+}
+
+.mini-chart-bar.active {
+  @apply bg-lime-yellow;
+}
+
+/* ============================================
+   LIST ROW COMPONENT
+   ============================================ */
+.list-row {
+  @apply flex items-center justify-between p-4 bg-white rounded-2xl transition-all;
+}
+
+.list-row:active {
+  @apply bg-off-white scale-[0.99];
+}
+
+/* ============================================
+   BOTTOM SHEET STYLES
+   ============================================ */
+.bottom-sheet {
+  @apply fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-[40px] shadow-2xl;
+  max-height: 90vh;
+}
+
+.bottom-sheet-handle {
+  @apply w-10 h-1 bg-silver/40 rounded-full mx-auto mt-3;
+}
+
+/* ============================================
+   SCROLLBAR & UTILITY
+   ============================================ */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -210,4 +422,24 @@
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Glass Effect */
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Soft Shadow Variants */
+.shadow-soft {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+}
+
+.shadow-soft-lg {
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-glow-lime {
+  box-shadow: 0 8px 32px rgba(215, 253, 3, 0.25);
 }

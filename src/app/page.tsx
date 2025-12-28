@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
 import { 
-  ChevronRight, Plus, Wallet, Zap, Trophy, TrendingUp, Users, Clock, Swords
+  ChevronRight, Plus, Wallet, Trophy, TrendingUp, Users, Clock, Swords, Play, Star, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { StoryViewer } from "@/components/StoryViewer";
@@ -67,53 +67,31 @@ export default function Home() {
   };
 
   const featured = featuredMatches[0];
+  const userName = user?.user_metadata?.full_name?.split(' ')[0] || 'Warrior';
 
   return (
     <div className="min-h-screen bg-background text-onyx font-sans">
       <main className="pb-32 relative z-10">
         <TopHeader />
 
-        {/* Sticker Header */}
-        <section className="sticker-header">
-          <div className="sticker-blob bg-lime-yellow" />
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full border-2 border-white shadow-sm overflow-hidden bg-white">
-              {user?.user_metadata?.avatar_url ? (
-                <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-xl font-bold bg-pastel-mint">
-                  {user?.email?.[0]?.toUpperCase() || 'A'}
-                </div>
-              )}
-            </div>
-            <div>
-              <p className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest leading-none">Welcome back</p>
-              <p className="text-[12px] font-bold text-charcoal/30 mt-1 uppercase tracking-tighter">Dec 28, 2025</p>
-            </div>
-          </div>
-          <h1 className="text-[32px] font-black leading-[1.1] mb-6 max-w-[280px]">
-            Hello {user?.user_metadata?.full_name?.split(' ')[0] || 'Warrior'}! <br />
-            Ready to win today?
-          </h1>
-
-          <div className="flex gap-4 overflow-x-auto no-scrollbar py-2">
-            {[
-              { label: 'Competitive', emoji: '🔥', color: 'coral' },
-              { label: 'Chill', emoji: '😎', color: 'mint' },
-              { label: 'Grinding', emoji: '💪', color: 'lavender' },
-              { label: 'Lucky', emoji: '🍀', color: 'peach' }
-            ].map((mood) => (
-              <motion.div 
-                key={mood.label} 
-                whileTap={{ scale: 0.9 }}
-                className="flex flex-col items-center gap-2"
-              >
-                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm bento-pastel-${mood.color}`}>
-                  <span className="text-2xl">{mood.emoji}</span>
-                </div>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-charcoal-brown/60">{mood.label}</span>
-              </motion.div>
-            ))}
+        {/* Hero Section with Layered Blobs */}
+        <section className="sticker-header relative">
+          <div className="sticker-blob sticker-blob-1" />
+          <div className="sticker-blob sticker-blob-2" />
+          
+          <div className="relative z-10">
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-[42px] font-black leading-[0.95] mb-3"
+            >
+              Discover,<br />
+              Create,<br />
+              <span className="text-charcoal/60">Conquer</span>
+            </motion.h1>
+            <p className="text-[13px] font-bold text-charcoal/50 uppercase tracking-wide">
+              Hello {userName} — Ready to compete?
+            </p>
           </div>
         </section>
 
@@ -124,149 +102,182 @@ export default function Home() {
               <motion.div 
                 whileTap={{ scale: 0.92 }}
                 onClick={() => setIsUploadOpen(true)}
-                className="relative w-[64px] h-[64px] rounded-full p-[2px] bg-white border border-black/5 shadow-sm"
+                className="relative w-[68px] h-[68px] rounded-full p-[3px] bg-gradient-to-br from-lime-yellow to-lemon-lime shadow-md"
               >
-                <div className="w-full h-full rounded-full bg-off-white flex items-center justify-center overflow-hidden">
+                <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden">
                   {user?.user_metadata?.avatar_url ? (
                     <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover" />
                   ) : (
-                    <span className="text-xl font-heading text-charcoal">{user?.email?.[0]?.toUpperCase() || 'A'}</span>
+                    <span className="text-xl font-black text-charcoal">{user?.email?.[0]?.toUpperCase() || 'A'}</span>
                   )}
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-onyx rounded-full border-2 border-white flex items-center justify-center shadow-md">
-                  <Plus size={12} strokeWidth={3} className="text-white" />
+                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-onyx rounded-full border-2 border-white flex items-center justify-center shadow-lg">
+                  <Plus size={14} strokeWidth={3} className="text-white" />
                 </div>
               </motion.div>
-              <span className="text-[10px] font-bold text-charcoal/60 uppercase tracking-widest">You</span>
+              <span className="text-[10px] font-black text-charcoal/50 uppercase tracking-wider">You</span>
             </div>
 
-            {profiles.map((profile) => (
+            {profiles.slice(0, 8).map((profile) => (
               <div key={profile.id} className="flex-shrink-0 flex flex-col items-center gap-2">
                 <motion.div 
                   whileTap={{ scale: 0.92 }}
                   onClick={() => openStory(profile.id)}
                   className={cn(
-                    "w-[64px] h-[64px] rounded-full p-[3px] shadow-sm bg-white",
-                    stories.some(s => s.user_id === profile.id) ? "ring-2 ring-lime-yellow" : "border border-black/5"
+                    "w-[68px] h-[68px] rounded-full p-[3px] shadow-sm",
+                    stories.some(s => s.user_id === profile.id) 
+                      ? "bg-gradient-to-br from-lime-yellow to-pastel-mint" 
+                      : "bg-white"
                   )}
                 >
-                  <div className="w-full h-full rounded-full bg-off-white flex items-center justify-center overflow-hidden">
+                  <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden">
                     {profile.avatar_url ? (
                       <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
                     ) : (
-                      <span className="text-xl font-heading text-charcoal">{profile.full_name?.[0]?.toUpperCase()}</span>
+                      <span className="text-xl font-black text-charcoal">{profile.full_name?.[0]?.toUpperCase()}</span>
                     )}
                   </div>
                 </motion.div>
-                <span className="text-[10px] font-bold text-charcoal/60 uppercase tracking-widest">{profile.full_name?.split(' ')[0]}</span>
+                <span className="text-[10px] font-black text-charcoal/50 uppercase tracking-wider">{profile.full_name?.split(' ')[0]}</span>
               </div>
             ))}
           </div>
         </section>
 
-        {/* Featured Tournament */}
-        <section className="px-6 mb-8">
-          <BentoCard variant="vibrant" className="p-6 h-[180px] relative overflow-hidden flex flex-col justify-between">
-            <div className="relative z-10">
-              <div className="flex justify-between items-start mb-2">
-                <span className="px-3 py-1 bg-onyx text-white text-[10px] font-bold rounded-full uppercase tracking-widest">Featured</span>
-                {featured?.status === 'live' && <StatusBadge variant="live" className="bg-white/30 backdrop-blur-sm" />}
-              </div>
-              <h3 className="text-2xl font-black leading-tight mb-1">{featured?.tournament?.title || "Pro League Season 8"}</h3>
-              <p className="text-[12px] font-bold text-onyx/60 uppercase tracking-wider">
-                {featured?.mode || 'SQUAD'} • ₹{featured?.tournament?.entry_fee || 50} Entry
-              </p>
-            </div>
-            <div className="relative z-10 flex justify-between items-end">
-              <div>
-                <p className="text-lg font-black leading-none">₹{featured?.tournament?.prize_pool || "10,000"}</p>
-                <p className="text-[10px] font-bold text-onyx/40 uppercase tracking-widest">Prize Pool</p>
-              </div>
-              <Link href={`/matches/${featured?.id || ''}`}>
-                <motion.button 
-                  whileTap={{ scale: 0.95 }}
-                  className="px-6 py-2 bg-onyx text-white rounded-full text-xs font-bold uppercase tracking-widest shadow-lg"
-                >
-                  Join Now
-                </motion.button>
-              </Link>
-            </div>
-            
-            <div className="absolute top-0 right-0 p-2 opacity-10">
-              <Trophy size={120} />
-            </div>
-          </BentoCard>
-        </section>
-
-        {/* My Activity Grid */}
-        <section className="px-6 mb-8">
+        {/* Activity Bento Grid - Reference Style */}
+        <section className="px-6 mb-6">
           <div className="grid grid-cols-2 gap-4">
-            <BentoCard variant="pastel" pastelColor="mint" className="p-6 h-40 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <TrendingUp size={16} className="text-charcoal-brown/50" />
-                  <span className="text-[10px] font-bold text-charcoal-brown/50 uppercase tracking-widest">Win Rate</span>
+            {/* Progress Card - Like reference "Your Progress" */}
+            <BentoCard variant="pastel" pastelColor="mint" className="p-5 h-[180px] flex flex-col justify-between relative overflow-hidden">
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 rounded-xl bg-white/60 flex items-center justify-center">
+                    <TrendingUp size={16} className="text-onyx" />
+                  </div>
+                  <span className="text-[10px] font-black text-onyx/60 uppercase tracking-widest">Win Rate</span>
                 </div>
-                <p className="text-3xl font-black">68%</p>
+                <p className="text-[48px] font-black leading-none">68%</p>
               </div>
-              <div className="h-4 bg-white/30 rounded-full overflow-hidden">
-                <div className="h-full bg-onyx/20 w-[68%]" />
+              <div className="relative z-10">
+                <div className="h-2 bg-white/40 rounded-full overflow-hidden">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: "68%" }}
+                    transition={{ delay: 0.3, duration: 0.8 }}
+                    className="h-full bg-onyx/30 rounded-full"
+                  />
+                </div>
+                <p className="text-[9px] font-bold text-onyx/40 mt-2 uppercase tracking-widest">Last 7 days</p>
               </div>
+              <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-white/20 rounded-full" />
             </BentoCard>
 
-            <BentoCard variant="dark" className="p-6 h-40 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <Clock size={16} className="text-white/30" />
-                  <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Matches Today</span>
+            {/* Matches Today Card */}
+            <BentoCard variant="dark" className="p-5 h-[180px] flex flex-col justify-between relative overflow-hidden">
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center">
+                    <Swords size={16} className="text-lime-yellow" />
+                  </div>
+                  <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">Today</span>
                 </div>
-                <p className="text-3xl font-black text-white">3</p>
+                <p className="text-[48px] font-black leading-none text-white">3</p>
+                <p className="text-[11px] font-bold text-white/30 uppercase tracking-widest mt-1">Matches Played</p>
               </div>
-              <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Played today</p>
-            </BentoCard>
-
-            <BentoCard variant="pastel" pastelColor="lavender" className="p-6 h-40 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <Trophy size={16} className="text-charcoal-brown/50" />
-                  <span className="text-[10px] font-bold text-charcoal-brown/50 uppercase tracking-widest">Current Rank</span>
-                </div>
-                <p className="text-3xl font-black">#42</p>
-              </div>
-              <div className="flex items-center gap-1">
-                <TrendingUp size={12} className="text-green-600" />
-                <span className="text-[10px] font-bold text-green-600 uppercase tracking-widest">+12%</span>
-              </div>
-            </BentoCard>
-
-            <BentoCard className="p-6 h-40 flex flex-col justify-between border border-black/5 shadow-sm">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <Wallet size={16} className="text-charcoal-brown/50" />
-                  <span className="text-[10px] font-bold text-charcoal-brown/50 uppercase tracking-widest">Wallet</span>
-                </div>
-                <p className="text-3xl font-black">₹1,250</p>
-              </div>
-              <Link href="/wallet" className="text-[10px] font-bold text-onyx underline uppercase tracking-widest">Add Funds</Link>
+              <Link href="/matches" className="relative z-10">
+                <motion.div 
+                  whileTap={{ scale: 0.95 }}
+                  className="flex items-center gap-2 text-lime-yellow"
+                >
+                  <span className="text-[10px] font-black uppercase tracking-widest">View All</span>
+                  <ChevronRight size={14} />
+                </motion.div>
+              </Link>
+              <div className="absolute top-0 right-0 w-24 h-24 bg-lime-yellow/10 rounded-full blur-2xl" />
             </BentoCard>
           </div>
         </section>
 
-        {/* Quick Actions Strip */}
+        {/* Featured Tournament Hero - Like reference "Activities" */}
+        <section className="px-6 mb-6">
+          <BentoCard variant="vibrant" className="p-6 h-[200px] relative overflow-hidden">
+            <div className="relative z-10 h-full flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  {featured?.status === 'live' && <StatusBadge variant="live" />}
+                  <span className="px-3 py-1 bg-onyx/10 text-onyx text-[9px] font-black rounded-full uppercase tracking-widest">Featured</span>
+                </div>
+                <h3 className="text-[28px] font-black leading-[1] mb-2">
+                  {featured?.tournament?.title || "Pro League"}
+                </h3>
+                <p className="text-[11px] font-bold text-onyx/50 uppercase tracking-wider">
+                  {featured?.mode || 'SQUAD'} • ₹{featured?.tournament?.entry_fee || 50} Entry
+                </p>
+              </div>
+              
+              <div className="flex justify-between items-end">
+                <div>
+                  <p className="text-[9px] font-bold text-onyx/40 uppercase tracking-widest mb-1">Prize Pool</p>
+                  <p className="text-2xl font-black">₹{(featured?.tournament?.prize_pool || 10000).toLocaleString()}</p>
+                </div>
+                <Link href={`/matches/${featured?.id || ''}`}>
+                  <motion.button 
+                    whileTap={{ scale: 0.95 }}
+                    className="px-6 py-3 bg-onyx text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl flex items-center gap-2"
+                  >
+                    Join <ChevronRight size={14} />
+                  </motion.button>
+                </Link>
+              </div>
+            </div>
+
+            {/* Decorative Elements */}
+            <div className="absolute top-4 right-4 w-20 h-20 bg-onyx/5 rounded-3xl rotate-12" />
+            <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-white/20 rounded-full" />
+            <Trophy className="absolute top-6 right-6 text-onyx/10" size={80} />
+          </BentoCard>
+        </section>
+
+        {/* Quick Actions - Horizontal Bento */}
+        <section className="px-6 mb-6">
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              { label: 'Wallet', icon: Wallet, color: 'lavender', href: '/wallet', value: '₹1,250' },
+              { label: 'Rank', icon: Trophy, color: 'coral', href: '/leaderboard', value: '#42' },
+              { label: 'Live', icon: Play, color: 'mint', href: '/live', value: 'Watch' },
+            ].map((item) => (
+              <Link key={item.label} href={item.href}>
+                <motion.div whileTap={{ scale: 0.95 }}>
+                  <BentoCard variant="pastel" pastelColor={item.color as any} className="p-4 h-[100px] flex flex-col justify-between">
+                    <div className="w-9 h-9 rounded-xl bg-white/50 flex items-center justify-center">
+                      <item.icon size={18} className="text-onyx" />
+                    </div>
+                    <div>
+                      <p className="text-[15px] font-black leading-none">{item.value}</p>
+                      <p className="text-[9px] font-bold text-onyx/40 uppercase tracking-widest mt-1">{item.label}</p>
+                    </div>
+                  </BentoCard>
+                </motion.div>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* Action Strip - Horizontal Scroll */}
         <section className="mb-8">
           <div className="flex gap-3 overflow-x-auto no-scrollbar px-6">
             {[
               { label: 'Join Match', icon: Swords, href: '/matches', primary: true },
               { label: 'Add Funds', icon: Plus, href: '/wallet' },
               { label: 'Leaderboard', icon: Trophy, href: '/leaderboard' },
-              { label: 'Invite Friends', icon: Users, href: '/profile' }
+              { label: 'Invite', icon: Users, href: '/profile' }
             ].map((action) => (
               <Link key={action.label} href={action.href}>
                 <motion.button 
                   whileTap={{ scale: 0.95 }}
                   className={cn(
-                    "flex items-center gap-2 px-5 py-3 rounded-full text-xs font-bold uppercase tracking-widest whitespace-nowrap shadow-sm",
-                    action.primary ? "bg-onyx text-white" : "bg-white text-onyx border border-black/5"
+                    "flex items-center gap-2 px-5 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap shadow-soft",
+                    action.primary ? "bg-onyx text-white" : "bg-white text-onyx"
                   )}
                 >
                   <action.icon size={16} />
@@ -277,45 +288,82 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Upcoming Section */}
+        {/* Upcoming Matches Section */}
         <section className="px-6 mb-8">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex justify-between items-center mb-5">
             <h3 className="text-xl font-black">Upcoming</h3>
-            <Link href="/matches" className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest">See All</Link>
+            <Link href="/matches" className="flex items-center gap-1 text-charcoal/40">
+              <span className="text-[10px] font-black uppercase tracking-widest">See All</span>
+              <ChevronRight size={14} />
+            </Link>
           </div>
 
           <div className="flex gap-4 overflow-x-auto no-scrollbar py-2 -mx-6 px-6">
-            {featuredMatches.slice(1).map((match) => (
-              <BentoCard key={match.id} className="min-w-[240px] p-5 shadow-sm border border-black/5">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-pastel-yellow flex items-center justify-center">
-                    <Trophy size={20} className="text-onyx" />
-                  </div>
-                  <StatusBadge variant="upcoming" />
-                </div>
-                <h4 className="text-lg font-black leading-tight mb-1">{match.tournament?.title}</h4>
-                <p className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest mb-4">
-                  {match.mode} • ₹{match.tournament?.entry_fee} Entry
-                </p>
-                
-                <div className="flex justify-between items-end">
-                  <div>
-                    <p className="text-[10px] font-bold text-charcoal/30 uppercase tracking-widest leading-none mb-1">Prize Pool</p>
-                    <p className="text-base font-black leading-none">₹{match.tournament?.prize_pool}</p>
-                  </div>
-                  <Link href={`/matches/${match.id}`}>
-                    <motion.button 
-                      whileTap={{ scale: 0.95 }}
-                      className="px-4 py-1.5 bg-silver/20 rounded-full text-[10px] font-bold uppercase tracking-widest"
-                    >
-                      Join
-                    </motion.button>
-                  </Link>
-                </div>
-              </BentoCard>
+            {featuredMatches.slice(1, 5).map((match, i) => (
+              <motion.div
+                key={match.id}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <Link href={`/matches/${match.id}`}>
+                  <BentoCard className="min-w-[220px] p-5 shadow-soft">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className={cn(
+                        "w-11 h-11 rounded-2xl flex items-center justify-center",
+                        i % 2 === 0 ? "bg-pastel-yellow" : "bg-pastel-lavender"
+                      )}>
+                        <Trophy size={18} className="text-onyx" />
+                      </div>
+                      <StatusBadge variant={match.status as any} className="text-[8px] px-3 py-1" />
+                    </div>
+                    
+                    <h4 className="text-[15px] font-black leading-tight mb-1">{match.tournament?.title}</h4>
+                    <p className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest mb-4">
+                      {match.mode} • ₹{match.tournament?.entry_fee}
+                    </p>
+                    
+                    <div className="flex justify-between items-end pt-3 border-t border-black/[0.03]">
+                      <div>
+                        <p className="text-[8px] font-bold text-charcoal/30 uppercase tracking-widest">Prize</p>
+                        <p className="text-[15px] font-black">₹{match.tournament?.prize_pool?.toLocaleString()}</p>
+                      </div>
+                      <motion.div 
+                        whileTap={{ scale: 0.9 }}
+                        className="w-10 h-10 bg-onyx rounded-xl flex items-center justify-center"
+                      >
+                        <ChevronRight size={18} className="text-white" />
+                      </motion.div>
+                    </div>
+                  </BentoCard>
+                </Link>
+              </motion.div>
             ))}
           </div>
         </section>
+
+        {/* Live Now Banner */}
+        {featuredMatches.some(m => m.status === 'live') && (
+          <section className="px-6 mb-8">
+            <Link href="/live">
+              <BentoCard variant="dark" className="p-5 flex items-center justify-between relative overflow-hidden">
+                <div className="flex items-center gap-4 relative z-10">
+                  <div className="w-12 h-12 rounded-2xl bg-lime-yellow flex items-center justify-center">
+                    <Play size={20} className="text-onyx" fill="currentColor" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <StatusBadge variant="live" className="text-[8px] px-2 py-0.5" />
+                    </div>
+                    <p className="text-[13px] font-black text-white">Tournament is streaming now</p>
+                  </div>
+                </div>
+                <ChevronRight size={20} className="text-white/40 relative z-10" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-lime-yellow/10" />
+              </BentoCard>
+            </Link>
+          </section>
+        )}
       </main>
 
       <StoryViewer 
