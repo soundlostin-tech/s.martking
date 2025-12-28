@@ -11,7 +11,6 @@ import {
 import { cn } from "@/lib/utils";
 import { StoryViewer } from "@/components/StoryViewer";
 import { StoryUpload } from "@/components/StoryUpload";
-import { TopHeader } from "@/components/layout/TopHeader";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import Link from "next/link";
@@ -72,7 +71,6 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-onyx font-sans">
       <main className="pb-32 relative z-10">
-        <TopHeader />
 
         {/* Hero Section with Layered Blobs */}
         <section className="sticker-header relative pt-12 pb-14 px-8 overflow-hidden">
