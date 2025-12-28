@@ -33,26 +33,30 @@ function LiveContent() {
   const [loading, setLoading] = useState(true);
   const [tvOn, setTvOn] = useState(false);
 
-  const fetchLiveMatches = useCallback(async () => {
-    try {
-      const { data, error } = await supabase
-        .from("matches")
-        .select(`
-          *,
-          tournament:tournaments(title, prize_pool)
-        `)
-        .eq("status", "live")
-        .order("viewers_count", { ascending: false });
+    const fetchLiveMatches = useCallback(async () => {
+      try {
+        const { data, error } = await supabase
+          .from("matches")
+          .select("*, tournament:tournaments(title, prize_pool)")
+          .eq("status", "live")
+          .order("viewers_count", { ascending: false });
 
-      if (error) throw error;
+        if (error) {
+          console.error("Supabase error fetching live matches:", error);
+          throw error;
+        }
 
-      if (data && data.length > 0) {
-        const selected = matchId ? data.find(m => m.id === matchId) : data[0];
-        setActiveMatch(selected || data[0]);
-        if (selected) setTvOn(true);
-      }
+        if (data && data.length > 0) {
+          const selected = matchId ? data.find(m => m.id === matchId) : data[0];
+          setActiveMatch(selected || data[0]);
+          if (selected) setTvOn(true);
+        }
       } catch (err: any) {
         console.error("Error fetching live matches:", err.message || err);
+        // Fallback for network errors
+        if (err.message === "Failed to fetch") {
+          console.warn("Network error detected. Please check your connection or adblocker.");
+        }
       } finally {
         setLoading(false);
       }
