@@ -1,7 +1,6 @@
 "use client";
 
 import { BottomNav } from "@/components/layout/BottomNav";
-import { TopHeader } from "@/components/layout/TopHeader";
 import { VintageTV } from "@/components/ui/VintageTV";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
@@ -74,8 +73,6 @@ function LiveContent() {
 
   return (
     <main className="pb-32 relative z-10">
-      <TopHeader />
-
       {/* Sticker Header with Blobs */}
       <section className="sticker-header relative">
         <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-pastel-coral)' }} />

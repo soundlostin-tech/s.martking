@@ -1,7 +1,6 @@
 "use client";
 
 import { BottomNav } from "@/components/layout/BottomNav";
-import { TopHeader } from "@/components/layout/TopHeader";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { 
@@ -187,7 +186,7 @@ export default function WalletPage() {
   return (
     <div className="min-h-screen bg-background text-onyx">
       <main className="pb-32 relative z-10">
-        <TopHeader />
+        
 
         {/* Sticker Header */}
         <section className="sticker-header relative">

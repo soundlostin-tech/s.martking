@@ -1,7 +1,6 @@
 "use client";
 
 import { BottomNav } from "@/components/layout/BottomNav";
-import { TopHeader } from "@/components/layout/TopHeader";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { ListRow } from "@/components/ui/ListRow";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -131,7 +130,7 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-background text-onyx">
       <main className="pb-32 relative z-10">
-        <TopHeader />
+        
 
         {/* Sticker Header */}
         <section className="sticker-header relative">
