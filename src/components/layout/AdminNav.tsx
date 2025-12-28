@@ -18,7 +18,7 @@ export function AdminNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-6 left-4 right-4 z-50 bg-white/95 backdrop-blur-xl rounded-[24px] shadow-[0_4px_32px_rgba(0,0,0,0.12)] border border-[#C8C8C4]/30 max-w-2xl mx-auto">
+    <nav className="fixed bottom-6 left-4 right-4 z-50 bg-white/95 backdrop-blur-xl rounded-[28px] shadow-soft-lg border border-black/[0.03] max-w-2xl mx-auto">
       <div className="flex justify-around items-center h-16 px-2">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
@@ -41,14 +41,14 @@ export function AdminNav() {
               >
                 <div className={`relative z-10 p-2 rounded-xl transition-all duration-300 ${
                   isActive 
-                    ? "bg-[#D7FD03] text-[#11130D] shadow-lg shadow-[#D7FD03]/30" 
-                    : "text-[#4A4B48] hover:text-[#11130D]"
+                    ? "bg-soft-yellow text-onyx shadow-glow-soft" 
+                    : "text-charcoal hover:text-onyx"
                 }`}>
-                  <Icon size={18} strokeWidth={isActive ? 2.5 : 2} />
+                  <Icon size={18} strokeWidth={isActive ? 3 : 2} />
                 </div>
 
-                <span className={`text-[8px] font-bold uppercase tracking-wide transition-colors duration-200 ${
-                  isActive ? "text-[#11130D]" : "text-[#4A4B48]"
+                <span className={`text-[8px] font-black uppercase tracking-widest transition-colors duration-200 ${
+                  isActive ? "text-onyx" : "text-charcoal/60"
                 }`}>
                   {item.label}
                 </span>

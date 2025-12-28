@@ -1,31 +1,30 @@
 "use client";
 
 import { AdminNav } from "@/components/layout/AdminNav";
-import { Badge } from "@/components/ui/badge";
 import { 
-  Play, 
+  Trophy, 
   Users, 
   Activity, 
-  Trophy, 
   Gamepad2, 
   ChevronRight, 
   Loader2,
   Monitor,
-  Clock,
   Target,
   Zap,
   Radio,
   Eye,
-  ShieldCheck,
   Signal,
   LayoutGrid,
-  Settings
+  Play
 } from "lucide-react";
 import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
+import { BentoCard } from "@/components/ui/BentoCard";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 interface Tournament {
   id: string;
@@ -162,139 +161,129 @@ export default function AdminLive() {
 
   if (loading && tournaments.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="space-y-4 text-center">
-          <Signal className="w-12 h-12 animate-pulse text-accent mx-auto" />
-          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em]">Acquiring Live Signal...</p>
-        </div>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background">
+        <Loader2 className="w-12 h-12 animate-spin text-onyx/20 mb-4" />
+        <p className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em]">Acquiring Live Signal...</p>
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen pb-32 bg-background text-foreground">
-      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-20">
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px]" />
-      </div>
-
-      <div className="px-6 pt-24 relative z-10 space-y-10 max-w-6xl mx-auto">
+    <main className="min-h-screen pb-32 bg-background text-onyx font-sans">
+      <div className="px-8 pt-24 relative z-10 max-w-6xl mx-auto space-y-12">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-1">
-            <h4 className="text-[10px] font-bold text-secondary uppercase tracking-[0.4em]">Combat Oversight</h4>
-            <h1 className="text-4xl font-heading text-foreground">Live <span className="italic font-serif opacity-60">Control</span></h1>
+            <p className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em]">Combat Oversight</p>
+            <h1 className="text-[48px] font-black leading-none tracking-tight">Live Control</h1>
           </div>
-          <div className="flex items-center gap-3 bg-muted p-4 rounded-2xl border border-border shadow-lg">
-            <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-            <p className="text-[9px] font-bold text-accent uppercase tracking-widest">System Feed Operational</p>
+          <div className="flex items-center gap-3 bg-white px-5 py-3 rounded-2xl shadow-soft border border-black/[0.03]">
+            <div className="w-2 h-2 rounded-full bg-onyx animate-pulse" />
+            <p className="text-[10px] font-black text-onyx uppercase tracking-widest">Feed Operational</p>
           </div>
-        </div>
+        </header>
 
         {/* KPI Strip */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[
-            { label: "Active Deployments", value: summary.liveTournaments, icon: Radio, primary: true },
-            { label: "Warriors in Action", value: summary.totalPlayers, icon: Users },
-          ].map((stat, i) => (
-            <motion.div 
-              key={i}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: i * 0.1 }}
-              className={`rounded-[2.5rem] p-8 border border-border shadow-lg relative overflow-hidden group ${
-                stat.primary ? "bg-accent/10 border-accent/30" : "bg-card"
-              }`}
-            >
-              <div className="flex justify-between items-start relative z-10">
-                <div className="space-y-1">
-                  <p className={`text-[10px] uppercase font-bold tracking-[0.2em] ${stat.primary ? "text-accent-foreground" : "text-muted-foreground"}`}>{stat.label}</p>
-                  <h3 className="text-4xl font-heading text-foreground">{stat.value}</h3>
-                  <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest mt-2">REAL-TIME TELEMETRY</p>
+          <BentoCard variant="vibrant" className="p-8 flex flex-col justify-between min-h-[160px] relative overflow-hidden">
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-onyx/10 flex items-center justify-center">
+                  <Radio size={20} className="text-onyx" />
                 </div>
-                <div className={`p-4 rounded-2xl ${stat.primary ? "bg-accent text-primary shadow-lg shadow-accent/20" : "bg-muted text-accent"} group-hover:scale-110 transition-transform duration-500 border border-border`}>
-                  <stat.icon size={24} />
-                </div>
+                <span className="text-[10px] font-black text-onyx/40 uppercase tracking-widest">Active Deployments</span>
               </div>
-              <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-accent/10" : "bg-accent/5"}`} />
-            </motion.div>
-          ))}
+              <p className="text-[48px] font-black leading-none">{summary.liveTournaments}</p>
+            </div>
+            <div className="absolute top-4 right-4 w-32 h-32 bg-onyx/5 rounded-full blur-3xl pointer-events-none" />
+          </BentoCard>
+
+          <BentoCard variant="pastel" pastelColor="mint" className="p-8 flex flex-col justify-between min-h-[160px] relative overflow-hidden">
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-white/50 flex items-center justify-center">
+                  <Users size={20} className="text-onyx" />
+                </div>
+                <span className="text-[10px] font-black text-onyx/40 uppercase tracking-widest">Warriors Active</span>
+              </div>
+              <p className="text-[48px] font-black leading-none">{summary.totalPlayers}</p>
+            </div>
+            <div className="absolute top-4 right-4 w-32 h-32 bg-white/20 rounded-full blur-3xl pointer-events-none" />
+          </BentoCard>
         </div>
 
         {/* Active Operations List */}
         <section className="space-y-6">
-          <div className="flex justify-between items-end px-2">
-            <div className="space-y-1">
-              <h3 className="text-2xl font-heading text-foreground">Active <span className="italic font-serif opacity-60">Operations</span></h3>
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">{tournaments.length} DEPLOYMENTS DETECTED</p>
-            </div>
+          <div className="flex justify-between items-center px-1">
+            <h3 className="text-2xl font-black tracking-tight">Active Operations</h3>
+            <span className="text-[10px] font-black text-charcoal/40 uppercase tracking-widest">{tournaments.length} DEPLOYED</span>
           </div>
           
-          <div className="flex gap-6 overflow-x-auto pb-6 no-scrollbar -mx-6 px-6">
+          <div className="flex gap-4 overflow-x-auto pb-6 no-scrollbar -mx-8 px-8">
             {tournaments.map((t) => (
               <motion.div
                 key={t.id}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedTournament(t.id)}
-                className={`flex-shrink-0 w-80 p-8 rounded-[2.5rem] border transition-all duration-500 cursor-pointer relative overflow-hidden group ${
-                  selectedTournament === t.id 
-                    ? 'bg-accent/10 border-accent/50 shadow-2xl' 
-                    : 'bg-card border-border opacity-60 hover:opacity-100'
-                }`}
+                className="flex-shrink-0"
               >
-                <div className="relative z-10 space-y-6">
-                  <div className="flex justify-between items-start">
-                    <div className={`p-3 rounded-2xl transition-colors duration-500 ${selectedTournament === t.id ? 'bg-accent text-primary' : 'bg-muted text-muted-foreground'}`}>
-                      <Trophy size={20} />
+                <BentoCard 
+                  variant={selectedTournament === t.id ? "dark" : "default"}
+                  className={`w-72 p-6 flex flex-col justify-between h-[220px] cursor-pointer transition-all duration-300 ${
+                    selectedTournament === t.id ? "shadow-glow-soft" : "hover:bg-off-white"
+                  }`}
+                >
+                  <div>
+                    <div className="flex justify-between items-start mb-4">
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                        selectedTournament === t.id ? "bg-white/10 text-pastel-mint" : "bg-off-white text-onyx/30"
+                      }`}>
+                        <Trophy size={20} />
+                      </div>
+                      <StatusBadge variant="live" className="text-[8px] px-2 py-0.5" />
                     </div>
-                    <Badge className={`border-none font-bold text-[8px] tracking-[0.2em] px-3 py-1 rounded-full ${selectedTournament === t.id ? 'bg-accent text-primary' : 'bg-muted text-muted-foreground'}`}>
-                      ACTIVE
-                    </Badge>
-                  </div>
-                  
-                  <h3 className={`text-xl font-heading leading-tight ${selectedTournament === t.id ? 'text-foreground' : 'text-muted-foreground'}`}>{t.title}</h3>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-0.5">
-                      <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Matches</span>
-                      <p className="text-lg font-heading text-foreground">{t.matches_count}</p>
-                    </div>
-                    <div className="space-y-0.5">
-                      <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Players</span>
-                      <p className="text-lg font-heading text-foreground">{t.players_count}</p>
-                    </div>
+                    <h3 className="text-lg font-black leading-tight mb-2 line-clamp-2">{t.title}</h3>
                   </div>
 
-                  <div className="flex gap-2 pt-2">
-                    <button 
-                      onClick={(e) => { e.stopPropagation(); updateTournamentStatus(t.id, 'paused'); }}
-                      className={`flex-1 py-3 rounded-xl text-[9px] font-bold uppercase tracking-[0.2em] transition-all border border-border ${
-                        selectedTournament === t.id ? 'bg-background/50 text-foreground hover:bg-background' : 'bg-muted/50 text-muted-foreground'
-                      }`}
-                    >
-                      Pause
-                    </button>
-                    <button 
-                      onClick={(e) => { e.stopPropagation(); updateTournamentStatus(t.id, 'completed'); }}
-                      className={`flex-1 py-3 rounded-xl text-[9px] font-bold uppercase tracking-[0.2em] transition-all ${
-                        selectedTournament === t.id ? 'bg-accent text-primary hover:bg-accent/80 shadow-lg shadow-accent/20' : 'bg-muted/50 text-muted-foreground border border-border'
-                      }`}
-                    >
-                      End
-                    </button>
+                  <div className="space-y-4">
+                    <div className="flex gap-6">
+                      <div>
+                        <p className={`text-[8px] font-bold uppercase tracking-widest mb-0.5 ${selectedTournament === t.id ? "text-white/40" : "text-onyx/40"}`}>Matches</p>
+                        <p className="text-sm font-black">{t.matches_count}</p>
+                      </div>
+                      <div>
+                        <p className={`text-[8px] font-bold uppercase tracking-widest mb-0.5 ${selectedTournament === t.id ? "text-white/40" : "text-onyx/40"}`}>Players</p>
+                        <p className="text-sm font-black">{t.players_count}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <button 
+                        onClick={(e) => { e.stopPropagation(); updateTournamentStatus(t.id, 'paused'); }}
+                        className={`flex-1 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
+                          selectedTournament === t.id ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-off-white text-charcoal hover:bg-white'
+                        }`}
+                      >
+                        Pause
+                      </button>
+                      <button 
+                        onClick={(e) => { e.stopPropagation(); updateTournamentStatus(t.id, 'completed'); }}
+                        className={`flex-1 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
+                          selectedTournament === t.id ? 'bg-pastel-mint text-onyx hover:opacity-90' : 'bg-onyx text-white hover:opacity-90'
+                        }`}
+                      >
+                        End
+                      </button>
+                    </div>
                   </div>
-                </div>
-                {selectedTournament === t.id && (
-                  <div className="absolute inset-0 opacity-10 pointer-events-none">
-                    <div className="absolute top-[-20%] right-[-10%] w-full h-full bg-accent blur-[80px] rounded-full" />
-                  </div>
-                )}
+                </BentoCard>
               </motion.div>
             ))}
             
             {tournaments.length === 0 && (
-              <div className="w-full bg-card p-16 rounded-[3rem] border border-dashed border-border text-center flex flex-col items-center gap-4 shadow-sm">
-                <Monitor size={48} strokeWidth={1} className="text-muted-foreground/20" />
-                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">No active deployments detected</p>
+              <div className="w-full h-[220px] bg-white rounded-[28px] border-2 border-dashed border-black/[0.05] flex flex-col items-center justify-center gap-3">
+                <Monitor size={32} className="text-onyx/10" />
+                <p className="text-[10px] font-black uppercase tracking-widest text-charcoal/30">No active deployments</p>
               </div>
             )}
           </div>
@@ -310,107 +299,105 @@ export default function AdminLive() {
               exit={{ opacity: 0, y: -20 }}
               className="space-y-8"
             >
-              <div className="bg-card p-10 rounded-[3rem] border border-border shadow-2xl space-y-12 overflow-hidden relative">
-                <div className="relative z-10 space-y-12">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div className="space-y-1">
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em]">OPERATIONAL DOSSIER</span>
-                      <h2 className="text-3xl font-heading text-foreground leading-tight">{currentTournament.title}</h2>
-                    </div>
-                    <div className="flex -space-x-3">
-                      {[1,2,3,4].map((i) => (
-                        <div key={i} className="w-12 h-12 rounded-full border-4 border-background bg-muted shadow-xl overflow-hidden">
-                          <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+10}`} alt="warrior" />
-                        </div>
-                      ))}
-                      <div className="w-12 h-12 rounded-full border-4 border-background bg-accent flex items-center justify-center text-[10px] font-bold text-primary shadow-xl">
-                        +{currentTournament.players_count! > 4 ? currentTournament.players_count! - 4 : 0}
-                      </div>
-                    </div>
+              <BentoCard className="p-10 space-y-12 relative overflow-hidden">
+                <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+                  <div className="space-y-2">
+                    <p className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em]">Operational Dossier</p>
+                    <h2 className="text-3xl font-black tracking-tight">{currentTournament.title}</h2>
                   </div>
-
-                  {/* Tournament Stats */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {[
-                      { label: "Confirmed Kills", value: statsSummary?.totalKills || 0, icon: Target },
-                      { label: "Warriors Alive", value: statsSummary?.playersAlive || 0, icon: Activity },
-                      { label: "System Viewers", value: statsSummary?.totalViewers.toLocaleString() || 0, icon: Eye },
-                    ].map((stat, i) => (
-                      <div key={i} className="p-6 bg-muted/30 rounded-[2rem] border border-border flex items-center gap-6 shadow-sm">
-                        <div className="w-14 h-14 rounded-2xl bg-muted text-accent flex items-center justify-center border border-border shadow-inner">
-                          <stat.icon size={22} />
-                        </div>
-                        <div className="space-y-0.5">
-                          <p className="text-[9px] text-muted-foreground uppercase font-bold tracking-widest">{stat.label}</p>
-                          <p className="text-2xl font-heading text-foreground">{stat.value}</p>
-                        </div>
+                  <div className="flex -space-x-3">
+                    {[1,2,3,4].map((i) => (
+                      <div key={i} className="w-11 h-11 rounded-full border-4 border-white bg-off-white shadow-soft overflow-hidden">
+                        <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+10}`} alt="warrior" />
                       </div>
                     ))}
-                  </div>
-
-                  {/* Live Matches List */}
-                  <div className="space-y-8">
-                    <div className="flex items-center gap-3 px-2">
-                      <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                      <h3 className="text-[10px] font-bold text-foreground uppercase tracking-[0.3em]">ONGOING BATTLES</h3>
-                    </div>
-                    <div className="grid grid-cols-1 gap-6">
-                      {tournamentMatches.map((m) => (
-                        <div 
-                          key={m.id}
-                          className="p-8 bg-muted/20 rounded-[2.5rem] border border-border hover:border-accent/30 transition-all duration-500 group flex flex-col md:flex-row md:items-center justify-between gap-8 shadow-sm hover:shadow-lg"
-                        >
-                          <div className="flex items-center gap-8">
-                            <div className="w-20 h-20 bg-muted rounded-[2rem] flex items-center justify-center text-muted-foreground group-hover:text-accent transition-all duration-500 shadow-inner border border-border">
-                              <Gamepad2 size={32} />
-                            </div>
-                            <div className="space-y-1.5">
-                              <div className="flex items-center gap-3">
-                                <h4 className="text-xl font-heading text-foreground">{m.title}</h4>
-                                <Badge className="bg-accent text-primary border-none px-3 py-1 text-[8px] font-bold tracking-widest rounded-full shadow-lg shadow-accent/20">
-                                  ROUND {m.current_round}
-                                </Badge>
-                              </div>
-                              <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-[0.2em] flex items-center gap-3">
-                                {m.mode.toUpperCase()}
-                                <span className="w-1 h-1 bg-border rounded-full" />
-                                {m.map.toUpperCase()}
-                              </p>
-                            </div>
-                          </div>
-                          
-                          <div className="flex items-center justify-between md:justify-end gap-12 border-t md:border-t-0 pt-6 md:pt-0 border-border">
-                            <div className="flex items-center gap-8">
-                              <div className="space-y-0.5 text-center md:text-left">
-                                <span className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">Teams Alive</span>
-                                <p className="text-lg font-heading text-foreground">{m.live_stats?.teams_alive || 0}</p>
-                              </div>
-                              <div className="space-y-0.5 text-center md:text-left">
-                                <span className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">Viewers</span>
-                                <p className="text-lg font-heading text-foreground">{m.viewers_count.toLocaleString()}</p>
-                              </div>
-                            </div>
-                            <button 
-                              className="px-8 py-4 bg-accent text-primary rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-accent/80 transition-all shadow-xl shadow-accent/20 flex items-center gap-2"
-                              onClick={() => window.location.href = `/live?match=${m.id}`}
-                            >
-                              ENTER FEED <ChevronRight size={14} strokeWidth={3} />
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                      {tournamentMatches.length === 0 && (
-                        <div className="py-20 text-center flex flex-col items-center gap-4 bg-muted/10 rounded-[2rem] border border-dashed border-border">
-                          <Zap size={32} strokeWidth={1} className="text-muted-foreground/20" />
-                          <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground italic">No active match signals detected</p>
-                        </div>
-                      )}
+                    <div className="w-11 h-11 rounded-full border-4 border-white bg-onyx flex items-center justify-center text-[10px] font-black text-white shadow-soft">
+                      +{currentTournament.players_count! > 4 ? currentTournament.players_count! - 4 : 0}
                     </div>
                   </div>
                 </div>
-                {/* Visual Glows */}
-                <div className="absolute top-[-20%] left-[-10%] w-full h-full bg-accent/5 blur-[100px] rounded-full pointer-events-none" />
-              </div>
+
+                {/* Tournament Stats */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {[
+                    { label: "Confirmed Kills", value: statsSummary?.totalKills || 0, icon: Target, color: "coral" },
+                    { label: "Warriors Alive", value: statsSummary?.playersAlive || 0, icon: Activity, color: "mint" },
+                    { label: "System Viewers", value: statsSummary?.totalViewers.toLocaleString() || 0, icon: Eye, color: "sky" },
+                  ].map((stat, i) => (
+                    <div key={i} className="flex items-center gap-5 p-5 bg-off-white rounded-3xl border border-black/[0.02]">
+                      <div className={`w-12 h-12 rounded-2xl bg-pastel-${stat.color} flex items-center justify-center`}>
+                        <stat.icon size={20} className="text-onyx" />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-bold text-onyx/40 uppercase tracking-widest">{stat.label}</p>
+                        <p className="text-2xl font-black">{stat.value}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Live Matches List */}
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3 px-1">
+                    <div className="w-2 h-2 rounded-full bg-onyx animate-pulse" />
+                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em]">Ongoing Battles</h3>
+                  </div>
+                  <div className="space-y-4">
+                    {tournamentMatches.map((m) => (
+                      <motion.div 
+                        key={m.id}
+                        whileHover={{ x: 4 }}
+                        className="p-6 bg-off-white rounded-[24px] border border-black/[0.02] flex flex-col md:flex-row md:items-center justify-between gap-6 group cursor-pointer"
+                      >
+                        <div className="flex items-center gap-6">
+                          <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-onyx/20 group-hover:text-onyx transition-colors shadow-soft">
+                            <Gamepad2 size={28} />
+                          </div>
+                          <div className="space-y-1.5">
+                            <div className="flex items-center gap-3">
+                              <h4 className="text-lg font-black">{m.title}</h4>
+                              <span className="px-3 py-1 bg-onyx text-white text-[8px] font-black uppercase tracking-widest rounded-full">
+                                Round {m.current_round}
+                              </span>
+                            </div>
+                            <p className="text-[10px] text-charcoal/40 font-bold uppercase tracking-widest flex items-center gap-2">
+                              {m.mode} <span className="w-1 h-1 bg-onyx/10 rounded-full" /> {m.map}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center justify-between md:justify-end gap-8 pt-4 md:pt-0 border-t md:border-t-0 border-black/5">
+                          <div className="flex gap-8">
+                            <div>
+                              <p className="text-[8px] font-bold text-charcoal/40 uppercase tracking-widest mb-0.5">Teams Alive</p>
+                              <p className="text-sm font-black">{m.live_stats?.teams_alive || 0}</p>
+                            </div>
+                            <div>
+                              <p className="text-[8px] font-bold text-charcoal/40 uppercase tracking-widest mb-0.5">Viewers</p>
+                              <p className="text-sm font-black">{m.viewers_count.toLocaleString()}</p>
+                            </div>
+                          </div>
+                          <Link href={`/live?match=${m.id}`}>
+                            <motion.button 
+                              whileTap={{ scale: 0.95 }}
+                              className="px-6 py-3 bg-onyx text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl flex items-center gap-2"
+                            >
+                              Enter Feed <ChevronRight size={14} strokeWidth={3} />
+                            </motion.button>
+                          </Link>
+                        </div>
+                      </motion.div>
+                    ))}
+                    {tournamentMatches.length === 0 && (
+                      <div className="py-16 text-center flex flex-col items-center gap-3 bg-off-white rounded-[28px] border-2 border-dashed border-black/[0.05]">
+                        <Zap size={24} className="text-onyx/10" />
+                        <p className="text-[10px] font-black uppercase tracking-widest text-charcoal/30 italic">No active match signals</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="absolute top-0 right-0 w-64 h-64 bg-pastel-mint/10 rounded-full blur-[100px] pointer-events-none" />
+              </BentoCard>
             </motion.section>
           )}
         </AnimatePresence>
