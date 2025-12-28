@@ -153,45 +153,45 @@ export default function Profile() {
         </section>
 
         <div className="px-6 space-y-6">
-          {/* Profile Card */}
-          <BentoCard variant="pastel" pastelColor="peach" className="p-6 relative overflow-hidden">
-            <div className="flex items-center gap-5 relative z-10">
-              <div className="relative">
-                <div className="w-20 h-20 rounded-full p-[3px] bg-gradient-to-br from-soft-yellow to-pastel-mint">
-                  <div className="w-full h-full rounded-full bg-white p-0.5">
-                    <Avatar className="w-full h-full rounded-full">
-                      {profile?.avatar_url ? (
-                        <AvatarImage src={profile?.avatar_url} className="object-cover" />
-                      ) : (
-                        <AvatarFallback className="bg-off-white text-onyx text-2xl font-black">
-                          {profile?.full_name?.[0]?.toUpperCase() || user?.email?.[0].toUpperCase()}
-                        </AvatarFallback>
-                      )}
-                    </Avatar>
+            {/* Profile Card */}
+            <BentoCard variant="pastel" pastelColor="peach" className="p-6 relative overflow-hidden">
+              <div className="flex items-center gap-5 relative z-10">
+                <div className="relative">
+                  <div className="w-20 h-20 rounded-full p-[3px] bg-gradient-to-br from-pastel-peach to-pastel-mint">
+                    <div className="w-full h-full rounded-full bg-white p-0.5">
+                      <Avatar className="w-full h-full rounded-full">
+                        {profile?.avatar_url ? (
+                          <AvatarImage src={profile?.avatar_url} className="object-cover" />
+                        ) : (
+                          <AvatarFallback className="bg-off-white text-onyx text-2xl font-black">
+                            {profile?.full_name?.[0]?.toUpperCase() || user?.email?.[0].toUpperCase()}
+                          </AvatarFallback>
+                        )}
+                      </Avatar>
+                    </div>
                   </div>
+                  <motion.button 
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setIsEditing(true)}
+                    className="absolute -bottom-1 -right-1 w-8 h-8 bg-onyx rounded-full flex items-center justify-center shadow-lg border-2 border-white"
+                  >
+                    <Edit2 size={12} className="text-white" />
+                  </motion.button>
                 </div>
-                <motion.button 
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => setIsEditing(true)}
-                  className="absolute -bottom-1 -right-1 w-8 h-8 bg-onyx rounded-full flex items-center justify-center shadow-lg border-2 border-white"
-                >
-                  <Edit2 size={12} className="text-white" />
-                </motion.button>
+                <div className="flex-1">
+                  <h3 className="text-xl font-black">{profile?.full_name || "Warrior"}</h3>
+                  <p className="text-[10px] text-onyx/50 font-bold uppercase tracking-widest mt-0.5">
+                    @{profile?.username || user?.email?.split('@')[0]}
+                  </p>
+                  {profile?.free_fire_uid && (
+                    <div className="mt-2 inline-flex items-center px-3 py-1 bg-white/50 rounded-lg">
+                      <span className="text-[9px] text-onyx font-black uppercase tracking-widest">UID: {profile.free_fire_uid}</span>
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-black">{profile?.full_name || "Warrior"}</h3>
-                <p className="text-[10px] text-onyx/50 font-bold uppercase tracking-widest mt-0.5">
-                  @{profile?.username || user?.email?.split('@')[0]}
-                </p>
-                {profile?.free_fire_uid && (
-                  <div className="mt-2 inline-flex items-center px-3 py-1 bg-white/50 rounded-lg">
-                    <span className="text-[9px] text-onyx font-black uppercase tracking-widest">UID: {profile.free_fire_uid}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-white/20 rounded-full" />
-          </BentoCard>
+              <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-white/20 rounded-full" />
+            </BentoCard>
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 gap-4">

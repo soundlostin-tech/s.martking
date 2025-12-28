@@ -40,14 +40,14 @@ export function BottomNav() {
                   transition={{ type: "spring", stiffness: 400, damping: 25 }}
                   className="flex flex-col items-center gap-1"
                 >
-                  <div className={cn(
-                    "p-2 rounded-2xl transition-all duration-300",
-                    isActive 
-                      ? "bg-soft-yellow text-onyx shadow-[0_4px_12px_rgba(255,239,184,0.3)]" 
-                      : "text-charcoal/40 hover:text-charcoal"
-                  )}>
-                    <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
-                  </div>
+                    <div className={cn(
+                      "p-2 rounded-2xl transition-all duration-300",
+                      isActive 
+                        ? "bg-onyx text-white shadow-lg" 
+                        : "text-charcoal/40 hover:text-charcoal"
+                    )}>
+                      <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+                    </div>
                   {isActive && (
                     <span className="text-[9px] font-bold text-onyx uppercase tracking-tighter">
                       {item.label}

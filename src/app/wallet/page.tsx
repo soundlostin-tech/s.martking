@@ -209,57 +209,57 @@ export default function WalletPage() {
         </section>
 
         <div className="px-6 space-y-6">
-          {/* Balance Hero Card */}
-          <BentoCard variant="vibrant" className="p-7 relative overflow-hidden">
-            <div className="relative z-10">
-              <div className="flex items-center gap-2 mb-4">
-                <Sparkles size={16} className="text-onyx/40" />
-                <p className="text-[10px] font-black text-onyx/40 uppercase tracking-widest">Available Balance</p>
-              </div>
-              <div className="flex items-baseline gap-2 mb-6">
-                <span className="text-2xl font-black opacity-40">₹</span>
-                <motion.h2 
-                  key={wallet?.balance}
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-[52px] font-black leading-none tracking-tight"
-                >
-                  {(wallet?.balance || 0).toLocaleString()}
-                </motion.h2>
-              </div>
-              <div className="flex gap-6 pt-5 border-t border-onyx/10">
-                <div>
-                  <p className="text-[9px] font-bold text-onyx/40 uppercase tracking-widest mb-1">Lifetime</p>
-                  <p className="text-base font-black">₹{(wallet?.lifetime_earnings || 0).toLocaleString()}</p>
+            {/* Balance Hero Card */}
+            <BentoCard variant="pastel" pastelColor="yellow" className="p-7 relative overflow-hidden shadow-soft-lg">
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 mb-4">
+                  <Sparkles size={16} className="text-onyx/40" />
+                  <p className="text-[10px] font-black text-onyx/40 uppercase tracking-widest">Available Balance</p>
                 </div>
-                <div>
-                  <p className="text-[9px] font-bold text-onyx/40 uppercase tracking-widest mb-1">Pending</p>
-                  <p className="text-base font-black text-onyx/50">₹{(wallet?.pending_withdrawals || 0).toLocaleString()}</p>
+                <div className="flex items-baseline gap-2 mb-6">
+                  <span className="text-2xl font-black opacity-40">₹</span>
+                  <motion.h2 
+                    key={wallet?.balance}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-[52px] font-black leading-none tracking-tight"
+                  >
+                    {(wallet?.balance || 0).toLocaleString()}
+                  </motion.h2>
+                </div>
+                <div className="flex gap-6 pt-5 border-t border-onyx/10">
+                  <div>
+                    <p className="text-[9px] font-bold text-onyx/40 uppercase tracking-widest mb-1">Lifetime</p>
+                    <p className="text-base font-black">₹{(wallet?.lifetime_earnings || 0).toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <p className="text-[9px] font-bold text-onyx/40 uppercase tracking-widest mb-1">Pending</p>
+                    <p className="text-base font-black text-onyx/50">₹{(wallet?.pending_withdrawals || 0).toLocaleString()}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <WalletIcon className="absolute right-4 top-4 text-onyx/5" size={120} />
-          </BentoCard>
+              <WalletIcon className="absolute right-4 top-4 text-onyx/5" size={120} />
+            </BentoCard>
 
-          {/* Action Buttons */}
-          <div className="grid grid-cols-2 gap-4">
-            <motion.div whileTap={{ scale: 0.97 }}>
-              <BentoCard variant="dark" onClick={() => setIsDepositOpen(true)} className="p-6 flex flex-col items-center gap-4 h-[120px] justify-center">
-                <div className="w-14 h-14 rounded-2xl bg-soft-yellow flex items-center justify-center">
-                  <Plus size={26} className="text-onyx" strokeWidth={3} />
-                </div>
-                <span className="text-[11px] font-black uppercase tracking-[0.15em] text-white">Deposit</span>
-              </BentoCard>
-            </motion.div>
-            <motion.div whileTap={{ scale: 0.97 }}>
-              <BentoCard onClick={() => setIsWithdrawOpen(true)} className="p-6 flex flex-col items-center gap-4 h-[120px] justify-center shadow-soft">
-                <div className="w-14 h-14 rounded-2xl bg-pastel-coral flex items-center justify-center">
-                  <ArrowUpRight size={26} className="text-onyx" strokeWidth={3} />
-                </div>
-                <span className="text-[11px] font-black uppercase tracking-[0.15em]">Withdraw</span>
-              </BentoCard>
-            </motion.div>
-          </div>
+            {/* Action Buttons */}
+            <div className="grid grid-cols-2 gap-4">
+              <motion.div whileTap={{ scale: 0.97 }}>
+                <BentoCard variant="dark" onClick={() => setIsDepositOpen(true)} className="p-6 flex flex-col items-center gap-4 h-[120px] justify-center">
+                  <div className="w-14 h-14 rounded-2xl bg-pastel-sky flex items-center justify-center">
+                    <Plus size={26} className="text-onyx" strokeWidth={3} />
+                  </div>
+                  <span className="text-[11px] font-black uppercase tracking-[0.15em] text-white">Deposit</span>
+                </BentoCard>
+              </motion.div>
+              <motion.div whileTap={{ scale: 0.97 }}>
+                <BentoCard onClick={() => setIsWithdrawOpen(true)} className="p-6 flex flex-col items-center gap-4 h-[120px] justify-center shadow-soft">
+                  <div className="w-14 h-14 rounded-2xl bg-pastel-coral flex items-center justify-center">
+                    <ArrowUpRight size={26} className="text-onyx" strokeWidth={3} />
+                  </div>
+                  <span className="text-[11px] font-black uppercase tracking-[0.15em]">Withdraw</span>
+                </BentoCard>
+              </motion.div>
+            </div>
 
           {/* Quick Stats */}
           <div className="grid grid-cols-3 gap-3">

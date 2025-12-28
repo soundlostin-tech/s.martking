@@ -125,7 +125,7 @@ export default function MatchesPage() {
         {liveMatches.length > 0 && activeFilter !== 'Completed' && activeFilter !== 'Upcoming' && (
           <section className="px-6 mb-6">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-2 h-2 rounded-full bg-soft-yellow animate-pulse" />
+              <div className="w-2 h-2 rounded-full bg-pastel-coral animate-pulse" />
               <h3 className="text-lg font-black">Live Now</h3>
             </div>
             <div className="flex gap-4 overflow-x-auto no-scrollbar -mx-6 px-6">
@@ -158,7 +158,7 @@ export default function MatchesPage() {
                             whileTap={{ scale: 0.9 }}
                             className="w-10 h-10 bg-onyx rounded-xl flex items-center justify-center"
                           >
-                            <Play size={16} className="text-soft-yellow" fill="currentColor" />
+                            <Play size={16} className="text-pastel-sky" fill="currentColor" />
                           </motion.button>
                         </div>
                       </div>

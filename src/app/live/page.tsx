@@ -134,7 +134,7 @@ function LiveContent() {
                   <p className="text-[8px] font-bold text-charcoal/40 uppercase tracking-widest">Prize</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-10 h-10 rounded-xl bg-pastel-yellow mx-auto mb-2 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-pastel-mint mx-auto mb-2 flex items-center justify-center">
                     <Users size={18} className="text-onyx" />
                   </div>
                   <p className="text-[13px] font-black">{activeMatch.mode || 'SQUAD'}</p>

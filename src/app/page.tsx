@@ -177,7 +177,7 @@ export default function Home() {
               <div className="relative z-10">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center">
-                    <Swords size={16} className="text-soft-yellow" />
+                    <Swords size={16} className="text-pastel-sky" />
                   </div>
                   <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">Today</span>
                 </div>
@@ -187,13 +187,13 @@ export default function Home() {
               <Link href="/matches" className="relative z-10">
                 <motion.div 
                   whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-2 text-soft-yellow"
+                  className="flex items-center gap-2 text-pastel-sky"
                 >
                   <span className="text-[10px] font-black uppercase tracking-widest">View All</span>
                   <ChevronRight size={14} />
                 </motion.div>
               </Link>
-              <div className="absolute top-0 right-0 w-24 h-24 bg-soft-yellow/10 rounded-full blur-2xl" />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-pastel-sky/10 rounded-full blur-2xl" />
             </BentoCard>
           </div>
         </section>
@@ -311,7 +311,9 @@ export default function Home() {
                     <div className="flex items-center justify-between mb-4">
                       <div className={cn(
                         "w-11 h-11 rounded-2xl flex items-center justify-center",
-                        i % 2 === 0 ? "bg-pastel-yellow" : "bg-pastel-lavender"
+                        i === 0 ? "bg-pastel-lavender" : 
+                        i === 1 ? "bg-pastel-mint" : 
+                        i === 2 ? "bg-pastel-coral" : "bg-pastel-sky"
                       )}>
                         <Trophy size={18} className="text-onyx" />
                       </div>
@@ -348,7 +350,7 @@ export default function Home() {
               <Link href="/live">
                 <BentoCard variant="dark" className="p-5 flex items-center justify-between relative overflow-hidden">
                   <div className="flex items-center gap-4 relative z-10">
-                    <div className="w-12 h-12 rounded-2xl bg-soft-yellow flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-2xl bg-pastel-coral flex items-center justify-center">
                       <Play size={20} className="text-onyx" fill="currentColor" />
                     </div>
                     <div>
@@ -359,7 +361,7 @@ export default function Home() {
                     </div>
                   </div>
                   <ChevronRight size={20} className="text-white/40 relative z-10" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-soft-yellow/10" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-pastel-coral/10" />
                 </BentoCard>
               </Link>
             </section>

@@ -64,16 +64,16 @@
     --color-silver: #C8C8C4;
     --color-alabaster-grey: #D4D7DE;
     --color-olive: #868935;
-    --color-soft-lime: #E2F5A6;
-    --color-soft-yellow: #FFEFB8;
-    --color-off-white: #FAF9F6;
+    --color-soft-lime: #D4E5D0;
+    --color-soft-yellow: #FEF9C3;
+    --color-off-white: #FDFCF5;
     
     /* Pastel Accent Colors - Vibrant like reference */
     --color-pastel-mint: #C1E6C0;
     --color-pastel-coral: #FFBFA3;
     --color-pastel-lavender: #D4CFFF;
     --color-pastel-peach: #FFD4C4;
-    --color-pastel-yellow: #FFEFB8;
+    --color-pastel-yellow: #FEF9C3;
     --color-pastel-pink: #FFD6E8;
     --color-pastel-sky: #B8E4FF;
     --color-pastel-sage: #D4E5D0;
@@ -83,7 +83,7 @@
     --radius: 28px;
     
     /* Backgrounds - Soft Warm White */
-    --background: #FAF9F6;
+    --background: #FDFCF5;
     --foreground: #30312A;
     
     /* Surfaces */
@@ -103,7 +103,7 @@
     --muted: #C8C8C4;
     --muted-foreground: #4A4B48;
     
-    --accent: #FFEFB8;
+    --accent: #FEF9C3;
     --accent-foreground: #11130D;
     
     --destructive: #FFD7BE;
