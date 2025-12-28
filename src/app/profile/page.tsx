@@ -128,7 +128,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-onyx">
+    <div className="min-h-screen bg-background text-onyx" suppressHydrationWarning>
       <main className="pb-32 relative z-10">
         
 

@@ -103,7 +103,7 @@ export default function Signup() {
   };
 
   return (
-    <main className="min-h-screen bg-background text-onyx overflow-x-hidden">
+    <main className="min-h-screen bg-background text-onyx overflow-x-hidden" suppressHydrationWarning>
       {/* Sticker Header */}
       <section className="sticker-header pt-20">
         <div className="sticker-blob bg-pastel-mint" />
