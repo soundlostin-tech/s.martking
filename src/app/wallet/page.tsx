@@ -191,7 +191,7 @@ export default function WalletPage() {
 
         {/* Sticker Header */}
         <section className="sticker-header relative">
-          <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-lime-yellow)' }} />
+          <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-soft-yellow)' }} />
           <div className="sticker-blob sticker-blob-2" style={{ background: 'var(--color-pastel-lavender)' }} />
           
           <div className="relative z-10">
@@ -245,7 +245,7 @@ export default function WalletPage() {
           <div className="grid grid-cols-2 gap-4">
             <motion.div whileTap={{ scale: 0.97 }}>
               <BentoCard variant="dark" onClick={() => setIsDepositOpen(true)} className="p-6 flex flex-col items-center gap-4 h-[120px] justify-center">
-                <div className="w-14 h-14 rounded-2xl bg-lime-yellow flex items-center justify-center">
+                <div className="w-14 h-14 rounded-2xl bg-soft-yellow flex items-center justify-center">
                   <Plus size={26} className="text-onyx" strokeWidth={3} />
                 </div>
                 <span className="text-[11px] font-black uppercase tracking-[0.15em] text-white">Deposit</span>
@@ -386,7 +386,7 @@ export default function WalletPage() {
       {/* Deposit Modal */}
       <Dialog open={isDepositOpen} onOpenChange={setIsDepositOpen}>
         <DialogContent className="p-0 border-none bg-white rounded-[36px] overflow-hidden max-w-[400px]">
-          <div className="bg-lime-yellow p-8 relative overflow-hidden">
+          <div className="bg-soft-yellow p-8 relative overflow-hidden">
             <div className="relative z-10">
               <h2 className="text-3xl font-black mb-1">Add Funds</h2>
               <p className="text-[11px] font-bold opacity-50 uppercase tracking-widest">Power up your wallet</p>

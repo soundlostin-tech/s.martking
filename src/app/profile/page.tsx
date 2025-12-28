@@ -157,7 +157,7 @@ export default function Profile() {
           <BentoCard variant="pastel" pastelColor="peach" className="p-6 relative overflow-hidden">
             <div className="flex items-center gap-5 relative z-10">
               <div className="relative">
-                <div className="w-20 h-20 rounded-full p-[3px] bg-gradient-to-br from-lime-yellow to-pastel-mint">
+                <div className="w-20 h-20 rounded-full p-[3px] bg-gradient-to-br from-soft-yellow to-pastel-mint">
                   <div className="w-full h-full rounded-full bg-white p-0.5">
                     <Avatar className="w-full h-full rounded-full">
                       {profile?.avatar_url ? (

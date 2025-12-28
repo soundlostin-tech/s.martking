@@ -43,7 +43,7 @@ export function BottomNav() {
                   <div className={cn(
                     "p-2 rounded-2xl transition-all duration-300",
                     isActive 
-                      ? "bg-lime-yellow text-onyx shadow-[0_4px_12px_rgba(215,253,3,0.3)]" 
+                      ? "bg-soft-yellow text-onyx shadow-[0_4px_12px_rgba(255,239,184,0.3)]" 
                       : "text-charcoal/40 hover:text-charcoal"
                   )}>
                     <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />

@@ -173,10 +173,11 @@ function LiveContent() {
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.1 }}
-                      className={cn(
-                        "flex items-center justify-between p-4 rounded-2xl transition-all",
-                        item.status === 'live' ? 'bg-lime-yellow/20' : 'bg-off-white'
-                      )}
+                        className={cn(
+                          "flex items-center justify-between p-4 rounded-2xl transition-all",
+                          item.status === 'live' ? 'bg-soft-yellow/20' : 'bg-off-white'
+                        )}
+
                     >
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-sm">

@@ -64,9 +64,9 @@
     --color-silver: #C8C8C4;
     --color-alabaster-grey: #D4D7DE;
     --color-olive: #868935;
-    --color-lemon-lime: #C7E323;
-    --color-lime-yellow: #D7FD03;
-    --color-off-white: #F8F8F6;
+    --color-soft-lime: #E2F5A6;
+    --color-soft-yellow: #FFEFB8;
+    --color-off-white: #FAF9F6;
     
     /* Pastel Accent Colors - Vibrant like reference */
     --color-pastel-mint: #C1E6C0;
@@ -82,8 +82,8 @@
   :root {
     --radius: 28px;
     
-    /* Backgrounds - Alabaster Grey (Soft White feel) */
-    --background: #D4D7DE;
+    /* Backgrounds - Soft Warm White */
+    --background: #FAF9F6;
     --foreground: #30312A;
     
     /* Surfaces */
@@ -93,17 +93,17 @@
     --popover: #ffffff;
     --popover-foreground: #30312A;
     
-    /* Actions */
-    --primary: #D7FD03;
-    --primary-foreground: #11130D;
+    /* Actions - Onyx Primary (Reference Style) */
+    --primary: #11130D;
+    --primary-foreground: #ffffff;
     
-    --secondary: #C7E323;
+    --secondary: #D4D7DE;
     --secondary-foreground: #11130D;
     
     --muted: #C8C8C4;
     --muted-foreground: #4A4B48;
     
-    --accent: #D7FD03;
+    --accent: #FFEFB8;
     --accent-foreground: #11130D;
     
     --destructive: #FFD7BE;
@@ -112,17 +112,17 @@
     /* Borders */
     --border: #C8C8C4;
     --input: #ffffff;
-    --ring: #D7FD03;
+    --ring: #11130D;
 
   /* Sidebar */
   --sidebar: #ffffff;
   --sidebar-foreground: #30312A;
-  --sidebar-primary: #D7FD03;
-  --sidebar-primary-foreground: #11130D;
-  --sidebar-accent: #D4D7DE;
+  --sidebar-primary: #11130D;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #FAF9F6;
   --sidebar-accent-foreground: #11130D;
   --sidebar-border: #C8C8C4;
-  --sidebar-ring: #D7FD03;
+  --sidebar-ring: #11130D;
 }
 
 @layer base {
@@ -131,7 +131,7 @@
     -webkit-tap-highlight-color: transparent;
   }
   html, body {
-    @apply bg-background text-charcoal-brown font-sans antialiased selection:bg-lime-yellow/30 selection:text-onyx overflow-x-hidden;
+    @apply bg-background text-charcoal-brown font-sans antialiased selection:bg-soft-yellow/50 selection:text-onyx overflow-x-hidden;
     background-attachment: fixed;
     touch-action: manipulation;
     overscroll-behavior-y: none;
@@ -159,7 +159,7 @@
 }
 
 .bento-vibrant {
-  @apply bg-lime-yellow text-onyx border-none;
+  @apply bg-soft-yellow text-onyx border-none;
 }
 
 .bento-pastel-mint { @apply bg-pastel-mint text-charcoal-brown border-none; }
@@ -210,7 +210,7 @@
   left: -20px;
   width: 120px;
   height: 120px;
-  background: var(--color-lime-yellow);
+  background: var(--color-soft-yellow);
   opacity: 0.5;
 }
 
@@ -268,8 +268,8 @@
    STATUS BADGES
    ============================================ */
 .badge-live {
-  @apply bg-lime-yellow text-onyx px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2;
-  box-shadow: 0 4px 12px rgba(215, 253, 3, 0.3);
+  @apply bg-soft-yellow text-onyx px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2;
+  box-shadow: 0 4px 12px rgba(255, 239, 184, 0.3);
 }
 
 .badge-live .pulse-dot {
@@ -345,7 +345,7 @@
   right: 0;
   width: 100px;
   height: 100px;
-  background: var(--color-lime-yellow);
+  background: var(--color-soft-yellow);
   border-radius: 50%;
   opacity: 0.1;
   transform: translate(30%, -30%);
@@ -367,7 +367,7 @@
 }
 
 .progress-ring-fill {
-  stroke: var(--color-lime-yellow);
+  stroke: var(--color-soft-yellow);
   stroke-linecap: round;
   transform: rotate(-90deg);
   transform-origin: center;
@@ -386,7 +386,7 @@
 }
 
 .mini-chart-bar.active {
-  @apply bg-lime-yellow;
+  @apply bg-soft-yellow;
 }
 
 /* ============================================
@@ -440,6 +440,6 @@
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06);
 }
 
-.shadow-glow-lime {
-  box-shadow: 0 8px 32px rgba(215, 253, 3, 0.25);
+.shadow-glow-soft {
+  box-shadow: 0 8px 32px rgba(255, 239, 184, 0.15);
 }

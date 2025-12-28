@@ -125,7 +125,7 @@ export default function MatchesPage() {
         {liveMatches.length > 0 && activeFilter !== 'Completed' && activeFilter !== 'Upcoming' && (
           <section className="px-6 mb-6">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-2 h-2 rounded-full bg-lime-yellow animate-pulse" />
+              <div className="w-2 h-2 rounded-full bg-soft-yellow animate-pulse" />
               <h3 className="text-lg font-black">Live Now</h3>
             </div>
             <div className="flex gap-4 overflow-x-auto no-scrollbar -mx-6 px-6">
@@ -158,7 +158,7 @@ export default function MatchesPage() {
                             whileTap={{ scale: 0.9 }}
                             className="w-10 h-10 bg-onyx rounded-xl flex items-center justify-center"
                           >
-                            <Play size={16} className="text-lime-yellow" fill="currentColor" />
+                            <Play size={16} className="text-soft-yellow" fill="currentColor" />
                           </motion.button>
                         </div>
                       </div>
@@ -195,7 +195,7 @@ export default function MatchesPage() {
                           <div className="flex items-center gap-4">
                             <div className={cn(
                               "w-14 h-14 rounded-2xl flex items-center justify-center",
-                              match.status === 'live' ? 'bg-lime-yellow' :
+                              match.status === 'live' ? 'bg-soft-yellow' :
                               match.status === 'upcoming' ? 'bg-pastel-sky' : 'bg-silver/30'
                             )}>
                               <Trophy size={22} className="text-onyx" />
@@ -230,7 +230,7 @@ export default function MatchesPage() {
                             className={cn(
                               "px-5 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2",
                               match.status === 'upcoming' ? "bg-onyx text-white" : 
-                              match.status === 'live' ? "bg-lime-yellow text-onyx" : "bg-silver/20 text-charcoal"
+                              match.status === 'live' ? "bg-soft-yellow text-onyx" : "bg-silver/20 text-charcoal"
                             )}
                           >
                             {match.status === 'upcoming' ? 'Join' : match.status === 'live' ? 'Watch' : 'Results'}
@@ -247,7 +247,7 @@ export default function MatchesPage() {
                               transition={{ delay: 0.2, duration: 0.5 }}
                               className={cn(
                                 "h-full rounded-full",
-                                match.status === 'live' ? 'bg-lime-yellow' : 'bg-onyx/20'
+                                match.status === 'live' ? 'bg-soft-yellow' : 'bg-onyx/20'
                               )}
                             />
                           </div>

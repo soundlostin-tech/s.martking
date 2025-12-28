@@ -102,7 +102,7 @@ export default function Home() {
               <motion.div 
                 whileTap={{ scale: 0.92 }}
                 onClick={() => setIsUploadOpen(true)}
-                className="relative w-[68px] h-[68px] rounded-full p-[3px] bg-gradient-to-br from-lime-yellow to-lemon-lime shadow-md"
+                className="relative w-[68px] h-[68px] rounded-full p-[3px] bg-soft-yellow shadow-md"
               >
                 <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden">
                   {user?.user_metadata?.avatar_url ? (
@@ -126,7 +126,7 @@ export default function Home() {
                   className={cn(
                     "w-[68px] h-[68px] rounded-full p-[3px] shadow-sm",
                     stories.some(s => s.user_id === profile.id) 
-                      ? "bg-gradient-to-br from-lime-yellow to-pastel-mint" 
+                      ? "bg-soft-yellow" 
                       : "bg-white"
                   )}
                 >
@@ -177,7 +177,7 @@ export default function Home() {
               <div className="relative z-10">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center">
-                    <Swords size={16} className="text-lime-yellow" />
+                    <Swords size={16} className="text-soft-yellow" />
                   </div>
                   <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">Today</span>
                 </div>
@@ -187,13 +187,13 @@ export default function Home() {
               <Link href="/matches" className="relative z-10">
                 <motion.div 
                   whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-2 text-lime-yellow"
+                  className="flex items-center gap-2 text-soft-yellow"
                 >
                   <span className="text-[10px] font-black uppercase tracking-widest">View All</span>
                   <ChevronRight size={14} />
                 </motion.div>
               </Link>
-              <div className="absolute top-0 right-0 w-24 h-24 bg-lime-yellow/10 rounded-full blur-2xl" />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-soft-yellow/10 rounded-full blur-2xl" />
             </BentoCard>
           </div>
         </section>
@@ -342,28 +342,29 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Live Now Banner */}
-        {featuredMatches.some(m => m.status === 'live') && (
-          <section className="px-6 mb-8">
-            <Link href="/live">
-              <BentoCard variant="dark" className="p-5 flex items-center justify-between relative overflow-hidden">
-                <div className="flex items-center gap-4 relative z-10">
-                  <div className="w-12 h-12 rounded-2xl bg-lime-yellow flex items-center justify-center">
-                    <Play size={20} className="text-onyx" fill="currentColor" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <StatusBadge variant="live" className="text-[8px] px-2 py-0.5" />
+          {/* Live Now Banner */}
+          {featuredMatches.some(m => m.status === 'live') && (
+            <section className="px-6 mb-8">
+              <Link href="/live">
+                <BentoCard variant="dark" className="p-5 flex items-center justify-between relative overflow-hidden">
+                  <div className="flex items-center gap-4 relative z-10">
+                    <div className="w-12 h-12 rounded-2xl bg-soft-yellow flex items-center justify-center">
+                      <Play size={20} className="text-onyx" fill="currentColor" />
                     </div>
-                    <p className="text-[13px] font-black text-white">Tournament is streaming now</p>
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <StatusBadge variant="live" className="text-[8px] px-2 py-0.5" />
+                      </div>
+                      <p className="text-[13px] font-black text-white">Tournament is streaming now</p>
+                    </div>
                   </div>
-                </div>
-                <ChevronRight size={20} className="text-white/40 relative z-10" />
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-lime-yellow/10" />
-              </BentoCard>
-            </Link>
-          </section>
-        )}
+                  <ChevronRight size={20} className="text-white/40 relative z-10" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-soft-yellow/10" />
+                </BentoCard>
+              </Link>
+            </section>
+          )}
+
       </main>
 
       <StoryViewer 
