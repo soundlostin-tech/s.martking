@@ -1,63 +1,68 @@
 "use client";
 
-import { LayoutDashboard, PlayCircle, Trophy, BarChart3, ReceiptIndianRupee, ImageIcon } from "lucide-react";
+import { LayoutDashboard, PlayCircle, Trophy, BarChart3, ReceiptIndianRupee, ImageIcon, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 const navItems = [
   { label: "Overview", icon: LayoutDashboard, href: "/admin" },
   { label: "Live", icon: PlayCircle, href: "/admin/live" },
-  { label: "Tournaments", icon: Trophy, href: "/admin/tournaments" },
-  { label: "Leaderboard", icon: BarChart3, href: "/admin/leaderboard" },
-  { label: "Transactions", icon: ReceiptIndianRupee, href: "/admin/transactions" },
+  { label: "Matches", icon: Trophy, href: "/admin/tournaments" },
+  { label: "Leaders", icon: BarChart3, href: "/admin/leaderboard" },
+  { label: "Txns", icon: ReceiptIndianRupee, href: "/admin/transactions" },
   { label: "Stories", icon: ImageIcon, href: "/admin/story" },
+  { label: "Users", icon: Users, href: "/admin/users" },
 ];
 
 export function AdminNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-6 left-4 right-4 z-50 bg-white/95 backdrop-blur-xl rounded-[28px] shadow-soft-lg border border-black/[0.03] max-w-2xl mx-auto">
-      <div className="flex justify-around items-center h-16 px-2">
-        {navItems.map((item) => {
-          const isActive = pathname === item.href;
-          const Icon = item.icon;
-          
-          return (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="relative flex flex-col items-center justify-center flex-1 h-full touch-target"
-            >
-              <motion.div
-                initial={false}
-                animate={{ 
-                  scale: isActive ? 1.05 : 1,
-                  y: isActive ? -2 : 0 
-                }}
-                transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                className="relative flex flex-col items-center gap-1"
+    <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-lg" suppressHydrationWarning={true}>
+      <div className="bg-white/80 backdrop-blur-xl border border-white/20 rounded-[32px] shadow-[0_12px_48px_rgba(0,0,0,0.06)] px-4 py-3" suppressHydrationWarning={true}>
+        <div className="flex justify-between items-center h-12" suppressHydrationWarning={true}>
+          {navItems.map((item) => {
+            const isActive = pathname === item.href;
+            const Icon = item.icon;
+            
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="relative flex flex-col items-center justify-center flex-1 h-full"
               >
-                <div className={`relative z-10 p-2 rounded-xl transition-all duration-300 ${
-                  isActive 
-                    ? "bg-soft-yellow text-onyx shadow-glow-soft" 
-                    : "text-charcoal hover:text-onyx"
-                }`}>
-                  <Icon size={18} strokeWidth={isActive ? 3 : 2} />
-                </div>
-
-                <span className={`text-[8px] font-black uppercase tracking-widest transition-colors duration-200 ${
-                  isActive ? "text-onyx" : "text-charcoal/60"
-                }`}>
-                  {item.label}
-                </span>
-              </motion.div>
-            </Link>
-          );
-        })}
+                  <motion.div
+                    initial={false}
+                    animate={{ 
+                      scale: isActive ? 1.1 : 1,
+                      y: isActive ? -2 : 0 
+                    }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    className="flex flex-col items-center gap-1"
+                    suppressHydrationWarning={true}
+                  >
+                        <div className={cn(
+                          "p-2 rounded-full transition-all duration-300",
+                          isActive 
+                            ? "bg-[#11130D] text-white shadow-[0_4px_12px_rgba(0,0,0,0.1)]" 
+                            : "text-[#A0A0A0] hover:text-[#11130D]"
+                        )} suppressHydrationWarning={true}>
+                        <Icon size={18} strokeWidth={isActive ? 2.5 : 2} />
+                      </div>
+                  {isActive && (
+                    <span className="text-[8px] font-bold text-onyx uppercase tracking-tighter">
+                      {item.label}
+                    </span>
+                  )}
+                </motion.div>
+              </Link>
+            );
+          })}
+        </div>
       </div>
-      <div className="h-[env(safe-area-inset-bottom,0px)]" />
+      <div className="h-[env(safe-area-inset-bottom,0px)]" suppressHydrationWarning={true} />
     </nav>
   );
 }
