@@ -14,6 +14,7 @@ import { StoryViewer } from "@/components/StoryViewer";
 import { StoryUpload } from "@/components/StoryUpload";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import { ArenaBackground } from "@/components/ui/ArenaBackground";
 import Link from "next/link";
 
 export default function Home() {
@@ -71,14 +72,12 @@ export default function Home() {
 
     return (
       <div className="min-h-screen bg-background text-onyx font-sans" suppressHydrationWarning={true}>
+        <ArenaBackground />
         <main className="pb-32 relative z-10" suppressHydrationWarning={true}>
           <TopHeader />
   
-          {/* Hero Section with Layered Blobs */}
-        <section className="sticker-header relative pb-14 px-8 overflow-hidden">
-          <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-soft-lime)' }} />
-          <div className="sticker-blob sticker-blob-2" style={{ background: 'var(--color-soft-yellow)' }} />
-          
+          {/* Hero Section */}
+        <section className="sticker-header relative pb-14 px-8 overflow-hidden bg-transparent border-none">
           <div className="relative z-10">
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}

@@ -4,6 +4,7 @@ import { BottomNav } from "@/components/layout/BottomNav";
 import { TopHeader } from "@/components/layout/TopHeader";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { ChipGroup } from "@/components/ui/Chip";
+import { ArenaBackground } from "@/components/ui/ArenaBackground";
 import { useState, useEffect, useCallback } from "react";
 import { Trophy, Medal, TrendingUp, ChevronUp, ChevronDown, Loader2, Users } from "lucide-react";
 import { supabase } from "@/lib/supabase";
@@ -70,13 +71,15 @@ export default function LeaderboardPage() {
   const topThree = leaderboard.slice(0, 3);
   const restOfLeaderboard = leaderboard.slice(3);
 
-  return (
-    <div className="min-h-screen bg-background text-onyx" suppressHydrationWarning={true}>
-      <main className="pb-32 relative z-10" suppressHydrationWarning={true}>
-        <TopHeader />
+    return (
+      <div className="min-h-screen bg-background text-onyx" suppressHydrationWarning={true}>
+        <ArenaBackground />
+        <main className="pb-32 relative z-10" suppressHydrationWarning={true}>
+          <TopHeader />
+  
+          {/* Header Section */}
+        <section className="sticker-header relative border-none bg-transparent" suppressHydrationWarning={true}>
 
-        {/* Header Section */}
-        <section className="sticker-header relative" suppressHydrationWarning={true}>
           <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-pastel-yellow)' }} />
           <div className="sticker-blob sticker-blob-2" style={{ background: 'var(--color-pastel-peach)' }} />
           
