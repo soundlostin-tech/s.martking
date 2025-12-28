@@ -13,7 +13,9 @@ import {
   Clock,
   CreditCard,
   Banknote,
-  ArrowUpRight
+  ArrowUpRight,
+  ChevronRight,
+  Trophy
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState, useCallback } from "react";
