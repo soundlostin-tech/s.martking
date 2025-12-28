@@ -75,23 +75,26 @@ export default function Home() {
         <TopHeader />
 
         {/* Hero Section with Layered Blobs */}
-        <section className="sticker-header relative">
-          <div className="sticker-blob sticker-blob-1" />
-          <div className="sticker-blob sticker-blob-2" />
+        <section className="sticker-header relative pt-12 pb-14 px-8 overflow-hidden">
+          <div className="absolute top-[-100px] right-[-100px] w-[300px] h-[300px] bg-[#F4F9F9] rounded-full blur-[100px] opacity-80" />
+          <div className="absolute top-[-50px] left-[-50px] w-[200px] h-[200px] bg-[#FEF9C3]/40 rounded-full blur-[60px]" />
           
           <div className="relative z-10">
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-[42px] font-black leading-[0.95] mb-3"
+              className="text-[48px] font-black leading-[0.9] mb-4 tracking-[-0.03em]"
             >
               Discover,<br />
               Create,<br />
-              <span className="text-charcoal/60">Conquer</span>
+              <span className="text-[#A0A0A0]">Conquer</span>
             </motion.h1>
-            <p className="text-[13px] font-bold text-charcoal/50 uppercase tracking-wide">
-              Hello {userName} — Ready to compete?
-            </p>
+            <div className="flex items-center gap-2">
+              <span className="w-8 h-[2px] bg-[#11130D]/10" />
+              <p className="text-[10px] font-bold text-[#A0A0A0] uppercase tracking-[0.2em]">
+                Hello {userName} — Ready to compete?
+              </p>
+            </div>
           </div>
         </section>
 
