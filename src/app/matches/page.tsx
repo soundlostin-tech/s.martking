@@ -52,8 +52,13 @@ export default function MatchesPage() {
       }));
 
       setMatches(withCounts);
-    } catch (error) {
-      console.error("Error fetching matches:", error);
+    } catch (error: any) {
+      console.error("Error fetching matches:", {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        error
+      });
     } finally {
       setLoading(false);
     }
@@ -66,16 +71,16 @@ export default function MatchesPage() {
   const liveMatches = matches.filter(m => m.status === 'live');
   const upcomingMatches = matches.filter(m => m.status === 'upcoming');
 
-  return (
-    <div className="min-h-screen bg-background text-onyx">
-      <main className="pb-32 relative z-10 pt-10">
+    return (
+    <div className="min-h-screen bg-background text-onyx" suppressHydrationWarning={true}>
+      <main className="pb-32 relative z-10 pt-10" suppressHydrationWarning={true}>
           
           {/* Sticker Header with Blobs */}
-        <section className="sticker-header relative">
-          <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-pastel-mint)' }} />
-          <div className="sticker-blob sticker-blob-2" style={{ background: 'var(--color-pastel-sky)' }} />
+        <section className="sticker-header relative" suppressHydrationWarning={true}>
+          <div className="sticker-blob sticker-blob-1" style={{ background: 'var(--color-pastel-mint)' }} suppressHydrationWarning={true} />
+          <div className="sticker-blob sticker-blob-2" style={{ background: 'var(--color-pastel-sky)' }} suppressHydrationWarning={true} />
           
-          <div className="relative z-10">
+          <div className="relative z-10" suppressHydrationWarning={true}>
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -90,8 +95,8 @@ export default function MatchesPage() {
         </section>
 
         {/* Search & Filter */}
-        <section className="px-6 space-y-5 mb-6">
-          <div className="relative">
+        <section className="px-6 space-y-5 mb-6" suppressHydrationWarning={true}>
+          <div className="relative" suppressHydrationWarning={true}>
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-charcoal opacity-30" size={20} />
             <input 
               type="text" 
@@ -102,7 +107,7 @@ export default function MatchesPage() {
             />
           </div>
 
-          <div className="flex gap-2 overflow-x-auto no-scrollbar">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar" suppressHydrationWarning={true}>
             {filters.map((filter) => (
               <motion.button
                 key={filter}
