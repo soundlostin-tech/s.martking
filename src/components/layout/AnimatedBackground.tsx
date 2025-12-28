@@ -12,31 +12,32 @@ export function AnimatedBackground() {
 
   if (!mounted) return null;
 
-  return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-      {/* Soft pastel blob - top right */}
-      <motion.div 
-        animate={{ 
-          x: [0, 30, 0], 
-          y: [0, 20, 0],
-          scale: [1, 1.1, 1],
-        }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -top-[20%] -right-[20%] w-[60%] h-[60%] rounded-full blur-[100px] opacity-40"
-        style={{ background: 'linear-gradient(135deg, #F5F3C7 0%, #D7FD03 100%)' }}
-      />
-      
-      {/* Soft pastel blob - bottom left */}
-      <motion.div 
-        animate={{ 
-          x: [0, -30, 0], 
-          y: [0, 30, 0],
-          scale: [1.1, 1, 1.1],
-        }}
-        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -bottom-[20%] -left-[20%] w-[60%] h-[60%] rounded-full blur-[120px] opacity-30"
-        style={{ background: 'linear-gradient(135deg, #C7F5E3 0%, #C7E323 100%)' }}
-      />
+    return (
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 bg-[#F8FAFC]">
+        {/* Neutral subtle blob - top right */}
+        <motion.div 
+          animate={{ 
+            x: [0, 30, 0], 
+            y: [0, 20, 0],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-[20%] -right-[20%] w-[60%] h-[60%] rounded-full blur-[100px] opacity-20"
+          style={{ background: 'linear-gradient(135deg, #E2E8F0 0%, #CBD5E0 100%)' }}
+        />
+        
+        {/* Neutral subtle blob - bottom left */}
+        <motion.div 
+          animate={{ 
+            x: [0, -30, 0], 
+            y: [0, 30, 0],
+            scale: [1.1, 1, 1.1],
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -bottom-[20%] -left-[20%] w-[60%] h-[60%] rounded-full blur-[120px] opacity-15"
+          style={{ background: 'linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%)' }}
+        />
+
 
       {/* Accent blob - center */}
       <motion.div 

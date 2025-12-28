@@ -18,21 +18,22 @@ export function BentoCard({
   pastelColor = "mint",
   onClick 
 }: BentoCardProps) {
-  const pastelVariants = {
-    mint: "bg-[#E8F5E9] text-[#2D3436]",
-    coral: "bg-[#FFEBEE] text-[#2D3436]",
-    lavender: "bg-[#EDE7F6] text-[#2D3436]",
-    peach: "bg-[#FFF3E0] text-[#2D3436]",
-    yellow: "bg-[#FFF8E1] text-[#2D3436]",
-  };
+    const pastelVariants = {
+      mint: "bg-[#C6F6D5] text-[#22543D] border-[#9AE6B4]",
+      coral: "bg-[#FED7D7] text-[#822727] border-[#FEB2B2]",
+      lavender: "bg-[#E9D8FD] text-[#44337A] border-[#D6BCFA]",
+      peach: "bg-[#FEEBC8] text-[#7B341E] border-[#FBD38D]",
+      yellow: "bg-[#FEFCBF] text-[#744210] border-[#FAF089]",
+    };
 
     const variantClasses = {
-      default: "bg-white text-[#2D3436] border border-gray-100",
-      dark: "bg-[#2D3436] text-white border-none shadow-lg",
-      vibrant: "bg-[#FFF8E1] text-[#2D3436] border-none shadow-md",
-      hero: cn("shadow-md border-none", pastelVariants[pastelColor]),
-      pastel: cn("border-none", pastelVariants[pastelColor]),
+      default: "bg-white text-[#1A202C] border-slate-200",
+      dark: "bg-[#1A202C] text-white border-none shadow-xl",
+      vibrant: "bg-[#ECC94B] text-[#1A202C] border-none shadow-lg",
+      hero: cn("shadow-lg border-2", pastelVariants[pastelColor]),
+      pastel: cn("border shadow-sm", pastelVariants[pastelColor]),
     };
+
 
   return (
     <motion.div

@@ -26,22 +26,23 @@ export function TopHeader() {
   const blurAmount = useTransform(smoothY, [0, 80], ["0px", "16px"]);
   const shadowOpacity = useTransform(smoothY, [0, 80], [0, 0.06]);
   
-  const bgColor = useTransform(
-    smoothY,
-    [0, 80],
-    ["rgba(248, 249, 250, 0)", "rgba(255, 255, 255, 0.95)"]
-  );
-  
-  const borderColor = useTransform(
-    smoothY,
-    [0, 80],
-    ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.05)"]
-  );
+    const bgColor = useTransform(
+      smoothY,
+      [0, 80],
+      ["rgba(255, 255, 255, 0.9)", "rgba(255, 255, 255, 1)"]
+    );
+    
+    const borderColor = useTransform(
+      smoothY,
+      [0, 80],
+      ["rgba(0, 0, 0, 0.05)", "rgba(0, 0, 0, 0.1)"]
+    );
 
-  const boxShadow = useTransform(
-    shadowOpacity,
-    (opacity) => `0 4px 20px -4px rgba(0, 0, 0, ${opacity})`
-  );
+    const boxShadow = useTransform(
+      shadowOpacity,
+      (opacity) => `0 10px 30px -5px rgba(0, 0, 0, ${opacity + 0.05})`
+    );
+
 
   const backdropFilter = useTransform(
     blurAmount,
