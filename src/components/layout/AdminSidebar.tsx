@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutDashboard, PlayCircle, Trophy, BarChart3, ReceiptIndianRupee, Users, LogOut, Globe } from "lucide-react";
+import { LayoutDashboard, PlayCircle, Trophy, BarChart3, ReceiptIndianRupee, Users, LogOut, Globe2 as Globe } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
