@@ -5,10 +5,10 @@ import { VisualEditsMessenger } from "orchids-visual-edits";
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <div className="min-h-screen" suppressHydrationWarning>
-        {children}
-      </div>
+<>
+<div className="min-h-screen bg-transparent" suppressHydrationWarning>
+{children}
+</div>
       <Toaster position="top-center" />
       <VisualEditsMessenger />
     </>

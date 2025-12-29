@@ -70,9 +70,9 @@ export default function LeaderboardPage() {
   const topThree = leaderboard.slice(0, 3);
   const restOfLeaderboard = leaderboard.slice(3);
 
-    return (
-      <div className="min-h-screen text-onyx" suppressHydrationWarning={true}>
-        <main className="pb-32 relative z-10" suppressHydrationWarning={true}>
+return (
+<div className="min-h-screen text-onyx bg-transparent relative" suppressHydrationWarning={true}>
+<main className="pb-32 relative z-10" suppressHydrationWarning={true}>
           <TopHeader />
   
           {/* Header Section */}

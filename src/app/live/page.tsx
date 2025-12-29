@@ -249,16 +249,16 @@ function LiveContent() {
 }
 
 export default function Live() {
-  return (
-    <div className="min-h-screen text-onyx" suppressHydrationWarning={true}>
-      <Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center bg-transparent" suppressHydrationWarning={true}>
-          <Loader2 className="w-10 h-10 animate-spin text-onyx/20" />
-        </div>
-      }>
-        <LiveContent />
-      </Suspense>
-      <BottomNav />
-    </div>
-  );
+return (
+<div className="min-h-screen text-onyx bg-transparent relative" suppressHydrationWarning={true}>
+<Suspense fallback={
+<div className="min-h-screen flex items-center justify-center bg-transparent" suppressHydrationWarning={true}>
+<Loader2 className="w-10 h-10 animate-spin text-onyx/20" />
+</div>
+}>
+<LiveContent />
+</Suspense>
+<BottomNav />
+</div>
+);
 }

@@ -191,9 +191,9 @@ export default function WalletPage() {
     );
   }
 
-    return (
-      <div className="min-h-screen text-onyx" suppressHydrationWarning={true}>
-        <main className="pb-32 relative z-10" suppressHydrationWarning={true}>
+return (
+<div className="min-h-screen text-onyx bg-transparent relative" suppressHydrationWarning={true}>
+<main className="pb-32 relative z-10" suppressHydrationWarning={true}>
           
   
           {/* Header Section */}

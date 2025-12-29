@@ -57,9 +57,9 @@ export default function Signin() {
     }
   };
 
-    return (
-        <main className="min-h-screen text-onyx overflow-x-hidden" suppressHydrationWarning={true}>
-          {/* Header Section */}
+return (
+<main className="min-h-screen text-onyx overflow-x-hidden bg-transparent relative z-10" suppressHydrationWarning={true}>
+{/* Header Section */}
           <section className="relative pt-20 px-8 pb-12 overflow-hidden bg-transparent" suppressHydrationWarning={true}>
             <Link href="/onboarding" className="relative z-10 inline-flex items-center gap-2 text-[10px] font-bold text-charcoal/30 uppercase tracking-widest mb-6">
               <ChevronLeft size={14} strokeWidth={3} /> Back

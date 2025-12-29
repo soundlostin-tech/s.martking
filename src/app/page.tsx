@@ -69,9 +69,9 @@ export default function Home() {
   const featured = featuredMatches[0];
   const userName = user?.user_metadata?.full_name?.split(' ')[0] || 'Warrior';
 
-    return (
-      <div className="min-h-screen text-onyx font-sans" suppressHydrationWarning={true}>
-        <main className="pb-32 relative z-10" suppressHydrationWarning={true}>
+return (
+<div className="min-h-screen text-onyx font-sans bg-transparent relative" suppressHydrationWarning={true}>
+<main className="pb-32 relative z-10" suppressHydrationWarning={true}>
           <TopHeader />
   
           {/* Hero Section */}

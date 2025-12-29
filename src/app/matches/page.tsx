@@ -72,8 +72,8 @@ export default function MatchesPage() {
   const upcomingMatches = matches.filter(m => m.status === 'upcoming');
 
     return (
-    <div className="min-h-screen text-onyx" suppressHydrationWarning={true}>
-      <main className="pb-32 relative z-10" suppressHydrationWarning={true}>
+<div className="min-h-screen text-onyx bg-transparent relative" suppressHydrationWarning={true}>
+<main className="pb-32 relative z-10" suppressHydrationWarning={true}>
           
           {/* Header Section */}
         <section className="relative pt-16 pb-14 px-8 overflow-hidden bg-transparent" suppressHydrationWarning={true}>
