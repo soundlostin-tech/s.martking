@@ -87,58 +87,61 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background text-onyx">
-      <main className="pb-32 relative z-10">
-        <TopHeader />
-
-        {/* Greeting Section */}
-        <section className="px-6 pt-10 pb-6 blob-header blob-header-yellow">
-          <div className="flex flex-col gap-1 mb-8 relative z-10">
-            <h2 className="text-[44px] font-heading text-onyx leading-[1.1] font-black max-w-[300px]">
-              Hello {user?.user_metadata?.full_name?.split(' ')[0] || 'Warrior'}! <br />
-              <span className="text-charcoal-brown/40">Ready to win?</span>
-            </h2>
-          </div>
-        </section>
-
-        {/* Story Row */}
-        <section className="py-4 overflow-hidden mb-6">
-          <div className="flex gap-4 overflow-x-auto no-scrollbar px-6 items-start">
-            <div className="flex-shrink-0 flex flex-col items-center gap-2">
-              <motion.div 
-                whileTap={{ scale: 0.92 }}
-                onClick={() => setIsUploadOpen(true)}
-                className="relative w-[68px] h-[68px] rounded-full p-[3px] bg-white shadow-sm"
-              >
-                <div className="w-full h-full rounded-full bg-silver/20 flex items-center justify-center overflow-hidden">
-                  <Plus size={24} strokeWidth={3} className="text-charcoal" />
-                </div>
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-electric-blue rounded-full border-2 border-white flex items-center justify-center shadow-md">
-                  <Plus size={14} strokeWidth={4} className="text-onyx" />
-                </div>
-              </motion.div>
-              <span className="text-[10px] font-bold text-charcoal/60 uppercase tracking-widest">You</span>
+      <main className="pb-32 relative">
+        {/* Unified Hero Background */}
+        <div className="blob-header blob-header-yellow pb-8 bg-background relative overflow-hidden">
+          <TopHeader />
+          
+          {/* Greeting Section */}
+          <section className="px-6 pt-6 pb-2">
+            <div className="flex flex-col gap-1 mb-6 relative z-10">
+              <h2 className="text-[44px] font-heading text-onyx leading-[1.1] font-black max-w-[300px]">
+                Hello {user?.user_metadata?.full_name?.split(' ')[0] || 'Warrior'}! <br />
+                <span className="text-charcoal-brown/40">Ready to win?</span>
+              </h2>
             </div>
+          </section>
 
-            {profiles.map((profile) => (
-              <div key={profile.id} className="flex-shrink-0 flex flex-col items-center gap-2">
+          {/* Story Row - Integrated into Hero Background */}
+          <section className="py-2 overflow-visible">
+            <div className="flex gap-4 overflow-x-auto no-scrollbar px-6 items-start">
+              <div className="flex-shrink-0 flex flex-col items-center gap-2">
                 <motion.div 
                   whileTap={{ scale: 0.92 }}
-                  onClick={() => openStory(profile.id)}
-                  className="w-[68px] h-[68px] rounded-full p-[3px] bg-white shadow-sm ring-2 ring-electric-blue ring-offset-2"
+                  onClick={() => setIsUploadOpen(true)}
+                  className="relative w-[68px] h-[68px] rounded-full p-[3px] bg-white shadow-sm border border-black/[0.05]"
                 >
-                  <div className="w-full h-full rounded-full bg-silver flex items-center justify-center overflow-hidden">
-                    {profile.avatar_url ? (
-                      <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
-                    ) : (
-                      <span className="text-xl font-heading text-charcoal">{profile.full_name?.[0]?.toUpperCase()}</span>
-                    )}
+                  <div className="w-full h-full rounded-full bg-silver/20 flex items-center justify-center overflow-hidden">
+                    <Plus size={24} strokeWidth={3} className="text-charcoal" />
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-electric-blue rounded-full border-2 border-white flex items-center justify-center shadow-md">
+                    <Plus size={14} strokeWidth={4} className="text-onyx" />
                   </div>
                 </motion.div>
-                <span className="text-[10px] font-bold text-charcoal/60 uppercase tracking-widest">{profile.full_name?.split(' ')[0]}</span>
+                <span className="text-[10px] font-bold text-charcoal/60 uppercase tracking-widest">You</span>
               </div>
-            ))}
-          </div>
-        </section>
+
+              {profiles.map((profile) => (
+                <div key={profile.id} className="flex-shrink-0 flex flex-col items-center gap-2">
+                  <motion.div 
+                    whileTap={{ scale: 0.92 }}
+                    onClick={() => openStory(profile.id)}
+                    className="w-[68px] h-[68px] rounded-full p-[3px] bg-white shadow-sm border-2 border-electric-blue"
+                  >
+                    <div className="w-full h-full rounded-full bg-silver flex items-center justify-center overflow-hidden">
+                      {profile.avatar_url ? (
+                        <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-xl font-heading text-charcoal">{profile.full_name?.[0]?.toUpperCase()}</span>
+                      )}
+                    </div>
+                  </motion.div>
+                  <span className="text-[10px] font-bold text-charcoal/60 uppercase tracking-widest">{profile.full_name?.split(' ')[0]}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
 
         {/* Featured Tournament Hero */}
         <section className="px-6 mb-8">

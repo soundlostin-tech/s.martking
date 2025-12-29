@@ -5,7 +5,7 @@ import { Search, Bell } from "lucide-react";
 
 export function TopHeader() {
   return (
-    <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl px-6 py-4 flex items-center justify-between w-full">
+    <header className="sticky top-0 z-40 px-6 py-4 flex items-center justify-between w-full">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-2xl bg-electric-blue flex items-center justify-center text-onyx shadow-sm">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-5 h-5">
