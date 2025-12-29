@@ -33,7 +33,6 @@ const berkshire = Berkshire_Swash({
 export const metadata: Metadata = {
   title: "Smartking's Arena",
   description: "The ultimate competitive gaming arena",
-  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -58,8 +57,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${berkshire.variable} ${outfit.variable} font-sans antialiased bg-transparent text-foreground`}
-        suppressHydrationWarning
+        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${berkshire.variable} ${outfit.variable} font-sans antialiased bg-background text-foreground`}
       >
         <AnimatedBackground />
         <ClientLayout>{children}</ClientLayout>

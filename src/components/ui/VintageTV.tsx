@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Volume2, Power } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Volume2 } from "lucide-react";
 
 interface VintageTVProps {
   streamUrl?: string;
@@ -15,37 +14,46 @@ interface VintageTVProps {
 export function VintageTV({ streamUrl, isOn = false, onToggle, title }: VintageTVProps) {
   const [volume, setVolume] = useState(50);
   const [channelOn, setChannelOn] = useState(isOn);
-  const [isRotatingCH, setIsRotatingCH] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     setChannelOn(isOn);
   }, [isOn]);
 
   const handleChannelToggle = () => {
-    setIsRotatingCH(true);
     const newState = !channelOn;
-    setTimeout(() => {
-      setChannelOn(newState);
-      onToggle?.(newState);
-      setIsRotatingCH(false);
-    }, 200);
+    setChannelOn(newState);
+    onToggle?.(newState);
+  };
+
+  const handleVolumeChange = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const y = e.clientY - rect.top;
+    const newVolume = Math.max(0, Math.min(100, 100 - (y / rect.height) * 100));
+    setVolume(newVolume);
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-4">
-      {/* TV Casing - Onyx/Carbon-black gradient with 28px radius */}
-      <div className="relative bg-gradient-to-br from-onyx to-carbon-black rounded-[28px] p-4 shadow-[0_20px_60px_rgba(0,0,0,0.3)] border-4 border-onyx/20 overflow-hidden">
+    <div className="vintage-tv w-full max-w-md mx-auto">
+      {/* Antennas */}
+      <div className="flex justify-center gap-16 mb-2">
+        <div className="w-1 h-16 bg-gradient-to-t from-[#6B5344] to-[#4A3A2A] rounded-full transform -rotate-12 origin-bottom" />
+        <div className="w-1 h-16 bg-gradient-to-t from-[#6B5344] to-[#4A3A2A] rounded-full transform rotate-12 origin-bottom" />
+      </div>
+
+      {/* TV Cabinet */}
+      <div className="relative bg-gradient-to-b from-[#8B7355] via-[#7A6349] to-[#6B5344] rounded-[28px] p-4 shadow-2xl border-4 border-[#5A4334]">
+        {/* Golden Trim */}
+        <div className="absolute inset-3 rounded-[24px] border border-[#C4A87C]/30 pointer-events-none" />
         
-        {/* Screen Area - 16:9 inset with 8px bezel */}
-        <div className="relative aspect-video bg-[#0a0a0a] rounded-[20px] overflow-hidden border-[8px] border-charcoal-brown/10 shadow-[inset_0_0_40px_rgba(0,0,0,0.8)]">
+        {/* Screen Area */}
+        <div className="vintage-tv-screen aspect-video rounded-[16px] overflow-hidden relative bg-black mb-4">
           <AnimatePresence mode="wait">
             {channelOn && streamUrl ? (
               <motion.div
-                key="on"
-                initial={{ opacity: 0, scale: 0.9, filter: "brightness(2) blur(10px)" }}
-                animate={{ opacity: 1, scale: 1, filter: "brightness(1) blur(0px)" }}
-                exit={{ opacity: 0, scale: 1.1, filter: "brightness(2) blur(20px)" }}
-                transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 className="absolute inset-0"
               >
                 <iframe
@@ -53,33 +61,29 @@ export function VintageTV({ streamUrl, isOn = false, onToggle, title }: VintageT
                   className="w-full h-full"
                   allow="autoplay; encrypted-media"
                 />
-                {/* CRT & Scanline Effects */}
-                <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.03),rgba(0,255,0,0.01),rgba(0,0,255,0.03))] bg-[length:100%_4px,3px_100%] opacity-30" />
-                <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_80px_rgba(0,0,0,0.6)]" />
-                <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
+                {/* Scanlines overlay */}
+                <div className="scanlines absolute inset-0 pointer-events-none" />
+                {/* CRT Glass reflection */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent pointer-events-none" />
               </motion.div>
             ) : (
               <motion.div
-                key="off"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="absolute inset-0 flex items-center justify-center bg-[#111111]"
+                className="absolute inset-0 flex flex-col items-center justify-center"
               >
-                {/* NO SIGNAL Pattern */}
-                <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://media.giphy.com/media/oEI9uWUicKgR6L5fX0/giphy.gif')] bg-cover mix-blend-screen" />
-                <div className="relative z-10 flex flex-col items-center gap-6">
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="px-6 py-3 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-md"
-                  >
-                    <p className="text-[12px] font-black text-white/40 uppercase tracking-[0.5em] text-center">NO SIGNAL</p>
-                  </motion.div>
-                  <div className="flex gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-white/10 animate-pulse" />
-                    <div className="w-1.5 h-1.5 rounded-full bg-white/10 animate-pulse delay-75" />
-                    <div className="w-1.5 h-1.5 rounded-full bg-white/10 animate-pulse delay-150" />
+                {/* Static noise */}
+                <div className="tv-static absolute inset-0 opacity-30" />
+                <div className="scanlines absolute inset-0 pointer-events-none" />
+                
+                {/* No Signal text */}
+                <div className="relative z-10 text-center">
+                  <p className="text-[#888] text-sm font-mono tracking-widest">NO SIGNAL</p>
+                  <div className="mt-2 flex items-center justify-center gap-2">
+                    <div className="w-2 h-2 bg-[#888] rounded-full animate-pulse" />
+                    <div className="w-2 h-2 bg-[#888] rounded-full animate-pulse delay-100" />
+                    <div className="w-2 h-2 bg-[#888] rounded-full animate-pulse delay-200" />
                   </div>
                 </div>
               </motion.div>
@@ -87,92 +91,61 @@ export function VintageTV({ streamUrl, isOn = false, onToggle, title }: VintageT
           </AnimatePresence>
         </div>
 
-        {/* Lower Control Section */}
-        <div className="mt-8 flex items-end justify-between px-3">
-          
-          {/* LED & Branding (Left) */}
-          <div className="flex flex-col gap-4 pb-2">
-            <div className="flex flex-col">
-              <span className="text-[9px] font-black text-white/10 uppercase tracking-[0.3em] mb-1">ARENA-VISUAL</span>
-              <div className="flex items-center gap-3">
-                <motion.div 
-                  animate={channelOn ? { 
-                    backgroundColor: "#D7FD03",
-                    boxShadow: "0 0 15px rgba(215,253,3,0.6)",
-                    scale: [1, 1.25, 1]
-                  } : { 
-                    backgroundColor: "#FF3B30",
-                    boxShadow: "0 0 5px rgba(255,59,48,0.2)",
-                    scale: 1
-                  }}
-                  transition={channelOn ? { repeat: Infinity, duration: 1.5, ease: "easeInOut" } : {}}
-                  className="w-2.5 h-2.5 rounded-full shadow-inner"
-                />
-                <span className={cn(
-                  "text-[10px] font-black uppercase tracking-widest transition-colors",
-                  channelOn ? "text-lime-yellow" : "text-white/20"
-                )}>
-                  {channelOn ? 'ON AIR' : 'OFFLINE'}
-                </span>
-              </div>
-            </div>
+        {/* Control Panel */}
+        <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-b from-[#6B5344] to-[#5A4334] rounded-xl">
+          {/* Brand Badge */}
+          <div className="flex flex-col">
+            <span className="text-[8px] text-[#C4A87C] font-bold uppercase tracking-[0.2em]">Smartking's</span>
+            <span className="text-[10px] text-[#C4A87C]/70 font-medium uppercase tracking-wider">Arena TV</span>
           </div>
 
-          {/* Interaction Knobs (Center-Right) */}
-          <div className="flex items-center gap-8 bg-black/20 p-4 rounded-[24px] border border-white/5">
-            {/* CH Knob (Left side of control cluster) */}
-            <div className="flex flex-col items-center gap-2">
-              <motion.button
-                animate={{ rotate: isRotatingCH ? (channelOn ? 0 : 45) : (channelOn ? 45 : 0) }}
-                onClick={handleChannelToggle}
-                className="w-14 h-14 rounded-full bg-gradient-to-b from-charcoal-brown to-onyx border-[6px] border-carbon-black shadow-[0_10px_20px_rgba(0,0,0,0.4)] flex items-center justify-center relative active:scale-90 transition-all hover:brightness-110"
-              >
-                <div className="absolute top-1 w-1 h-3 bg-white/10 rounded-full" />
-                <Power size={18} className={cn("transition-colors", channelOn ? "text-lime-yellow" : "text-white/20")} strokeWidth={3} />
-              </motion.button>
-              <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.3em]">CH</span>
-            </div>
+          {/* LED Indicator */}
+          <div className="flex items-center gap-3">
+            <div className={channelOn ? "led-on" : "led-off"} />
+            <span className="text-[8px] text-[#C4A87C]/60 uppercase tracking-wider">
+              {channelOn ? "ON AIR" : "OFF"}
+            </span>
+          </div>
 
-            {/* VOL Knob (Right side of control cluster) */}
-            <div className="flex flex-col items-center gap-2">
+          {/* Knobs */}
+          <div className="flex items-center gap-4">
+            {/* Channel Knob */}
+            <motion.button
+              whileTap={{ scale: 0.9, rotate: 45 }}
+              onClick={handleChannelToggle}
+              className="vintage-tv-knob flex items-center justify-center"
+            >
+              <span className="text-[8px] text-[#5A4334] font-bold">CH</span>
+            </motion.button>
+
+            {/* Volume Knob */}
+            <div className="relative">
               <motion.div
-                drag="y"
-                dragConstraints={{ top: 0, bottom: 0 }}
-                onDrag={(e, info) => {
-                  const delta = info.delta.y;
-                  setVolume(prev => Math.max(0, Math.min(100, prev - delta)));
-                }}
-                animate={{ rotate: (volume / 100) * 270 - 135 }}
-                className="w-14 h-14 rounded-full bg-gradient-to-b from-charcoal-brown to-onyx border-[6px] border-carbon-black shadow-[0_10px_20px_rgba(0,0,0,0.4)] flex items-center justify-center relative cursor-ns-resize hover:brightness-110"
+                whileTap={{ scale: 0.9 }}
+                className="vintage-tv-knob flex items-center justify-center"
+                style={{ transform: `rotate(${volume * 2.7 - 135}deg)` }}
               >
-                <div className="absolute top-1 w-1 h-3 bg-white/10 rounded-full" />
-                <Volume2 size={18} className="text-white/20" strokeWidth={3} />
+                <div className="w-1 h-3 bg-[#5A4334] rounded-full transform -translate-y-1" />
               </motion.div>
-              <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.3em]">VOL</span>
+              <Volume2 size={10} className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[#C4A87C]/60" />
             </div>
-          </div>
-          
-          {/* Speaker Grille Detail (Far Right) */}
-          <div className="flex flex-col gap-1.5 opacity-20 pr-1 pb-4">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="h-0.5 w-6 bg-white rounded-full" />
-            ))}
           </div>
         </div>
       </div>
-      
-      {/* Volume Feedback */}
+
+      {/* Now Playing Info */}
       <AnimatePresence>
-        {volume !== 50 && (
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
+        {channelOn && title && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="mt-6 text-center"
+            exit={{ opacity: 0, y: 10 }}
+            className="mt-4 bg-white rounded-[20px] p-4 shadow-lg border border-[#C8C8C4]/20"
           >
-            <span className="px-4 py-2 bg-onyx text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] shadow-xl border border-white/5">
-              Level: {Math.round(volume)}%
-            </span>
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 bg-[#D7FD03] rounded-full animate-pulse" />
+              <span className="text-[10px] font-bold text-[#11130D] uppercase tracking-wide">{title}</span>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

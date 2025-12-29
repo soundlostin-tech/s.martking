@@ -1,10 +1,8 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight, Share2, Heart } from "lucide-react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useHaptics } from "@/hooks/useHaptics";
-import { toast } from "sonner";
 
 interface Story {
   id: string;
@@ -28,8 +26,6 @@ interface StoryViewerProps {
 export function StoryViewer({ stories, initialIndex, isOpen, onClose }: StoryViewerProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [progress, setProgress] = useState(0);
-  const [liked, setLiked] = useState(false);
-  const { triggerHaptic } = useHaptics();
 
   useEffect(() => {
     if (isOpen) {
@@ -59,49 +55,18 @@ export function StoryViewer({ stories, initialIndex, isOpen, onClose }: StoryVie
   }, [isOpen, currentIndex]);
 
   const handleNext = () => {
-    triggerHaptic('light');
     if (currentIndex < stories.length - 1) {
       setCurrentIndex(prev => prev + 1);
       setProgress(0);
-      setLiked(false);
     } else {
       onClose();
     }
   };
 
   const handlePrev = () => {
-    triggerHaptic('light');
     if (currentIndex > 0) {
       setCurrentIndex(prev => prev - 1);
       setProgress(0);
-      setLiked(false);
-    }
-  };
-
-  const handleLike = () => {
-    triggerHaptic('success');
-    setLiked(!liked);
-    if (!liked) {
-      toast.success("Liked!");
-    }
-  };
-
-  const handleShare = async () => {
-    triggerHaptic('medium');
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          title: `Story by ${currentStory?.user?.full_name}`,
-          text: currentStory?.caption || "Check out this story!",
-          url: window.location.href,
-        });
-        toast.success("Shared successfully!");
-      } else {
-        await navigator.clipboard.writeText(window.location.href);
-        toast.success("Link copied to clipboard!");
-      }
-    } catch (error) {
-      console.error("Share failed:", error);
     }
   };
 
@@ -150,26 +115,12 @@ export function StoryViewer({ stories, initialIndex, isOpen, onClose }: StoryVie
                   <span className="text-[10px] text-primary/40 font-bold uppercase tracking-widest">LIVE NOW</span>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <button 
-                  onClick={handleLike}
-                  className={`p-2 rounded-2xl transition-all ${liked ? 'bg-red-500 text-white' : 'bg-primary/5 hover:bg-primary/10 text-primary/60'}`}
-                >
-                  <Heart size={20} fill={liked ? "currentColor" : "none"} />
-                </button>
-                <button 
-                  onClick={handleShare}
-                  className="p-2 rounded-2xl bg-primary/5 hover:bg-primary/10 text-primary/60 transition-colors"
-                >
-                  <Share2 size={20} />
-                </button>
-                <button 
-                  onClick={onClose}
-                  className="p-2 rounded-2xl bg-primary/5 hover:bg-primary/10 text-primary/60 transition-colors"
-                >
-                  <X size={20} />
-                </button>
-              </div>
+              <button 
+                onClick={onClose}
+                className="p-2 rounded-2xl bg-primary/5 hover:bg-primary/10 text-primary/60 transition-colors"
+              >
+                <X size={20} />
+              </button>
             </div>
 
               {/* Content */}
