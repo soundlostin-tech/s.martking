@@ -1,7 +1,6 @@
 "use client";
 
 import { AdminNav } from "@/components/layout/AdminNav";
-import { Badge } from "@/components/ui/badge";
 import { 
   Users, 
   UserCheck, 
@@ -9,25 +8,23 @@ import {
   Search, 
   Loader2, 
   Eye, 
-  MessageSquare, 
   ShieldAlert, 
   Ban, 
   MoreVertical,
   ChevronRight,
-    Mail,
-    Phone,
-    Calendar,
-    Clock,
-    Globe2 as Globe,
-    Trophy,
+  Mail,
+  Phone,
+  Calendar,
+  Clock,
+  Globe2 as Globe,
+  Trophy,
   Swords,
   TrendingUp,
   Wallet,
   ShieldCheck,
   Zap,
   CheckCircle2,
-  XCircle,
-  Shield
+  XCircle
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState, useMemo } from "react";
@@ -57,6 +54,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { BentoCard } from "@/components/ui/BentoCard";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 
 interface UserProfile {
   id: string;
@@ -128,7 +127,7 @@ export default function AdminUsers() {
         .eq("id", id);
 
       if (error) throw error;
-      toast.success("User updated successfully");
+      toast.success("User protocol updated");
       fetchUsers();
       if (selectedUser?.id === id) {
         setSelectedUser({ ...selectedUser, ...updates } as UserProfile);
@@ -154,332 +153,253 @@ export default function AdminUsers() {
     });
   }, [users, search, roleFilter, statusFilter]);
 
-  const getStatusBadge = (status: string) => {
-    const baseClass = "text-[9px] font-bold px-3 py-1 rounded-full border-none shadow-sm";
-    switch (status) {
-      case 'Active': return <Badge className={`${baseClass} bg-dark-emerald text-white`}>ACTIVE</Badge>;
-      case 'Suspended': return <Badge className={`${baseClass} bg-white/10 text-white/40`}>SUSPENDED</Badge>;
-      case 'Banned': return <Badge className={`${baseClass} bg-black text-white`}>BANNED</Badge>;
-      default: return <Badge className={`${baseClass} bg-white/5 text-white/40`}>{status?.toUpperCase() || 'UNKNOWN'}</Badge>;
-    }
-  };
-
-  const getRoleBadge = (role: string) => {
-    switch (role) {
-      case 'Admin': return <Badge className="bg-dark-emerald/20 text-dark-emerald border-none text-[8px] tracking-widest px-2">ADMIN</Badge>;
-      case 'Organizer': return <Badge className="bg-white/10 text-white border-none text-[8px] tracking-widest px-2">ORGANIZER</Badge>;
-      default: return <Badge className="bg-white/5 text-white/40 border-none text-[8px] tracking-widest px-2">PLAYER</Badge>;
-    }
-  };
-
   return (
-    <main className="min-h-screen pb-32 bg-background text-foreground">
-      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-20">
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px]" />
-      </div>
-
-      <div className="px-6 pt-24 relative z-10 space-y-10 max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="space-y-1">
-          <h4 className="text-[10px] font-bold text-secondary uppercase tracking-[0.4em]">Registry Command</h4>
-          <h1 className="text-4xl font-heading text-foreground">Warrior <span className="italic font-serif opacity-60">Registry</span></h1>
+    <main className="min-h-screen p-8 lg:p-12 space-y-12 bg-background">
+      {/* Header Section */}
+      <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 blob-header blob-header-sky">
+        <div className="relative z-10">
+          <p className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em] mb-2">Registry Command</p>
+          <h1 className="text-[44px] font-heading font-black leading-none tracking-tight text-onyx">
+            Warriors <br />
+            <span className="text-charcoal-brown/40">Player Database</span>
+          </h1>
         </div>
+      </section>
 
-        {/* KPI Strip */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { label: "Total Users", value: stats.total, icon: Users, sub: "Registered Players" },
-            { label: "Active", value: stats.active, icon: UserCheck, sub: "Engaged Users" },
-            { label: "Suspended", value: stats.suspended, icon: UserMinus, sub: "Restricted Access" },
-          ].map((stat, i) => (
-            <motion.div 
-              key={i}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: i * 0.1 }}
-              className="bg-card rounded-[2.5rem] p-8 border border-border shadow-lg relative overflow-hidden group"
-            >
-              <div className="flex justify-between items-start relative z-10">
-                <div className="space-y-1">
-                  <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-[0.2em]">{stat.label}</p>
-                  <h3 className="text-3xl font-heading text-foreground">{stat.value.toLocaleString()}</h3>
-                  <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest">{stat.sub}</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-muted text-accent group-hover:scale-110 transition-transform duration-500 border border-border">
-                  <stat.icon size={24} />
-                </div>
-              </div>
-              <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-accent/5 rounded-full blur-[60px]" />
-            </motion.div>
-          ))}
+      {/* KPI Strip */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <BentoCard variant="vibrant" className="p-8 h-44 flex flex-col justify-between overflow-hidden relative">
+          <div className="relative z-10">
+            <p className="text-[10px] font-black text-onyx/40 uppercase tracking-widest mb-4">Total Population</p>
+            <h3 className="text-4xl font-heading font-black text-onyx">{stats.total.toLocaleString()}</h3>
+          </div>
+          <div className="absolute right-[-10px] bottom-[-10px] rotate-[-15deg] opacity-5 pointer-events-none">
+            <Users size={100} />
+          </div>
+        </BentoCard>
+
+        <BentoCard variant="dark" className="p-8 h-44 flex flex-col justify-between overflow-hidden relative">
+          <div className="relative z-10">
+            <p className="text-[10px] font-black text-white/40 uppercase tracking-widest mb-4">Active Deployments</p>
+            <h3 className="text-4xl font-heading font-black text-white">{stats.active.toLocaleString()}</h3>
+          </div>
+          <div className="absolute right-[-10px] bottom-[-10px] rotate-[15deg] opacity-5 pointer-events-none">
+            <UserCheck size={100} />
+          </div>
+        </BentoCard>
+
+        <BentoCard variant="pastel" pastelColor="coral" className="p-8 h-44 flex flex-col justify-between overflow-hidden relative">
+          <div className="relative z-10">
+            <p className="text-[10px] font-black text-onyx/40 uppercase tracking-widest mb-4">Restricted Access</p>
+            <h3 className="text-4xl font-heading font-black text-onyx">{stats.suspended.toLocaleString()}</h3>
+          </div>
+          <div className="absolute right-[-10px] bottom-[-10px] rotate-[-5deg] opacity-5 pointer-events-none">
+            <ShieldAlert size={100} />
+          </div>
+        </BentoCard>
+      </section>
+
+      {/* Filter Bar */}
+      <section className="flex flex-col md:flex-row gap-4 bg-white p-6 rounded-[32px] shadow-sm border border-black/5">
+        <div className="relative flex-1">
+          <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-charcoal/30" size={20} />
+          <Input 
+            className="bg-background border-none pl-14 rounded-2xl h-14 text-sm font-bold focus-visible:ring-onyx placeholder:text-charcoal/30 text-onyx" 
+            placeholder="Search Registry..." 
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </div>
-
-        {/* Filter Bar */}
-        <div className="bg-card rounded-[2.5rem] border border-border p-6 shadow-lg flex flex-col md:flex-row gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
-            <Input 
-              className="bg-muted border-none pl-14 rounded-2xl h-14 text-xs font-bold tracking-wide focus-visible:ring-accent placeholder:text-muted-foreground/50 text-foreground" 
-              placeholder="SEARCH BY NAME, USERNAME, OR EMAIL..." 
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-          <div className="flex gap-2">
-            <Select value={roleFilter} onValueChange={setRoleFilter}>
-              <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-muted border-none font-bold text-[10px] tracking-widest text-muted-foreground">
-                <SelectValue placeholder="ROLE" />
-              </SelectTrigger>
-              <SelectContent className="rounded-2xl border-border bg-popover text-popover-foreground">
-                <SelectItem value="all">ALL ROLES</SelectItem>
-                <SelectItem value="Pro Player">PLAYER</SelectItem>
-                <SelectItem value="Organizer">ORGANIZER</SelectItem>
-                <SelectItem value="Admin">ADMIN</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-muted border-none font-bold text-[10px] tracking-widest text-muted-foreground">
-                <SelectValue placeholder="STATUS" />
-              </SelectTrigger>
-              <SelectContent className="rounded-2xl border-border bg-popover text-popover-foreground">
-                <SelectItem value="all">ALL STATUS</SelectItem>
-                <SelectItem value="Active">ACTIVE</SelectItem>
-                <SelectItem value="Inactive">INACTIVE</SelectItem>
-                <SelectItem value="Suspended">SUSPENDED</SelectItem>
-                <SelectItem value="Banned">BANNED</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+        <div className="flex gap-2">
+          <Select value={roleFilter} onValueChange={setRoleFilter}>
+            <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-background border-none font-black text-[10px] tracking-widest text-charcoal/60">
+              <SelectValue placeholder="ROLE" />
+            </SelectTrigger>
+            <SelectContent className="rounded-2xl border-none shadow-2xl">
+              <SelectItem value="all" className="text-[10px] font-black">ALL ROLES</SelectItem>
+              <SelectItem value="Pro Player" className="text-[10px] font-black">PLAYER</SelectItem>
+              <SelectItem value="Admin" className="text-[10px] font-black">ADMIN</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-background border-none font-black text-[10px] tracking-widest text-charcoal/60">
+              <SelectValue placeholder="STATUS" />
+            </SelectTrigger>
+            <SelectContent className="rounded-2xl border-none shadow-2xl">
+              <SelectItem value="all" className="text-[10px] font-black">ALL STATUS</SelectItem>
+              <SelectItem value="Active" className="text-[10px] font-black">ACTIVE</SelectItem>
+              <SelectItem value="Suspended" className="text-[10px] font-black">SUSPENDED</SelectItem>
+              <SelectItem value="Banned" className="text-[10px] font-black">BANNED</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
+      </section>
 
-        {/* User List */}
-        <div className="space-y-6">
-          <div className="flex items-end justify-between px-2">
-            <div className="space-y-1">
-              <h3 className="text-2xl font-heading text-foreground">Arena <span className="italic font-serif opacity-60">Directory</span></h3>
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">{filteredUsers.length} MEMBERS FOUND</p>
-            </div>
+      {/* User Grid */}
+      <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+        {loading ? (
+          <div className="col-span-full py-32 flex flex-col items-center gap-4">
+            <Loader2 className="w-12 h-12 animate-spin text-onyx/20" />
+            <p className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em]">Querying Database...</p>
           </div>
-
-          {loading ? (
-            <div className="flex flex-col items-center justify-center py-32 gap-6 bg-card rounded-[3rem] border border-border shadow-sm">
-              <Loader2 className="w-12 h-12 animate-spin text-accent" />
-              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Accessing Data Chambers...</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-4">
-              <AnimatePresence mode="popLayout">
-                {filteredUsers.length > 0 ? (
-                  filteredUsers.map((user, idx) => (
-                    <motion.div 
-                      key={user.id}
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: idx * 0.05 }}
-                      layout
-                      className="bg-card rounded-[2.5rem] p-6 flex items-center justify-between border border-border hover:border-accent/30 hover:bg-muted/30 transition-all duration-500 group cursor-pointer"
-                      onClick={() => {
-                        setSelectedUser(user);
-                        setIsDetailOpen(true);
-                      }}
-                    >
-                      <div className="flex items-center gap-6">
-                        <Avatar className="w-16 h-16 border-2 border-border shadow-xl transition-transform duration-500 group-hover:scale-110">
-                          <AvatarImage src={user.avatar_url} />
-                          <AvatarFallback className="bg-accent text-primary font-heading text-lg">
-                            {user.full_name?.substring(0, 2).toUpperCase() || "SK"}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="space-y-1.5">
-                          <div className="flex items-center gap-3">
-                            <h4 className="text-lg font-heading text-foreground leading-none">{user.full_name}</h4>
-                            {getStatusBadge(user.status)}
-                          </div>
-                          <p className="text-[10px] font-bold text-muted-foreground tracking-widest uppercase">@{user.username || user.email.split('@')[0]}</p>
-                          <div className="flex items-center gap-3">
-                            {getRoleBadge(user.role)}
-                            <span className="text-[9px] text-muted-foreground flex items-center gap-1 font-bold uppercase tracking-widest">
-                              <Clock size={10} strokeWidth={3} /> {user.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString() : 'NEVER'}
-                            </span>
-                          </div>
-                        </div>
+        ) : filteredUsers.length > 0 ? (
+          <AnimatePresence mode="popLayout">
+            {filteredUsers.map((u, idx) => (
+              <motion.div 
+                key={u.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.05 }}
+                layout
+              >
+                <BentoCard 
+                  className="p-8 border-none shadow-sm cursor-pointer group hover:shadow-xl transition-all"
+                  onClick={() => { setSelectedUser(u); setIsDetailOpen(true); }}
+                >
+                  <div className="flex justify-between items-start mb-8">
+                    <Avatar className="w-20 h-20 border-4 border-white shadow-xl group-hover:scale-110 transition-transform duration-500">
+                      <AvatarImage src={u.avatar_url} />
+                      <AvatarFallback className="bg-lime-yellow text-onyx text-2xl font-heading font-black">
+                        {u.full_name?.substring(0, 2).toUpperCase() || "SK"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col items-end gap-2">
+                      <StatusBadge variant={u.status === 'Active' ? 'completed' : u.status === 'Suspended' ? 'pending' : 'failed'} className="px-3 py-1 text-[8px]" />
+                      <div className="px-2 py-0.5 bg-onyx/5 rounded-md">
+                        <span className="text-[8px] font-black uppercase tracking-widest text-charcoal/40">{u.role}</span>
                       </div>
-
-                      <div className="flex items-center gap-6">
-                        <div className="hidden md:flex flex-col items-end mr-8 text-right">
-                          <p className="text-[9px] text-muted-foreground uppercase font-bold tracking-[0.2em]">Earnings</p>
-                          <p className="text-lg font-heading text-foreground">₹{user.lifetime_earnings?.toLocaleString() || 0}</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                              <Button variant="ghost" size="icon" className="rounded-2xl w-12 h-12 hover:bg-muted">
-                                <MoreVertical size={20} className="text-muted-foreground" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="rounded-[1.5rem] border-border w-52 p-2 bg-popover text-popover-foreground shadow-2xl">
-                              <DropdownMenuLabel className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground font-bold px-3 py-2">ACTIONS</DropdownMenuLabel>
-                              <DropdownMenuItem 
-                                onClick={() => { setSelectedUser(user); setIsDetailOpen(true); }}
-                                className="rounded-xl flex gap-3 cursor-pointer py-3 text-xs font-bold tracking-wide hover:bg-muted"
-                              >
-                                <Eye size={16} /> VIEW PROFILE
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator className="bg-border" />
-                              <DropdownMenuLabel className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground font-bold px-3 py-2">MANAGEMENT</DropdownMenuLabel>
-                              <DropdownMenuItem 
-                                onClick={() => handleUpdateUser(user.id, { role: user.role === 'Admin' ? 'Pro Player' : 'Admin' })}
-                                className="rounded-xl flex gap-3 cursor-pointer py-3 text-xs font-bold tracking-wide hover:bg-muted"
-                              >
-                                <Shield size={16} /> CHANGE ROLE
-                              </DropdownMenuItem>
-                              <DropdownMenuItem 
-                                onClick={() => handleUpdateUser(user.id, { status: user.status === 'Suspended' ? 'Active' : 'Suspended' })}
-                                className="rounded-xl flex gap-3 cursor-pointer py-3 text-xs font-bold tracking-wide hover:bg-muted"
-                              >
-                                <UserMinus size={16} /> {user.status === 'Suspended' ? 'UNSUSPEND' : 'SUSPEND'}
-                              </DropdownMenuItem>
-                              <DropdownMenuItem 
-                                onClick={() => handleUpdateUser(user.id, { status: 'Banned' })}
-                                className="rounded-xl flex gap-3 cursor-pointer py-3 text-xs font-bold tracking-wide text-destructive focus:text-destructive focus:bg-destructive/10"
-                              >
-                                <Ban size={16} /> BAN PLAYER
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))
-                ) : (
-                  <div className="flex flex-col items-center justify-center py-32 bg-card rounded-[3rem] border border-dashed border-border text-center">
-                    <Users size={64} strokeWidth={1} className="text-muted-foreground/30 mb-6" />
-                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">No matching warriors found</p>
-                    <Button variant="link" onClick={() => { setSearch(""); setRoleFilter("all"); setStatusFilter("all"); }} className="text-accent font-bold mt-4 text-[10px] tracking-widest uppercase">
-                      CLEAR ALL FILTERS
-                    </Button>
+                    </div>
                   </div>
-                )}
-              </AnimatePresence>
+
+                  <div className="space-y-1 mb-8">
+                    <h4 className="text-xl font-heading font-black text-onyx leading-tight group-hover:text-charcoal-brown transition-colors">{u.full_name}</h4>
+                    <p className="text-[10px] font-bold text-charcoal/40 tracking-[0.2em] uppercase">@{u.username || u.email.split('@')[0]}</p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 pt-6 border-t border-onyx/5">
+                    <div>
+                      <p className="text-[8px] font-bold text-charcoal/40 uppercase tracking-widest mb-1">Lifetime Earnings</p>
+                      <p className="text-sm font-black text-onyx">₹{u.lifetime_earnings?.toLocaleString() || 0}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[8px] font-bold text-charcoal/40 uppercase tracking-widest mb-1">Win Rate</p>
+                      <p className="text-sm font-black text-onyx">{u.win_rate || 0}%</p>
+                    </div>
+                  </div>
+                </BentoCard>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        ) : (
+          <div className="col-span-full py-32 text-center bg-white rounded-[40px] shadow-sm flex flex-col items-center gap-6">
+            <div className="w-24 h-24 rounded-full bg-off-white flex items-center justify-center">
+              <Zap size={48} strokeWidth={1} className="text-charcoal/20" />
             </div>
-          )}
-        </div>
-      </div>
+            <h3 className="text-2xl font-heading text-onyx font-black">No Warriors Classified</h3>
+            <Button variant="link" onClick={() => { setSearch(""); setRoleFilter("all"); setStatusFilter("all"); }} className="text-onyx font-black text-[10px] tracking-widest uppercase underline underline-offset-8">
+              Reset Registry Scan
+            </Button>
+          </div>
+        )}
+      </section>
 
       {/* User Detail Sheet */}
       <Sheet open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-        <SheetContent className="bg-popover border-border w-full sm:max-w-xl p-0 overflow-y-auto no-scrollbar text-popover-foreground">
+        <SheetContent className="bg-white border-none w-full sm:max-w-xl p-0 overflow-y-auto no-scrollbar text-onyx">
           {selectedUser && (
             <div className="flex flex-col h-full">
-              <div className="p-10 bg-muted/30 border-b border-border relative overflow-hidden">
+              <div className="p-10 bg-lime-yellow relative overflow-hidden">
                 <SheetHeader className="relative z-10">
                   <div className="flex justify-between items-start mb-10">
-                    {getStatusBadge(selectedUser.status)}
-                    <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground transition-colors">
-                      <ShieldAlert size={22} />
+                    <StatusBadge variant={selectedUser.status === 'Active' ? 'completed' : 'failed'} className="bg-onyx text-white shadow-none" />
+                    <Button variant="ghost" size="icon" className="w-12 h-12 rounded-2xl bg-white/20 hover:bg-white/40 text-onyx">
+                      <ShieldCheck size={24} strokeWidth={3} />
                     </Button>
                   </div>
                   <div className="flex items-center gap-8">
-                    <Avatar className="w-28 h-28 border-4 border-border shadow-2xl">
+                    <Avatar className="w-32 h-32 border-8 border-white/20 shadow-2xl">
                       <AvatarImage src={selectedUser.avatar_url} />
-                      <AvatarFallback className="bg-accent text-primary text-3xl font-heading">
+                      <AvatarFallback className="bg-onyx text-lime-yellow text-4xl font-heading font-black">
                         {selectedUser.full_name?.substring(0, 2).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
                     <div className="space-y-2">
-                      <SheetTitle className="text-foreground text-4xl font-heading leading-tight">{selectedUser.full_name}</SheetTitle>
-                      <p className="text-secondary text-[10px] font-bold uppercase tracking-[0.3em] flex items-center gap-3">
+                      <SheetTitle className="text-onyx text-4xl font-heading font-black leading-tight">{selectedUser.full_name}</SheetTitle>
+                      <p className="text-onyx/40 text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-3">
                         @{selectedUser.username || selectedUser.email.split('@')[0]}
-                        <span className="w-1 h-1 bg-border rounded-full" />
+                        <span className="w-1 h-1 bg-onyx/20 rounded-full" />
                         {selectedUser.role.toUpperCase()}
                       </p>
                     </div>
                   </div>
                 </SheetHeader>
-                <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-accent/10 blur-[100px] rounded-full" />
+                <div className="absolute right-[-40px] top-[-40px] rotate-[15deg] opacity-10">
+                  <Zap size={240} strokeWidth={1} />
+                </div>
               </div>
 
               <div className="p-10 space-y-12 flex-1">
-                {/* Quick Stats Grid */}
+                {/* Stats Grid */}
                 <div className="grid grid-cols-2 gap-6">
                   {[
-                    { label: "Matches", value: selectedUser.matches_played || 0, icon: Swords },
-                    { label: "Win Rate", value: `${selectedUser.win_rate || 0}%`, icon: TrendingUp },
-                    { label: "Earnings", value: `₹${(selectedUser.lifetime_earnings || 0).toLocaleString()}`, icon: Trophy },
-                    { label: "Balance", value: `₹${(selectedUser.balance || 0).toLocaleString()}`, icon: Wallet },
+                    { label: "Matches", value: selectedUser.matches_played || 0, icon: Swords, color: "mint" },
+                    { label: "Win Rate", value: `${selectedUser.win_rate || 0}%`, icon: TrendingUp, color: "sky" },
+                    { label: "Earnings", value: `₹${(selectedUser.lifetime_earnings || 0).toLocaleString()}`, icon: Trophy, color: "yellow" },
+                    { label: "Balance", value: `₹${(selectedUser.balance || 0).toLocaleString()}`, icon: Wallet, color: "peach" },
                   ].map((stat, i) => (
-                    <div key={i} className="bg-muted/20 p-6 rounded-[2rem] border border-border flex flex-col gap-3">
-                      <div className="w-12 h-12 rounded-2xl bg-muted text-accent flex items-center justify-center border border-border">
+                    <div key={i} className={`bg-pastel-${stat.color}/20 p-8 rounded-[32px] border-none flex flex-col gap-4`}>
+                      <div className={`w-12 h-12 rounded-2xl bg-pastel-${stat.color} flex items-center justify-center text-onyx shadow-inner`}>
                         <stat.icon size={24} />
                       </div>
-                      <div className="space-y-0.5">
-                        <p className="text-[9px] text-muted-foreground uppercase font-bold tracking-widest">{stat.label}</p>
-                        <p className="text-2xl font-heading text-foreground">{stat.value}</p>
+                      <div className="space-y-1">
+                        <p className="text-[9px] text-charcoal/40 uppercase font-black tracking-widest">{stat.label}</p>
+                        <p className="text-3xl font-heading text-onyx font-black">{stat.value}</p>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                {/* Information Sections */}
-                <div className="space-y-10">
-                  <div>
-                    <h4 className="text-[10px] text-muted-foreground uppercase font-bold tracking-[0.3em] ml-2 mb-4">ACCOUNT DOSSIER</h4>
-                    <div className="bg-card rounded-[2.5rem] border border-border divide-y divide-border overflow-hidden shadow-2xl">
-                      {[
-                        { label: "Email Address", value: selectedUser.email, icon: Mail },
-                        { label: "Phone Number", value: selectedUser.phone || 'NOT VERIFIED', icon: Phone },
-                        { label: "Region / Country", value: selectedUser.country || 'INDIA', icon: Globe },
-                        { label: "Member Since", value: new Date(selectedUser.created_at).toLocaleDateString(undefined, { dateStyle: 'long' }), icon: Calendar },
-                        { label: "Last Active", value: selectedUser.last_sign_in_at ? new Date(selectedUser.last_sign_in_at).toLocaleString() : 'N/A', icon: Clock },
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-center justify-between p-6 hover:bg-muted/20 transition-colors">
-                          <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center text-muted-foreground border border-border">
-                              <item.icon size={18} />
-                            </div>
-                            <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{item.label}</span>
+                {/* Account Details */}
+                <div className="space-y-8">
+                  <h4 className="text-[10px] text-charcoal/40 uppercase font-black tracking-[0.3em] ml-2">Account Dossier</h4>
+                  <div className="space-y-4">
+                    {[
+                      { label: "Email", value: selectedUser.email, icon: Mail },
+                      { label: "Phone", value: selectedUser.phone || 'UNVERIFIED', icon: Phone },
+                      { label: "Member Since", value: new Date(selectedUser.created_at).toLocaleDateString(), icon: Calendar },
+                      { label: "Last Active", value: selectedUser.last_sign_in_at ? new Date(selectedUser.last_sign_in_at).toLocaleString() : 'N/A', icon: Clock },
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-center justify-between p-6 bg-background rounded-2xl border border-black/5">
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-charcoal/40 shadow-sm">
+                            <item.icon size={18} strokeWidth={2.5} />
                           </div>
-                          <span className="text-[11px] font-bold text-foreground uppercase tracking-wide text-right max-w-[200px]">{item.value}</span>
+                          <span className="text-[10px] text-charcoal/40 font-black uppercase tracking-widest">{item.label}</span>
                         </div>
-                      ))}
-                    </div>
+                        <span className="text-[11px] font-black text-onyx uppercase truncate max-w-[200px]">{item.value}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
 
-              {/* Admin Actions Footer */}
-              <div className="p-10 bg-muted/30 border-t border-border shadow-2xl">
+              {/* Action Footer */}
+              <div className="p-10 bg-background border-t border-black/5">
                 <div className="grid grid-cols-2 gap-4">
                   <Button 
                     variant="outline"
-                    className="h-16 rounded-[2rem] border-border bg-background text-foreground font-bold uppercase tracking-[0.2em] text-[10px] gap-3 hover:bg-muted"
-                    onClick={() => toast.info("Security scan protocol initialized...")}
+                    className="h-20 rounded-[32px] border-none bg-white text-onyx font-black uppercase tracking-[0.2em] text-[11px] gap-3 shadow-sm hover:bg-white/80 transition-all"
+                    onClick={() => handleUpdateUser(selectedUser.id, { status: selectedUser.status === 'Suspended' ? 'Active' : 'Suspended' })}
                   >
-                    <Zap size={20} fill="currentColor" /> SECURITY RESET
+                    {updatingId === selectedUser.id ? <Loader2 className="animate-spin" /> : <UserMinus size={20} strokeWidth={3} />} 
+                    {selectedUser.status === 'Suspended' ? 'Unsuspend' : 'Suspend'}
                   </Button>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button 
-                        disabled={updatingId !== null}
-                        className="h-16 rounded-[2rem] bg-accent hover:bg-accent/90 text-primary font-bold uppercase tracking-[0.2em] text-[10px] gap-3 shadow-2xl shadow-accent/20 border-none"
-                      >
-                        {updatingId === selectedUser.id ? <Loader2 className="animate-spin" size={20} /> : <ShieldCheck size={20} />}
-                        MANAGE ACCESS
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-64 rounded-[2rem] p-3 border-border shadow-2xl bg-popover text-popover-foreground">
-                      <DropdownMenuItem onClick={() => handleUpdateUser(selectedUser.id, { status: 'Active' })} className="rounded-xl py-4 px-4 text-[10px] font-bold tracking-widest uppercase hover:bg-muted">
-                        <CheckCircle2 size={16} className="mr-3 text-accent" /> MARK AS ACTIVE
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleUpdateUser(selectedUser.id, { status: 'Suspended' })} className="rounded-xl py-4 px-4 text-[10px] font-bold tracking-widest uppercase hover:bg-muted">
-                        <UserMinus size={16} className="mr-3 text-muted-foreground" /> SUSPEND ACCESS
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator className="bg-border" />
-                      <DropdownMenuItem onClick={() => handleUpdateUser(selectedUser.id, { status: 'Banned' })} className="rounded-xl py-4 px-4 text-[10px] font-bold tracking-widest uppercase text-destructive focus:text-destructive focus:bg-destructive/10">
-                        <XCircle size={16} className="mr-3" /> BAN FROM ARENA
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <Button 
+                    className="h-20 rounded-[32px] bg-onyx text-white font-black uppercase tracking-[0.2em] text-[11px] gap-3 shadow-2xl shadow-onyx/20 border-none"
+                    onClick={() => handleUpdateUser(selectedUser.id, { status: 'Banned' })}
+                  >
+                    <Ban size={20} strokeWidth={3} className="text-pastel-coral" /> BAN WARRIOR
+                  </Button>
                 </div>
               </div>
             </div>

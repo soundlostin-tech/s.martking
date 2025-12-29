@@ -17,7 +17,7 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="bottom-nav-floating max-w-lg mx-auto left-4 right-4 sm:left-6 sm:right-6">
+    <nav className="fixed bottom-8 left-6 right-6 z-50 bg-onyx text-white rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] px-4 py-3 max-w-lg mx-auto">
       <div className="flex justify-around items-center h-14">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
@@ -33,34 +33,34 @@ export function BottomNav() {
               <motion.div
                 initial={false}
                 animate={{ 
-                  scale: isActive ? 1.1 : 1,
-                  y: isActive ? -4 : 0 
+                  scale: isActive ? 1.05 : 1,
+                  y: isActive ? -2 : 0 
                 }}
-                transition={{ type: "spring", stiffness: 400, damping: 25 }}
                 className="relative flex flex-col items-center"
               >
                 <div className={`p-2.5 rounded-2xl transition-all duration-300 ${
                   isActive 
-                    ? "bg-lime-vibrant text-onyx" 
-                    : "text-white/50 hover:text-white"
+                    ? "bg-lime-yellow text-onyx shadow-[0_4px_16px_rgba(215,253,3,0.3)]" 
+                    : "text-white/40 hover:text-white"
                 }`}>
-                  <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+                  <Icon size={20} strokeWidth={isActive ? 3 : 2} />
                   {isLive && !isActive && (
-                    <span className="absolute top-2 right-2 w-2 h-2 bg-lime-vibrant rounded-full border border-onyx" />
+                    <span className="absolute top-2 right-2 w-2 h-2 bg-lime-yellow rounded-full border border-onyx" />
                   )}
                 </div>
                 {isActive && (
-                  <motion.div 
-                    layoutId="nav-dot"
-                    className="absolute -bottom-2 w-1 h-1 bg-lime-vibrant rounded-full"
-                  />
+                  <motion.span 
+                    layoutId="nav-label"
+                    className="text-[9px] font-black uppercase tracking-widest mt-1 text-lime-yellow"
+                  >
+                    {item.label}
+                  </motion.span>
                 )}
               </motion.div>
             </Link>
           );
         })}
       </div>
-      <div className="h-[env(safe-area-inset-bottom,0px)]" />
     </nav>
   );
 }

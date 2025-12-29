@@ -7,7 +7,7 @@ interface BentoCardProps {
   children: React.ReactNode;
   className?: string;
   variant?: "default" | "hero" | "pastel" | "dark" | "vibrant";
-  pastelColor?: "yellow" | "mint" | "coral" | "lavender" | "peach";
+  pastelColor?: "yellow" | "mint" | "coral" | "lavender" | "peach" | "sky";
   onClick?: () => void;
 }
 
@@ -24,6 +24,7 @@ export function BentoCard({
     coral: "bento-coral",
     lavender: "bento-lavender",
     peach: "bento-peach",
+    sky: "bento-sky",
   };
 
   const baseClasses = "bento-card";
@@ -31,7 +32,7 @@ export function BentoCard({
   const variantClasses = {
     default: "",
     dark: "bento-dark",
-    vibrant: "bg-lime-vibrant text-onyx border-none shadow-[0_8px_32px_rgba(168,242,154,0.3)]",
+    vibrant: "bg-lime-yellow text-onyx border-none shadow-[0_8px_32px_rgba(215,253,3,0.2)]",
     hero: `bento-hero ${pastelVariants[pastelColor]}`,
     pastel: pastelVariants[pastelColor],
   };

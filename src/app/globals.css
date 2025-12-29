@@ -14,10 +14,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: 'Citynight', var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-outfit);
-  --font-serif: var(--font-playfair);
+  --font-heading: 'Citynight', var(--font-outfit);
   --font-outfit: var(--font-outfit);
 
   --color-sidebar-ring: var(--sidebar-ring);
@@ -56,70 +55,72 @@
 
     /* ============================================
        SMARTKING'S ARENA - VIBRANT BENTO PALETTE
-       Reference: Pastel Vibrant Aesthetic
        ============================================ */
-    --color-onyx: #000000;
-    --color-carbon-black: #111111;
+    --color-onyx: #11130D;
+    --color-carbon-black: #1D1E13;
     --color-charcoal-brown: #30312A;
     --color-charcoal: #4A4B48;
     --color-silver: #C8C8C4;
-    --color-off-white: #F3F0F8;
-    --color-lemon-lime: #A8F29A;
-    --color-lime-vibrant: #A8F29A;
-    --color-olive: #000000;
+    --color-alabaster-grey: #D4D7DE;
+    --color-off-white: #D4D7DE;
+    --color-olive: #868935;
+    --color-lemon-lime: #C7E323;
+    --color-lime-yellow: #D7FD03;
+    --color-lime-vibrant: #D7FD03;
     
-    /* Pastel Accent Colors from Reference */
+    /* Pastel Accent Colors for sticker blocks */
     --color-pastel-yellow: #FFF5CC;
-    --color-pastel-mint: #D7F5D1;
-    --color-pastel-coral: #FFD7BE;
-    --color-pastel-lavender: #E6E1FF;
-    --color-pastel-peach: #FFD7BE;
+    --color-pastel-mint: #A8E6CF;
+    --color-pastel-coral: #FFB5B5;
+    --color-pastel-lavender: #D4B5FF;
+    --color-pastel-peach: #FFDAB9;
+    --color-pastel-sky: #B5D4FF;
   }
   
   :root {
     --radius: 28px;
     
     /* Backgrounds - Clean Light Base from Image */
-    --background: #F3F0F8;
-    --foreground: #000000;
+    --background: #D4D7DE;
+    --foreground: #11130D;
     
     /* Surfaces */
     --card: #ffffff;
-    --card-foreground: #000000;
+    --card-foreground: #11130D;
     
     --popover: #ffffff;
-    --popover-foreground: #000000;
+    --popover-foreground: #11130D;
     
     /* Actions */
-    --primary: #000000;
+    --primary: #11130D;
     --primary-foreground: #ffffff;
     
     --secondary: #ffffff;
-    --secondary-foreground: #000000;
+    --secondary-foreground: #11130D;
     
-    --muted: #F3F0F8;
+    --muted: #D4D7DE;
     --muted-foreground: #4A4B48;
     
-    --accent: #A8F29A;
-    --accent-foreground: #000000;
+    --accent: #D7FD03;
+    --accent-foreground: #11130D;
     
-    --destructive: #FFD7BE;
-    --destructive-foreground: #000000;
+    --destructive: #FFB5B5;
+    --destructive-foreground: #11130D;
     
     /* Borders */
     --border: #E5E5E5;
     --input: #ffffff;
-    --ring: #000000;
+    --ring: #11130D;
 
   /* Sidebar */
   --sidebar: #ffffff;
-  --sidebar-foreground: #000000;
-  --sidebar-primary: #000000;
+  --sidebar-foreground: #11130D;
+  --sidebar-primary: #11130D;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #F3F0F8;
-  --sidebar-accent-foreground: #000000;
+  --sidebar-accent: #D4D7DE;
+  --sidebar-accent-foreground: #11130D;
   --sidebar-border: #E5E5E5;
-  --sidebar-ring: #000000;
+  --sidebar-ring: #11130D;
 }
 
 @layer base {
@@ -128,7 +129,7 @@
     -webkit-tap-highlight-color: transparent;
   }
   html, body {
-    @apply bg-background text-onyx font-sans antialiased selection:bg-lemon-lime/30 selection:text-onyx overflow-x-hidden;
+    @apply bg-background text-onyx font-sans antialiased selection:bg-lime-yellow/30 selection:text-onyx overflow-x-hidden;
     background-attachment: fixed;
     touch-action: manipulation;
     overscroll-behavior-y: none;
@@ -142,7 +143,7 @@
 
 /* Bento Card Component */
 .bento-card {
-  @apply bg-white rounded-[32px] p-5 shadow-[0_4px_24px_rgba(0,0,0,0.04)] border border-black/[0.03];
+  @apply bg-white rounded-[32px] p-5 shadow-[0_8px_32px_rgba(0,0,0,0.04)] border border-black/[0.03];
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -175,6 +176,10 @@
   @apply bg-pastel-yellow text-onyx border-none;
 }
 
+.bento-sky {
+  @apply bg-pastel-sky text-onyx border-none;
+}
+
 /* Hero Bento Card */
 .bento-hero {
   @apply rounded-[32px] p-6 shadow-[0_12px_48px_rgba(0,0,0,0.08)];
@@ -190,11 +195,12 @@
   @apply absolute -top-1/2 -right-1/4 w-[80%] h-[200%] rounded-full blur-[100px] opacity-30 pointer-events-none;
 }
 
-.blob-header-yellow::before { background: #FDFB97; }
-.blob-header-mint::before { background: #CCF8B0; }
-.blob-header-coral::before { background: #FF8E7E; }
-.blob-header-lavender::before { background: #E2D9FF; }
-.blob-header-peach::before { background: #FFD7CC; }
+.blob-header-yellow::before { background: #FFF5CC; }
+.blob-header-mint::before { background: #A8E6CF; }
+.blob-header-coral::before { background: #FFB5B5; }
+.blob-header-lavender::before { background: #D4B5FF; }
+.blob-header-peach::before { background: #FFDAB9; }
+.blob-header-sky::before { background: #B5D4FF; }
 
 /* Chip Styles */
 .chip {
@@ -211,11 +217,11 @@
 
 /* Badge Styles */
 .badge-live {
-  @apply bg-lime-vibrant text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
+  @apply bg-lime-yellow text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
 }
 
 .badge-pending {
-  @apply bg-pastel-yellow text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
+  @apply bg-pastel-peach text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
 }
 
 .badge-completed {
@@ -233,14 +239,42 @@
 
 /* Premium Gradients */
 .premium-gradient {
-  background: linear-gradient(135deg, #D6FF3D 0%, #C7E323 100%);
+  background: linear-gradient(135deg, #D7FD03 0%, #C7E323 100%);
 }
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* Vintage TV Components */
+.vintage-tv-screen {
+  background: #111;
+  position: relative;
+  overflow: hidden;
+}
+
+.tv-static {
+  background: repeating-radial-gradient(#000 0 0.0001%, #fff 0 0.0002%) 50% 50% / 2500px 2500px;
+  animation: static-shift 0.2s infinite;
+}
+
+@keyframes static-shift {
+  100% { background-position: 50% 0; }
+}
+
+.scanlines {
+  background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.1) 50%);
+  background-size: 100% 4px;
+}
+
+.vintage-tv-knob {
+  @apply w-10 h-10 rounded-full bg-gradient-to-b from-silver to-charcoal shadow-lg border-2 border-white/20 cursor-pointer transition-transform;
+}
+
+.led-on {
+  @apply w-2 h-2 rounded-full bg-lime-yellow shadow-[0_0_10px_rgba(215,253,3,0.8)];
+}
+
+.led-off {
+  @apply w-2 h-2 rounded-full bg-onyx;
 }
