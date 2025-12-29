@@ -182,9 +182,43 @@
 .bento-pastel-peach { @apply bg-[#FEEBC8] text-[#7B341E] border-orange-200; }
 .bento-pastel-yellow { @apply bg-[#FEFCBF] text-[#744210] border-yellow-200; }
 
-/* ============================================
-   STICKER HEADER - Refined (No Washout)
-   ============================================ */
+  /* ============================================
+     ANIMATED GRADIENT BACKGROUND - HIGH PERFORMANCE
+     ============================================ */
+  @keyframes gradientFlow {
+    0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    33% { transform: translate3d(10%, -10%, 0) scale(1.2) rotate(10deg); }
+    66% { transform: translate3d(-10%, 15%, 0) scale(0.9) rotate(-10deg); }
+    100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  }
+
+  @keyframes gradientFlowReverse {
+    0% { transform: translate3d(0, 0, 0) scale(1.1) rotate(0deg); }
+    33% { transform: translate3d(-15%, 10%, 0) scale(0.8) rotate(-15deg); }
+    66% { transform: translate3d(10%, -5%, 0) scale(1.3) rotate(15deg); }
+    100% { transform: translate3d(0, 0, 0) scale(1.1) rotate(0deg); }
+  }
+
+  @keyframes blobPulse {
+    0%, 100% { opacity: 0.5; filter: blur(100px); }
+    50% { opacity: 0.8; filter: blur(140px); }
+  }
+
+  .bg-gradient-flow-1 {
+    animation: gradientFlow 25s ease-in-out infinite, blobPulse 15s ease-in-out infinite;
+    will-change: transform, opacity, filter;
+  }
+
+  .bg-gradient-flow-2 {
+    animation: gradientFlowReverse 30s ease-in-out infinite, blobPulse 18s ease-in-out infinite;
+    will-change: transform, opacity, filter;
+  }
+
+  .bg-gradient-flow-3 {
+    animation: gradientFlow 35s ease-in-out infinite alternate, blobPulse 22s ease-in-out infinite;
+    will-change: transform, opacity, filter;
+  }
+
 .sticker-header {
   @apply relative pt-10 pb-12 px-6 overflow-hidden bg-transparent border-b border-slate-100;
 }
