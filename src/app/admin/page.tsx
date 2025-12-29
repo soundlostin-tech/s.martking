@@ -29,6 +29,7 @@ import { motion } from "framer-motion";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { AdminNav } from "@/components/layout/AdminNav";
+import { cn } from "@/lib/utils";
 
 const revenueData = [
   { name: 'Mon', value: 4000 },
