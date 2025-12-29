@@ -777,6 +777,82 @@
 }
 
 /* ============================================
+   PREMIUM LOADING ANIMATIONS
+   ============================================ */
+@keyframes ringPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(95, 211, 188, 0.6));
+  }
+}
+
+@keyframes orbit {
+  from {
+    transform: rotate(0deg) translateX(45px) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(45px) rotate(-360deg);
+  }
+}
+
+@keyframes bounceDot {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+.loading-ring {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid #5FD3BC;
+  animation: ringPulse 1.5s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.loading-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #5FD3BC;
+  will-change: transform;
+}
+
+.loading-particle:nth-child(2) {
+  background: #FCD34D;
+  animation-delay: -0.625s;
+}
+
+.loading-particle:nth-child(3) {
+  background: #5FD3BC;
+  animation-delay: -1.25s;
+}
+
+.loading-particle:nth-child(4) {
+  background: #FCD34D;
+  animation-delay: -1.875s;
+}
+
+.orbiting {
+  animation: orbit 2.5s linear infinite;
+}
+
+.bounce-dot {
+  animation: bounceDot 1.2s ease-in-out infinite;
+}
+
+/* ============================================
    RESPONSIVE BREAKPOINTS
    ============================================ */
 @media (max-width: 320px) {

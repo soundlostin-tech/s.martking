@@ -4,6 +4,7 @@ import { BottomNav } from "@/components/layout/BottomNav";
 import { VintageTV } from "@/components/ui/VintageTV";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import { motion } from "framer-motion";
 import { 
   Clock, 
@@ -83,14 +84,9 @@ function LiveContent() {
     };
   }, [fetchLiveMatches]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center">
-        <Loader2 className="w-10 h-10 animate-spin text-[#5FD3BC] mb-4" />
-        <p className="text-[12px] font-bold text-[#1A1A1A] uppercase tracking-wide">Tuning in...</p>
-      </div>
-    );
-  }
+    if (loading) {
+      return <LoadingScreen />;
+    }
 
   return (
     <main className="pb-[80px]">
@@ -252,11 +248,7 @@ export default function Live() {
   return (
     <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
       <div className="unified-bg" />
-      <Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center">
-          <Loader2 className="w-10 h-10 animate-spin text-[#5FD3BC]" />
-        </div>
-      }>
+      <Suspense fallback={<LoadingScreen />}>
         <LiveContent />
       </Suspense>
       <BottomNav />

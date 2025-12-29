@@ -15,6 +15,7 @@ import { StoryUpload } from "@/components/StoryUpload";
 import { TopHeader } from "@/components/layout/TopHeader";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import { LoadingScreen } from "@/components/ui/LoadingScreen";
 
 export default function Home() {
   const { user, loading: authLoading } = useAuth(false);
@@ -84,6 +85,10 @@ export default function Home() {
   };
 
   const featured = featuredMatches[0];
+
+  if (loading || authLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
