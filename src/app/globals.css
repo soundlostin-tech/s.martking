@@ -431,7 +431,7 @@
 @keyframes badgeFadeIn {
   0% {
     opacity: 0;
-    transform: translate(-50%, -60%) scale(0.8);
+    transform: translate(-50%, -60%) scale(0.7);
   }
   100% {
     opacity: 1;
@@ -446,7 +446,7 @@
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -60%) scale(0.8);
+    transform: translate(-50%, -60%) scale(0.7);
   }
 }
 
@@ -463,9 +463,11 @@
 
 /* Badge Styles */
 .nav-badge {
-  will-change: opacity, transform;
+  will-change: transform, opacity;
   transform: translateZ(0);
   pointer-events: none;
+  background-color: #5FD3BC;
+  opacity: 0;
 }
 
 .nav-badge-active {
