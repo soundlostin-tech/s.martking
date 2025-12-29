@@ -15,6 +15,7 @@ import {
   Banknote,
   ChevronRight
 } from "lucide-react";
+import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
@@ -53,6 +54,7 @@ export default function WalletPage() {
         const { data: newWallet, error: createError } = await supabase
           .from("wallets")
           .insert({
+            id: user.id,
             user_id: user.id,
             balance: 0,
             lifetime_earnings: 0,
@@ -78,7 +80,7 @@ export default function WalletPage() {
       if (txError) throw txError;
       setTransactions(txData || []);
     } catch (error: any) {
-      console.error("Error fetching wallet data:", error.message || error);
+      console.error("Error fetching wallet data:", error);
     } finally {
       setLoading(false);
     }
