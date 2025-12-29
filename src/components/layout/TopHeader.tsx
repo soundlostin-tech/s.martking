@@ -27,9 +27,6 @@ export function TopHeader() {
           <Bell size={18} strokeWidth={2.5} />
 
         </motion.button>
-        <div className="w-10 h-10 rounded-full bg-silver overflow-hidden border-2 border-white shadow-sm">
-          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Profile" className="w-full h-full object-cover" />
-        </div>
       </div>
     </header>
   );
