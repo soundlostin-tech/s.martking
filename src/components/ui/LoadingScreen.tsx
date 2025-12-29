@@ -4,12 +4,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const MESSAGES = [
-  "ENTERING ARENA...",
-  "LOADING TOURNAMENT...",
-  "SCANNING MATCHES...",
-  "READYING WARRIORS...",
-  "CALCULATING ODDS...",
-  "SYNCING BATTLE DATA..."
+  "FIGHTING",
+  "WINNING",
+  "COMPETING",
+  "LOADING"
 ];
 
 export function LoadingScreen() {
@@ -18,7 +16,7 @@ export function LoadingScreen() {
   useEffect(() => {
     const interval = setInterval(() => {
       setMessageIndex((prev) => (prev + 1) % MESSAGES.length);
-    }, 2000);
+    }, 2500); // Change text every 2.5 seconds
     return () => clearInterval(interval);
   }, []);
 
@@ -26,36 +24,51 @@ export function LoadingScreen() {
     <div className="fixed inset-0 z-[100] bg-[#F5F5F5] flex flex-col items-center justify-center">
       <div className="unified-bg" />
       
-      <div className="relative flex items-center justify-center">
-        {/* Central Ring */}
-        <div className="loading-ring" />
-        
-        {/* Orbiting Particles */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="loading-particle orbiting" />
-          <div className="loading-particle orbiting" />
-          <div className="loading-particle orbiting" />
-          <div className="loading-particle orbiting" />
+      <div className="relative flex items-center justify-center scale-90 sm:scale-100">
+        {/* Swirling Emerald Vortex */}
+        <div className="vortex-container">
+          <div className="vortex-ring vortex-ring-outer" />
+          <div className="vortex-ring vortex-ring-middle" />
+          <div className="vortex-ring vortex-ring-inner" />
+          
+          {/* Vortex Particles */}
+          {[...Array(12)].map((_, i) => (
+            <div 
+              key={i}
+              className="vortex-particle"
+              style={{ 
+                "--rotation": `${i * 30}deg`,
+                animationDelay: `${i * 0.15}s`
+              } as React.CSSProperties}
+            />
+          ))}
         </div>
       </div>
 
-      <div className="mt-12 flex flex-col items-center gap-4">
+      <div className="mt-16 flex flex-col items-center gap-6">
         <AnimatePresence mode="wait">
-          <motion.p
+          <motion.div
             key={messageIndex}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="text-[12px] font-bold text-[#1A1A1A] tracking-[0.2em] uppercase text-center"
+            initial={{ opacity: 0, scale: 0.9, filter: "blur(4px)" }}
+            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            exit={{ opacity: 0, scale: 1.1, filter: "blur(4px)" }}
+            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+            className="flex flex-col items-center"
           >
-            {MESSAGES[messageIndex]}
-          </motion.p>
+            <p className="text-[14px] font-heading font-bold text-[#1A1A1A] tracking-[0.3em] uppercase text-center">
+              {MESSAGES[messageIndex]}
+            </p>
+          </motion.div>
         </AnimatePresence>
 
-        <div className="flex gap-1.5">
-          <div className="w-1.5 h-1.5 rounded-full bg-[#5FD3BC] bounce-dot" style={{ animationDelay: "0s" }} />
-          <div className="w-1.5 h-1.5 rounded-full bg-[#5FD3BC] bounce-dot" style={{ animationDelay: "0.2s" }} />
-          <div className="w-1.5 h-1.5 rounded-full bg-[#5FD3BC] bounce-dot" style={{ animationDelay: "0.4s" }} />
+        <div className="flex gap-2">
+          {[0, 0.2, 0.4].map((delay) => (
+            <div 
+              key={delay}
+              className="w-2 h-2 rounded-full bg-[#5FD3BC] bounce-dot" 
+              style={{ animationDelay: `${delay}s` }} 
+            />
+          ))}
         </div>
       </div>
     </div>

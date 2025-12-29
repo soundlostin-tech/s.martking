@@ -9,7 +9,6 @@ import {
   Bell, 
   LogOut, 
   Trophy, 
-  Loader2, 
   Edit2, 
   Save, 
   X, 
@@ -22,6 +21,7 @@ import {
   HelpCircle,
   FileText
 } from "lucide-react";
+import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import { useAuth } from "@/hooks/useAuth";
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
@@ -105,11 +105,7 @@ export default function Profile() {
   };
 
   if (authLoading || loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F5F5F5]">
-        <Loader2 className="w-10 h-10 animate-spin text-[#5FD3BC]" />
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   return (

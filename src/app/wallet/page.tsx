@@ -3,10 +3,10 @@
 import { BottomNav } from "@/components/layout/BottomNav";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import { 
   ArrowDownLeft, 
   Plus, 
-  Loader2, 
   Wallet as WalletIcon, 
   TrendingUp,
   Clock,
@@ -299,13 +299,10 @@ export default function WalletPage() {
               ))}
             </div>
 
-            <div className="space-y-3">
-              {loading ? (
-                <div className="flex flex-col items-center justify-center py-16 gap-4">
-                  <Loader2 className="w-10 h-10 animate-spin text-[#5FD3BC]" />
-                  <p className="text-[12px] font-bold text-[#1A1A1A] uppercase tracking-wide">Loading Records...</p>
-                </div>
-              ) : filteredTransactions.length > 0 ? (
+              <div className="space-y-3">
+                {loading ? (
+                  <LoadingScreen />
+                ) : filteredTransactions.length > 0 ? (
                 filteredTransactions.map((tx, i) => (
                   <motion.div 
                     key={tx.id}

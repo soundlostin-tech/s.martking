@@ -4,8 +4,9 @@ import { BottomNav } from "@/components/layout/BottomNav";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { useState, useEffect, useCallback } from "react";
+import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import { 
-  Search, Loader2, Trophy, Calendar, Users, 
+  Search, Trophy, Calendar, Users, 
   ChevronRight, AlertCircle, Swords, Zap, 
   Map as MapIcon, ShieldCheck, Target
 } from "lucide-react";
@@ -196,13 +197,10 @@ export default function MatchesPage() {
           </section>
         )}
 
-        <section className="px-4 pt-6 space-y-3">
-          {loading ? (
-            <div className="flex flex-col items-center justify-center py-16 gap-4">
-              <Loader2 className="w-10 h-10 animate-spin text-[#5FD3BC]" />
-              <p className="text-[12px] font-bold text-[#1A1A1A] uppercase tracking-wide">Scanning Arena...</p>
-            </div>
-          ) : filteredMatches.length > 0 ? (
+          <section className="px-4 pt-6 space-y-3">
+            {loading ? (
+              <LoadingScreen />
+            ) : filteredMatches.length > 0 ? (
             filteredMatches.map((match) => (
               <BentoCard 
                 key={match.id} 
