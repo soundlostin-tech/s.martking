@@ -71,7 +71,7 @@ export default function LeaderboardPage() {
 
   return (
     <div className="min-h-screen bg-background text-onyx">
-      <main className="pb-32 relative z-10">
+      <main className="pb-[80px] relative z-10">
 
         {/* Header Section */}
         <section className="relative px-6 pt-10 pb-6">

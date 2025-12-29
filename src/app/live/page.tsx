@@ -93,7 +93,7 @@ function LiveContent() {
   }
 
   return (
-    <main className="pb-32">
+    <main className="pb-[80px]">
       <section className="px-4 pt-6 pb-6">
         <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mb-2">
           Broadcasting Now

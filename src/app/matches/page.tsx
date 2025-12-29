@@ -113,7 +113,7 @@ export default function MatchesPage() {
     <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
       <div className="unified-bg" />
       
-      <main className="pb-32 relative z-10">
+      <main className="pb-[80px] relative z-10">
         <section className="px-4 pt-6 pb-4">
           <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mb-2">
             Tournament Hub

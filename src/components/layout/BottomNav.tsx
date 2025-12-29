@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 const navItems = [
   { label: "Home", icon: Home, href: "/" },
-  { label: "LIVE", icon: Play, href: "/live" },
+  { label: "Live", icon: Play, href: "/live" },
   { label: "Matches", icon: Swords, href: "/matches" },
   { label: "Wallet", icon: Wallet, href: "/wallet" },
   { label: "Profile", icon: User, href: "/profile" },
@@ -17,48 +17,49 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-4 left-4 right-4 z-50 bg-[#1A1A1A] text-white rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] px-4 py-3 max-w-lg mx-auto safe-bottom" style={{ paddingBottom: 'calc(12px + env(safe-area-inset-bottom, 12px))' }}>
-      <div className="flex justify-around items-center h-14">
+    <nav 
+      className="fixed bottom-0 left-0 right-0 z-[1000] bg-[#1A1A1A] border-t border-white/5 rounded-t-[20px] shadow-[0_-4px_16px_rgba(0,0,0,0.2)] safe-bottom"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+    >
+      <div className="flex justify-around items-center h-16 px-2">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
-          const isLive = item.label === "LIVE";
           
           return (
             <Link
               key={item.label}
               href={item.href}
-              className="relative flex flex-col items-center justify-center flex-1 h-full touch-target"
+              className="relative flex flex-col items-center justify-center flex-1 h-full min-h-[48px] group touch-target"
               aria-label={item.label}
               aria-current={isActive ? "page" : undefined}
             >
-              <motion.div
-                initial={false}
-                animate={{ 
-                  scale: isActive ? 1.05 : 1,
-                  y: isActive ? -2 : 0 
-                }}
-                className="relative flex flex-col items-center"
-              >
-                <div className={`p-2.5 rounded-2xl transition-all duration-300 ${
-                  isActive 
-                    ? "bg-[#5FD3BC] text-[#1A1A1A] shadow-[0_4px_16px_rgba(95,211,188,0.3)]" 
-                    : "text-[#9CA3AF] hover:text-white"
-                }`}>
-                  <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
-                  {isLive && !isActive && (
-                    <span className="absolute top-2 right-2 w-2 h-2 bg-[#5FD3BC] rounded-full border border-[#1A1A1A]" />
-                  )}
-                </div>
+              <div className="relative flex flex-col items-center justify-center gap-1">
+                {/* Active Indicator Badge */}
                 {isActive && (
-                  <motion.span 
-                    layoutId="nav-label"
-                    className="text-[9px] font-bold uppercase tracking-widest mt-1 text-[#5FD3BC]"
-                  >
-                    {item.label}
-                  </motion.span>
+                  <motion.div
+                    layoutId="nav-badge"
+                    className="absolute inset-0 -m-2 bg-[#5FD3BC]/10 rounded-full"
+                    style={{ width: 40, height: 40, left: '50%', top: '40%', transform: 'translate(-50%, -50%)' }}
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
                 )}
-              </motion.div>
+                
+                <Icon 
+                  size={24} 
+                  className={`relative z-10 transition-colors duration-300 ${
+                    isActive ? "text-[#5FD3BC]" : "text-[#6B7280] group-hover:text-white"
+                  }`}
+                  strokeWidth={isActive ? 2.5 : 2}
+                />
+                
+                <span className={`text-[10px] font-bold uppercase tracking-wide transition-colors duration-300 ${
+                  isActive ? "text-[#5FD3BC]" : "text-[#6B7280] group-hover:text-white"
+                }`}>
+                  {item.label}
+                </span>
+              </div>
             </Link>
           );
         })}

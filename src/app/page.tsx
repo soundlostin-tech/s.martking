@@ -89,7 +89,7 @@ export default function Home() {
     <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
       <div className="unified-bg" />
       
-      <main className="pb-32 relative z-10">
+      <main className="pb-[80px] relative z-10">
         <TopHeader />
         
         <section className="px-4 pt-6 pb-4">
