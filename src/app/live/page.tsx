@@ -86,7 +86,7 @@ function LiveContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-background">
+      <div className="min-h-screen flex flex-col items-center justify-center">
         <Loader2 className="w-12 h-12 animate-spin text-onyx/20 mb-4" />
         <p className="text-[10px] font-bold text-charcoal/40 uppercase tracking-[0.3em]">Tuning in...</p>
       </div>
@@ -94,23 +94,21 @@ function LiveContent() {
   }
 
   return (
-    <main className="pb-32 relative z-10">
+    <main className="pb-32">
       <TopHeader />
 
       {/* Header Section */}
-      <section className="relative px-6 pt-10 pb-12 blob-header blob-header-coral">
-        <div className="relative z-10">
-          <p className="text-[10px] font-bold text-charcoal/50 uppercase tracking-[0.2em] mb-2">
-            Broadcasting Now
-          </p>
-          <h2 className="text-[44px] font-heading text-onyx leading-tight font-black">
-            LIVE <br />
-            <span className="text-charcoal-brown/40">Watch Today's Action</span>
-          </h2>
-        </div>
+      <section className="px-6 pt-6 pb-8">
+        <p className="text-[10px] font-bold text-charcoal/50 uppercase tracking-[0.2em] mb-2">
+          Broadcasting Now
+        </p>
+        <h2 className="text-[44px] font-heading text-onyx leading-tight font-black">
+          LIVE <br />
+          <span className="text-charcoal-brown/40">Watch Today's Action</span>
+        </h2>
       </section>
 
-      <div className="px-6 space-y-8 -mt-6">
+      <div className="px-6 space-y-8">
         {/* Vintage TV Component */}
         <VintageTV 
           streamUrl={activeMatch?.stream_url}
@@ -259,9 +257,9 @@ function LiveContent() {
 
 export default function Live() {
   return (
-    <div className="min-h-screen bg-background text-onyx">
+    <div className="min-h-screen bg-transparent text-onyx relative z-10">
       <Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="min-h-screen flex items-center justify-center">
           <Loader2 className="w-10 h-10 animate-spin text-onyx/20" />
         </div>
       }>

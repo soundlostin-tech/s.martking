@@ -185,24 +185,22 @@ export default function WalletPage() {
   if (authLoading) return null;
 
   return (
-    <div className="min-h-screen bg-background text-onyx">
-      <main className="pb-32 relative z-10">
+    <div className="min-h-screen bg-transparent text-onyx relative z-10">
+      <main className="pb-32">
         <TopHeader />
 
         {/* Header Section */}
-        <section className="relative px-6 pt-10 pb-12 blob-header blob-header-sky">
-          <div className="relative z-10">
-            <p className="text-[10px] font-bold text-charcoal/50 uppercase tracking-[0.2em] mb-2">
-              Financial Hub
-            </p>
-            <h2 className="text-[44px] font-heading text-onyx leading-tight font-black">
-              WALLET <br />
-              <span className="text-charcoal-brown/40">Manage Winnings</span>
-            </h2>
-          </div>
+        <section className="px-6 pt-6 pb-4">
+          <p className="text-[10px] font-bold text-charcoal/50 uppercase tracking-[0.2em] mb-2">
+            Financial Hub
+          </p>
+          <h2 className="text-[44px] font-heading text-onyx leading-tight font-black">
+            WALLET <br />
+            <span className="text-charcoal-brown/40">Manage Winnings</span>
+          </h2>
         </section>
 
-        <div className="px-6 space-y-6 -mt-6">
+        <div className="px-6 space-y-6">
           {/* Balance Hero Card */}
           <BentoCard variant="vibrant" className="p-8 relative overflow-hidden">
             <div className="relative z-10">

@@ -65,10 +65,10 @@ export default function Signin() {
     }
   };
 
-  return (
-    <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
-      {/* Left Side - Brand Identity */}
-      <div className="hidden lg:flex flex-col justify-between p-16 bg-gradient-to-br from-[#00A3FF] to-[#44BCFF] relative overflow-hidden">
+    return (
+      <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2 relative z-10">
+        {/* Left Side - Brand Identity */}
+        <div className="hidden lg:flex flex-col justify-between p-16 bg-gradient-to-br from-[#00A3FF] to-[#44BCFF] relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#11130D 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }} />
         
         <div className="relative z-10">
@@ -105,8 +105,8 @@ export default function Signin() {
         </div>
       </div>
 
-      {/* Right Side - Form */}
-      <div className="bg-[#D4D7DE] flex flex-col justify-center px-8 lg:px-24 py-12 relative blob-header blob-header-coral">
+        {/* Right Side - Form */}
+        <div className="bg-transparent flex flex-col justify-center px-8 lg:px-24 py-12 relative">
         <nav className="absolute top-8 left-8 lg:left-24">
           <Link href="/" className="text-[#11130D] flex items-center gap-2 text-[10px] font-bold uppercase tracking-wide hover:opacity-70 transition-opacity">
             <ChevronLeft size={16} strokeWidth={3} /> Back

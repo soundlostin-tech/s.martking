@@ -111,25 +111,23 @@ export default function MatchesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-onyx">
-      <main className="pb-32 relative z-10">
+    <div className="min-h-screen bg-transparent text-onyx relative z-10">
+      <main className="pb-32">
         <TopHeader />
 
         {/* Header Section */}
-        <section className="relative px-6 pt-10 pb-8 blob-header blob-header-mint">
-          <div className="relative z-10">
-            <p className="text-[10px] font-bold text-charcoal/50 uppercase tracking-[0.2em] mb-2">
-              Tournament Hub
-            </p>
-            <h2 className="text-[44px] font-heading text-onyx leading-tight font-black">
-              MATCHES <br />
-              <span className="text-charcoal-brown/40">Enter the Arena</span>
-            </h2>
-          </div>
+        <section className="px-6 pt-6 pb-4">
+          <p className="text-[10px] font-bold text-charcoal/50 uppercase tracking-[0.2em] mb-2">
+            Tournament Hub
+          </p>
+          <h2 className="text-[44px] font-heading text-onyx leading-tight font-black">
+            MATCHES <br />
+            <span className="text-charcoal-brown/40">Enter the Arena</span>
+          </h2>
         </section>
 
         {/* Search & Tabs Strip */}
-        <section className="px-6 space-y-6 -mt-4">
+        <section className="px-6 space-y-6 pt-2">
           <div className="flex gap-3">
             <div className="relative flex-1">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-charcoal/30" size={18} />

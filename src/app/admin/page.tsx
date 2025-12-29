@@ -103,17 +103,17 @@ export default function AdminOverview() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-12 h-12 animate-spin text-onyx/20" />
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen p-8 lg:p-12 space-y-12">
+    <main className="min-h-screen p-8 lg:p-12 space-y-12 relative z-10">
       {/* Header Section */}
-      <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 blob-header blob-header-yellow">
-        <div className="relative z-10">
+      <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+        <div>
           <p className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em] mb-2">Operations Hub</p>
           <h1 className="text-[44px] font-heading font-black leading-none tracking-tight text-onyx">
             Overview <br />
@@ -121,7 +121,7 @@ export default function AdminOverview() {
           </h1>
         </div>
         
-        <div className="relative z-10 flex bg-white p-1.5 rounded-[20px] shadow-sm border border-black/5 overflow-x-auto no-scrollbar">
+        <div className="flex bg-white p-1.5 rounded-[20px] shadow-sm border border-black/5 overflow-x-auto no-scrollbar">
           {["Today", "Week", "Month", "All"].map((range) => (
             <button
               key={range}

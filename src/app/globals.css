@@ -142,7 +142,7 @@
 
 /* Bento Card Component */
 .bento-card {
-  @apply bg-white rounded-[32px] p-5 shadow-[0_8px_32px_rgba(0,0,0,0.04)] border border-black/[0.03];
+  @apply bg-white rounded-[32px] p-5 shadow-[0_8px_32px_rgba(0,0,0,0.04)] border border-black/[0.03] box-border;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -184,22 +184,50 @@
   @apply rounded-[32px] p-6 shadow-[0_12px_48px_rgba(0,0,0,0.08)];
 }
 
-/* Pastel Blob Headers */
+/* Global Unified Background Animation */
+@keyframes gradient-flow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.unified-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 245, 204, 0.08) 0%,
+    rgba(168, 230, 207, 0.06) 25%,
+    rgba(181, 212, 255, 0.08) 50%,
+    rgba(212, 181, 255, 0.06) 75%,
+    rgba(255, 181, 181, 0.08) 100%
+  );
+  background-size: 400% 400%;
+  animation: gradient-flow 30s ease infinite;
+}
+
+/* Pastel Blob Headers - Simplified for seamless integration */
 .blob-header {
-  @apply relative overflow-hidden;
+  @apply relative;
 }
 
 .blob-header::before {
-  content: '';
-  @apply absolute -top-1/2 -right-1/4 w-[80%] h-[200%] rounded-full blur-[100px] opacity-30 pointer-events-none;
+  display: none;
 }
 
-.blob-header-yellow::before { background: #FFF5CC; }
-.blob-header-mint::before { background: #A8E6CF; }
-.blob-header-coral::before { background: #FFB5B5; }
-.blob-header-lavender::before { background: #D4B5FF; }
-.blob-header-peach::before { background: #FFDAB9; }
-.blob-header-sky::before { background: #B5D4FF; }
+.blob-header-yellow,
+.blob-header-mint,
+.blob-header-coral,
+.blob-header-lavender,
+.blob-header-peach,
+.blob-header-sky {
+  @apply relative;
+}
 
 /* Chip Styles */
 .chip {
