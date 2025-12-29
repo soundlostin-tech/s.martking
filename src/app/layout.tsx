@@ -33,6 +33,7 @@ const berkshire = Berkshire_Swash({
 export const metadata: Metadata = {
   title: "Smartking's Arena",
   description: "The ultimate competitive gaming arena",
+  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",

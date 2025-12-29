@@ -15,8 +15,10 @@ import { StoryUpload } from "@/components/StoryUpload";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import Link from "next/link";
+import { useHaptics } from "@/hooks/useHaptics";
 
 export default function Home() {
+  const { triggerHaptic } = useHaptics();
   const { user, loading: authLoading } = useAuth(false);
   const [profiles, setProfiles] = useState<any[]>([]);
   const [stories, setStories] = useState<any[]>([]);
@@ -224,6 +226,7 @@ return (
                 <Link href={`/matches/${featured?.id || ''}`}>
                   <motion.button 
                     whileTap={{ scale: 0.95 }}
+                    onClick={() => triggerHaptic('medium')}
                     className="px-6 py-3 bg-onyx text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl flex items-center gap-2"
                   >
                     Join <ChevronRight size={14} />

@@ -150,10 +150,29 @@
     overscroll-behavior-y: none;
     -webkit-user-select: none;
     user-select: none;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
   }
+  
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  *::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  * {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-black tracking-tight text-onyx;
   }
+}
+
+/* Ensure smooth scrolling on touch devices */
+.scroll-touch {
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Bento Card Component - Solid & Sharp */
