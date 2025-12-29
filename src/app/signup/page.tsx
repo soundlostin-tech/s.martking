@@ -121,24 +121,6 @@ export default function Signup() {
 
   return (
     <main className="min-h-screen relative z-10 flex flex-col">
-      {/* Navigation / Header */}
-      <header className="px-6 pt-8 pb-4 flex items-center justify-between">
-        <Link 
-          href="/" 
-          className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-black/[0.03] active:scale-95 transition-transform"
-          aria-label="Go back"
-        >
-          <ChevronLeft size={24} className="text-onyx" strokeWidth={2.5} />
-        </Link>
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-onyx rounded-lg flex items-center justify-center">
-            <Zap size={16} className="text-electric-blue" fill="currentColor" />
-          </div>
-          <span className="text-[10px] font-black text-onyx uppercase tracking-[0.2em]">Smartking</span>
-        </div>
-        <div className="w-12" />
-      </header>
-
       <div className="flex-1 flex flex-col px-6 py-8">
         <div className="max-w-md w-full mx-auto space-y-8">
           <section>
