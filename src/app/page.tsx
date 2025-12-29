@@ -148,7 +148,6 @@ return (
 
         {/* Activity Bento Grid - Reference Style */}
         <section className="px-6 mb-6 relative">
-          <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-pastel-mint/10 rounded-full blur-[100px] -z-10" />
           <div className="grid grid-cols-2 gap-4 relative z-10">
             {/* Progress Card - Like reference "Your Progress" */}
             <BentoCard variant="pastel" pastelColor="mint" className="p-5 h-[180px] flex flex-col justify-between relative overflow-hidden">
