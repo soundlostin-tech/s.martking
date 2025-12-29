@@ -427,55 +427,10 @@
    BOTTOM NAVIGATION - ANIMATION SYSTEM
    ============================================ */
 
-/* Badge Animation Keyframes */
-@keyframes badgeFadeIn {
-  0% {
-    opacity: 0;
-    transform: scale(0);
-  }
-  100% {
-    opacity: 0.2;
-    transform: scale(1.2);
-  }
-}
-
-@keyframes badgeFadeOut {
-  0% {
-    opacity: 0.2;
-    transform: scale(1.2);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0);
-  }
-}
-
 /* Nav Item Container */
 .nav-item {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-}
-
-.nav-item-inner {
-  will-change: transform;
-  transform: translateZ(0);
-}
-
-/* Badge Styles */
-.nav-badge {
-  will-change: transform, opacity;
-  transform: translateZ(0);
-  pointer-events: none;
-  background-color: #5FD3BC;
-  opacity: 0;
-}
-
-.nav-badge-active {
-  animation: badgeFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-.nav-badge-inactive {
-  animation: badgeFadeOut 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /* Icon Styles */

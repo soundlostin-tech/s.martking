@@ -34,17 +34,13 @@ export function BottomNav() {
                 aria-current={isActive ? "page" : undefined}
               >
                   <div className="nav-item-inner relative flex flex-col items-center justify-center">
-                    <div className="relative flex items-center justify-center w-12 h-8 mb-1">
-                      <div 
-                        className={`nav-badge absolute inset-0 m-auto w-8 h-8 rounded-full ${isActive ? 'nav-badge-active' : 'nav-badge-inactive'}`}
-                      />
-                      
-                      <Icon 
-                        size={24} 
-                        className={`nav-icon relative z-10 ${isActive ? 'nav-icon-active' : 'nav-icon-inactive'}`}
-                        strokeWidth={isActive ? 2.5 : 2}
-                      />
-                    </div>
+                      <div className="relative flex items-center justify-center w-12 h-8 mb-1">
+                        <Icon 
+                          size={24} 
+                          className={`nav-icon relative z-10 ${isActive ? 'nav-icon-active' : 'nav-icon-inactive'}`}
+                          strokeWidth={isActive ? 2.5 : 2}
+                        />
+                      </div>
                   
                     <span className={`nav-label text-[10px] font-bold uppercase tracking-wide ${isActive ? 'nav-label-active' : 'nav-label-inactive'}`}>
                       {item.label}
