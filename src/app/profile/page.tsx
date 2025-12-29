@@ -172,7 +172,7 @@ export default function Profile() {
             {[
               { label: "Total Wins", value: Math.floor((profile?.matches_played || 0) * (parseFloat(profile?.win_rate || "0") / 100)), icon: Trophy, color: "bg-pastel-yellow" },
               { label: "Win Rate", value: `${profile?.win_rate || 0}%`, icon: TrendingUp, color: "bg-pastel-mint" },
-              { label: "Earnings", value: `₹${(wallet?.lifetime_earnings || 0).toLocaleString()}`, icon: Award, color: "bg-pastel-lavender" },
+                { label: "Earnings", value: `₹${(wallet?.lifetime_earnings || 0).toLocaleString()}`, icon: Award, color: "bg-electric-blue" },
               { label: "Matches", value: profile?.matches_played || 0, icon: Gamepad2, color: "bg-pastel-peach" },
             ].map((stat, i) => (
               <motion.div 

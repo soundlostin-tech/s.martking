@@ -32,7 +32,7 @@ export function BentoCard({
       const variantClasses = {
         default: "",
         dark: "bento-dark",
-        vibrant: "bg-pastel-lavender text-onyx border-none shadow-[0_8px_32px_rgba(212,181,255,0.2)]",
+        vibrant: "bg-electric-blue text-onyx border-none shadow-[0_8px_32px_rgba(168,230,207,0.2)]",
         hero: `bento-hero ${pastelVariants[pastelColor]}`,
         pastel: pastelVariants[pastelColor],
       };

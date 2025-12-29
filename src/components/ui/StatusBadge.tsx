@@ -15,7 +15,7 @@ const variantClasses: Record<StatusBadgeVariant, string> = {
   pending: "badge-pending",
   completed: "badge-completed",
   failed: "badge-failed",
-  upcoming: "badge-sky",
+  upcoming: "badge-yellow",
 };
 
 const variantLabels: Record<StatusBadgeVariant, string> = {
@@ -32,7 +32,7 @@ export function StatusBadge({ variant, children, className }: StatusBadgeProps) 
       className={cn(
         "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm transition-all",
         variantClasses[variant],
-        variant === "upcoming" ? "bg-pastel-sky text-onyx" : "",
+        variant === "upcoming" ? "bg-pastel-yellow text-onyx" : "",
         className
       )}
     >

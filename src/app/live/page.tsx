@@ -154,7 +154,7 @@ function LiveContent() {
             </BentoCard>
 
             {/* Today's Schedule Card */}
-            <BentoCard variant="pastel" pastelColor="sky" className="p-8 border-none">
+            <BentoCard variant="pastel" pastelColor="yellow" className="p-8 border-none">
               <div className="flex items-center justify-between mb-8">
                 <h4 className="text-xl font-heading text-onyx font-black">Today's Schedule</h4>
                 <div className="w-10 h-10 rounded-2xl bg-white/40 flex items-center justify-center">
@@ -235,7 +235,7 @@ function LiveContent() {
           </>
         ) : (
           <BentoCard className="p-16 text-center border-none bg-white shadow-sm rounded-[40px]">
-            <div className="w-20 h-20 bg-pastel-sky rounded-full flex items-center justify-center mx-auto mb-8">
+            <div className="w-20 h-20 bg-pastel-yellow rounded-full flex items-center justify-center mx-auto mb-8">
               <Zap size={40} className="text-onyx" />
             </div>
             <h3 className="text-[28px] font-heading text-onyx font-black mb-3">No Live Streams</h3>

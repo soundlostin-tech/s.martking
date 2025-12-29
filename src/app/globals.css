@@ -63,9 +63,9 @@
     --color-alabaster-grey: #D4D7DE;
     --color-off-white: #D4D7DE;
     --color-olive: #868935;
-    --color-electric-blue-light: #E9D5FF;
-    --color-electric-blue: #D4B5FF;
-    --color-electric-blue-vibrant: #D4B5FF;
+    --color-electric-blue-light: #A8E6CF50;
+    --color-electric-blue: #A8E6CF;
+    --color-electric-blue-vibrant: #A8E6CF;
     
     /* Pastel Accent Colors for sticker blocks */
     --color-pastel-yellow: #FFF5CC;
@@ -73,7 +73,7 @@
     --color-pastel-coral: #FFB5B5;
     --color-pastel-lavender: #D4B5FF;
     --color-pastel-peach: #FFDAB9;
-    --color-pastel-sky: #B5D4FF;
+    --color-pastel-sky: #FFF5CC;
   }
   
   :root {
@@ -199,14 +199,14 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 245, 204, 0.08) 0%,
-    rgba(168, 230, 207, 0.06) 25%,
-    rgba(181, 212, 255, 0.08) 50%,
-    rgba(212, 181, 255, 0.06) 75%,
-    rgba(255, 181, 181, 0.08) 100%
-  );
+    background: linear-gradient(
+      135deg,
+      rgba(255, 245, 204, 0.08) 0%,
+      rgba(168, 230, 207, 0.06) 25%,
+      rgba(255, 245, 204, 0.08) 50%,
+      rgba(168, 230, 207, 0.06) 75%,
+      rgba(255, 181, 181, 0.08) 100%
+    );
   background-size: 400% 400%;
   animation: gradient-flow 30s ease infinite;
 }
@@ -244,7 +244,7 @@
 
 /* Badge Styles */
 .badge-live {
-  @apply bg-pastel-lavender text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
+  @apply bg-electric-blue text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
 }
 
 .badge-pending {
@@ -259,6 +259,10 @@
   @apply bg-pastel-coral text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
 }
 
+.badge-yellow {
+  @apply bg-pastel-yellow text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
+}
+
 /* Bottom Nav Floating Bar */
 .bottom-nav-floating {
   @apply fixed bottom-8 left-6 right-6 z-50 bg-onyx text-white rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] px-6 py-4;
@@ -266,7 +270,7 @@
 
 /* Premium Gradients */
 .premium-gradient {
-  background: linear-gradient(135deg, #D4B5FF 0%, #E9D5FF 100%);
+  background: linear-gradient(135deg, #A8E6CF 0%, #E0F7EF 100%);
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -299,7 +303,7 @@
 }
 
 .led-on {
-  @apply w-2 h-2 rounded-full bg-pastel-lavender shadow-[0_0_10px_rgba(212,181,255,0.8)];
+  @apply w-2 h-2 rounded-full bg-pastel-mint shadow-[0_0_10px_rgba(168,230,207,0.8)];
 }
 
 .led-off {
