@@ -25,32 +25,33 @@ export function BottomNav() {
           const isActive = pathname === item.href;
           const Icon = item.icon;
           
-          return (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="nav-item relative flex flex-col items-center justify-center flex-1 h-full min-h-[48px] group"
-              aria-label={item.label}
-              aria-current={isActive ? "page" : undefined}
-            >
-                <div className="nav-item-inner relative flex flex-col items-center justify-center gap-1">
-                  <div 
-                    className={`nav-badge absolute w-10 h-10 rounded-full ${isActive ? 'nav-badge-active' : 'nav-badge-inactive'}`}
-                    style={{ top: '50%', left: '50%', transform: 'translate(-50%, -60%)' }}
-                  />
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="nav-item relative flex flex-col items-center justify-center flex-1 h-full min-h-[48px] group"
+                aria-label={item.label}
+                aria-current={isActive ? "page" : undefined}
+              >
+                  <div className="nav-item-inner relative flex flex-col items-center justify-center">
+                    <div className="relative flex items-center justify-center w-12 h-8 mb-1">
+                      <div 
+                        className={`nav-badge absolute inset-0 m-auto w-8 h-8 rounded-full ${isActive ? 'nav-badge-active' : 'nav-badge-inactive'}`}
+                      />
+                      
+                      <Icon 
+                        size={24} 
+                        className={`nav-icon relative z-10 ${isActive ? 'nav-icon-active' : 'nav-icon-inactive'}`}
+                        strokeWidth={isActive ? 2.5 : 2}
+                      />
+                    </div>
                   
-                  <Icon 
-                    size={24} 
-                    className={`nav-icon relative z-10 ${isActive ? 'nav-icon-active' : 'nav-icon-inactive'}`}
-                    strokeWidth={isActive ? 2.5 : 2}
-                  />
-                
-                <span className={`nav-label text-[10px] font-bold uppercase tracking-wide ${isActive ? 'nav-label-active' : 'nav-label-inactive'}`}>
-                  {item.label}
-                </span>
-              </div>
-            </Link>
-          );
+                    <span className={`nav-label text-[10px] font-bold uppercase tracking-wide ${isActive ? 'nav-label-active' : 'nav-label-inactive'}`}>
+                      {item.label}
+                    </span>
+                </div>
+              </Link>
+            );
         })}
       </div>
     </nav>

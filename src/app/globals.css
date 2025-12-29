@@ -431,22 +431,22 @@
 @keyframes badgeFadeIn {
   0% {
     opacity: 0;
-    transform: translate(-50%, -60%) scale(0.7);
+    transform: scale(0);
   }
   100% {
-    opacity: 1;
-    transform: translate(-50%, -60%) scale(1);
+    opacity: 0.2;
+    transform: scale(1.2);
   }
 }
 
 @keyframes badgeFadeOut {
   0% {
-    opacity: 1;
-    transform: translate(-50%, -60%) scale(1);
+    opacity: 0.2;
+    transform: scale(1.2);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -60%) scale(0.7);
+    transform: scale(0);
   }
 }
 
