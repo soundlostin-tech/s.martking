@@ -25,7 +25,7 @@ export function TopHeader() {
           className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center text-charcoal shadow-sm border border-black/[0.03]"
         >
           <Bell size={18} strokeWidth={2.5} />
-          <span className="absolute top-2.5 right-2.5 w-2.5 h-2.5 bg-electric-blue rounded-full border-2 border-white" />
+
         </motion.button>
         <div className="w-10 h-10 rounded-full bg-silver overflow-hidden border-2 border-white shadow-sm">
           <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Profile" className="w-full h-full object-cover" />
