@@ -4,12 +4,12 @@ import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { Eye, EyeOff, Loader2, ChevronLeft, Globe2 as Globe } from "lucide-react";
-import { useState } from "react";
+import { Eye, EyeOff, Loader2, ChevronLeft, Zap } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { BentoCard } from "@/components/ui/BentoCard";
 
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,6 +19,14 @@ export default function Signin() {
     password: "",
   });
   const router = useRouter();
+  const emailInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    // Auto-focus first input on page load
+    if (emailInputRef.current) {
+      emailInputRef.current.focus();
+    }
+  }, []);
 
   const validate = () => {
     if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
@@ -65,125 +73,126 @@ export default function Signin() {
     }
   };
 
-    return (
-      <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2 relative z-10">
-        {/* Left Side - Brand Identity */}
-        <div className="hidden lg:flex flex-col justify-between p-16 bg-gradient-to-br from-electric-blue to-pastel-mint relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#11130D 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }} />
-        
-        <div className="relative z-10">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-[#11130D] rounded-xl flex items-center justify-center shadow-2xl">
-              <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" className="w-6 h-6">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-              </svg>
-            </div>
-            <h1 className="text-2xl font-heading text-[#11130D]">Smartking's Arena</h1>
+  return (
+    <main className="min-h-screen relative z-10 flex flex-col">
+      {/* Navigation / Header */}
+      <header className="px-6 pt-8 pb-4 flex items-center justify-between">
+        <Link 
+          href="/" 
+          className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-black/[0.03] active:scale-95 transition-transform"
+          aria-label="Go back"
+        >
+          <ChevronLeft size={24} className="text-onyx" strokeWidth={2.5} />
+        </Link>
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-onyx rounded-lg flex items-center justify-center">
+            <Zap size={16} className="text-electric-blue" fill="currentColor" />
           </div>
+          <span className="text-[10px] font-black text-onyx uppercase tracking-[0.2em]">Smartking</span>
         </div>
+        <div className="w-12" /> {/* Spacer for balance */}
+      </header>
 
-        <div className="relative z-10 space-y-6">
-          <h2 className="text-7xl font-heading text-[#11130D] leading-[0.9]">
-            Compete.<br />
-            <span className="text-[#11130D]/50">Win. Withdraw.</span>
-          </h2>
-          <p className="text-[#11130D]/70 text-lg font-medium max-w-sm">
-            Join verified Free Fire tournaments and win real cash prizes.
-          </p>
-        </div>
+      <div className="flex-1 flex flex-col justify-center px-6 py-8">
+        <div className="max-w-md w-full mx-auto space-y-8">
+          <section>
+            <h1 className="text-[44px] font-heading text-onyx leading-tight font-black">
+              Welcome <br />
+              <span className="text-charcoal-brown/40">Back Warrior</span>
+            </h1>
+            <p className="text-[10px] font-bold text-charcoal/40 uppercase tracking-[0.2em] mt-2">
+              Sign in to resume your legend
+            </p>
+          </section>
 
-        <div className="relative z-10 flex items-center gap-4">
-          <div className="flex -space-x-3">
-            {[1,2,3,4].map(i => (
-              <div key={i} className="w-10 h-10 rounded-full border-4 border-electric-blue bg-[#11130D]/20 backdrop-blur-md" />
-            ))}
-          </div>
-          <p className="text-[#11130D]/60 text-[11px] font-bold uppercase tracking-wide">
-            <span className="text-[#11130D]">2.4K+</span> warriors online now
-          </p>
-        </div>
-      </div>
-
-        {/* Right Side - Form */}
-        <div className="bg-transparent flex flex-col justify-center px-8 lg:px-24 py-12 relative">
-        <nav className="absolute top-8 left-8 lg:left-24">
-          <Link href="/" className="text-[#11130D] flex items-center gap-2 text-[10px] font-bold uppercase tracking-wide hover:opacity-70 transition-opacity">
-            <ChevronLeft size={16} strokeWidth={3} /> Back
-          </Link>
-        </nav>
-
-        <div className="max-w-md w-full mx-auto space-y-8 relative z-10">
-          {/* Mobile Logo */}
-          <div className="lg:hidden flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-electric-blue rounded-xl flex items-center justify-center shadow-lg shadow-electric-blue/30">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#11130D" strokeWidth="2.5" className="w-5 h-5">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-              </svg>
-            </div>
-            <h1 className="text-lg font-heading text-[#11130D]">Smartking's Arena</h1>
-          </div>
-
-          <div className="space-y-2">
-            <h1 className="text-3xl sm:text-4xl font-heading text-[#11130D]">Welcome Back</h1>
-            <p className="text-[#4A4B48] text-sm font-medium">Sign in to your account</p>
-          </div>
-
-          <form onSubmit={handleSignin} className="space-y-5">
-            <div className="space-y-4">
-              <div className="space-y-1.5">
-                <Label className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wide ml-1">Email</Label>
-                <Input 
-                  type="email"
-                  placeholder="name@example.com"
-                  className="h-14 rounded-xl bg-white border border-[#C8C8C4]/30 text-[#11130D] font-medium px-5 focus-visible:ring-electric-blue"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label className="text-[10px] font-bold text-[#4A4B48] uppercase tracking-wide ml-1">Password</Label>
-                <div className="relative">
-                  <Input 
-                    type={showPassword ? "text" : "password"}
-                    placeholder="••••••••"
-                    className="h-14 rounded-xl bg-white border border-[#C8C8C4]/30 text-[#11130D] font-medium px-5 pr-12 focus-visible:ring-electric-blue"
-                    value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  />
-                  <button 
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4A4B48] hover:text-[#11130D] transition-colors"
+          <BentoCard className="p-8 border-none shadow-[0_12px_48px_rgba(0,0,0,0.06)]">
+            <form onSubmit={handleSignin} className="space-y-6">
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <Label 
+                    htmlFor="email"
+                    className="text-[10px] font-black text-charcoal/40 uppercase tracking-widest ml-1"
                   >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
+                    Email Address
+                  </Label>
+                  <Input 
+                    ref={emailInputRef}
+                    id="email"
+                    type="email"
+                    placeholder="name@example.com"
+                    autoComplete="email"
+                    className="h-14 rounded-[20px] bg-off-white/50 border-none text-onyx font-bold px-6 focus-visible:ring-2 focus-visible:ring-onyx/10 placeholder:text-charcoal/20"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center ml-1">
+                    <Label 
+                      htmlFor="password"
+                      className="text-[10px] font-black text-charcoal/40 uppercase tracking-widest"
+                    >
+                      Password
+                    </Label>
+                    <Link href="#" className="text-[9px] font-black text-charcoal/30 uppercase tracking-widest hover:text-onyx">
+                      Forgot?
+                    </Link>
+                  </div>
+                  <div className="relative">
+                    <Input 
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      autoComplete="current-password"
+                      className="h-14 rounded-[20px] bg-off-white/50 border-none text-onyx font-bold px-6 pr-14 focus-visible:ring-2 focus-visible:ring-onyx/10 placeholder:text-charcoal/20"
+                      value={formData.password}
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                      required
+                    />
+                    <button 
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-5 top-1/2 -translate-y-1/2 text-charcoal/30 hover:text-onyx transition-colors"
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                    >
+                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="flex justify-end">
-              <Link href="#" className="text-[10px] font-bold text-[#868935] uppercase tracking-wide hover:underline">
-                Forgot password?
-              </Link>
-            </div>
+              <motion.button
+                whileTap={{ scale: 0.98 }}
+                type="submit"
+                disabled={loading}
+                className="w-full h-16 bg-onyx text-white rounded-[24px] font-black uppercase tracking-[0.2em] text-[12px] shadow-xl shadow-onyx/20 flex items-center justify-center relative overflow-hidden group disabled:opacity-70"
+              >
+                <span className={loading ? "opacity-0" : "opacity-100 transition-opacity"}>Sign In</span>
+                {loading && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Loader2 className="w-6 h-6 animate-spin text-electric-blue" />
+                  </div>
+                )}
+                {/* Visual accent */}
+                <div className="absolute right-[-10px] top-[-10px] w-12 h-12 bg-electric-blue/10 rounded-full blur-xl group-hover:scale-150 transition-transform" />
+              </motion.button>
 
-            <motion.button
-              whileTap={{ scale: 0.98 }}
-              type="submit"
-              disabled={loading}
-              className="w-full h-14 bg-electric-blue text-[#11130D] rounded-xl font-bold uppercase tracking-wide text-[11px] shadow-lg shadow-electric-blue/30"
-            >
-              {loading ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Sign In"}
-            </motion.button>
-
-            <p className="text-center text-[11px] font-medium text-[#4A4B48]">
-              Don't have an account? <Link href="/signup" className="text-[#868935] font-bold hover:underline">Sign up</Link>
-            </p>
-          </form>
+              <div className="pt-4 text-center">
+                <p className="text-[11px] font-bold text-charcoal/40 uppercase tracking-widest">
+                  New to the Arena?{" "}
+                  <Link href="/signup" className="text-onyx font-black underline decoration-electric-blue decoration-2 underline-offset-4">
+                    Create Account
+                  </Link>
+                </p>
+              </div>
+            </form>
+          </BentoCard>
         </div>
       </div>
+      
+      {/* Footer / Safe Area Spacer */}
+      <footer className="h-12" />
     </main>
   );
 }
