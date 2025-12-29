@@ -424,8 +424,97 @@
 }
 
 /* ============================================
-   BOTTOM NAVIGATION
+   BOTTOM NAVIGATION - ANIMATION SYSTEM
    ============================================ */
+
+/* Badge Animation Keyframes */
+@keyframes badgeFadeIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -60%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -60%) scale(1);
+  }
+}
+
+@keyframes badgeFadeOut {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -60%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -60%) scale(0.8);
+  }
+}
+
+/* Nav Item Container */
+.nav-item {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.nav-item-inner {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Badge Styles */
+.nav-badge {
+  will-change: opacity, transform;
+  transform: translateZ(0);
+  pointer-events: none;
+}
+
+.nav-badge-active {
+  animation: badgeFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.nav-badge-inactive {
+  animation: badgeFadeOut 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Icon Styles */
+.nav-icon {
+  will-change: color;
+  transform: translateZ(0);
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s;
+}
+
+.nav-icon-active {
+  color: #5FD3BC;
+}
+
+.nav-icon-inactive {
+  color: #6B7280;
+}
+
+.nav-item:hover .nav-icon-inactive {
+  color: #FFFFFF;
+}
+
+/* Label Styles */
+.nav-label {
+  will-change: color;
+  transform: translateZ(0);
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s;
+}
+
+.nav-label-active {
+  color: #5FD3BC;
+}
+
+.nav-label-inactive {
+  color: #9CA3AF;
+}
+
+.nav-item:hover .nav-label-inactive {
+  color: #FFFFFF;
+}
+
+/* Legacy class for backwards compatibility */
 .bottom-nav-floating {
   position: fixed;
   bottom: 32px;
