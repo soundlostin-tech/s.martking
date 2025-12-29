@@ -24,51 +24,40 @@ export function AnimatedBackground() {
         </defs>
       </svg>
 
-      <div className="absolute inset-0 filter blur-[80px]" style={{ filter: 'url(#goo) blur(80px)' }}>
-        {/* Yellow-Green Wave */}
-        <div 
-          className="absolute top-[-10%] left-[-10%] w-[80%] h-[80%] rounded-full opacity-70"
-          style={{ 
-            background: 'radial-gradient(circle at center, #E2FF00 0%, #D4FC79 50%, transparent 70%)',
-            animation: 'gradientFlow 20s ease-in-out infinite',
-            transform: 'translate3d(0,0,0)',
-            willChange: 'transform'
-          }}
-        />
+        <div className="absolute inset-0 filter blur-[120px]" style={{ filter: 'url(#goo) blur(120px)' }}>
+          {/* Top Left - Light Lime/Yellow */}
+          <div 
+            className="absolute top-[-20%] left-[-10%] w-[100%] h-[100%] rounded-full opacity-40"
+            style={{ 
+              background: 'radial-gradient(circle at center, #D4FC79 0%, #E2FF00 40%, transparent 70%)',
+              animation: 'gradientFlow 25s ease-in-out infinite',
+              transform: 'translate3d(0,0,0)',
+              willChange: 'transform'
+            }}
+          />
 
-        {/* Purple Wave */}
-        <div 
-          className="absolute bottom-[-10%] right-[-10%] w-[80%] h-[80%] rounded-full opacity-70"
-          style={{ 
-            background: 'radial-gradient(circle at center, #9F7AEA 0%, #BEE3F8 50%, transparent 70%)',
-            animation: 'gradientFlowReverse 25s ease-in-out infinite',
-            transform: 'translate3d(0,0,0)',
-            willChange: 'transform'
-          }}
-        />
+          {/* Top Right - Soft Blue/Lavender */}
+          <div 
+            className="absolute top-[-20%] right-[-10%] w-[90%] h-[90%] rounded-full opacity-30"
+            style={{ 
+              background: 'radial-gradient(circle at center, #BEE3F8 0%, #E9D8FD 40%, transparent 70%)',
+              animation: 'gradientFlowReverse 30s ease-in-out infinite',
+              transform: 'translate3d(0,0,0)',
+              willChange: 'transform'
+            }}
+          />
 
-        {/* Green/Teal Wave */}
-        <div 
-          className="absolute top-[20%] right-[10%] w-[60%] h-[60%] rounded-full opacity-60"
-          style={{ 
-            background: 'radial-gradient(circle at center, #48BB78 0%, #4299E1 60%, transparent 80%)',
-            animation: 'gradientFlow 30s ease-in-out infinite alternate',
-            transform: 'translate3d(0,0,0)',
-            willChange: 'transform'
-          }}
-        />
-
-        {/* Soft Pink/Peach Accent */}
-        <div 
-          className="absolute bottom-[20%] left-[10%] w-[50%] h-[50%] rounded-full opacity-50"
-          style={{ 
-            background: 'radial-gradient(circle at center, #F56565 0%, #ED8936 50%, transparent 70%)',
-            animation: 'gradientFlowReverse 22s ease-in-out infinite',
-            transform: 'translate3d(0,0,0)',
-            willChange: 'transform'
-          }}
-        />
-      </div>
+          {/* Bottom Middle/Right - Very subtle accent */}
+          <div 
+            className="absolute bottom-[-20%] right-[10%] w-[80%] h-[80%] rounded-full opacity-20"
+            style={{ 
+              background: 'radial-gradient(circle at center, #E9D8FD 0%, #BEE3F8 30%, transparent 60%)',
+              animation: 'gradientFlow 35s ease-in-out infinite alternate',
+              transform: 'translate3d(0,0,0)',
+              willChange: 'transform'
+            }}
+          />
+        </div>
 
       {/* Noise Texture Overlay for premium feel */}
       <div 

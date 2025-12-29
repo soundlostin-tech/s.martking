@@ -99,11 +99,12 @@ export default function MatchDetailsPage({ params }: { params: Promise<{ id: str
     );
   }
 
-  return (
-    <div className="min-h-screen bg-background text-onyx">
-      <main className="pb-40 relative z-10">
-        {/* Colorful Sticker Header */}
-        <section className="relative pt-16 pb-12 px-6 bg-pastel-mint rounded-b-[48px] shadow-sm overflow-hidden">
+    return (
+      <div className="min-h-screen bg-transparent text-onyx relative" suppressHydrationWarning={true}>
+        <main className="pb-40 relative z-10" suppressHydrationWarning={true}>
+          {/* Colorful Sticker Header */}
+          <section className="relative pt-16 pb-12 px-6 bg-pastel-mint rounded-b-[48px] shadow-sm overflow-hidden" suppressHydrationWarning={true}>
+
           <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
              <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white blur-3xl" />
              <div className="absolute top-20 -left-10 w-32 h-32 rounded-full bg-onyx blur-3xl" />
