@@ -1,18 +1,46 @@
 "use client";
 
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { Search, Bell } from "lucide-react";
-import { useEffect, useState } from "react";
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
+import { Search, Bell, Crown, Wallet, User as UserIcon, Plus } from "lucide-react";
+import { useEffect, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/lib/supabase";
+import { useHaptics } from "@/hooks/useHaptics";
+import Link from "next/link";
 
 export function TopHeader() {
-  const { scrollYProgress, scrollY } = useScroll();
-  
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
+  const { user, profile } = useAuth(false);
+  const { triggerHaptic } = useHaptics();
+  const { scrollY } = useScroll();
+  const [wallet, setWallet] = useState<any>(null);
+
+  const fetchWallet = useCallback(async () => {
+    if (!user) return;
+    const { data } = await supabase
+      .from("wallets")
+      .select("balance")
+      .eq("user_id", user.id)
+      .maybeSingle();
+    setWallet(data);
+  }, [user]);
+
+  useEffect(() => {
+    fetchWallet();
+    const channel = supabase
+      .channel('wallet_changes')
+      .on('postgres_changes', { 
+        event: '*', 
+        schema: 'public', 
+        table: 'wallets',
+        filter: `user_id=eq.${user?.id}`
+      }, () => fetchWallet())
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [fetchWallet, user?.id]);
 
   const smoothY = useSpring(scrollY, {
     stiffness: 100,
@@ -20,57 +48,21 @@ export function TopHeader() {
     restDelta: 0.001
   });
 
-  const headerHeight = useTransform(smoothY, [0, 80], ["80px", "68px"]);
-  const headerPadding = useTransform(smoothY, [0, 80], ["20px", "12px"]);
-  const logoScale = useTransform(smoothY, [0, 80], [1, 0.9]);
-  const blurAmount = useTransform(smoothY, [0, 80], ["0px", "16px"]);
-  const shadowOpacity = useTransform(smoothY, [0, 80], [0, 0.06]);
+  const headerHeight = useTransform(smoothY, [0, 80], ["96px", "72px"]);
+  const headerPadding = useTransform(smoothY, [0, 80], ["24px", "12px"]);
+  const logoScale = useTransform(smoothY, [0, 80], [1, 0.85]);
+  const blurAmount = useTransform(smoothY, [0, 80], ["0px", "24px"]);
   
-      const bgColor = useTransform(
-        smoothY,
-        [0, 80],
-        ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.8)"]
-      );
-    
-    const borderColor = useTransform(
-      smoothY,
-      [0, 80],
-      ["rgba(0, 0, 0, 0.05)", "rgba(0, 0, 0, 0.1)"]
-    );
-
-    const boxShadow = useTransform(
-      shadowOpacity,
-      (opacity) => `0 10px 30px -5px rgba(0, 0, 0, ${opacity + 0.05})`
-    );
-
+  const bgColor = useTransform(
+    smoothY,
+    [0, 80],
+    ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.7)"]
+  );
 
   const backdropFilter = useTransform(
     blurAmount,
     (blur) => `blur(${blur}) saturate(180%)`
   );
-
-  const containerVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.16, 1, 0.3, 1],
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: -10 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
-    }
-  };
 
   return (
     <>
@@ -80,124 +72,109 @@ export function TopHeader() {
           paddingTop: headerPadding,
           paddingBottom: headerPadding,
           backgroundColor: bgColor,
-          borderBottomColor: borderColor,
-          boxShadow: boxShadow,
           backdropFilter: backdropFilter,
         }}
-        initial="hidden"
-        animate="visible"
-        variants={containerVariants}
-        className="fixed top-0 left-0 right-0 z-[100] w-full flex items-center justify-between px-6 sm:px-10 border-b"
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="fixed top-0 left-0 right-0 z-[100] w-full flex items-center justify-between px-6 border-b border-black/[0.03] safe-top"
       >
-        <motion.div 
-          variants={itemVariants}
-          className="flex items-center gap-4"
-        >
+        {/* Logo Section */}
+        <Link href="/" onClick={() => triggerHaptic('light')}>
           <motion.div 
             style={{ scale: logoScale }}
-            whileHover={{ scale: 1.05, rotate: 5 }}
-            whileTap={{ scale: 0.95 }}
-            className="group relative w-12 h-12 rounded-2xl bg-gradient-to-br from-[#2D3436] to-[#4A5568] flex items-center justify-center text-white shadow-lg cursor-pointer overflow-hidden"
+            className="flex items-center gap-3"
           >
-            <motion.div 
-              className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"
-              animate={{ 
-                x: ["-100%", "100%"],
-              }}
-              transition={{ 
-                duration: 2, 
-                repeat: Infinity, 
-                ease: "linear",
-                repeatDelay: 3
-              }}
-            />
-            <motion.svg 
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6 z-10"
-            >
-              <circle cx="12" cy="12" r="10" opacity="0.3" />
-              <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" strokeDasharray="2 2" />
-              <path d="M12 2v20M2 12h20" strokeLinecap="round" />
-            </motion.svg>
-          </motion.div>
-          
-          <div className="flex flex-col">
-            <motion.h1 
-              className="text-xl font-black text-[#2D3436] tracking-tight leading-none flex items-center gap-1.5"
-            >
-              Smartking&apos;s 
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#636E72] to-[#95A5A6] font-black">
-                Arena
-              </span>
-            </motion.h1>
-            <motion.div className="flex items-center gap-1.5 mt-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#A8E6CF] animate-pulse" />
-              <p className="text-[8px] font-bold text-[#95A5A6] uppercase tracking-[0.25em] leading-none">
-                Elite Competition
-              </p>
-            </motion.div>
-          </div>
-        </motion.div>
-        
-        <motion.div 
-          variants={itemVariants}
-          className="flex items-center gap-3"
-        >
-          <motion.div className="hidden md:flex items-center gap-1 mr-4">
-            <div className="px-3 py-1.5 rounded-full bg-gray-50 border border-gray-100 flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#FFB8B8] animate-pulse" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#636E72]">2.4k Live</span>
+            <div className="relative w-12 h-12 rounded-[18px] bg-onyx flex items-center justify-center text-white shadow-2xl overflow-hidden group">
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-tr from-pastel-mint/20 via-white/10 to-pastel-lavender/20"
+                animate={{ 
+                  rotate: [0, 360],
+                  scale: [1, 1.2, 1]
+                }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+              />
+              <Crown size={22} className="relative z-10 text-soft-yellow" fill="currentColor" />
+            </div>
+            
+            <div className="flex flex-col">
+              <h1 className="text-lg font-black text-onyx tracking-tighter leading-none">
+                SMARTKING<span className="text-onyx/30"> arena</span>
+              </h1>
+              <div className="flex items-center gap-1.5 mt-1">
+                <span className="w-1 h-1 rounded-full bg-pastel-mint animate-pulse" />
+                <p className="text-[7px] font-black text-onyx/40 uppercase tracking-[0.3em]">
+                  Live competition
+                </p>
+              </div>
             </div>
           </motion.div>
+        </Link>
+        
+        {/* Right Section: Wallet & Profile */}
+        <div className="flex items-center gap-2">
+          {user ? (
+            <div className="flex items-center gap-2">
+              <Link href="/wallet" onClick={() => triggerHaptic('medium')}>
+                <motion.div 
+                  whileTap={{ scale: 0.95 }}
+                  className="h-11 pl-4 pr-2 rounded-2xl bg-white shadow-soft border border-black/[0.03] flex items-center gap-3 group"
+                >
+                  <div className="flex flex-col items-end">
+                    <p className="text-[8px] font-black text-onyx/30 uppercase tracking-widest leading-none mb-0.5">Balance</p>
+                    <p className="text-sm font-black text-onyx leading-none">₹{wallet?.balance || 0}</p>
+                  </div>
+                  <div className="w-7 h-7 rounded-xl bg-soft-yellow flex items-center justify-center text-onyx shadow-sm group-hover:rotate-12 transition-transform">
+                    <Plus size={14} strokeWidth={3} />
+                  </div>
+                </motion.div>
+              </Link>
+
+              <Link href="/profile" onClick={() => triggerHaptic('light')}>
+                <motion.div 
+                  whileTap={{ scale: 0.9 }}
+                  className="w-11 h-11 rounded-2xl border-2 border-white shadow-soft overflow-hidden bg-off-white flex items-center justify-center"
+                >
+                  {profile?.avatar_url ? (
+                    <img src={profile.avatar_url} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    <UserIcon size={20} className="text-onyx/20" />
+                  )}
+                </motion.div>
+              </Link>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link href="/signin">
+                <motion.button 
+                  whileTap={{ scale: 0.95 }}
+                  className="px-5 py-2.5 rounded-2xl bg-onyx text-white text-[10px] font-black uppercase tracking-widest shadow-xl"
+                >
+                  Sign In
+                </motion.button>
+              </Link>
+            </div>
+          )}
 
           <motion.button 
-            whileHover={{ 
-              scale: 1.05, 
-              backgroundColor: "rgba(255, 255, 255, 1)",
-              y: -2
-            }}
-            whileTap={{ scale: 0.95 }}
-            className="w-12 h-12 rounded-2xl bg-white border border-gray-100 flex items-center justify-center text-[#2D3436] shadow-sm transition-all duration-300"
+            whileTap={{ scale: 0.9 }}
+            onClick={() => triggerHaptic('light')}
+            className="w-11 h-11 rounded-2xl bg-white shadow-soft border border-black/[0.03] flex items-center justify-center text-onyx/40 relative"
           >
-            <Search size={20} strokeWidth={2} />
+            <Bell size={20} />
+            <span className="absolute top-3 right-3 w-2 h-2 bg-pastel-coral rounded-full border-2 border-white" />
           </motion.button>
-          
-          <motion.button 
-            whileHover={{ 
-              scale: 1.05, 
-              backgroundColor: "rgba(255, 255, 255, 1)",
-              y: -2
-            }}
-            whileTap={{ scale: 0.95 }}
-            className="relative w-12 h-12 rounded-2xl bg-white border border-gray-100 flex items-center justify-center text-[#2D3436] shadow-sm transition-all duration-300"
-          >
-            <Bell size={20} strokeWidth={2} />
-            <span className="absolute top-3.5 right-3.5 w-2.5 h-2.5 bg-[#FFB8B8] rounded-full border-2 border-white shadow-sm" />
-            <motion.span 
-              animate={{ 
-                scale: [1, 1.8, 1],
-                opacity: [0.5, 0, 0.5]
-              }}
-              transition={{ 
-                duration: 2, 
-                repeat: Infinity, 
-                ease: "easeOut" 
-              }}
-              className="absolute top-3.5 right-3.5 w-2.5 h-2.5 bg-[#FFB8B8] rounded-full" 
-            />
-          </motion.button>
+        </div>
 
-          </motion.div>
-
-        {/* Scroll Progress Indicator */}
+        {/* Dynamic Scroll Progress */}
         <motion.div 
-          className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#C3AED6] via-[#AED9E0] to-[#A8E6CF] origin-left"
-          style={{ scaleX }}
+          className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-pastel-lavender via-pastel-mint to-soft-yellow origin-left"
+          style={{ scaleX: useSpring(useTransform(scrollY, [0, 1000], [0, 1]), { stiffness: 100, damping: 30 }) }}
         />
       </motion.header>
       
-      <div className="h-[80px]" />
+      {/* Spacer to prevent content jump */}
+      <div className="h-24" />
     </>
   );
 }
