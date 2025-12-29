@@ -11,11 +11,11 @@ interface StatusBadgeProps {
 }
 
 const variantClasses: Record<StatusBadgeVariant, string> = {
-  live: "badge-live",
-  pending: "badge-pending",
-  completed: "badge-completed",
-  failed: "badge-failed",
-  upcoming: "badge-yellow",
+  live: "bg-[#5FD3BC] text-[#1A1A1A]",
+  pending: "bg-[#FEF3C7] text-[#1A1A1A]",
+  completed: "bg-[#D1FAE5] text-[#1A1A1A]",
+  failed: "bg-[#FEE2E2] text-[#1A1A1A]",
+  upcoming: "bg-[#FCD34D] text-[#1A1A1A]",
 };
 
 const variantLabels: Record<StatusBadgeVariant, string> = {
@@ -30,14 +30,13 @@ export function StatusBadge({ variant, children, className }: StatusBadgeProps) 
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm transition-all",
+        "inline-flex items-center gap-1.5 px-4 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide h-[20px]",
         variantClasses[variant],
-        variant === "upcoming" ? "bg-pastel-yellow text-onyx" : "",
         className
       )}
     >
       {variant === "live" && (
-        <span className="w-2 h-2 rounded-full bg-onyx animate-pulse" />
+        <span className="w-2 h-2 rounded-full bg-[#1A1A1A] animate-pulse" />
       )}
       {children || variantLabels[variant]}
     </span>

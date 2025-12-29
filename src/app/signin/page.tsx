@@ -4,12 +4,11 @@ import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { Eye, EyeOff, Loader2, ChevronLeft, Zap } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { BentoCard } from "@/components/ui/BentoCard";
 
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,7 +21,6 @@ export default function Signin() {
   const emailInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Auto-focus first input on page load
     if (emailInputRef.current) {
       emailInputRef.current.focus();
     }
@@ -74,26 +72,27 @@ export default function Signin() {
   };
 
   return (
-    <main className="min-h-screen relative z-10 flex flex-col">
-      <div className="flex-1 flex flex-col justify-center px-6 py-8">
+    <main className="min-h-screen bg-[#F5F5F5] relative flex flex-col">
+      <div className="unified-bg" />
+      
+      <div className="flex-1 flex flex-col justify-center px-4 py-8">
         <div className="max-w-md w-full mx-auto space-y-8">
           <section>
-            <h1 className="text-[44px] font-heading text-onyx leading-tight font-black">
-              Welcome <br />
-              <span className="text-charcoal-brown/40">Back Warrior</span>
+            <h1 className="text-[32px] font-heading text-[#1A1A1A] leading-tight font-bold">
+              Welcome Back
             </h1>
-            <p className="text-[10px] font-bold text-charcoal/40 uppercase tracking-[0.2em] mt-2">
+            <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-[0.1em] mt-2">
               Sign in to resume your legend
             </p>
           </section>
 
-          <BentoCard className="p-8 border-none shadow-[0_12px_48px_rgba(0,0,0,0.06)]">
+          <div className="bg-white rounded-lg p-6 shadow-[2px_8px_16px_rgba(0,0,0,0.06)]">
             <form onSubmit={handleSignin} className="space-y-6">
               <div className="space-y-6">
                 <div className="space-y-2">
                   <Label 
                     htmlFor="email"
-                    className="text-[10px] font-black text-charcoal/40 uppercase tracking-widest ml-1"
+                    className="form-label"
                   >
                     Email Address
                   </Label>
@@ -103,21 +102,21 @@ export default function Signin() {
                     type="email"
                     placeholder="name@example.com"
                     autoComplete="email"
-                    className="h-14 rounded-[20px] bg-off-white/50 border-none text-onyx font-bold px-6 focus-visible:ring-2 focus-visible:ring-onyx/10 placeholder:text-charcoal/20"
+                    className="form-input h-12 rounded-lg bg-white border border-[#E5E7EB] text-[#1A1A1A] font-medium px-4 focus:border-[#5FD3BC] focus:ring-2 focus:ring-[#5FD3BC]/20 placeholder:text-[#9CA3AF]"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <div className="flex justify-between items-center ml-1">
+                  <div className="flex justify-between items-center">
                     <Label 
                       htmlFor="password"
-                      className="text-[10px] font-black text-charcoal/40 uppercase tracking-widest"
+                      className="form-label"
                     >
                       Password
                     </Label>
-                    <Link href="#" className="text-[9px] font-black text-charcoal/30 uppercase tracking-widest hover:text-onyx">
+                    <Link href="#" className="text-[11px] font-bold text-[#6B7280] uppercase tracking-wide hover:text-[#1A1A1A]">
                       Forgot?
                     </Link>
                   </div>
@@ -125,9 +124,9 @@ export default function Signin() {
                     <Input 
                       id="password"
                       type={showPassword ? "text" : "password"}
-                      placeholder="••••••••"
+                      placeholder="Enter your password"
                       autoComplete="current-password"
-                      className="h-14 rounded-[20px] bg-off-white/50 border-none text-onyx font-bold px-6 pr-14 focus-visible:ring-2 focus-visible:ring-onyx/10 placeholder:text-charcoal/20"
+                      className="form-input h-12 rounded-lg bg-white border border-[#E5E7EB] text-[#1A1A1A] font-medium px-4 pr-12 focus:border-[#5FD3BC] focus:ring-2 focus:ring-[#5FD3BC]/20 placeholder:text-[#9CA3AF]"
                       value={formData.password}
                       onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                       required
@@ -135,7 +134,7 @@ export default function Signin() {
                     <button 
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-5 top-1/2 -translate-y-1/2 text-charcoal/30 hover:text-onyx transition-colors"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#1A1A1A] transition-colors touch-target"
                       aria-label={showPassword ? "Hide password" : "Show password"}
                     >
                       {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -148,33 +147,30 @@ export default function Signin() {
                 whileTap={{ scale: 0.98 }}
                 type="submit"
                 disabled={loading}
-                className="w-full h-16 bg-onyx text-white rounded-[24px] font-black uppercase tracking-[0.2em] text-[12px] shadow-xl shadow-onyx/20 flex items-center justify-center relative overflow-hidden group disabled:opacity-70"
+                className="w-full h-12 bg-[#5FD3BC] text-[#1A1A1A] rounded-lg font-bold uppercase tracking-[0.1em] text-[12px] shadow-lg shadow-[#5FD3BC]/20 flex items-center justify-center relative overflow-hidden disabled:bg-[#D1D5DB] disabled:cursor-not-allowed transition-colors"
               >
                 <span className={loading ? "opacity-0" : "opacity-100 transition-opacity"}>Sign In</span>
                 {loading && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <Loader2 className="w-6 h-6 animate-spin text-electric-blue" />
+                    <Loader2 className="w-5 h-5 animate-spin text-[#1A1A1A]" />
                   </div>
                 )}
-                {/* Visual accent */}
-                <div className="absolute right-[-10px] top-[-10px] w-12 h-12 bg-electric-blue/10 rounded-full blur-xl group-hover:scale-150 transition-transform" />
               </motion.button>
 
               <div className="pt-4 text-center">
-                <p className="text-[11px] font-bold text-charcoal/40 uppercase tracking-widest">
+                <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide">
                   New to the Arena?{" "}
-                  <Link href="/signup" className="text-onyx font-black underline decoration-electric-blue decoration-2 underline-offset-4">
+                  <Link href="/signup" className="text-[#1A1A1A] font-bold underline decoration-[#5FD3BC] decoration-2 underline-offset-4">
                     Create Account
                   </Link>
                 </p>
               </div>
             </form>
-          </BentoCard>
+          </div>
         </div>
       </div>
       
-      {/* Footer / Safe Area Spacer */}
-      <footer className="h-12" />
+      <footer className="h-8" />
     </main>
   );
 }

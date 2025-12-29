@@ -106,39 +106,37 @@ export default function Profile() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-10 h-10 animate-spin text-onyx/20" />
+      <div className="min-h-screen flex items-center justify-center bg-[#F5F5F5]">
+        <Loader2 className="w-10 h-10 animate-spin text-[#5FD3BC]" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-transparent text-onyx relative z-10">
-      <main className="pb-32">
-
-        {/* Header Section */}
-        <section className="px-6 pt-6 pb-4">
-          <p className="text-[10px] font-bold text-charcoal/50 uppercase tracking-[0.2em] mb-2">
+    <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
+      <div className="unified-bg" />
+      
+      <main className="pb-32 relative z-10">
+        <section className="px-4 pt-6 pb-4">
+          <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mb-2">
             Your Account
           </p>
-          <h2 className="text-[32px] font-heading text-onyx leading-tight font-black">
-            User <br />
-            <span className="text-onyx">Profile</span>
+          <h2 className="text-[32px] font-heading text-[#1A1A1A] leading-tight font-bold">
+            Profile
           </h2>
         </section>
 
-        <div className="px-6 space-y-6">
-          {/* Profile Card */}
-          <BentoCard variant="hero" pastelColor="rose" className="p-8">
-            <div className="flex items-center gap-6">
+        <div className="px-4 space-y-4">
+          <BentoCard variant="pastel" pastelColor="rose" className="p-6">
+            <div className="flex items-center gap-5">
               <div className="relative">
-                <div className="w-20 h-20 rounded-full p-[3px] bg-onyx">
+                <div className="w-18 h-18 rounded-full p-[2px] bg-[#1A1A1A]">
                   <div className="w-full h-full rounded-full bg-white p-0.5">
-                    <Avatar className="w-full h-full rounded-full">
+                    <Avatar className="w-16 h-16 rounded-full">
                       {profile?.avatar_url ? (
                         <AvatarImage src={profile?.avatar_url} className="object-cover" />
                       ) : (
-                        <AvatarFallback className="bg-off-white text-onyx text-2xl font-heading">
+                        <AvatarFallback className="bg-[#F5F5F5] text-[#1A1A1A] text-xl font-heading">
                           {profile?.full_name?.[0]?.toUpperCase() || user?.email?.[0].toUpperCase()}
                         </AvatarFallback>
                       )}
@@ -148,30 +146,29 @@ export default function Profile() {
                 <motion.button 
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setIsEditing(true)}
-                  className="absolute -bottom-1 -right-1 w-8 h-8 bg-onyx rounded-full flex items-center justify-center shadow-lg border-2 border-white"
+                  className="absolute -bottom-1 -right-1 w-7 h-7 bg-[#1A1A1A] rounded-full flex items-center justify-center shadow-lg border-2 border-white"
                 >
                   <Edit2 size={12} className="text-white" />
                 </motion.button>
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-heading text-onyx font-black">{profile?.full_name || "Warrior"}</h3>
-                <p className="text-[10px] text-charcoal/50 font-bold uppercase tracking-widest mt-0.5">@{profile?.username || user?.email?.split('@')[0]}</p>
+                <h3 className="text-lg font-heading text-[#1A1A1A] font-bold">{profile?.full_name || "Warrior"}</h3>
+                <p className="text-[10px] text-[#6B7280] font-bold uppercase tracking-wide mt-0.5">@{profile?.username || user?.email?.split('@')[0]}</p>
                 {profile?.free_fire_uid && (
-                  <div className="mt-2 inline-flex items-center px-2 py-0.5 bg-onyx/5 rounded-md">
-                    <span className="text-[9px] text-onyx font-black uppercase tracking-widest">UID: {profile.free_fire_uid}</span>
+                  <div className="mt-2 inline-flex items-center px-2 py-0.5 bg-[#1A1A1A]/5 rounded-md">
+                    <span className="text-[9px] text-[#1A1A1A] font-bold uppercase tracking-wide">UID: {profile.free_fire_uid}</span>
                   </div>
                 )}
               </div>
             </div>
           </BentoCard>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3">
             {[
-              { label: "Total Wins", value: Math.floor((profile?.matches_played || 0) * (parseFloat(profile?.win_rate || "0") / 100)), icon: Trophy, color: "bg-pastel-yellow" },
-              { label: "Win Rate", value: `${profile?.win_rate || 0}%`, icon: TrendingUp, color: "bg-pastel-mint" },
-                { label: "Earnings", value: `₹${(wallet?.lifetime_earnings || 0).toLocaleString()}`, icon: Award, color: "bg-electric-blue" },
-              { label: "Matches", value: profile?.matches_played || 0, icon: Gamepad2, color: "bg-pastel-peach" },
+              { label: "Total Wins", value: Math.floor((profile?.matches_played || 0) * (parseFloat(profile?.win_rate || "0") / 100)), icon: Trophy, color: "bg-[#FEF3C7]" },
+              { label: "Win Rate", value: `${profile?.win_rate || 0}%`, icon: TrendingUp, color: "bg-[#D1FAE5]" },
+              { label: "Earnings", value: `₹${(wallet?.lifetime_earnings || 0).toLocaleString()}`, icon: Award, color: "bg-[#5FD3BC]" },
+              { label: "Matches", value: profile?.matches_played || 0, icon: Gamepad2, color: "bg-[#FFEDD5]" },
             ].map((stat, i) => (
               <motion.div 
                 key={i}
@@ -179,86 +176,82 @@ export default function Profile() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: i * 0.05 }}
               >
-                <BentoCard className="p-6 border-none shadow-[0_4px_24px_rgba(0,0,0,0.02)]">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${stat.color}`}>
-                      <stat.icon size={16} className="text-onyx" />
+                <BentoCard className="p-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${stat.color}`}>
+                      <stat.icon size={14} className="text-[#1A1A1A]" />
                     </div>
-                    <span className="text-[9px] font-bold text-charcoal/40 uppercase tracking-widest">{stat.label}</span>
+                    <span className="text-[9px] font-bold text-[#6B7280] uppercase tracking-wide">{stat.label}</span>
                   </div>
-                  <h4 className="text-2xl font-heading text-onyx font-black">{stat.value}</h4>
+                  <h4 className="text-xl font-heading text-[#1A1A1A] font-bold">{stat.value}</h4>
                 </BentoCard>
               </motion.div>
             ))}
           </div>
 
-          {/* Settings Menu */}
-          <section className="space-y-4">
-            <h3 className="text-lg font-heading text-onyx font-black px-1">Settings</h3>
+          <section className="space-y-3 pt-2">
+            <h3 className="text-lg font-heading text-[#1A1A1A] font-bold px-1">Settings</h3>
             
-            <div className="space-y-3">
+            <div className="space-y-2">
               <ListRow 
-                icon={<Settings size={18} className="text-charcoal/40" />}
+                icon={<Settings size={18} className="text-[#6B7280]" />}
                 title="Account & Security"
                 meta="Manage your credentials"
               />
               <ListRow 
-                icon={<Bell size={18} className="text-charcoal/40" />}
+                icon={<Bell size={18} className="text-[#6B7280]" />}
                 title="Notifications"
                 meta="Reminders and alerts"
               />
               <Link href="/wallet">
                 <ListRow 
-                  icon={<CreditCard size={18} className="text-charcoal/40" />}
+                  icon={<CreditCard size={18} className="text-[#6B7280]" />}
                   title="Payment Hub"
                   meta="Wallet and bank settings"
                 />
               </Link>
               <ListRow 
-                icon={<ShieldCheck size={18} className="text-charcoal/40" />}
+                icon={<ShieldCheck size={18} className="text-[#6B7280]" />}
                 title="Verification"
                 meta="KYC and identity status"
                 rightContent={
-                  <span className="text-[9px] font-bold text-onyx/40 bg-off-white px-3 py-1 rounded-full uppercase tracking-widest">Pending</span>
+                  <span className="text-[9px] font-bold text-[#6B7280] bg-[#F5F5F5] px-3 py-1 rounded-full uppercase tracking-wide">Pending</span>
                 }
               />
             </div>
           </section>
 
-          {/* Support Menu */}
-          <section className="space-y-4">
-            <h3 className="text-lg font-heading text-onyx font-black px-1">Support</h3>
+          <section className="space-y-3 pt-2">
+            <h3 className="text-lg font-heading text-[#1A1A1A] font-bold px-1">Support</h3>
             
-            <div className="space-y-3">
+            <div className="space-y-2">
               <ListRow 
-                icon={<HelpCircle size={18} className="text-charcoal/40" />}
+                icon={<HelpCircle size={18} className="text-[#6B7280]" />}
                 title="Arena Help"
                 meta="FAQs and support desk"
               />
               <ListRow 
-                icon={<FileText size={18} className="text-charcoal/40" />}
+                icon={<FileText size={18} className="text-[#6B7280]" />}
                 title="Legal Hub"
                 meta="Terms and privacy policy"
               />
             </div>
           </section>
 
-          {/* Logout */}
           <BentoCard 
-            className="p-6 flex items-center justify-between cursor-pointer border-none bg-pastel-coral/20"
+            className="p-5 flex items-center justify-between cursor-pointer bg-[#FEE2E2]/50"
             onClick={handleLogout}
           >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-pastel-coral flex items-center justify-center">
-                <LogOut size={20} className="text-onyx" />
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-[#FEE2E2] flex items-center justify-center">
+                <LogOut size={18} className="text-[#1A1A1A]" />
               </div>
-              <span className="text-[14px] font-black text-onyx uppercase tracking-widest">Sign Out</span>
+              <span className="text-sm font-bold text-[#1A1A1A] uppercase tracking-wide">Sign Out</span>
             </div>
-            <ChevronRight size={20} className="text-onyx/20" />
+            <ChevronRight size={18} className="text-[#9CA3AF]" />
           </BentoCard>
         </div>
 
-        {/* Edit Profile Modal */}
         <AnimatePresence>
           {isEditing && (
             <motion.div 
@@ -272,56 +265,56 @@ export default function Profile() {
                 animate={{ y: 0 }}
                 exit={{ y: "100%" }}
                 transition={{ type: "spring", damping: 30, stiffness: 300 }}
-                className="bg-white w-full max-w-md rounded-[40px] p-8 space-y-8 shadow-2xl relative max-h-[90vh] overflow-y-auto"
+                className="bg-white w-full max-w-md rounded-2xl p-6 space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-2xl font-heading text-onyx font-black">Edit Identity</h3>
-                    <p className="text-[10px] text-charcoal/40 font-bold uppercase tracking-widest mt-1">Update your presence in the arena</p>
+                    <h3 className="text-xl font-heading text-[#1A1A1A] font-bold">Edit Profile</h3>
+                    <p className="text-[10px] text-[#6B7280] font-bold uppercase tracking-wide mt-1">Update your presence</p>
                   </div>
                   <motion.button 
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setIsEditing(false)} 
-                    className="w-12 h-12 rounded-2xl bg-off-white flex items-center justify-center"
+                    className="w-10 h-10 rounded-lg bg-[#F5F5F5] flex items-center justify-center"
                   >
-                    <X size={24} className="text-onyx" />
+                    <X size={20} className="text-[#1A1A1A]" />
                   </motion.button>
                 </div>
 
-                <form onSubmit={handleUpdateProfile} className="space-y-6">
+                <form onSubmit={handleUpdateProfile} className="space-y-5">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Real Name</label>
+                    <label className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide ml-1">Full Name</label>
                     <Input 
                       value={formData.full_name} 
                       onChange={(e) => setFormData({ ...formData, full_name: e.target.value })} 
-                      className="h-16 rounded-2xl border border-black/5 bg-background font-black px-6 text-onyx focus-visible:ring-onyx placeholder:text-charcoal/20"
+                      className="h-12 rounded-lg border border-[#E5E7EB] bg-white font-medium px-4 text-[#1A1A1A] focus:border-[#5FD3BC] focus:ring-2 focus:ring-[#5FD3BC]/20 placeholder:text-[#9CA3AF]"
                       placeholder="Your Full Name"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Warrior Handle</label>
+                    <label className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide ml-1">Username</label>
                     <Input 
                       value={formData.username} 
                       onChange={(e) => setFormData({ ...formData, username: e.target.value })} 
-                      className="h-16 rounded-2xl border border-black/5 bg-background font-black px-6 text-onyx focus-visible:ring-onyx placeholder:text-charcoal/20"
+                      className="h-12 rounded-lg border border-[#E5E7EB] bg-white font-medium px-4 text-[#1A1A1A] focus:border-[#5FD3BC] focus:ring-2 focus:ring-[#5FD3BC]/20 placeholder:text-[#9CA3AF]"
                       placeholder="Username"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Communication</label>
+                    <label className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide ml-1">Phone</label>
                     <Input 
                       value={formData.phone} 
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })} 
-                      className="h-16 rounded-2xl border border-black/5 bg-background font-black px-6 text-onyx focus-visible:ring-onyx placeholder:text-charcoal/20"
+                      className="h-12 rounded-lg border border-[#E5E7EB] bg-white font-medium px-4 text-[#1A1A1A] focus:border-[#5FD3BC] focus:ring-2 focus:ring-[#5FD3BC]/20 placeholder:text-[#9CA3AF]"
                       placeholder="Phone Number"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest ml-1">Avatar Resource</label>
+                    <label className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide ml-1">Avatar URL</label>
                     <Input 
                       value={formData.avatar_url} 
                       onChange={(e) => setFormData({ ...formData, avatar_url: e.target.value })} 
-                      className="h-16 rounded-2xl border border-black/5 bg-background font-black px-6 text-onyx focus-visible:ring-onyx placeholder:text-charcoal/20"
+                      className="h-12 rounded-lg border border-[#E5E7EB] bg-white font-medium px-4 text-[#1A1A1A] focus:border-[#5FD3BC] focus:ring-2 focus:ring-[#5FD3BC]/20 placeholder:text-[#9CA3AF]"
                       placeholder="Image URL"
                     />
                   </div>
@@ -330,9 +323,9 @@ export default function Profile() {
                     whileTap={{ scale: 0.98 }}
                     type="submit" 
                     disabled={saving}
-                    className="w-full h-16 bg-onyx text-white rounded-2xl text-[12px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-onyx/10"
+                    className="w-full h-12 bg-[#5FD3BC] text-[#1A1A1A] rounded-lg text-[12px] font-bold uppercase tracking-wide shadow-lg flex items-center justify-center disabled:bg-[#D1D5DB]"
                   >
-                    {saving ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "Deploy Changes"}
+                    {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : "Save Changes"}
                   </motion.button>
                 </form>
               </motion.div>
