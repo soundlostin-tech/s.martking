@@ -129,7 +129,7 @@ export default function Profile() {
 
         <div className="px-6 space-y-6">
           {/* Profile Card */}
-          <BentoCard variant="hero" pastelColor="peach" className="p-8">
+          <BentoCard variant="hero" pastelColor="rose" className="p-8">
             <div className="flex items-center gap-6">
               <div className="relative">
                 <div className="w-20 h-20 rounded-full p-[3px] bg-onyx">

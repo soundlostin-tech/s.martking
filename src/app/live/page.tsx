@@ -152,7 +152,7 @@ function LiveContent() {
             </BentoCard>
 
             {/* Today's Schedule Card */}
-            <BentoCard variant="pastel" pastelColor="yellow" className="p-8 border-none">
+            <BentoCard variant="pastel" pastelColor="indigo" className="p-8 border-none">
               <div className="flex items-center justify-between mb-8">
                 <h4 className="text-xl font-heading text-onyx font-black">Today's Schedule</h4>
                 <div className="w-10 h-10 rounded-2xl bg-white/40 flex items-center justify-center">

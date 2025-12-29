@@ -6,26 +6,29 @@ import { cn } from "@/lib/utils";
 interface BentoCardProps {
   children: React.ReactNode;
   className?: string;
-  variant?: "default" | "hero" | "pastel" | "dark" | "vibrant";
-  pastelColor?: "yellow" | "mint" | "coral" | "lavender" | "peach" | "sky";
-  onClick?: () => void;
-}
-
-export function BentoCard({ 
-  children, 
-  className, 
-  variant = "default",
-  pastelColor = "yellow",
-  onClick 
-}: BentoCardProps) {
-  const pastelVariants = {
-    yellow: "bento-yellow",
-    mint: "bento-mint",
-    coral: "bento-coral",
-    lavender: "bento-lavender",
-    peach: "bento-peach",
-    sky: "bento-sky",
-  };
+    variant?: "default" | "hero" | "pastel" | "dark" | "vibrant";
+    pastelColor?: "yellow" | "mint" | "coral" | "lavender" | "peach" | "sky" | "rose" | "indigo" | "sage";
+    onClick?: () => void;
+  }
+  
+  export function BentoCard({ 
+    children, 
+    className, 
+    variant = "default",
+    pastelColor = "yellow",
+    onClick 
+  }: BentoCardProps) {
+    const pastelVariants = {
+      yellow: "bento-yellow",
+      mint: "bento-mint",
+      coral: "bento-coral",
+      lavender: "bento-lavender",
+      peach: "bento-peach",
+      sky: "bento-sky",
+      rose: "bento-rose",
+      indigo: "bento-indigo",
+      sage: "bento-sage",
+    };
 
   const baseClasses = "bento-card";
   

@@ -73,7 +73,10 @@
     --color-pastel-coral: #FFB5B5;
     --color-pastel-lavender: #D4B5FF;
     --color-pastel-peach: #FFDAB9;
-    --color-pastel-sky: #FFF5CC;
+    --color-pastel-sky: #E0F7FA;
+    --color-pastel-rose: #FFD1DC;
+    --color-pastel-indigo: #E8EAF6;
+    --color-pastel-sage: #E8F5E9;
   }
   
   :root {
@@ -177,6 +180,18 @@
 
 .bento-sky {
   @apply bg-pastel-sky text-onyx border-none;
+}
+
+.bento-rose {
+  @apply bg-pastel-rose text-onyx border-none;
+}
+
+.bento-indigo {
+  @apply bg-pastel-indigo text-onyx border-none;
+}
+
+.bento-sage {
+  @apply bg-pastel-sage text-onyx border-none;
 }
 
 /* Hero Bento Card */
