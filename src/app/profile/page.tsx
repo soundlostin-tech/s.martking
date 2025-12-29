@@ -1,7 +1,6 @@
 "use client";
 
 import { BottomNav } from "@/components/layout/BottomNav";
-import { TopHeader } from "@/components/layout/TopHeader";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { ListRow } from "@/components/ui/ListRow";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -116,7 +115,6 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-transparent text-onyx relative z-10">
       <main className="pb-32">
-        <TopHeader />
 
         {/* Header Section */}
         <section className="px-6 pt-6 pb-4">

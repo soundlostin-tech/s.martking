@@ -1,7 +1,6 @@
 "use client";
 
 import { BottomNav } from "@/components/layout/BottomNav";
-import { TopHeader } from "@/components/layout/TopHeader";
 import { VintageTV } from "@/components/ui/VintageTV";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
@@ -95,7 +94,6 @@ function LiveContent() {
 
   return (
     <main className="pb-32">
-      <TopHeader />
 
       {/* Header Section */}
       <section className="px-6 pt-6 pb-8">

@@ -1,7 +1,6 @@
 "use client";
 
 import { BottomNav } from "@/components/layout/BottomNav";
-import { TopHeader } from "@/components/layout/TopHeader";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { ChipGroup } from "@/components/ui/Chip";
 import { useState, useEffect, useCallback } from "react";
@@ -73,7 +72,6 @@ export default function LeaderboardPage() {
   return (
     <div className="min-h-screen bg-background text-onyx">
       <main className="pb-32 relative z-10">
-        <TopHeader />
 
         {/* Header Section */}
         <section className="relative px-6 pt-10 pb-6">
