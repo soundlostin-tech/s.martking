@@ -145,7 +145,7 @@ export default function AdminOverview() {
             <div className="flex items-center justify-between mb-4">
               <p className="text-[10px] font-black text-onyx/40 uppercase tracking-widest">Total Revenue</p>
               <div className="w-10 h-10 rounded-xl bg-onyx flex items-center justify-center shadow-lg">
-                <IndianRupee size={20} className="text-lime-yellow" />
+                <IndianRupee size={20} className="text-electric-blue" />
               </div>
             </div>
             <h3 className="text-3xl font-heading font-black text-onyx">₹{stats.totalRevenue.toLocaleString()}</h3>
@@ -168,7 +168,7 @@ export default function AdminOverview() {
               </div>
             </div>
             <h3 className="text-3xl font-heading font-black text-white">{stats.totalUsers.toLocaleString()}</h3>
-            <div className="mt-2 flex items-center gap-1 text-[9px] font-black text-lime-yellow uppercase">
+            <div className="mt-2 flex items-center gap-1 text-[9px] font-black text-electric-blue uppercase">
               <ArrowUpRight size={12} strokeWidth={3} />
               {stats.userGrowth} new entries
             </div>
@@ -220,7 +220,7 @@ export default function AdminOverview() {
               <p className="text-[10px] font-black text-charcoal/40 uppercase tracking-widest mt-1">Volume vs Time</p>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-lime-yellow" />
+              <div className="w-3 h-3 rounded-full bg-electric-blue" />
               <span className="text-[10px] font-black text-charcoal/60 uppercase">Successful deposits</span>
             </div>
           </div>
@@ -254,7 +254,7 @@ export default function AdminOverview() {
             <div className="grid grid-cols-2 gap-4">
               <Link href="/admin/tournaments">
                 <button className="w-full bg-onyx text-white rounded-2xl py-4 flex flex-col items-center gap-2 shadow-lg active:scale-95 transition-all">
-                  <Trophy size={18} className="text-lime-yellow" />
+                  <Trophy size={18} className="text-electric-blue" />
                   <span className="text-[9px] font-black uppercase">Event</span>
                 </button>
               </Link>

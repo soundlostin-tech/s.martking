@@ -29,13 +29,13 @@ export function BentoCard({
 
   const baseClasses = "bento-card";
   
-  const variantClasses = {
-    default: "",
-    dark: "bento-dark",
-    vibrant: "bg-lime-yellow text-onyx border-none shadow-[0_8px_32px_rgba(215,253,3,0.2)]",
-    hero: `bento-hero ${pastelVariants[pastelColor]}`,
-    pastel: pastelVariants[pastelColor],
-  };
+    const variantClasses = {
+      default: "",
+      dark: "bento-dark",
+      vibrant: "bg-electric-blue text-onyx border-none shadow-[0_8px_32px_rgba(0,163,255,0.2)]",
+      hero: `bento-hero ${pastelVariants[pastelColor]}`,
+      pastel: pastelVariants[pastelColor],
+    };
 
   return (
     <motion.div

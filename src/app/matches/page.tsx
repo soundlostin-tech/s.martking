@@ -170,7 +170,7 @@ export default function MatchesPage() {
         {myEntries.length > 0 && activeFilter === "Upcoming" && (
           <section className="px-6 pt-8">
             <h3 className="text-xl font-heading text-onyx font-black mb-6 flex items-center gap-2">
-              My Entries <span className="w-6 h-6 rounded-full bg-lime-yellow text-[10px] flex items-center justify-center">{myEntries.length}</span>
+              My Entries <span className="w-6 h-6 rounded-full bg-electric-blue text-[10px] flex items-center justify-center">{myEntries.length}</span>
             </h3>
             <div className="flex gap-4 overflow-x-auto no-scrollbar">
               {myEntries.map((match) => (
@@ -192,7 +192,7 @@ export default function MatchesPage() {
                       <p className="text-[8px] font-bold text-white/40 uppercase tracking-widest">Starts at</p>
                       <p className="text-sm font-black text-white">{new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                     </div>
-                    <p className="text-sm font-black text-lime-yellow">JOINED</p>
+                    <p className="text-sm font-black text-electric-blue">JOINED</p>
                   </div>
                 </BentoCard>
               ))}
@@ -325,7 +325,7 @@ export default function MatchesPage() {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center py-2 border-b border-onyx/5">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-lime-yellow flex items-center justify-center font-black text-xs">1st</div>
+                      <div className="w-8 h-8 rounded-lg bg-electric-blue flex items-center justify-center font-black text-xs">1st</div>
                       <span className="text-sm font-bold text-onyx">Winner</span>
                     </div>
                     <span className="text-lg font-black text-onyx">₹2,500</span>
@@ -407,7 +407,7 @@ export default function MatchesPage() {
                 <Link href={`/live?match=${selectedMatch.id}`}>
                   <motion.button 
                     whileTap={{ scale: 0.95 }}
-                    className="w-full py-6 bg-lime-yellow text-onyx rounded-[24px] text-[14px] font-black uppercase tracking-[0.2em] shadow-2xl flex items-center justify-center gap-3"
+                    className="w-full py-6 bg-electric-blue text-onyx rounded-[24px] text-[14px] font-black uppercase tracking-[0.2em] shadow-2xl flex items-center justify-center gap-3"
                   >
                     Watch Now
                   </motion.button>

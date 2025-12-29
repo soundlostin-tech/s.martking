@@ -23,20 +23,20 @@ export function AnimatedBackground() {
         }}
         transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
         className="absolute -top-[20%] -right-[20%] w-[60%] h-[60%] rounded-full blur-[100px] opacity-40"
-        style={{ background: 'linear-gradient(135deg, #F5F3C7 0%, #D7FD03 100%)' }}
-      />
-      
-      {/* Soft pastel blob - bottom left */}
-      <motion.div 
-        animate={{ 
-          x: [0, -30, 0], 
-          y: [0, 30, 0],
-          scale: [1.1, 1, 1.1],
-        }}
-        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -bottom-[20%] -left-[20%] w-[60%] h-[60%] rounded-full blur-[120px] opacity-30"
-        style={{ background: 'linear-gradient(135deg, #C7F5E3 0%, #C7E323 100%)' }}
-      />
+          style={{ background: 'linear-gradient(135deg, #E0F5FF 0%, #00A3FF 100%)' }}
+        />
+        
+        {/* Soft pastel blob - bottom left */}
+        <motion.div 
+          animate={{ 
+            x: [0, -30, 0], 
+            y: [0, 30, 0],
+            scale: [1.1, 1, 1.1],
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -bottom-[20%] -left-[20%] w-[60%] h-[60%] rounded-full blur-[120px] opacity-30"
+          style={{ background: 'linear-gradient(135deg, #C7F5FF 0%, #44BCFF 100%)' }}
+        />
 
       {/* Accent blob - center */}
       <motion.div 

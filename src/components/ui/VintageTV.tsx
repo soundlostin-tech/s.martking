@@ -29,7 +29,7 @@ export function VintageTV({ streamUrl, isOn = false, onToggle, title }: VintageT
     <div className="vintage-tv w-full max-w-md mx-auto relative group">
       {/* Decorative Sticker: "LIVE ARENA" */}
       <div className="absolute -top-6 -left-4 z-20 rotate-[-12deg]">
-        <div className="bg-lime-yellow text-onyx px-4 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg border-2 border-white">
+        <div className="bg-electric-blue text-onyx px-4 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg border-2 border-white">
           Live Arena
         </div>
       </div>
@@ -73,9 +73,9 @@ export function VintageTV({ streamUrl, isOn = false, onToggle, title }: VintageT
                 <div className="relative z-10 text-center px-8 py-4 bg-black/40 backdrop-blur-md rounded-2xl border border-white/10">
                   <p className="text-white/40 text-[10px] font-black tracking-[0.3em] uppercase">No Signal</p>
                   <div className="mt-3 flex items-center justify-center gap-2">
-                    <div className="w-2 h-2 bg-lime-yellow rounded-full animate-pulse" />
-                    <div className="w-2 h-2 bg-lime-yellow/40 rounded-full animate-pulse delay-150" />
-                    <div className="w-2 h-2 bg-lime-yellow/20 rounded-full animate-pulse delay-300" />
+                    <div className="w-2 h-2 bg-electric-blue rounded-full animate-pulse" />
+                    <div className="w-2 h-2 bg-electric-blue/40 rounded-full animate-pulse delay-150" />
+                    <div className="w-2 h-2 bg-electric-blue/20 rounded-full animate-pulse delay-300" />
                   </div>
                 </div>
               </motion.div>
@@ -89,7 +89,7 @@ export function VintageTV({ streamUrl, isOn = false, onToggle, title }: VintageT
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center gap-2">
               <div className={channelOn ? "led-on" : "led-off"} />
-              <span className={`text-[9px] font-black uppercase tracking-widest ${channelOn ? "text-lime-yellow" : "text-white/20"}`}>
+              <span className={`text-[9px] font-black uppercase tracking-widest ${channelOn ? "text-electric-blue" : "text-white/20"}`}>
                 {channelOn ? "On Air" : "Offline"}
               </span>
             </div>
@@ -110,7 +110,7 @@ export function VintageTV({ streamUrl, isOn = false, onToggle, title }: VintageT
                     setVolume(newVol);
                   }}
                 >
-                  <div className="w-1 h-3 bg-lime-yellow rounded-full transform -translate-y-2 shadow-[0_0_8px_rgba(215,253,3,0.5)]" />
+                  <div className="w-1 h-3 bg-electric-blue rounded-full transform -translate-y-2 shadow-[0_0_8px_rgba(215,253,3,0.5)]" />
                 </motion.div>
               </div>
               <span className="text-[8px] font-black text-white/40 uppercase">VOL</span>
@@ -123,7 +123,7 @@ export function VintageTV({ streamUrl, isOn = false, onToggle, title }: VintageT
                 onClick={handleChannelToggle}
                 className={`w-14 h-14 rounded-full flex items-center justify-center border-2 shadow-xl transition-all ${
                   channelOn 
-                    ? "bg-lime-yellow border-white text-onyx shadow-[0_0_20px_rgba(215,253,3,0.3)]" 
+                    ? "bg-electric-blue border-white text-onyx shadow-[0_0_20px_rgba(215,253,3,0.3)]" 
                     : "bg-charcoal border-white/10 text-white/20"
                 }`}
               >

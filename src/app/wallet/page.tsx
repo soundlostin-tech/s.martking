@@ -215,7 +215,7 @@ export default function WalletPage() {
                   </div>
                 </div>
                 <div className="w-14 h-14 rounded-2xl bg-onyx flex items-center justify-center shadow-xl">
-                  <WalletIcon size={24} className="text-lime-yellow" />
+                  <WalletIcon size={24} className="text-electric-blue" />
                 </div>
               </div>
 
@@ -245,7 +245,7 @@ export default function WalletPage() {
               className="bg-onyx text-white rounded-[28px] py-8 flex flex-col items-center gap-3 shadow-xl"
             >
               <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center">
-                <Plus size={28} strokeWidth={3} className="text-lime-yellow" />
+                <Plus size={28} strokeWidth={3} className="text-electric-blue" />
               </div>
               <span className="text-[11px] font-black uppercase tracking-[0.2em]">Add Funds</span>
             </motion.button>
@@ -364,7 +364,7 @@ export default function WalletPage() {
       {/* Deposit Modal */}
       <Dialog open={isDepositOpen} onOpenChange={setIsDepositOpen}>
         <DialogContent className="p-0 border-none bg-white rounded-t-[40px] sm:rounded-[40px] overflow-hidden max-w-[100vw] sm:max-w-[420px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0">
-          <div className="bg-lime-yellow p-10 relative">
+          <div className="bg-electric-blue p-10 relative">
             <DialogTitle className="text-[36px] font-heading text-onyx leading-none font-black mb-2">Deposit</DialogTitle>
             <DialogDescription className="text-onyx/40 text-[10px] font-bold uppercase tracking-[0.2em]">Fuel your arena journey</DialogDescription>
           </div>

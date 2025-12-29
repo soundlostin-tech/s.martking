@@ -40,18 +40,18 @@ export function BottomNav() {
               >
                 <div className={`p-2.5 rounded-2xl transition-all duration-300 ${
                   isActive 
-                    ? "bg-lime-yellow text-onyx shadow-[0_4px_16px_rgba(215,253,3,0.3)]" 
+                    ? "bg-electric-blue text-onyx shadow-[0_4px_16px_rgba(215,253,3,0.3)]" 
                     : "text-white/40 hover:text-white"
                 }`}>
                   <Icon size={20} strokeWidth={isActive ? 3 : 2} />
                   {isLive && !isActive && (
-                    <span className="absolute top-2 right-2 w-2 h-2 bg-lime-yellow rounded-full border border-onyx" />
+                    <span className="absolute top-2 right-2 w-2 h-2 bg-electric-blue rounded-full border border-onyx" />
                   )}
                 </div>
                 {isActive && (
                   <motion.span 
                     layoutId="nav-label"
-                    className="text-[9px] font-black uppercase tracking-widest mt-1 text-lime-yellow"
+                    className="text-[9px] font-black uppercase tracking-widest mt-1 text-electric-blue"
                   >
                     {item.label}
                   </motion.span>

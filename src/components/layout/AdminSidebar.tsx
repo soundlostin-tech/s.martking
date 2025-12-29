@@ -30,7 +30,7 @@ export function AdminSidebar() {
       {/* Brand Header */}
       <div className="p-8">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-lime-yellow rounded-2xl flex items-center justify-center text-onyx shadow-lg shadow-lime-yellow/20">
+          <div className="w-12 h-12 bg-electric-blue rounded-2xl flex items-center justify-center text-onyx shadow-lg shadow-electric-blue/20">
             <Zap size={28} strokeWidth={3} />
           </div>
           <div className="flex flex-col">
@@ -62,7 +62,7 @@ export function AdminSidebar() {
                 }`}
               >
                 <div className={`p-2 rounded-xl transition-colors ${
-                  isActive ? "bg-white/10 text-lime-yellow" : "bg-black/[0.03] group-hover:bg-black/[0.05]"
+                  isActive ? "bg-white/10 text-electric-blue" : "bg-black/[0.03] group-hover:bg-black/[0.05]"
                 }`}>
                   <Icon size={20} strokeWidth={isActive ? 3 : 2} />
                 </div>
@@ -72,7 +72,7 @@ export function AdminSidebar() {
                 {isActive && (
                   <motion.div 
                     layoutId="admin-active-dot"
-                    className="ml-auto w-1.5 h-1.5 rounded-full bg-lime-yellow shadow-[0_0_8px_#D7FD03]"
+                    className="ml-auto w-1.5 h-1.5 rounded-full bg-electric-blue shadow-[0_0_8px_#D7FD03]"
                   />
                 )}
               </motion.div>

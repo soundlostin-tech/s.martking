@@ -68,7 +68,7 @@ export default function Signin() {
   return (
     <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
       {/* Left Side - Brand Identity */}
-      <div className="hidden lg:flex flex-col justify-between p-16 bg-gradient-to-br from-[#D7FD03] to-[#C7E323] relative overflow-hidden">
+      <div className="hidden lg:flex flex-col justify-between p-16 bg-gradient-to-br from-[#00A3FF] to-[#44BCFF] relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#11130D 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }} />
         
         <div className="relative z-10">
@@ -96,7 +96,7 @@ export default function Signin() {
         <div className="relative z-10 flex items-center gap-4">
           <div className="flex -space-x-3">
             {[1,2,3,4].map(i => (
-              <div key={i} className="w-10 h-10 rounded-full border-4 border-[#D7FD03] bg-[#11130D]/20 backdrop-blur-md" />
+              <div key={i} className="w-10 h-10 rounded-full border-4 border-[#00A3FF] bg-[#11130D]/20 backdrop-blur-md" />
             ))}
           </div>
           <p className="text-[#11130D]/60 text-[11px] font-bold uppercase tracking-wide">
@@ -116,7 +116,7 @@ export default function Signin() {
         <div className="max-w-md w-full mx-auto space-y-8 relative z-10">
           {/* Mobile Logo */}
           <div className="lg:hidden flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-[#D7FD03] rounded-xl flex items-center justify-center shadow-lg shadow-[#D7FD03]/30">
+            <div className="w-10 h-10 bg-[#00A3FF] rounded-xl flex items-center justify-center shadow-lg shadow-[#00A3FF]/30">
               <svg viewBox="0 0 24 24" fill="none" stroke="#11130D" strokeWidth="2.5" className="w-5 h-5">
                 <circle cx="12" cy="12" r="10" />
                 <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
@@ -137,7 +137,7 @@ export default function Signin() {
                 <Input 
                   type="email"
                   placeholder="name@example.com"
-                  className="h-14 rounded-xl bg-white border border-[#C8C8C4]/30 text-[#11130D] font-medium px-5 focus-visible:ring-[#D7FD03]"
+                  className="h-14 rounded-xl bg-white border border-[#C8C8C4]/30 text-[#11130D] font-medium px-5 focus-visible:ring-[#00A3FF]"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 />
@@ -148,7 +148,7 @@ export default function Signin() {
                   <Input 
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    className="h-14 rounded-xl bg-white border border-[#C8C8C4]/30 text-[#11130D] font-medium px-5 pr-12 focus-visible:ring-[#D7FD03]"
+                    className="h-14 rounded-xl bg-white border border-[#C8C8C4]/30 text-[#11130D] font-medium px-5 pr-12 focus-visible:ring-[#00A3FF]"
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   />
@@ -173,7 +173,7 @@ export default function Signin() {
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
-              className="w-full h-14 bg-[#D7FD03] text-[#11130D] rounded-xl font-bold uppercase tracking-wide text-[11px] shadow-lg shadow-[#D7FD03]/30"
+              className="w-full h-14 bg-[#00A3FF] text-[#11130D] rounded-xl font-bold uppercase tracking-wide text-[11px] shadow-lg shadow-[#00A3FF]/30"
             >
               {loading ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Sign In"}
             </motion.button>

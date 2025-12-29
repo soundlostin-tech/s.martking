@@ -63,9 +63,9 @@
     --color-alabaster-grey: #D4D7DE;
     --color-off-white: #D4D7DE;
     --color-olive: #868935;
-    --color-lemon-lime: #C7E323;
-    --color-lime-yellow: #D7FD03;
-    --color-lime-vibrant: #D7FD03;
+    --color-electric-blue-light: #44BCFF;
+    --color-electric-blue: #00A3FF;
+    --color-electric-blue-vibrant: #00A3FF;
     
     /* Pastel Accent Colors for sticker blocks */
     --color-pastel-yellow: #FFF5CC;
@@ -100,7 +100,7 @@
     --muted: #D4D7DE;
     --muted-foreground: #4A4B48;
     
-    --accent: #D7FD03;
+    --accent: #00A3FF;
     --accent-foreground: #11130D;
     
     --destructive: #FFB5B5;
@@ -128,7 +128,7 @@
     -webkit-tap-highlight-color: transparent;
   }
   html, body {
-    @apply bg-background text-onyx font-sans antialiased selection:bg-lime-yellow/30 selection:text-onyx overflow-x-hidden;
+    @apply bg-background text-onyx font-sans antialiased selection:bg-electric-blue/30 selection:text-onyx overflow-x-hidden;
     background-attachment: fixed;
     touch-action: manipulation;
     overscroll-behavior-y: none;
@@ -216,7 +216,7 @@
 
 /* Badge Styles */
 .badge-live {
-  @apply bg-lime-yellow text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
+  @apply bg-electric-blue text-onyx px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm;
 }
 
 .badge-pending {
@@ -238,7 +238,7 @@
 
 /* Premium Gradients */
 .premium-gradient {
-  background: linear-gradient(135deg, #D7FD03 0%, #C7E323 100%);
+  background: linear-gradient(135deg, #00A3FF 0%, #44BCFF 100%);
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -271,7 +271,7 @@
 }
 
 .led-on {
-  @apply w-2 h-2 rounded-full bg-lime-yellow shadow-[0_0_10px_rgba(215,253,3,0.8)];
+  @apply w-2 h-2 rounded-full bg-electric-blue shadow-[0_0_10px_rgba(0,163,255,0.8)];
 }
 
 .led-off {

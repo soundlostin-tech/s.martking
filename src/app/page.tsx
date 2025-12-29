@@ -112,7 +112,7 @@ export default function Home() {
                 <div className="w-full h-full rounded-full bg-silver/20 flex items-center justify-center overflow-hidden">
                   <Plus size={24} strokeWidth={3} className="text-charcoal" />
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-lime-yellow rounded-full border-2 border-white flex items-center justify-center shadow-md">
+                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-electric-blue rounded-full border-2 border-white flex items-center justify-center shadow-md">
                   <Plus size={14} strokeWidth={4} className="text-onyx" />
                 </div>
               </motion.div>
@@ -124,7 +124,7 @@ export default function Home() {
                 <motion.div 
                   whileTap={{ scale: 0.92 }}
                   onClick={() => openStory(profile.id)}
-                  className="w-[68px] h-[68px] rounded-full p-[3px] bg-white shadow-sm ring-2 ring-lime-yellow ring-offset-2"
+                  className="w-[68px] h-[68px] rounded-full p-[3px] bg-white shadow-sm ring-2 ring-electric-blue ring-offset-2"
                 >
                   <div className="w-full h-full rounded-full bg-silver flex items-center justify-center overflow-hidden">
                     {profile.avatar_url ? (
@@ -188,14 +188,14 @@ export default function Home() {
             <BentoCard variant="dark" className="p-6 h-44 flex flex-col justify-between overflow-hidden relative">
               <div className="relative z-10">
                 <div className="flex items-center gap-2 mb-3">
-                  <Target size={16} className="text-lime-yellow" />
+                  <Target size={16} className="text-electric-blue" />
                   <span className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Win Rate</span>
                 </div>
                 <p className="text-3xl font-heading text-white font-black">{userStats.winRate}</p>
               </div>
               <div className="h-10 flex items-end gap-1 relative z-10">
                 {[40, 70, 45, 90, 60, 80, 55].map((h, i) => (
-                  <div key={i} className="flex-1 bg-lime-yellow/20 rounded-t-sm" style={{ height: `${h}%` }} />
+                  <div key={i} className="flex-1 bg-electric-blue/20 rounded-t-sm" style={{ height: `${h}%` }} />
                 ))}
               </div>
               <div className="absolute -right-4 -top-4 opacity-5">
