@@ -38,24 +38,24 @@ export function BottomNav() {
                 }}
                 className="relative flex flex-col items-center"
               >
-                <div className={`p-2.5 rounded-2xl transition-all duration-300 ${
-                  isActive 
-                    ? "bg-electric-blue text-onyx shadow-[0_4px_16px_rgba(215,253,3,0.3)]" 
-                    : "text-white/40 hover:text-white"
-                }`}>
-                  <Icon size={20} strokeWidth={isActive ? 3 : 2} />
-                  {isLive && !isActive && (
-                    <span className="absolute top-2 right-2 w-2 h-2 bg-electric-blue rounded-full border border-onyx" />
+                  <div className={`p-2.5 rounded-2xl transition-all duration-300 ${
+                    isActive 
+                      ? "bg-pastel-lavender text-onyx shadow-[0_4px_16px_rgba(212,181,255,0.3)]" 
+                      : "text-white/40 hover:text-white"
+                  }`}>
+                    <Icon size={20} strokeWidth={isActive ? 3 : 2} />
+                    {isLive && !isActive && (
+                      <span className="absolute top-2 right-2 w-2 h-2 bg-pastel-lavender rounded-full border border-onyx" />
+                    )}
+                  </div>
+                  {isActive && (
+                    <motion.span 
+                      layoutId="nav-label"
+                      className="text-[9px] font-black uppercase tracking-widest mt-1 text-pastel-lavender"
+                    >
+                      {item.label}
+                    </motion.span>
                   )}
-                </div>
-                {isActive && (
-                  <motion.span 
-                    layoutId="nav-label"
-                    className="text-[9px] font-black uppercase tracking-widest mt-1 text-electric-blue"
-                  >
-                    {item.label}
-                  </motion.span>
-                )}
               </motion.div>
             </Link>
           );
