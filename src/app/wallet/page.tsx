@@ -15,7 +15,10 @@ import {
   ArrowUpRight,
   ChevronRight,
   Trophy,
-  Sparkles
+  Sparkles,
+  X,
+  Calendar,
+  Hash
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState, useCallback } from "react";
@@ -25,9 +28,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useHaptics } from "@/hooks/useHaptics";
 
 export default function WalletPage() {
   const { user, loading: authLoading } = useAuth(true);
+  const { triggerHaptic } = useHaptics();
   const [wallet, setWallet] = useState<any>(null);
   const [transactions, setTransactions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -36,6 +41,8 @@ export default function WalletPage() {
   
   const [isDepositOpen, setIsDepositOpen] = useState(false);
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
+  const [selectedTx, setSelectedTx] = useState<any>(null);
+  const [isTxDetailOpen, setIsTxDetailOpen] = useState(false);
   
   const [depositAmount, setDepositAmount] = useState("");
   const [withdrawAmount, setWithdrawAmount] = useState("");
@@ -335,14 +342,19 @@ return (
                 </div>
               ) : filteredTransactions.length > 0 ? (
                 <AnimatePresence mode="popLayout">
-                  {filteredTransactions.map((tx, i) => (
-                    <motion.div 
-                      key={tx.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.03 }}
-                    >
-                      <BentoCard className="p-4 shadow-soft flex items-center justify-between">
+                    {filteredTransactions.map((tx, i) => (
+                      <motion.div 
+                        key={tx.id}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.03 }}
+                        onClick={() => {
+                          triggerHaptic('light');
+                          setSelectedTx(tx);
+                          setIsTxDetailOpen(true);
+                        }}
+                      >
+                        <BentoCard className="p-4 shadow-soft flex items-center justify-between cursor-pointer active:scale-[0.98] transition-transform">
                         <div className="flex items-center gap-4">
                           <div className={cn(
                             "w-12 h-12 rounded-2xl flex items-center justify-center",
@@ -437,44 +449,119 @@ return (
         </DialogContent>
       </Dialog>
 
-      {/* Withdraw Modal */}
-      <Dialog open={isWithdrawOpen} onOpenChange={setIsWithdrawOpen}>
-        <DialogContent className="p-0 border-none bg-white rounded-[36px] overflow-hidden max-w-[400px]">
-          <div className="bg-pastel-coral p-8 relative overflow-hidden">
-            <div className="relative z-10">
-              <h2 className="text-3xl font-black mb-1">Withdraw</h2>
-              <p className="text-[11px] font-bold opacity-50 uppercase tracking-widest">Cash out your winnings</p>
+        {/* Withdraw Modal */}
+        <Dialog open={isWithdrawOpen} onOpenChange={setIsWithdrawOpen}>
+          <DialogContent className="p-0 border-none bg-white rounded-[36px] overflow-hidden max-w-[400px]">
+            <div className="bg-pastel-coral p-8 relative overflow-hidden">
+              <div className="relative z-10">
+                <h2 className="text-3xl font-black mb-1">Withdraw</h2>
+                <p className="text-[11px] font-bold opacity-50 uppercase tracking-widest">Cash out your winnings</p>
+              </div>
+              <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-white/20 rounded-full" />
             </div>
-            <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-white/20 rounded-full" />
-          </div>
-          <div className="p-8 space-y-6">
-            <div className="space-y-3">
-              <label className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest">Amount (₹)</label>
-              <Input 
-                type="number" 
-                placeholder="Min ₹100" 
-                className="h-16 rounded-2xl border-none bg-off-white text-2xl font-black px-6 focus-visible:ring-onyx text-onyx placeholder:text-charcoal/20"
-                value={withdrawAmount}
-                onChange={(e) => setWithdrawAmount(e.target.value)}
-              />
+            <div className="p-8 space-y-6">
+              <div className="space-y-3">
+                <label className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest">Amount (₹)</label>
+                <Input 
+                  type="number" 
+                  placeholder="Min ₹100" 
+                  className="h-16 rounded-2xl border-none bg-off-white text-2xl font-black px-6 focus-visible:ring-onyx text-onyx placeholder:text-charcoal/20"
+                  value={withdrawAmount}
+                  onChange={(e) => setWithdrawAmount(e.target.value)}
+                />
+              </div>
+              <BentoCard variant="pastel" pastelColor="peach" className="p-4 flex items-center gap-3">
+                <Clock size={18} className="text-onyx" />
+                <p className="text-[11px] font-black uppercase tracking-widest">24h Processing</p>
+              </BentoCard>
+              <motion.button 
+                whileTap={{ scale: 0.98 }}
+                onClick={handleWithdraw}
+                disabled={processing}
+                className="w-full py-5 bg-onyx text-white rounded-2xl text-[11px] font-black uppercase tracking-[0.15em] shadow-xl"
+              >
+                {processing ? <Loader2 className="animate-spin mx-auto" /> : "Request Withdrawal"}
+              </motion.button>
             </div>
-            <BentoCard variant="pastel" pastelColor="peach" className="p-4 flex items-center gap-3">
-              <Clock size={18} className="text-onyx" />
-              <p className="text-[11px] font-black uppercase tracking-widest">24h Processing</p>
-            </BentoCard>
-            <motion.button 
-              whileTap={{ scale: 0.98 }}
-              onClick={handleWithdraw}
-              disabled={processing}
-              className="w-full py-5 bg-onyx text-white rounded-2xl text-[11px] font-black uppercase tracking-[0.15em] shadow-xl"
-            >
-              {processing ? <Loader2 className="animate-spin mx-auto" /> : "Request Withdrawal"}
-            </motion.button>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
 
-      <BottomNav />
-    </div>
-  );
-}
+        {/* Transaction Detail Modal */}
+        <Dialog open={isTxDetailOpen} onOpenChange={setIsTxDetailOpen}>
+          <DialogContent className="p-0 border-none bg-white rounded-[36px] overflow-hidden max-w-[400px]">
+            {selectedTx && (
+              <>
+                <div className={cn(
+                  "p-8 relative overflow-hidden",
+                  selectedTx.type === 'deposit' ? 'bg-pastel-mint' :
+                  selectedTx.type === 'withdrawal' ? 'bg-pastel-coral' : 'bg-pastel-lavender'
+                )}>
+                  <button 
+                    onClick={() => setIsTxDetailOpen(false)}
+                    className="absolute top-4 right-4 w-10 h-10 bg-white/50 rounded-full flex items-center justify-center z-10"
+                  >
+                    <X size={18} />
+                  </button>
+                  <div className="relative z-10">
+                    <div className="w-16 h-16 bg-white/50 rounded-2xl flex items-center justify-center mb-4">
+                      {selectedTx.type === 'deposit' ? <Plus size={28} className="text-onyx" /> : 
+                       selectedTx.type === 'withdrawal' ? <ArrowUpRight size={28} className="text-onyx" /> : 
+                       <Trophy size={28} className="text-onyx" />}
+                    </div>
+                    <h2 className="text-3xl font-black mb-1 capitalize">{selectedTx.type}</h2>
+                    <p className="text-[11px] font-bold opacity-50 uppercase tracking-widest">{selectedTx.description}</p>
+                  </div>
+                  <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-white/20 rounded-full" />
+                </div>
+                <div className="p-8 space-y-6">
+                  <div className="text-center py-4">
+                    <p className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest mb-2">Amount</p>
+                    <p className={cn(
+                      "text-5xl font-black",
+                      ['deposit', 'prize'].includes(selectedTx.type) ? "text-onyx" : "text-charcoal/60"
+                    )}>
+                      {['deposit', 'prize'].includes(selectedTx.type) ? '+' : '-'}₹{selectedTx.amount}
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-4 bg-off-white rounded-2xl p-5">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Calendar size={16} className="text-charcoal/30" />
+                        <span className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest">Date</span>
+                      </div>
+                      <span className="text-[12px] font-black">{new Date(selectedTx.created_at).toLocaleDateString()}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Clock size={16} className="text-charcoal/30" />
+                        <span className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest">Time</span>
+                      </div>
+                      <span className="text-[12px] font-black">{new Date(selectedTx.created_at).toLocaleTimeString()}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Hash size={16} className="text-charcoal/30" />
+                        <span className="text-[10px] font-bold text-charcoal/40 uppercase tracking-widest">Status</span>
+                      </div>
+                      <StatusBadge variant={selectedTx.status as any} className="text-[8px] px-3 py-1" />
+                    </div>
+                  </div>
+                  
+                  <motion.button
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setIsTxDetailOpen(false)}
+                    className="w-full py-4 bg-onyx text-white rounded-2xl text-[11px] font-black uppercase tracking-widest"
+                  >
+                    Close
+                  </motion.button>
+                </div>
+              </>
+            )}
+          </DialogContent>
+        </Dialog>
+
+        <BottomNav />
+      </div>
+    );
+  }

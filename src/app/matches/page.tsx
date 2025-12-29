@@ -11,11 +11,13 @@ import { useAuth } from "@/hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useHaptics } from "@/hooks/useHaptics";
 
 const filters = ["All", "Upcoming", "Live", "Completed"];
 
 export default function MatchesPage() {
   const { user } = useAuth(false);
+  const { triggerHaptic } = useHaptics();
   const [activeFilter, setActiveFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [matches, setMatches] = useState<any[]>([]);
@@ -105,22 +107,25 @@ export default function MatchesPage() {
             />
           </div>
 
-          <div className="flex gap-2 overflow-x-auto no-scrollbar" suppressHydrationWarning={true}>
-            {filters.map((filter) => (
-              <motion.button
-                key={filter}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveFilter(filter)}
-                className={cn(
-                  "chip",
-                  activeFilter === filter ? "chip-selected" : "chip-default"
-                )}
-              >
-                {filter === 'Live' && <span className="w-2 h-2 rounded-full bg-current mr-2" />}
-                {filter}
-              </motion.button>
-            ))}
-          </div>
+            <div className="flex gap-2 overflow-x-auto no-scrollbar" suppressHydrationWarning={true}>
+              {filters.map((filter) => (
+                <motion.button
+                  key={filter}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    triggerHaptic('light');
+                    setActiveFilter(filter);
+                  }}
+                  className={cn(
+                    "chip",
+                    activeFilter === filter ? "chip-selected" : "chip-default"
+                  )}
+                >
+                  {filter === 'Live' && <span className="w-2 h-2 rounded-full bg-current mr-2" />}
+                  {filter}
+                </motion.button>
+              ))}
+            </div>
         </section>
 
         {/* Live Now Section */}

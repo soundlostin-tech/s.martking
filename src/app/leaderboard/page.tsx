@@ -5,10 +5,12 @@ import { TopHeader } from "@/components/layout/TopHeader";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { ChipGroup } from "@/components/ui/Chip";
 import { useState, useEffect, useCallback } from "react";
-import { Trophy, Medal, TrendingUp, ChevronUp, ChevronDown, Loader2, Users } from "lucide-react";
+import { Trophy, Medal, TrendingUp, ChevronUp, ChevronDown, Loader2, Users, X, Swords, Target, Gamepad2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/hooks/useAuth";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useHaptics } from "@/hooks/useHaptics";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -16,15 +18,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 export default function LeaderboardPage() {
   const { user } = useAuth(false);
+  const { triggerHaptic } = useHaptics();
   const [activeTab, setActiveTab] = useState("Overall");
   const [selectedTournament, setSelectedTournament] = useState<string>("all");
   const [tournaments, setTournaments] = useState<any[]>([]);
   const [leaderboard, setLeaderboard] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [myRank, setMyRank] = useState<number | null>(null);
+  const [selectedPlayer, setSelectedPlayer] = useState<any>(null);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -69,6 +75,12 @@ export default function LeaderboardPage() {
 
   const topThree = leaderboard.slice(0, 3);
   const restOfLeaderboard = leaderboard.slice(3);
+
+  const openPlayerProfile = (player: any) => {
+    triggerHaptic('medium');
+    setSelectedPlayer(player);
+    setIsProfileOpen(true);
+  };
 
 return (
 <div className="min-h-screen text-onyx bg-transparent relative" suppressHydrationWarning={true}>
@@ -203,8 +215,9 @@ return (
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.02 }}
+                    onClick={() => openPlayerProfile(player)}
                   >
-                    <BentoCard className={`p-5 flex items-center gap-5 border-none shadow-[0_4px_24px_rgba(0,0,0,0.02)] ${player.id === user?.id ? 'ring-2 ring-onyx shadow-xl' : ''}`}>
+                    <BentoCard className={`p-5 flex items-center gap-5 border-none shadow-[0_4px_24px_rgba(0,0,0,0.02)] cursor-pointer active:scale-[0.98] transition-transform ${player.id === user?.id ? 'ring-2 ring-onyx shadow-xl' : ''}`}>
                       <div className="w-8 text-center">
                         <span className="text-lg font-heading text-onyx font-black">{player.rank}</span>
                       </div>
@@ -265,13 +278,72 @@ return (
                     </BentoCard>
                   </motion.div>
                 </div>
-              )}
-            </>
-          )}
-        </div>
-      </main>
+            )}
+          </>
+        )}
+      </div>
+    </main>
 
-      <BottomNav />
-    </div>
-  );
+    {/* Player Profile Modal */}
+    <Dialog open={isProfileOpen} onOpenChange={setIsProfileOpen}>
+      <DialogContent className="p-0 border-none bg-white rounded-[36px] overflow-hidden max-w-[400px]">
+        {selectedPlayer && (
+          <>
+            <div className="bg-pastel-mint p-8 relative overflow-hidden">
+              <button 
+                onClick={() => setIsProfileOpen(false)}
+                className="absolute top-4 right-4 w-10 h-10 bg-white/50 rounded-full flex items-center justify-center z-10"
+              >
+                <X size={18} />
+              </button>
+              <div className="relative z-10 flex items-center gap-5">
+                <div className="w-20 h-20 rounded-full bg-white p-1 shadow-lg">
+                  <div className="w-full h-full rounded-full bg-off-white flex items-center justify-center overflow-hidden">
+                    {selectedPlayer.avatar_url ? (
+                      <img src={selectedPlayer.avatar_url} alt="" className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-2xl font-black text-onyx">{selectedPlayer.full_name?.[0]?.toUpperCase()}</span>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black mb-1">{selectedPlayer.full_name}</h3>
+                  <p className="text-[10px] font-black text-onyx/50 uppercase tracking-widest">Rank #{selectedPlayer.rank}</p>
+                </div>
+              </div>
+              <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-white/20 rounded-full" />
+            </div>
+            <div className="p-8 space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { label: "Points", value: selectedPlayer.points, icon: Trophy, color: "yellow" },
+                  { label: "Win Rate", value: `${selectedPlayer.win_rate || 0}%`, icon: Target, color: "mint" },
+                  { label: "Total Wins", value: selectedPlayer.wins || 0, icon: Medal, color: "coral" },
+                  { label: "Matches", value: selectedPlayer.matches_played || 0, icon: Gamepad2, color: "lavender" },
+                ].map((stat, i) => (
+                  <BentoCard key={i} variant="pastel" pastelColor={stat.color as any} className="p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <stat.icon size={14} className="text-onyx/40" />
+                      <span className="text-[9px] font-black text-onyx/40 uppercase tracking-widest">{stat.label}</span>
+                    </div>
+                    <p className="text-xl font-black">{stat.value}</p>
+                  </BentoCard>
+                ))}
+              </div>
+              <motion.button
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setIsProfileOpen(false)}
+                className="w-full py-4 bg-onyx text-white rounded-2xl text-[11px] font-black uppercase tracking-widest"
+              >
+                Close
+              </motion.button>
+            </div>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
+
+    <BottomNav />
+  </div>
+);
 }

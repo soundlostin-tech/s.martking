@@ -12,6 +12,7 @@ import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/hooks/useAuth";
+import { useHaptics } from "@/hooks/useHaptics";
 import { toast } from "sonner";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -21,6 +22,7 @@ export default function MatchDetailsPage({ params }: { params: Promise<{ id: str
   const { id } = use(params);
   const router = useRouter();
   const { user } = useAuth(false);
+  const { triggerHaptic } = useHaptics();
   const [match, setMatch] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [joining, setJoining] = useState(false);
@@ -68,6 +70,7 @@ export default function MatchDetailsPage({ params }: { params: Promise<{ id: str
     }
 
     setJoining(true);
+    triggerHaptic('medium');
     try {
       const { data, error } = await supabase.rpc('join_tournament', {
         p_tournament_id: match.tournament_id,
@@ -79,12 +82,15 @@ export default function MatchDetailsPage({ params }: { params: Promise<{ id: str
 
       if (result.success) {
         toast.success(result.message);
+        triggerHaptic('success');
         fetchData();
       } else {
         toast.error(result.message);
+        triggerHaptic('error');
       }
     } catch (error: any) {
       toast.error(error.message || "Failed to join");
+      triggerHaptic('error');
     } finally {
       setJoining(false);
     }

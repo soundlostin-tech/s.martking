@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
+import { AdminNav } from "@/components/layout/AdminNav";
 import { 
   Plus, 
   Search, 
@@ -36,13 +37,18 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useHaptics } from "@/hooks/useHaptics";
 
 export default function AdminTournaments() {
+  const { triggerHaptic } = useHaptics();
   const [tournaments, setTournaments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [editingTournament, setEditingTournament] = useState<any>(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [deleting, setDeleting] = useState<string | null>(null);
   
   const [formData, setFormData] = useState({
     title: "",
@@ -110,6 +116,70 @@ export default function AdminTournaments() {
 
       toast.success("Tournament and initial match created!");
       setIsCreateOpen(false);
+      fetchData();
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    setDeleting(id);
+    triggerHaptic('warning');
+    try {
+      await supabase.from("participants").delete().eq("tournament_id", id);
+      await supabase.from("matches").delete().eq("tournament_id", id);
+      const { error } = await supabase.from("tournaments").delete().eq("id", id);
+      if (error) throw error;
+      toast.success("Tournament deleted successfully");
+      triggerHaptic('success');
+      fetchData();
+    } catch (error: any) {
+      toast.error(error.message);
+      triggerHaptic('error');
+    } finally {
+      setDeleting(null);
+    }
+  };
+
+  const openEditModal = (tournament: any) => {
+    triggerHaptic('medium');
+    setEditingTournament(tournament);
+    setFormData({
+      title: tournament.title,
+      mode: tournament.game_mode || "SQUAD",
+      entry_fee: tournament.entry_fee,
+      prize_pool: tournament.prize_pool,
+      slots: tournament.slots,
+      status: tournament.status,
+      start_time: tournament.start_time || "",
+    });
+    setIsEditOpen(true);
+  };
+
+  const handleEdit = async () => {
+    if (!editingTournament) return;
+    setCreating(true);
+    try {
+      const { error } = await supabase
+        .from("tournaments")
+        .update({
+          title: formData.title,
+          game_mode: formData.mode,
+          entry_fee: formData.entry_fee,
+          prize_pool: formData.prize_pool,
+          slots: formData.slots,
+          status: formData.status,
+          start_time: formData.start_time || null,
+        })
+        .eq("id", editingTournament.id);
+      
+      if (error) throw error;
+      toast.success("Tournament updated!");
+      triggerHaptic('success');
+      setIsEditOpen(false);
+      setEditingTournament(null);
       fetchData();
     } catch (error: any) {
       toast.error(error.message);
@@ -213,12 +283,21 @@ export default function AdminTournaments() {
                       </div>
                     </div>
   
-                    <div className="relative z-10 flex gap-3">
-                      <button className="flex-1 py-4 bg-off-white hover:bg-black/[0.03] rounded-[20px] text-[10px] font-black uppercase tracking-widest transition-all">Configure</button>
-                      <button className="w-14 h-14 flex items-center justify-center bg-off-white hover:bg-pastel-coral/30 rounded-[20px] text-onyx/20 hover:text-onyx transition-all">
-                        <Trash2 size={20} />
-                      </button>
-                    </div>
+                  <div className="relative z-10 flex gap-3">
+                        <button 
+                          onClick={() => openEditModal(t)}
+                          className="flex-1 py-4 bg-off-white hover:bg-black/[0.03] rounded-[20px] text-[10px] font-black uppercase tracking-widest transition-all"
+                        >
+                          Configure
+                        </button>
+                        <button 
+                          onClick={() => handleDelete(t.id)}
+                          disabled={deleting === t.id}
+                          className="w-14 h-14 flex items-center justify-center bg-off-white hover:bg-pastel-coral/30 rounded-[20px] text-onyx/20 hover:text-onyx transition-all disabled:opacity-50"
+                        >
+                          {deleting === t.id ? <Loader2 size={20} className="animate-spin" /> : <Trash2 size={20} />}
+                        </button>
+                      </div>
                     {/* Decorative Card Blob */}
                     <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-off-white/50 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700" />
                   </BentoCard>
@@ -320,6 +399,96 @@ export default function AdminTournaments() {
                     <>
                       <Zap size={20} className="text-soft-yellow" fill="currentColor" />
                       Execute Deployment
+                    </>
+                  )}
+                </motion.button>
+              </DialogFooter>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Edit Modal */}
+        <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+          <DialogContent className="p-0 border-none bg-off-white rounded-[48px] overflow-hidden max-w-[540px] shadow-2xl">
+            <div className="bg-pastel-mint p-12 text-onyx relative overflow-hidden">
+              <div className="relative z-10 space-y-2">
+                <DialogTitle className="text-[42px] font-black leading-none tracking-tight">Edit<br />Event</DialogTitle>
+                <DialogDescription className="text-[10px] font-black opacity-40 uppercase tracking-[0.4em]">Update Tournament Details</DialogDescription>
+              </div>
+              <Edit2 size={140} className="absolute -bottom-10 -right-10 text-onyx/5 rotate-[-15deg]" />
+            </div>
+            
+            <div className="p-12 space-y-10">
+              <div className="grid grid-cols-2 gap-8">
+                <div className="col-span-2 space-y-3">
+                  <label className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em] ml-2">Operation Title</label>
+                  <Input 
+                    placeholder="e.g. TITAN ASCENDANCY" 
+                    value={formData.title}
+                    onChange={(e) => setFormData({...formData, title: e.target.value})}
+                    className="h-16 rounded-[24px] border-none bg-white font-black text-[13px] px-6 shadow-soft placeholder:text-charcoal/10"
+                  />
+                </div>
+                
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em] ml-2">Combat Mode</label>
+                  <div className="relative">
+                    <select 
+                      className="w-full h-16 rounded-[24px] border-none bg-white font-black px-6 text-[13px] shadow-soft appearance-none cursor-pointer"
+                      value={formData.mode}
+                      onChange={(e) => setFormData({...formData, mode: e.target.value})}
+                    >
+                      <option>SQUAD</option>
+                      <option>DUO</option>
+                      <option>SOLO</option>
+                    </select>
+                    <ChevronRight size={18} className="absolute right-6 top-1/2 -translate-y-1/2 rotate-90 text-onyx/20 pointer-events-none" />
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em] ml-2">Personnel Limit</label>
+                  <Input 
+                    type="number"
+                    value={formData.slots}
+                    onChange={(e) => setFormData({...formData, slots: Number(e.target.value)})}
+                    className="h-16 rounded-[24px] border-none bg-white font-black text-[13px] px-6 shadow-soft"
+                  />
+                </div>
+                
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em] ml-2">Entry Credit (₹)</label>
+                  <Input 
+                    type="number"
+                    value={formData.entry_fee}
+                    onChange={(e) => setFormData({...formData, entry_fee: Number(e.target.value)})}
+                    className="h-16 rounded-[24px] border-none bg-white font-black text-[13px] px-6 shadow-soft"
+                  />
+                </div>
+                
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em] ml-2">Bounty Pool (₹)</label>
+                  <Input 
+                    type="number"
+                    value={formData.prize_pool}
+                    onChange={(e) => setFormData({...formData, prize_pool: Number(e.target.value)})}
+                    className="h-16 rounded-[24px] border-none bg-white font-black text-[13px] px-6 shadow-soft"
+                  />
+                </div>
+              </div>
+              
+              <DialogFooter className="pt-8 border-t border-black/[0.03]">
+                <motion.button 
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleEdit}
+                  disabled={creating}
+                  className="w-full py-6 bg-onyx text-white rounded-[24px] text-[12px] font-black uppercase tracking-[0.3em] shadow-2xl flex items-center justify-center gap-4 disabled:opacity-50 transition-all hover:bg-carbon-black"
+                >
+                  {creating ? <Loader2 className="animate-spin" /> : (
+                    <>
+                      <CheckCircle2 size={20} className="text-pastel-mint" />
+                      Save Changes
                     </>
                   )}
                 </motion.button>

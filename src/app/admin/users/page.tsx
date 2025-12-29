@@ -1,6 +1,7 @@
 "use client";
 
 import { AdminNav } from "@/components/layout/AdminNav";
+import { BentoCard } from "@/components/ui/BentoCard";
 import { Badge } from "@/components/ui/badge";
 import { 
   Users, 
@@ -34,6 +35,8 @@ import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
+import { useHaptics } from "@/hooks/useHaptics";
+import { cn } from "@/lib/utils";
 import {
   Sheet,
   SheetContent,
@@ -295,8 +298,8 @@ export default function AdminUsers() {
                             <div className="flex items-center gap-4">
                               <p className="text-[11px] font-black text-charcoal/30 tracking-[0.15em] uppercase">@{user.username || user.email.split('@')[0]}</p>
                               <div className="w-1.5 h-1.5 rounded-full bg-black/[0.05]" />
-                              <span className="text-[10px] font-bold text-charcoal/20 uppercase tracking-widest flex items-center gap-2">
-                                <Clock size={12} className="opacity-20" /> {user.last_sign_in_at ? format(new Date(user.last_sign_in_at), "MMM d") : 'OFFLINE'}
+                            <span className="text-[10px] font-bold text-charcoal/20 uppercase tracking-widest flex items-center gap-2">
+                              <Clock size={12} className="opacity-20" /> {user.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'OFFLINE'}
                               </span>
                             </div>
                           </div>
@@ -435,14 +438,14 @@ export default function AdminUsers() {
                   {/* Information Sections */}
                   <div className="space-y-8">
                     <h4 className="text-[12px] font-black text-charcoal/30 uppercase tracking-[0.4em] ml-2">Mission Dossier</h4>
-                    <div className="bg-white rounded-[40px] overflow-hidden divide-y divide-black/[0.02] shadow-soft border border-black/[0.01]">
-                      {[
-                        { label: "Signal Contact", value: selectedUser.email, icon: Mail },
-                        { label: "Linked Comms", value: selectedUser.phone || 'UNAVAILABLE', icon: Phone },
-                        { label: "Deployment Zone", value: selectedUser.country || 'INDIA', icon: Globe },
-                        { label: "Recruitment Log", value: format(new Date(selectedUser.created_at), "MMM d, yyyy"), icon: Calendar },
-                        { label: "Last Transmission", value: selectedUser.last_sign_in_at ? format(new Date(selectedUser.last_sign_in_at), "HH:mm • MMM d") : 'N/A', icon: Clock },
-                      ].map((item, i) => (
+                      <div className="bg-white rounded-[40px] overflow-hidden divide-y divide-black/[0.02] shadow-soft border border-black/[0.01]">
+                        {[
+                          { label: "Signal Contact", value: selectedUser.email, icon: Mail },
+                          { label: "Linked Comms", value: selectedUser.phone || 'UNAVAILABLE', icon: Phone },
+                          { label: "Deployment Zone", value: selectedUser.country || 'INDIA', icon: Globe },
+                          { label: "Recruitment Log", value: new Date(selectedUser.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }), icon: Calendar },
+                          { label: "Last Transmission", value: selectedUser.last_sign_in_at ? new Date(selectedUser.last_sign_in_at).toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }) : 'N/A', icon: Clock },
+                        ].map((item, i) => (
                         <div key={i} className="flex items-center justify-between p-8 hover:bg-off-white transition-colors group">
                           <div className="flex items-center gap-6">
                             <div className="w-12 h-12 rounded-[18px] bg-off-white flex items-center justify-center text-onyx/20 border border-black/[0.01] group-hover:bg-white group-hover:text-onyx transition-all shadow-sm">
