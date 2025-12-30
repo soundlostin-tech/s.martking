@@ -46,6 +46,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -121,12 +122,26 @@ export default function AdminUsers() {
   const handleUpdateUser = async (id: string, updates: Partial<UserProfile>) => {
     setUpdatingId(id);
     try {
+      const { data: { user: adminUser } } = await supabase.auth.getUser();
+      
       const { error } = await supabase
         .from("profiles")
         .update(updates)
         .eq("id", id);
 
       if (error) throw error;
+
+      // Log to audit_logs
+      if (adminUser) {
+        await supabase.from("audit_logs").insert({
+          admin_id: adminUser.id,
+          action: "UPDATE_USER_STATUS",
+          target_id: id,
+          target_type: "profile",
+          details: updates
+        });
+      }
+
       toast.success("User protocol updated");
       fetchUsers();
       if (selectedUser?.id === id) {
@@ -139,8 +154,49 @@ export default function AdminUsers() {
     }
   };
 
+  const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState<string>("newest");
+
+  const toggleUserSelection = (id: string) => {
+    setSelectedUserIds(prev => 
+      prev.includes(id) ? prev.filter(uid => uid !== id) : [...prev, id]
+    );
+  };
+
+  const handleBulkAction = async (action: 'Active' | 'Suspended' | 'Banned') => {
+    if (selectedUserIds.length === 0) return;
+    
+    setLoading(true);
+    try {
+      const { data: { user: adminUser } } = await supabase.auth.getUser();
+      
+      const { error } = await supabase
+        .from("profiles")
+        .update({ status: action })
+        .in("id", selectedUserIds);
+
+      if (error) throw error;
+
+      if (adminUser) {
+        await supabase.from("audit_logs").insert({
+          admin_id: adminUser.id,
+          action: `BULK_${action.toUpperCase()}`,
+          details: { user_ids: selectedUserIds }
+        });
+      }
+
+      toast.success(`Updated ${selectedUserIds.length} users`);
+      setSelectedUserIds([]);
+      fetchUsers();
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const filteredUsers = useMemo(() => {
-    return users.filter(u => {
+    let result = users.filter(u => {
       const matchesSearch = 
         u.full_name?.toLowerCase().includes(search.toLowerCase()) ||
         u.username?.toLowerCase().includes(search.toLowerCase()) ||
@@ -151,7 +207,17 @@ export default function AdminUsers() {
       
       return matchesSearch && matchesRole && matchesStatus;
     });
-  }, [users, search, roleFilter, statusFilter]);
+
+    if (sortBy === "balance") {
+      result.sort((a, b) => (b.balance || 0) - (a.balance || 0));
+    } else if (sortBy === "winrate") {
+      result.sort((a, b) => (b.win_rate || 0) - (a.win_rate || 0));
+    } else {
+      result.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    }
+
+    return result;
+  }, [users, search, roleFilter, statusFilter, sortBy]);
 
   return (
     <main className="min-h-screen p-8 lg:p-12 space-y-12 bg-background">
@@ -199,6 +265,58 @@ export default function AdminUsers() {
         </BentoCard>
       </section>
 
+      {/* Bulk Action Bar */}
+      <AnimatePresence>
+        {selectedUserIds.length > 0 && (
+          <motion.div 
+            initial={{ y: 100 }}
+            animate={{ y: 0 }}
+            exit={{ y: 100 }}
+            className="fixed bottom-12 left-1/2 -translate-x-1/2 z-[100] bg-onyx text-white px-8 py-4 rounded-[32px] shadow-2xl flex items-center gap-8"
+          >
+            <p className="text-[10px] font-black uppercase tracking-widest">
+              {selectedUserIds.length} Warriors Selected
+            </p>
+            <div className="h-6 w-px bg-white/20" />
+            <div className="flex gap-4">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-[10px] font-black uppercase tracking-widest hover:bg-white/10"
+                onClick={() => handleBulkAction('Active')}
+              >
+                Activate
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-[10px] font-black uppercase tracking-widest text-pastel-coral hover:bg-white/10"
+                onClick={() => handleBulkAction('Suspended')}
+              >
+                Suspend
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-[10px] font-black uppercase tracking-widest text-red-500 hover:bg-white/10"
+                onClick={() => handleBulkAction('Banned')}
+              >
+                Ban
+              </Button>
+            </div>
+            <div className="h-6 w-px bg-white/20" />
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-[10px] font-black uppercase tracking-widest hover:bg-white/10"
+              onClick={() => setSelectedUserIds([])}
+            >
+              Cancel
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Filter Bar */}
       <section className="flex flex-col md:flex-row gap-4 bg-white p-6 rounded-[32px] shadow-sm border border-black/5">
         <div className="relative flex-1">
@@ -210,8 +328,31 @@ export default function AdminUsers() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <div className="flex gap-2">
-          <Select value={roleFilter} onValueChange={setRoleFilter}>
+          <div className="flex gap-2 items-center">
+            <div className="flex items-center gap-2 px-4 h-14 bg-background rounded-2xl border-none">
+              <Checkbox 
+                checked={selectedUserIds.length === filteredUsers.length && filteredUsers.length > 0}
+                onCheckedChange={(checked) => {
+                  if (checked) {
+                    setSelectedUserIds(filteredUsers.map(u => u.id));
+                  } else {
+                    setSelectedUserIds([]);
+                  }
+                }}
+              />
+              <span className="text-[10px] font-black tracking-widest text-charcoal/60 uppercase">ALL</span>
+            </div>
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-background border-none font-black text-[10px] tracking-widest text-charcoal/60">
+                <SelectValue placeholder="SORT BY" />
+              </SelectTrigger>
+              <SelectContent className="rounded-2xl border-none shadow-2xl">
+                <SelectItem value="newest" className="text-[10px] font-black">NEWEST</SelectItem>
+                <SelectItem value="balance" className="text-[10px] font-black">BALANCE</SelectItem>
+                <SelectItem value="winrate" className="text-[10px] font-black">WIN RATE</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={roleFilter} onValueChange={setRoleFilter}>
             <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-background border-none font-black text-[10px] tracking-widest text-charcoal/60">
               <SelectValue placeholder="ROLE" />
             </SelectTrigger>
@@ -252,12 +393,21 @@ export default function AdminUsers() {
                 transition={{ delay: idx * 0.05 }}
                 layout
               >
-                <BentoCard 
-                  className="p-8 border-none shadow-sm cursor-pointer group hover:shadow-xl transition-all"
-                  onClick={() => { setSelectedUser(u); setIsDetailOpen(true); }}
-                >
-                  <div className="flex justify-between items-start mb-8">
-                    <Avatar className="w-20 h-20 border-4 border-white shadow-xl group-hover:scale-110 transition-transform duration-500">
+                  <BentoCard 
+                    className="p-8 border-none shadow-sm cursor-pointer group hover:shadow-xl transition-all relative"
+                    onClick={() => { setSelectedUser(u); setIsDetailOpen(true); }}
+                  >
+                    <div 
+                      className="absolute top-4 left-4 z-20"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Checkbox 
+                        checked={selectedUserIds.includes(u.id)}
+                        onCheckedChange={() => toggleUserSelection(u.id)}
+                      />
+                    </div>
+                    <div className="flex justify-between items-start mb-8">
+                      <Avatar className="w-20 h-20 border-4 border-white shadow-xl group-hover:scale-110 transition-transform duration-500">
                       <AvatarImage src={u.avatar_url} />
                       <AvatarFallback className="bg-lime-yellow text-onyx text-2xl font-heading font-black">
                         {u.full_name?.substring(0, 2).toUpperCase() || "SK"}

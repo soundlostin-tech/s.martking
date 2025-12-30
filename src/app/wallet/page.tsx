@@ -4,6 +4,7 @@ import { BottomNav } from "@/components/layout/BottomNav";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { LoadingScreen } from "@/components/ui/LoadingScreen";
+import { Skeleton } from "@/components/ui/skeleton";
 import { 
   ArrowDownLeft, 
   Plus, 
@@ -12,7 +13,8 @@ import {
   Clock,
   CreditCard,
   Banknote,
-  ChevronRight
+  ChevronRight,
+  Loader2
 } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
@@ -188,17 +190,17 @@ export default function WalletPage() {
       <div className="unified-bg" />
       
       <main className="pb-[80px] relative z-10">
-        <section className="px-4 pt-6 pb-4">
-          <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mb-2">
-            Financial Hub
-          </p>
-          <h2 className="text-[32px] font-heading text-[#1A1A1A] leading-tight font-bold">
-            WALLET
-          </h2>
-          <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mt-1">
-            Manage Winnings
-          </p>
-        </section>
+          <section className="px-4 pt-6 pb-4">
+            <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mb-2">
+              Financial Hub
+            </p>
+            <h2 className="text-[32px] font-heading text-[#1A1A1A] leading-tight font-bold">
+              My Wallet
+            </h2>
+            <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mt-1">
+              Manage Winnings & Funds
+            </p>
+          </section>
 
         <div className="px-4 space-y-4">
           <BentoCard variant="vibrant" className="p-6 relative overflow-hidden">
@@ -299,48 +301,61 @@ export default function WalletPage() {
               ))}
             </div>
 
-              <div className="space-y-3">
-                {loading ? (
-                  <LoadingScreen />
-                ) : filteredTransactions.length > 0 ? (
-                filteredTransactions.map((tx, i) => (
-                  <motion.div 
-                    key={tx.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                  >
-                    <BentoCard className="p-4 flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
-                          ['deposit', 'prize'].includes(tx.type) ? 'bg-[#D1FAE5]' : 'bg-[#FEE2E2]'
-                        }`}>
-                          {tx.type === 'deposit' ? <Plus size={22} className="text-[#1A1A1A]" /> : 
-                           tx.type === 'withdrawal' ? <ArrowDownLeft size={22} className="text-[#1A1A1A]" /> : 
-                           <TrendingUp size={22} className="text-[#1A1A1A]" />}
+                <div className="space-y-3">
+                  {loading ? (
+                    <div className="space-y-3">
+                      {[1, 2, 3].map((i) => (
+                        <div key={i} className="bg-white rounded-2xl p-4 flex items-center justify-between border border-[#E5E7EB]">
+                          <div className="flex items-center gap-4">
+                            <Skeleton className="w-12 h-12 rounded-xl" />
+                            <div className="space-y-2">
+                              <Skeleton className="h-4 w-32" />
+                              <Skeleton className="h-3 w-20" />
+                            </div>
+                          </div>
+                          <Skeleton className="w-16 h-6 rounded-md" />
                         </div>
-                        <div>
-                          <h4 className="text-sm font-bold text-[#1A1A1A] capitalize leading-tight">{tx.description || tx.type}</h4>
-                          <div className="flex items-center gap-2 mt-1">
-                            <span className="text-[9px] font-bold text-[#6B7280] uppercase tracking-wide flex items-center gap-1">
-                              <Clock size={10} strokeWidth={3} /> {new Date(tx.created_at).toLocaleDateString([], { month: 'short', day: 'numeric' })}
-                            </span>
-                            <StatusBadge 
-                              variant={tx.status === 'completed' ? 'completed' : tx.status === 'pending' ? 'pending' : 'failed'} 
-                              className="text-[8px] px-2 py-0.5"
-                            />
+                      ))}
+                    </div>
+                  ) : filteredTransactions.length > 0 ? (
+                  filteredTransactions.map((tx, i) => (
+                    <motion.div 
+                      key={tx.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                    >
+                      <BentoCard className="p-4 flex items-center justify-between group hover:border-[#5FD3BC] transition-colors">
+                        <div className="flex items-center gap-4">
+                          <div className={`w-14 h-14 rounded-xl flex items-center justify-center transition-colors ${
+                            ['deposit', 'prize'].includes(tx.type) ? 'bg-[#F0FDF4] group-hover:bg-[#5FD3BC]' : 'bg-[#FEF2F2] group-hover:bg-[#FF6B6B]'
+                          }`}>
+                            {tx.type === 'deposit' ? <Plus size={24} className="text-[#1A1A1A]" /> : 
+                             tx.type === 'withdrawal' ? <ArrowDownLeft size={24} className="text-[#1A1A1A]" /> : 
+                             <TrendingUp size={24} className="text-[#1A1A1A]" />}
+                          </div>
+                          <div>
+                            <h4 className="text-[15px] font-heading font-bold text-[#1A1A1A] capitalize leading-tight mb-1">{tx.description || tx.type}</h4>
+                            <div className="flex items-center gap-3">
+                              <span className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide flex items-center gap-1 bg-[#F3F4F6] px-2 py-0.5 rounded">
+                                <Clock size={10} strokeWidth={3} /> {new Date(tx.created_at).toLocaleDateString([], { month: 'short', day: 'numeric' })}
+                              </span>
+                              <StatusBadge 
+                                variant={tx.status === 'completed' ? 'completed' : tx.status === 'pending' ? 'pending' : 'failed'} 
+                                className="text-[9px] px-2 py-0.5"
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <p className={`text-lg font-heading font-bold ${
-                        ['deposit', 'prize'].includes(tx.type) ? 'text-[#1A1A1A]' : 'text-[#6B7280]'
-                      }`}>
-                        {['deposit', 'prize'].includes(tx.type) ? '+' : '-'}₹{tx.amount}
-                      </p>
-                    </BentoCard>
-                  </motion.div>
-                ))
-              ) : (
+                        <p className={`text-xl font-heading font-bold ${
+                          ['deposit', 'prize'].includes(tx.type) ? 'text-[#1A1A1A]' : 'text-[#6B7280]'
+                        }`}>
+                          {['deposit', 'prize'].includes(tx.type) ? '+' : '-'}₹{tx.amount}
+                        </p>
+                      </BentoCard>
+                    </motion.div>
+                  ))
+                ) : (
                 <div className="py-16 text-center">
                   <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
                     <Banknote size={28} className="text-[#9CA3AF]" />

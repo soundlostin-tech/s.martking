@@ -99,10 +99,10 @@ export default function Home() {
         
         <section className="px-4 pt-6 pb-4">
           <h2 className="text-[32px] font-heading text-[#1A1A1A] leading-tight font-bold max-w-[300px]">
-            Hello {user?.user_metadata?.full_name?.split(' ')[0] || 'Warrior'}!
+            Welcome, {user?.user_metadata?.full_name?.split(' ')[0] || 'Warrior'}!
           </h2>
           <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-[0.1em] mt-1">
-            Ready to win?
+            Ready to win today?
           </p>
         </section>
 
