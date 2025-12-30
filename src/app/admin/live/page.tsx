@@ -172,50 +172,43 @@ export default function AdminLive() {
   }
 
   return (
-    <main className="min-h-screen pb-32 bg-background text-foreground">
-      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-20">
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px]" />
-      </div>
-
+    <main className="min-h-screen pb-32 bg-[#F8F8F8] text-[#1A1A1A] selection:bg-[#7EE8C7]/30">
       <div className="px-6 pt-24 relative z-10 space-y-10 max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-1">
-            <h4 className="text-[10px] font-bold text-secondary uppercase tracking-[0.4em]">Combat Oversight</h4>
-            <h1 className="text-4xl font-heading text-foreground">Live <span className="italic font-serif opacity-60">Control</span></h1>
+            <h4 className="text-[10px] font-bold text-[#6B7280] uppercase tracking-[0.4em]">Combat Oversight</h4>
+            <h1 className="text-4xl font-heading text-[#1A1A1A] font-black leading-none">Live <span className="text-[#6B7280]">Control</span></h1>
           </div>
-          <div className="flex items-center gap-3 bg-muted p-4 rounded-2xl border border-border shadow-lg">
-            <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-            <p className="text-[9px] font-bold text-accent uppercase tracking-widest">System Feed Operational</p>
+          <div className="flex items-center gap-3 bg-white p-4 rounded-2xl shadow-sm border border-[#1A1A1A]/5">
+            <div className="w-2 h-2 rounded-full bg-[#FF8B8B] animate-pulse" />
+            <p className="text-[9px] font-bold text-[#1A1A1A] uppercase tracking-widest">System Feed Operational</p>
           </div>
         </div>
 
         {/* KPI Strip */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {[
-            { label: "Active Deployments", value: summary.liveTournaments, icon: Radio, primary: true },
-            { label: "Warriors in Action", value: summary.totalPlayers, icon: Users },
+            { label: "Active Deployments", value: summary.liveTournaments, icon: Radio, color: "#7EE8C7" },
+            { label: "Warriors in Action", value: summary.totalPlayers, icon: Users, color: "#C5A3FF" },
           ].map((stat, i) => (
             <motion.div 
               key={i}
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: i * 0.1 }}
-              className={`rounded-[2.5rem] p-8 border border-border shadow-lg relative overflow-hidden group ${
-                stat.primary ? "bg-accent/10 border-accent/30" : "bg-card"
-              }`}
+              className="rounded-[32px] p-8 bg-white shadow-sm relative overflow-hidden group"
             >
               <div className="flex justify-between items-start relative z-10">
                 <div className="space-y-1">
-                  <p className={`text-[10px] uppercase font-bold tracking-[0.2em] ${stat.primary ? "text-accent-foreground" : "text-muted-foreground"}`}>{stat.label}</p>
-                  <h3 className="text-4xl font-heading text-foreground">{stat.value}</h3>
-                  <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest mt-2">REAL-TIME TELEMETRY</p>
+                  <p className="text-[10px] uppercase font-black tracking-[0.2em] text-[#6B7280]/60">{stat.label}</p>
+                  <h3 className="text-4xl font-heading text-[#1A1A1A] font-black">{stat.value}</h3>
+                  <p className="text-[9px] text-[#6B7280]/40 font-bold uppercase tracking-widest mt-2">REAL-TIME TELEMETRY</p>
                 </div>
-                <div className={`p-4 rounded-2xl ${stat.primary ? "bg-accent text-primary shadow-lg shadow-accent/20" : "bg-muted text-accent"} group-hover:scale-110 transition-transform duration-500 border border-border`}>
-                  <stat.icon size={24} />
+                <div className="p-4 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-500" style={{ backgroundColor: stat.color }}>
+                  <stat.icon size={24} className="text-[#1A1A1A]" />
                 </div>
               </div>
-              <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[60px] ${stat.primary ? "bg-accent/10" : "bg-accent/5"}`} />
             </motion.div>
           ))}
         </div>
