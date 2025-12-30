@@ -28,18 +28,9 @@ const sortOptions = [
 
 function MatchesContent() {
   const { user } = useAuth(false);
-  const [activeFilter, setActiveFilter] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('matches_filter') || "Upcoming";
-    }
-    return "Upcoming";
-  });
-  const [activeSort, setActiveSort] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('matches_sort') || "start_time";
-    }
-    return "start_time";
-  });
+  const [mounted, setMounted] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("Upcoming");
+  const [activeSort, setActiveSort] = useState("start_time");
 
   const [searchQuery, setSearchQuery] = useState("");
   const [matches, setMatches] = useState<any[]>([]);
@@ -51,6 +42,14 @@ function MatchesContent() {
   const [isInsufficientFundsOpen, setIsInsufficientFundsOpen] = useState(false);
   const [showProcessingOverlay, setShowProcessingOverlay] = useState(false);
   const [transactionId, setTransactionId] = useState<string | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+    const savedFilter = localStorage.getItem('matches_filter');
+    const savedSort = localStorage.getItem('matches_sort');
+    if (savedFilter) setActiveFilter(savedFilter);
+    if (savedSort) setActiveSort(savedSort);
+  }, []);
 
   const fetchBalance = useCallback(async () => {
     if (user) {
@@ -99,17 +98,23 @@ function MatchesContent() {
   }, [user]);
 
   useEffect(() => {
-    fetchMatches();
-    fetchBalance();
-  }, [fetchMatches, fetchBalance]);
+    if (mounted) {
+      fetchMatches();
+      fetchBalance();
+    }
+  }, [fetchMatches, fetchBalance, mounted]);
 
   useEffect(() => {
-    localStorage.setItem('matches_filter', activeFilter);
-  }, [activeFilter]);
+    if (mounted) {
+      localStorage.setItem('matches_filter', activeFilter);
+    }
+  }, [activeFilter, mounted]);
 
   useEffect(() => {
-    localStorage.setItem('matches_sort', activeSort);
-  }, [activeSort]);
+    if (mounted) {
+      localStorage.setItem('matches_sort', activeSort);
+    }
+  }, [activeSort, mounted]);
 
   const handleJoinMatch = async (tournamentId: string, matchId: string) => {
     if (!user) {
@@ -184,6 +189,8 @@ function MatchesContent() {
 
     return result;
   }, [matches, searchQuery, activeFilter, activeSort]);
+
+  if (!mounted) return <LoadingScreen />;
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
