@@ -46,25 +46,22 @@ export function TopHeader() {
           <LogoAnimation size={42} />
         </motion.div>
         
-          <div className="flex flex-col justify-center">
-            <motion.h1 
-              variants={itemVariants}
-              className="text-xl font-heading font-black leading-[0.9] uppercase flex gap-x-[1.5px]"
-            >
-              {["S", "m", "a", "r", "t", "k", "i", "n", "g", "'", "s"].map((char, i) => {
-                const colors = ['#6EBF8B', '#FFCDB2', '#C9B6E4', '#A8D8EA', '#FFB6C1', '#F5E6A3', '#FFD700', '#FF7F50', '#87CEEB', '#DDA0DD', '#F0E68C'];
-                return (
-                  <span key={i} style={{ color: colors[i % colors.length] }}>{char}</span>
-                );
-              })}
-            </motion.h1>
-            <motion.span 
-              variants={itemVariants}
-              className="text-[8px] font-black text-[#6B7280] uppercase tracking-[0.05em] mt-0.5"
-            >
-              SAID HAMARE ZAMANE MEIN......
-            </motion.span>
-          </div>
+            <div className="flex flex-col justify-center">
+              <motion.h1 
+                variants={itemVariants}
+                className="text-xl font-heading font-black leading-[0.9] uppercase flex gap-x-[1.5px]"
+              >
+                {["S", "m", "a", "r", "t", "k", "i", "n", "g", "'", "s"].map((char, i) => (
+                  <span key={i} className="text-[#D4AF37]">{char}</span>
+                ))}
+              </motion.h1>
+              <motion.span 
+                variants={itemVariants}
+                className="text-[8px] font-black text-[#6B7280] uppercase tracking-[0.05em] mt-0.5"
+              >
+                SAID HAMARE ZAMANE MEIN......
+              </motion.span>
+            </div>
       </div>
 
       <motion.div variants={itemVariants} className="relative z-10">
