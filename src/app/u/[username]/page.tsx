@@ -51,13 +51,12 @@ interface PublicProfile {
 export default function UserProfile({ params }: { params: Promise<{ username: string }> }) {
   const { username } = use(params);
   const router = useRouter();
-  const [profile, setProfile] = useState<PublicProfile | null>(null);
-  const [stories, setStories] = useState<any[]>([]);
-  const [matches, setMatches] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [isStoryViewerOpen, setIsStoryViewerOpen] = useState(false);
-  const [selectedStoryIndex, setSelectedStoryIndex] = useState(0);
+    const [profile, setProfile] = useState<PublicProfile | null>(null);
+    const [videos, setVideos] = useState<any[]>([]);
+    const [matches, setMatches] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+
 
   useEffect(() => {
     fetchProfile();
@@ -77,14 +76,8 @@ export default function UserProfile({ params }: { params: Promise<{ username: st
       if (profileError) throw profileError;
       setProfile(profileData);
 
-      // 2. Fetch Stories and Matches in Parallel
-      const [storiesRes, participantsRes] = await Promise.all([
-        supabase
-          .from("stories")
-          .select("*")
-          .eq("user_id", profileData.id)
-          .order("created_at", { ascending: false }),
-        supabase
+        // 2. Fetch Matches
+        const { data: participantsData, error: participantsError } = await supabase
           .from("participants")
           .select(`
             match_id,
@@ -97,12 +90,22 @@ export default function UserProfile({ params }: { params: Promise<{ username: st
           `)
           .eq("user_id", profileData.id)
           .order("joined_at", { ascending: false })
-          .limit(12)
-      ]);
+          .limit(12);
 
-      setStories(storiesRes.data || []);
-      const matchesData = participantsRes.data?.map(p => p.matches).filter(Boolean) || [];
-      setMatches(matchesData);
+        if (participantsError) throw participantsError;
+        
+        const matchesData = participantsData?.map(p => p.matches).filter(Boolean) || [];
+        setMatches(matchesData);
+        
+        // 3. Fetch Videos for FEEDS tab
+        const { data: videosData } = await supabase
+          .from("videos")
+          .select("*")
+          .eq("user_id", profileData.id)
+          .order("created_at", { ascending: false });
+        
+        setVideos(videosData || []);
+
     } catch (err) {
       console.error("Error fetching public profile:", err);
       setError(true);

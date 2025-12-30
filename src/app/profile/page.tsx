@@ -90,180 +90,99 @@ interface ProfileExtended {
     });
     const [isSaving, setIsSaving] = useState(false);
     const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
-    const [isUploadingVideo, setIsUploadingVideo] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [uploadError, setUploadError] = useState<string | null>(null);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     
     const avatarInputRef = useRef<HTMLInputElement>(null);
     const videoInputRef = useRef<HTMLInputElement>(null);
 
     const profile = authProfile as unknown as ProfileExtended;
 
-    useEffect(() => {
-      if (user) {
-        fetchData();
-        setEditForm({
-          full_name: profile?.full_name || "",
-          username: profile?.username || "",
-          bio: profile?.bio || "",
-          youtube_link: profile?.youtube_link || "",
-          team_site: profile?.team_site || "",
-          tournament_stats_url: profile?.tournament_stats_url || ""
-        });
+    const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+    const ALLOWED_TYPES = ["video/mp4", "video/quicktime", "video/x-msvideo", "video/x-matroska"];
+
+    const validateFile = (file: File) => {
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        return "Unsupported video format. Please use MP4, MOV, or AVI.";
       }
-    }, [user, profile?.id]);
-
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const [videosRes, participantsRes] = await Promise.all([
-          supabase
-            .from("videos")
-            .select("*")
-            .eq("user_id", user?.id)
-            .order("created_at", { ascending: false }),
-          supabase
-            .from("participants")
-            .select(`
-              match_id,
-              matches (
-                id,
-                title,
-                status,
-                start_time,
-                live_stats
-              )
-            `)
-            .eq("user_id", user?.id)
-            .order("joined_at", { ascending: false })
-            .limit(12)
-        ]);
-
-        if (videosRes.error) throw videosRes.error;
-        if (participantsRes.error) throw participantsRes.error;
-
-        setVideos(videosRes.data || []);
-        const matchesData = participantsRes.data?.map(p => p.matches).filter(Boolean) || [];
-        setMatches(matchesData);
-      } catch (err: any) {
-        console.error("Error fetching data:", err);
-        setError(err.message || "Failed to sync with Arena servers.");
-      } finally {
-        setLoading(false);
+      if (file.size > MAX_FILE_SIZE) {
+        return "Video size exceeds 50MB limit.";
       }
+      return null;
     };
 
+    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
 
-  const handleSaveProfile = async () => {
-    if (!editForm.username) return toast.error("Callsign is required");
-    setIsSaving(true);
-    try {
-      const { error } = await supabase
-        .from("profiles")
-        .update({
-          full_name: editForm.full_name,
-          username: editForm.username,
-          bio: editForm.bio,
-          youtube_link: editForm.youtube_link,
-          team_site: editForm.team_site,
-          tournament_stats_url: editForm.tournament_stats_url
-        })
-        .eq("id", user?.id);
+      const error = validateFile(file);
+      if (error) {
+        toast.error(error);
+        return;
+      }
 
-      if (error) throw error;
-      
-      toast.success("Identity updated successfully");
-      setIsEditDialogOpen(false);
-      window.location.reload();
-    } catch (error: any) {
-      toast.error(error.message || "Failed to commit changes");
-    } finally {
-      setIsSaving(false);
-    }
-  };
+      setSelectedFile(file);
+    };
 
-  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !user) return;
+    const handleVideoUpload = async () => {
+      if (!selectedFile || !user) return;
 
-    setIsUploadingAvatar(true);
-    try {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${user.id}-${Math.random()}.${fileExt}`;
-      const filePath = `avatars/${fileName}`;
+      if (!uploadForm.title) {
+        toast.error("Please enter a title for your video");
+        return;
+      }
 
-      const { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(filePath, file);
+      setIsUploadingVideo(true);
+      setUploadProgress(0);
+      setUploadError(null);
 
-      if (uploadError) throw uploadError;
+      try {
+        const fileExt = selectedFile.name.split('.').pop();
+        const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+        const filePath = `videos/${fileName}`;
 
-      const { data: { publicUrl } } = supabase.storage
-        .from('avatars')
-        .getPublicUrl(filePath);
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('videos')
+          .upload(filePath, selectedFile, {
+            onUploadProgress: (progress) => {
+              const percent = (progress.loaded / progress.total) * 100;
+              setUploadProgress(Math.round(percent));
+            }
+          });
 
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({ avatar_url: publicUrl })
-        .eq('id', user.id);
+        if (uploadError) throw uploadError;
 
-      if (updateError) throw updateError;
+        const { data: { publicUrl } } = supabase.storage
+          .from('videos')
+          .getPublicUrl(filePath);
 
-      toast.success("Visual feed updated");
-      window.location.reload();
-    } catch (error: any) {
-      toast.error(error.message || "Failed to upload avatar");
-    } finally {
-      setIsUploadingAvatar(false);
-    }
-  };
+        const { error: videoError } = await supabase
+          .from('videos')
+          .insert({
+            user_id: user.id,
+            video_url: publicUrl,
+            title: uploadForm.title,
+            description: uploadForm.description,
+            thumbnail_url: publicUrl
+          });
 
-  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !user) return;
+        if (videoError) throw videoError;
 
-    if (!uploadForm.title) {
-      toast.error("Please enter a title for your video");
-      return;
-    }
-
-    setIsUploadingVideo(true);
-    try {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${user.id}-${Math.random()}.${fileExt}`;
-      const filePath = `videos/${fileName}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from('videos')
-        .upload(filePath, file);
-
-      if (uploadError) throw uploadError;
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('videos')
-        .getPublicUrl(filePath);
-
-      const { error: videoError } = await supabase
-        .from('videos')
-        .insert({
-          user_id: user.id,
-          video_url: publicUrl,
-          title: uploadForm.title,
-          description: uploadForm.description,
-          thumbnail_url: publicUrl // Using video URL as thumbnail for now
-        });
-
-      if (videoError) throw videoError;
-
-      toast.success("Combat footage uploaded to Arena Feeds");
-      setIsUploadDialogOpen(false);
-      setUploadForm({ title: "", description: "" });
-      fetchData();
-    } catch (error: any) {
-      toast.error(error.message || "Failed to upload footage");
-    } finally {
-      setIsUploadingVideo(false);
-    }
-  };
+        toast.success("Combat footage uploaded to Arena Feeds");
+        setIsUploadDialogOpen(false);
+        setUploadForm({ title: "", description: "" });
+        setSelectedFile(null);
+        setUploadProgress(0);
+        fetchData();
+      } catch (error: any) {
+        console.error("Upload error:", error);
+        setUploadError(error.message || "Failed to upload footage");
+        toast.error(error.message || "Failed to upload footage");
+      } finally {
+        setIsUploadingVideo(false);
+      }
+    };
 
   const handleShare = async () => {
     const profileLink = `${window.location.origin}/u/${profile?.username || user?.id}`;
@@ -632,30 +551,79 @@ interface ProfileExtended {
                 />
               </div>
               
-              <div className="pt-2">
-                <input 
-                  type="file" 
-                  ref={videoInputRef} 
-                  onChange={handleVideoUpload} 
-                  className="hidden" 
-                  accept="video/*"
-                />
-                <motion.button 
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => videoInputRef.current?.click()}
-                  disabled={isUploadingVideo}
-                  className="w-full h-14 rounded-2xl border-2 border-dashed border-[#6EBF8B]/30 bg-[#6EBF8B]/5 flex items-center justify-center gap-3 text-[#6EBF8B] font-black uppercase tracking-widest text-[10px]"
-                >
-                  {isUploadingVideo ? (
-                    <Loader2 size={20} className="animate-spin" />
+                <div className="pt-2">
+                  <input 
+                    type="file" 
+                    ref={videoInputRef} 
+                    onChange={handleFileSelect} 
+                    className="hidden" 
+                    accept="video/*"
+                  />
+                  
+                  {!selectedFile ? (
+                    <motion.button 
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => videoInputRef.current?.click()}
+                      className="w-full h-32 rounded-2xl border-2 border-dashed border-[#6EBF8B]/30 bg-[#6EBF8B]/5 flex flex-col items-center justify-center gap-3 text-[#6EBF8B] transition-colors hover:bg-[#6EBF8B]/10 group"
+                    >
+                      <div className="w-12 h-12 rounded-full bg-[#6EBF8B]/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Plus size={24} strokeWidth={3} />
+                      </div>
+                      <div className="text-center">
+                        <p className="font-black uppercase tracking-widest text-[10px]">SELECT VIDEO FILE</p>
+                        <p className="text-[8px] opacity-60 font-bold mt-1 uppercase tracking-wide">MP4, MOV, AVI (MAX 50MB)</p>
+                      </div>
+                    </motion.button>
                   ) : (
-                    <>
-                      <Plus size={20} strokeWidth={3} />
-                      SELECT VIDEO FILE
-                    </>
+                    <div className="space-y-4">
+                      <div className="p-4 rounded-2xl bg-[#F9FAFB] border-2 border-[#E5E7EB] flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-[#1A1A1A] flex items-center justify-center text-white">
+                          <Video size={20} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[10px] font-black text-[#1A1A1A] uppercase truncate">{selectedFile.name}</p>
+                          <p className="text-[8px] font-bold text-[#6B7280] uppercase">{(selectedFile.size / (1024 * 1024)).toFixed(2)} MB</p>
+                        </div>
+                        <button 
+                          onClick={() => setSelectedFile(null)}
+                          className="w-8 h-8 rounded-lg hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors"
+                        >
+                          <AlertCircle size={18} />
+                        </button>
+                      </div>
+
+                      {isUploadingVideo ? (
+                        <div className="space-y-2">
+                          <div className="flex justify-between items-end">
+                            <p className="text-[8px] font-black text-[#6EBF8B] uppercase tracking-widest">UPLOADING TO ARENA...</p>
+                            <p className="text-[10px] font-black text-[#1A1A1A]">{uploadProgress}%</p>
+                          </div>
+                          <div className="h-2 w-full bg-[#E5E7EB] rounded-full overflow-hidden">
+                            <motion.div 
+                              className="h-full bg-[#6EBF8B]"
+                              initial={{ width: 0 }}
+                              animate={{ width: `${uploadProgress}%` }}
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <motion.button 
+                          whileTap={{ scale: 0.98 }}
+                          onClick={handleVideoUpload}
+                          className="w-full h-14 rounded-2xl bg-[#6EBF8B] text-white flex items-center justify-center gap-3 font-black uppercase tracking-widest text-[10px] shadow-lg shadow-[#6EBF8B]/20"
+                        >
+                          <Zap size={18} fill="white" />
+                          CONFIRM BROADCAST
+                        </motion.button>
+                      )}
+                    </div>
                   )}
-                </motion.button>
-              </div>
+
+                  {uploadError && (
+                    <p className="mt-3 text-[8px] font-black text-red-500 uppercase tracking-widest text-center">{uploadError}</p>
+                  )}
+                </div>
+
             </div>
           </div>
         </DialogContent>
