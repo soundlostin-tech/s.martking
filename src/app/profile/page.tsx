@@ -480,7 +480,7 @@ interface ProfileExtended {
           <motion.button 
             whileTap={{ scale: 0.98 }}
             onClick={() => setIsUploadDialogOpen(true)}
-            className="flex-1 bg-[#6EBF8B] text-white h-12 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg flex items-center justify-center gap-2"
+            className="flex-1 bg-[#1A1A1A] text-white h-12 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg flex items-center justify-center gap-2"
           >
             <Video size={14} strokeWidth={3} />
             UPLOAD
@@ -623,12 +623,12 @@ interface ProfileExtended {
 
       <Dialog open={isUploadDialogOpen} onOpenChange={setIsUploadDialogOpen}>
         <DialogContent className="p-0 border-none bg-white rounded-t-[24px] sm:rounded-[24px] overflow-hidden max-w-[100vw] sm:max-w-[400px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0 z-[100]">
-          <div className="bg-[#6EBF8B] p-5">
-            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-3">
+          <div className="bg-[#1A1A1A] p-5">
+            <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center mb-3">
               <Video size={20} className="text-white" strokeWidth={3} />
             </div>
             <DialogTitle className="text-xl font-heading text-white leading-none font-black mb-1 tracking-tight">UPLOAD FOOTAGE</DialogTitle>
-            <DialogDescription className="text-white/60 text-[9px] font-black uppercase tracking-widest text-white/70">Share your combat records</DialogDescription>
+            <DialogDescription className="text-white/40 text-[9px] font-black uppercase tracking-widest">Share your combat records</DialogDescription>
           </div>
           <div className="p-4 space-y-4">
             <div className="space-y-4">
@@ -638,7 +638,7 @@ interface ProfileExtended {
                   value={uploadForm.title} 
                   onChange={(e) => setUploadForm({...uploadForm, title: e.target.value})}
                   placeholder="Epic Victory at Arena..."
-                  className="h-11 rounded-xl border-2 border-[#F5F5F5] bg-white text-sm font-bold px-4 focus:border-[#6EBF8B] focus:ring-0" 
+                  className="h-11 rounded-xl border-2 border-[#F5F5F5] bg-white text-sm font-bold px-4 focus:border-[#1A1A1A] focus:ring-0" 
                 />
               </div>
               <div className="space-y-1.5">
@@ -647,7 +647,7 @@ interface ProfileExtended {
                   value={uploadForm.description} 
                   onChange={(e) => setUploadForm({...uploadForm, description: e.target.value})}
                   placeholder="Briefly explain the combat scenario..."
-                  className="rounded-xl border-2 border-[#F5F5F5] bg-white text-xs font-medium p-3 focus:border-[#6EBF8B] focus:ring-0 min-h-[80px]" 
+                  className="rounded-xl border-2 border-[#F5F5F5] bg-white text-xs font-medium p-3 focus:border-[#1A1A1A] focus:ring-0 min-h-[80px]" 
                 />
               </div>
               
@@ -664,9 +664,9 @@ interface ProfileExtended {
                     <motion.button 
                       whileTap={{ scale: 0.98 }}
                       onClick={() => videoInputRef.current?.click()}
-                      className="w-full h-32 rounded-2xl border-2 border-dashed border-[#6EBF8B]/30 bg-[#6EBF8B]/5 flex flex-col items-center justify-center gap-3 text-[#6EBF8B] transition-colors hover:bg-[#6EBF8B]/10 group"
+                      className="w-full h-32 rounded-2xl border-2 border-dashed border-[#1A1A1A]/10 bg-[#F9FAFB] flex flex-col items-center justify-center gap-3 text-[#1A1A1A]/40 transition-colors hover:bg-[#F3F4F6] group"
                     >
-                      <div className="w-12 h-12 rounded-full bg-[#6EBF8B]/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <div className="w-12 h-12 rounded-full bg-[#1A1A1A]/5 flex items-center justify-center group-hover:scale-110 transition-transform">
                         <Plus size={24} strokeWidth={3} />
                       </div>
                       <div className="text-center">
@@ -695,12 +695,12 @@ interface ProfileExtended {
                       {isUploadingVideo ? (
                         <div className="space-y-2">
                           <div className="flex justify-between items-end">
-                            <p className="text-[8px] font-black text-[#6EBF8B] uppercase tracking-widest">UPLOADING TO ARENA...</p>
+                            <p className="text-[8px] font-black text-[#1A1A1A] uppercase tracking-widest">UPLOADING TO ARENA...</p>
                             <p className="text-[10px] font-black text-[#1A1A1A]">{uploadProgress}%</p>
                           </div>
                           <div className="h-2 w-full bg-[#E5E7EB] rounded-full overflow-hidden">
                             <motion.div 
-                              className="h-full bg-[#6EBF8B]"
+                              className="h-full bg-[#1A1A1A]"
                               initial={{ width: 0 }}
                               animate={{ width: `${uploadProgress}%` }}
                             />
@@ -710,7 +710,7 @@ interface ProfileExtended {
                         <motion.button 
                           whileTap={{ scale: 0.98 }}
                           onClick={handleVideoUpload}
-                          className="w-full h-14 rounded-2xl bg-[#6EBF8B] text-white flex items-center justify-center gap-3 font-black uppercase tracking-widest text-[10px] shadow-lg shadow-[#6EBF8B]/20"
+                          className="w-full h-14 rounded-2xl bg-[#1A1A1A] text-white flex items-center justify-center gap-3 font-black uppercase tracking-widest text-[10px] shadow-lg shadow-black/10"
                         >
                           <Zap size={18} fill="white" />
                           CONFIRM BROADCAST
