@@ -19,7 +19,8 @@ import {
   Award,
   Gamepad2,
   HelpCircle,
-  FileText
+  FileText,
+  Loader2
 } from "lucide-react";
 import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import { useAuth } from "@/hooks/useAuth";
@@ -99,7 +100,31 @@ export default function Profile() {
       }
 
       setSaving(true);
-      // ...
+      try {
+        const { error } = await supabase
+          .from("profiles")
+          .update({
+            full_name: formData.full_name,
+            phone: formData.phone,
+            avatar_url: formData.avatar_url,
+            username: formData.username,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", user.id);
+
+        if (error) throw error;
+
+        toast.success("Profile updated successfully");
+        setIsEditing(false);
+        setIsConfirmOpen(false);
+        fetchProfileData();
+      } catch (error: any) {
+        console.error("Error updating profile:", error);
+        toast.error(error.message || "Failed to update profile");
+      } finally {
+        setSaving(false);
+      }
+    };
 
 
   const handleLogout = async () => {
@@ -328,6 +353,42 @@ export default function Profile() {
                     {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : "Save Changes"}
                   </motion.button>
                 </form>
+
+                <AnimatePresence>
+                  {isConfirmOpen && (
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      className="absolute inset-0 z-[110] bg-white rounded-2xl p-6 flex flex-col items-center justify-center text-center space-y-4"
+                    >
+                      <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center">
+                        <Settings size={32} className="text-amber-600" />
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-bold text-[#1A1A1A]">Critical Changes</h4>
+                        <p className="text-sm text-[#6B7280]">You are changing your username or phone number. This might affect your account recovery.</p>
+                      </div>
+                      <div className="flex gap-3 w-full">
+                        <button 
+                          onClick={() => setIsConfirmOpen(false)}
+                          className="flex-1 h-12 rounded-lg bg-[#F5F5F5] text-[#1A1A1A] font-bold text-[12px] uppercase tracking-wide"
+                        >
+                          Cancel
+                        </button>
+                        <button 
+                          onClick={(e) => {
+                            const event = { preventDefault: () => {} } as React.FormEvent;
+                            handleUpdateProfile(event);
+                          }}
+                          className="flex-1 h-12 rounded-lg bg-[#1A1A1A] text-white font-bold text-[12px] uppercase tracking-wide"
+                        >
+                          Confirm
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             </motion.div>
           )}
