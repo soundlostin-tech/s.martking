@@ -3,13 +3,13 @@
 import { BottomNav } from "@/components/layout/BottomNav";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { 
   Search, Trophy, Calendar, Users, 
   ChevronRight, AlertCircle, Swords, Zap, 
-  Map as MapIcon, ShieldCheck, Target, Loader2,
-  Filter, ArrowUpDown, CheckCircle2
+  Map as MapIcon, Target, Loader2,
+  CheckCircle2
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/hooks/useAuth";
@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { LoadingScreen } from "@/components/ui/LoadingScreen";
 
 const filters = ["All", "Upcoming", "Live", "Completed"];
 const sortOptions = [
@@ -25,7 +26,7 @@ const sortOptions = [
   { label: "Entry Fee", value: "entry" }
 ];
 
-export default function MatchesPage() {
+function MatchesContent() {
   const { user } = useAuth(false);
   const [activeFilter, setActiveFilter] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -186,8 +187,6 @@ export default function MatchesPage() {
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
-      {/* Background is now global */}
-      
       <main className="pb-[80px] relative z-10">
         <section className="px-4 pt-6 pb-4">
           <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mb-2">
@@ -363,8 +362,6 @@ export default function MatchesPage() {
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
             className="fixed inset-0 z-[60] bg-[#F5F5F5] flex flex-col"
           >
-            {/* Background is now global */}
-            
             <header className="relative z-10 px-4 py-6 flex items-center justify-between">
               <motion.button 
                 whileTap={{ scale: 0.9 }}
@@ -554,8 +551,15 @@ export default function MatchesPage() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <BottomNav />
     </div>
+  );
+}
+
+export default function MatchesPage() {
+  return (
+    <Suspense fallback={<LoadingScreen />}>
+      <MatchesContent />
+      <BottomNav />
+    </Suspense>
   );
 }

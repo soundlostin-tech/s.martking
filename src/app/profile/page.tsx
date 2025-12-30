@@ -134,7 +134,7 @@ export default function Profile() {
   };
 
   if (authLoading || loading) {
-    return <LoadingScreen />;
+    return null;
   }
 
   return (
