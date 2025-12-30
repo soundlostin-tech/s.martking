@@ -1,40 +1,41 @@
 # Smartking's Arena - Animated Background System
 
 ## Overview
-A subtle, brand-aligned full-screen animated background implemented using React and Framer Motion for maximum performance and accessibility.
+A high-performance, dark futuristic arena background for "Smartking's Arena". Designed for a competitive mobile gaming and esports atmosphere with smooth flowing neon waves and minimal distractions.
 
 ### Visual Specifications
-- **Palette:** Deep Navy (`#0f172a`), Slate (`#111827`), Accent Gold (`#FFD24D`), Warm Orange (`#FF7A18`).
-- **Elements:** Parallax waves, glowing particle drift, and a central vignette.
-- **Tempo:** Slow 18s loop for the background gradient and primary wave.
-- **Legibility:** 0.12 opacity dimming overlay ensures foreground UI remains WCAG AA compliant.
+- **Theme:** Dark Cyberpunk / Esports Arena.
+- **Palette:** Nearly Black base (`#020617`), Neon Purple (`#A855F7`), Electric Blue (`#3B82F6`), and Cyan (`#06B6D4`).
+- **Elements:**
+  - **Neon Waves:** Smooth flowing SVG gradients at the bottom edges.
+  - **Light Streaks:** Thin horizontal lines mimicking high-speed arena lighting.
+  - **Energy Sparks:** Drifting glowing particles with soft depth.
+  - **Vignette:** Strong central focus with darker center for UI legibility.
+  - **Arena Grit:** Subtle noise texture overlay for a professional matte finish.
 
 ## Implementation Details
-The background is implemented as a React component: `src/components/ui/AnimatedBackground.tsx`.
+The background is a global component: `src/components/layout/AnimatedBackground.tsx`.
 
-### Features
-1. **Dynamic Gradients:** Slow-moving radial gradients create depth.
-2. **Parallax Waves:** Multi-layered SVG waves moving at different speeds.
-3. **Particle System:** Lightweight DOM-based particles with blur effects.
-4. **Vignette:** Radial gradient overlay to focus the viewer's attention.
+### Core Features
+1. **Adaptive Motion:** Optimized 15-25s loop cycles for ambient motion that doesn't distract.
+2. **Hydration Safe:** Particle generation is deferred to the client-side to prevent SSR mismatches.
+3. **Layered Depth:** Multi-layered SVG and CSS gradients create a sense of scale.
+4. **Vignette Protection:** Uses a `radial-gradient` to ensure the center interaction area remains clean.
 
 ## Accessibility (Reduced Motion)
-The system automatically detects user preferences for reduced motion via the `prefers-reduced-motion` media query (using Framer Motion's `useReducedMotion` hook).
+The system respects the `prefers-reduced-motion` media query.
 
-### How to Toggle/Test:
-1. **Windows:** Settings > Accessibility > Visual Effects > Show animation in Windows (Toggle Off).
-2. **macOS:** System Settings > Accessibility > Display > Reduce motion (Toggle On).
-3. **Browser DevTools:** 
-   - Open Chrome DevTools (`F12`).
-   - Press `Ctrl+Shift+P`.
+### Reduced Motion Behavior:
+- Disables all active wave and streak animations.
+- Replaces drifting particles with a static subset of faint glowing dots.
+- Uses a simplified static radial gradient base.
+- Maintains the dark atmosphere and vignette for legibility.
+
+### How to Test:
+1. **Browser DevTools:** 
+   - Open DevTools (`F12`).
+   - `Ctrl+Shift+P` (Windows) or `Cmd+Shift+P` (Mac).
    - Type "Reduced Motion" and select "Emulate CSS prefers-reduced-motion: reduce".
 
-**Reduced Motion Version Behavior:**
-- Switches to a static radial gradient.
-- Disables all wave animations.
-- Reduces particle count and removes movement/pulsing.
-- Maintains the 0.12 dimming overlay for legibility.
-
-## Files
-- `src/components/ui/AnimatedBackground.tsx`: Main component.
-- `public/background-assets.svg`: Static source layers for designers.
+## Component Location
+- `src/components/layout/AnimatedBackground.tsx`: Logic and styling.
