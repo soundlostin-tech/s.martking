@@ -49,21 +49,16 @@ export function TopHeader() {
         <div className="flex flex-col">
           <motion.h1 
             variants={itemVariants}
-            className="text-sm font-heading text-[#1A1A1A] font-black tracking-[0.08em] leading-none uppercase flex items-center gap-1.5"
+            className="text-xl font-heading text-[#1A1A1A] font-black tracking-tight leading-none uppercase"
           >
             Smartking's
-            <span className="text-[#6B7280] font-bold">Arena</span>
           </motion.h1>
-          <motion.div 
+          <motion.span 
             variants={itemVariants}
-            className="flex items-center gap-2 mt-1.5"
+            className="text-[9px] font-black text-[#6B7280] uppercase tracking-[0.1em] mt-1"
           >
-            <div className="relative">
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              <div className="absolute inset-0 w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping opacity-75" />
-            </div>
-            <span className="text-[8px] font-black text-[#1A1A1A]/40 uppercase tracking-[0.15em]">Server Live</span>
-          </motion.div>
+            SAID HAMARE ZAMANE MEIN......
+          </motion.span>
         </div>
       </div>
 

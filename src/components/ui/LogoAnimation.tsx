@@ -83,9 +83,9 @@ export function LogoAnimation({ size = 36, className = "" }: LogoAnimationProps)
               </feMerge>
             </filter>
 
-            <filter id="crown-shadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="1" stdDeviation="1" shadowOpacity="0.3"/>
-            </filter>
+              <filter id="crown-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="1" stdDeviation="1" floodOpacity="0.3"/>
+              </filter>
           </defs>
 
           <motion.g
