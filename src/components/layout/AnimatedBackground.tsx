@@ -1,22 +1,42 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 export function AnimatedBackground() {
+  const [mounted, setMounted] = useState(false);
+  const [particles, setParticles] = useState<any[]>([]);
   const shouldReduceMotion = useReducedMotion();
 
-  // Generate random particles
-  const particles = useMemo(() => {
-    return Array.from({ length: 25 }).map((_, i) => ({
+  useEffect(() => {
+    setMounted(true);
+    // Generate particles only on the client
+    const newParticles = Array.from({ length: 25 }).map((_, i) => ({
       id: i,
       size: Math.random() * 4 + 2,
       x: Math.random() * 100,
       y: Math.random() * 100,
+      targetX: Math.random() * 10 - 5,
       duration: Math.random() * 10 + 15,
       delay: Math.random() * 5,
     }));
+    setParticles(newParticles);
   }, []);
+
+  if (!mounted) {
+    return (
+      <div className="fixed inset-0 z-[-1] overflow-hidden bg-[#0f172a]">
+        <div 
+          className="absolute inset-0 opacity-40"
+          style={{
+            background: "radial-gradient(circle at 50% 50%, #111827 0%, #0f172a 100%)"
+          }}
+        />
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)] opacity-12" />
+        <div className="absolute inset-0 pointer-events-none bg-[#0f172a] opacity-12" />
+      </div>
+    );
+  }
 
   if (shouldReduceMotion) {
     return (
@@ -42,6 +62,7 @@ export function AnimatedBackground() {
         ))}
         {/* Subtle Vignette */}
         <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)] opacity-12" />
+        <div className="absolute inset-0 pointer-events-none bg-[#0f172a] opacity-12" />
       </div>
     );
   }
@@ -105,7 +126,7 @@ export function AnimatedBackground() {
           initial={{ opacity: 0 }}
           animate={{
             opacity: [0.1, 0.4, 0.1],
-            x: [`${p.x}%`, `${p.x + (Math.random() * 10 - 5)}%`],
+            x: [`${p.x}%`, `${p.x + p.targetX}%`],
             y: [`${p.y}%`, `${p.y - 20}%`],
           }}
           transition={{
