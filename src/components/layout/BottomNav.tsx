@@ -18,13 +18,13 @@ export function BottomNav() {
 
   return (
     <nav 
-      className="fixed bottom-0 left-0 right-0 z-[1000] bg-[#1A1A1A]/95 backdrop-blur-xl border-t border-white/10 rounded-t-[32px] shadow-[0_-12px_40px_rgba(0,0,0,0.5)]"
+      className="fixed bottom-0 left-0 right-0 z-[1000] bg-[#1A1A1A]/95 backdrop-blur-xl border-t border-white/10 rounded-t-[20px] shadow-[0_-8px_24px_rgba(0,0,0,0.4)]"
       style={{ 
-        paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.75rem)',
-        paddingTop: '0.75rem'
+        paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.25rem)',
+        paddingTop: '0.5rem'
       }}
     >
-      <div className="flex justify-around items-center h-16 px-4">
+      <div className="flex justify-around items-center h-14 px-2">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
@@ -33,22 +33,22 @@ export function BottomNav() {
             <Link
               key={item.label}
               href={item.href}
-              className="nav-item relative flex flex-col items-center justify-center flex-1 min-w-[64px] h-full group touch-manipulation"
+              className="nav-item relative flex flex-col items-center justify-center flex-1 min-w-[56px] h-full group touch-manipulation"
               aria-label={item.label}
               aria-current={isActive ? "page" : undefined}
             >
               <motion.div 
                 className="nav-item-inner relative flex flex-col items-center justify-center w-full"
-                animate={isActive ? { y: -2 } : { y: 0 }}
+                animate={isActive ? { y: -1 } : { y: 0 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
-                <div className="relative flex items-center justify-center w-12 h-10 mb-1">
+                <div className="relative flex items-center justify-center w-10 h-8 mb-0.5">
                   <AnimatePresence>
                     {isActive && (
                       <motion.div 
                         layoutId="nav-active-pill"
-                        className="absolute inset-0 rounded-2xl"
-                        style={{ backgroundColor: `${item.color}25` }} // 15% opacity
+                        className="absolute inset-0 rounded-xl"
+                        style={{ backgroundColor: `${item.color}25` }}
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
@@ -59,14 +59,14 @@ export function BottomNav() {
                   
                   <motion.div
                     animate={isActive ? { 
-                      scale: [1, 1.15, 1],
+                      scale: [1, 1.1, 1],
                     } : { scale: 1 }}
                     transition={{ 
                       duration: 0.3,
                     }}
                   >
                     <Icon 
-                      size={24} 
+                      size={20} 
                       className="relative z-10 transition-colors duration-300"
                       style={{ color: isActive ? item.color : 'rgba(255, 255, 255, 0.4)' }}
                       strokeWidth={isActive ? 2.5 : 2}
@@ -75,23 +75,12 @@ export function BottomNav() {
                 </div>
                 
                 <motion.span 
-                  className="nav-label text-[10px] font-black uppercase tracking-[0.1em] transition-colors duration-300"
+                  className="nav-label text-[8px] font-black uppercase tracking-[0.05em] transition-colors duration-300"
                   style={{ color: isActive ? item.color : 'rgba(255, 255, 255, 0.4)' }}
-                  animate={isActive ? { scale: 1.05 } : { scale: 1 }}
+                  animate={isActive ? { scale: 1.02 } : { scale: 1 }}
                 >
                   {item.label}
                 </motion.span>
-                
-                {isActive && (
-                  <motion.div 
-                    layoutId="nav-dot"
-                    className="absolute -bottom-1.5 w-1 h-1 rounded-full"
-                    style={{ backgroundColor: item.color }}
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  />
-                )}
               </motion.div>
             </Link>
           );

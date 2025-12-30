@@ -101,22 +101,22 @@ function LiveContent() {
     );
   }
 
-  return (
-    <main className="pb-[80px]">
-      <section className="px-5 pt-8 pb-6">
-        <p className="text-[12px] font-black text-[#6B7280] uppercase tracking-widest mb-2">
-          Broadcasting Now
-        </p>
-        <h2 className="text-[36px] font-heading text-[#1A1A1A] leading-tight font-black tracking-tighter">
-          LIVE ARENA
-        </h2>
-          <p className="text-[10px] font-black text-[#6EBF8B] uppercase tracking-[0.2em] mt-1">
-          Join the Action • Real-time
-        </p>
-      </section>
+    return (
+      <main className="pb-20">
+        <section className="px-4 pt-4 pb-3">
+          <p className="text-[9px] font-black text-[#6B7280] uppercase tracking-widest mb-1">
+            Broadcasting Now
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-heading text-[#1A1A1A] leading-tight font-black tracking-tight">
+            LIVE ARENA
+          </h2>
+          <p className="text-[8px] font-black text-[#6EBF8B] uppercase tracking-widest mt-0.5">
+            Join the Action • Real-time
+          </p>
+        </section>
 
-        <div className="px-5 space-y-8">
-          <div className="rounded-[32px] overflow-hidden shadow-2xl border-4 border-white bg-black w-full max-w-full">
+        <div className="px-4 space-y-4">
+          <div className="rounded-2xl overflow-hidden shadow-lg border-2 border-white bg-black w-full">
             <VintageTV 
               streamUrl={activeMatch?.stream_url}
               isOn={tvOn && !!activeMatch}
@@ -127,41 +127,41 @@ function LiveContent() {
 
           {activeMatch ? (
             <>
-              <BentoCard variant="mint" className="p-6 sm:p-8 relative overflow-hidden shadow-xl border-none rounded-[40px]">
+              <BentoCard variant="mint" size="default" className="relative overflow-hidden shadow-lg border-none">
                 <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-2 bg-[#1A1A1A] text-white px-4 py-1.5 rounded-full shadow-lg">
-                      <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.8)]" />
-                      <span className="text-[9px] sm:text-[10px] font-black tracking-widest uppercase">LIVE</span>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-1.5 bg-[#1A1A1A] text-white px-2.5 py-1 rounded-full shadow">
+                      <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
+                      <span className="text-[8px] font-black tracking-wide uppercase">LIVE</span>
                     </div>
-                    <div className="flex items-center gap-2 bg-white/40 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20">
-                      <Eye size={14} className="text-[#1A1A1A]" />
-                      <span className="text-[10px] font-black text-[#1A1A1A] tracking-tight">{activeMatch.viewers_count?.toLocaleString() || 0}</span>
+                    <div className="flex items-center gap-1.5 bg-white/40 backdrop-blur px-2.5 py-1 rounded-full border border-white/20">
+                      <Eye size={12} className="text-[#1A1A1A]" />
+                      <span className="text-[9px] font-black text-[#1A1A1A] tracking-tight">{activeMatch.viewers_count?.toLocaleString() || 0}</span>
                     </div>
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-heading text-[#1A1A1A] font-black leading-tight tracking-tight mb-1">{activeMatch.title}</h3>
-                  <p className="text-[9px] text-[#1A1A1A]/60 font-black uppercase tracking-widest mb-8">{activeMatch.tournament?.title}</p>
+                  <h3 className="text-base sm:text-lg font-heading text-[#1A1A1A] font-black leading-tight tracking-tight mb-0.5">{activeMatch.title}</h3>
+                  <p className="text-[8px] text-[#1A1A1A]/60 font-black uppercase tracking-wide mb-4">{activeMatch.tournament?.title}</p>
                   
-                  <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                    <div className="bg-white/40 backdrop-blur-md rounded-2xl p-3 sm:p-4 flex-1 text-center border border-white/40 shadow-sm min-w-0">
-                      <p className="text-[8px] font-black text-[#1A1A1A]/60 uppercase tracking-widest mb-1 truncate">Mode</p>
-                      <p className="text-xs sm:text-sm font-black text-[#1A1A1A] truncate">{activeMatch.mode}</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="bg-white/40 backdrop-blur rounded-xl p-2.5 text-center border border-white/40 min-w-0">
+                      <p className="text-[7px] font-black text-[#1A1A1A]/60 uppercase tracking-wide mb-0.5 truncate">Mode</p>
+                      <p className="text-xs font-black text-[#1A1A1A] truncate">{activeMatch.mode}</p>
                     </div>
-                    <div className="bg-white/40 backdrop-blur-md rounded-2xl p-3 sm:p-4 flex-1 text-center border border-white/40 shadow-sm min-w-0">
-                      <p className="text-[8px] font-black text-[#1A1A1A]/60 uppercase tracking-widest mb-1 truncate">Map</p>
-                      <p className="text-xs sm:text-sm font-black text-[#1A1A1A] truncate">{activeMatch.map || 'Bermuda'}</p>
+                    <div className="bg-white/40 backdrop-blur rounded-xl p-2.5 text-center border border-white/40 min-w-0">
+                      <p className="text-[7px] font-black text-[#1A1A1A]/60 uppercase tracking-wide mb-0.5 truncate">Map</p>
+                      <p className="text-xs font-black text-[#1A1A1A] truncate">{activeMatch.map || 'Bermuda'}</p>
                     </div>
-                    <div className="bg-white/40 backdrop-blur-md rounded-2xl p-3 sm:p-4 flex-1 text-center border border-white/40 shadow-sm min-w-0">
-                      <p className="text-[8px] font-black text-[#1A1A1A]/60 uppercase tracking-widest mb-1 truncate">Teams</p>
-                      <p className="text-xs sm:text-sm font-black text-[#1A1A1A] truncate">{activeMatch.live_stats?.teams_alive || 12}</p>
+                    <div className="bg-white/40 backdrop-blur rounded-xl p-2.5 text-center border border-white/40 min-w-0">
+                      <p className="text-[7px] font-black text-[#1A1A1A]/60 uppercase tracking-wide mb-0.5 truncate">Teams</p>
+                      <p className="text-xs font-black text-[#1A1A1A] truncate">{activeMatch.live_stats?.teams_alive || 12}</p>
                     </div>
                   </div>
                 </div>
               
-              <div className="absolute right-[-30px] bottom-[-30px] scale-[1.5] opacity-[0.03] rotate-12 pointer-events-none">
-                <Swords size={180} />
-              </div>
-            </BentoCard>
+                <div className="absolute right-[-20px] bottom-[-20px] opacity-[0.03] pointer-events-none">
+                  <Swords size={100} />
+                </div>
+              </BentoCard>
 
             {otherMatches.length > 0 && (
               <section className="space-y-6 pt-2">

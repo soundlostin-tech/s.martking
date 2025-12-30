@@ -194,101 +194,100 @@ function MatchesContent() {
 
   return (
     <div className="min-h-screen bg-[#F8F6F0] text-[#1A1A1A] relative">
-      <main className="pb-[80px] relative z-10">
-        <section className="px-5 pt-8 pb-4">
-          <p className="text-[12px] font-black text-[#6B7280] uppercase tracking-widest mb-2">
-            Tournament Hub
-          </p>
-          <h2 className="text-[36px] font-heading text-[#1A1A1A] leading-tight font-black tracking-tighter">
-            ARENA BATTLES
-          </h2>
-        </section>
+        <main className="pb-20 relative z-10">
+          <section className="px-4 pt-4 pb-3">
+            <p className="text-[9px] font-black text-[#6B7280] uppercase tracking-widest mb-1">
+              Tournament Hub
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-heading text-[#1A1A1A] leading-tight font-black tracking-tight">
+              ARENA BATTLES
+            </h2>
+          </section>
 
-        <section className="px-5 space-y-6 pt-2">
-            <div className="flex gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={20} strokeWidth={3} />
-                <input 
-                  type="text" 
-                  placeholder="Search matches..." 
-                  aria-label="Search for matches"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-white border-2 border-[#E5E7EB] rounded-2xl py-4 pl-14 pr-6 text-sm font-bold shadow-md placeholder:text-[#9CA3AF] focus:border-[#1A1A1A] focus:outline-none transition-all"
-                />
+          <section className="px-4 space-y-3 pt-2">
+              <div className="flex gap-3">
+                <div className="relative flex-1">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={16} strokeWidth={3} />
+                  <input 
+                    type="text" 
+                    placeholder="Search matches..." 
+                    aria-label="Search for matches"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full bg-white border-2 border-[#E5E7EB] rounded-xl py-3 pl-11 pr-4 text-xs font-bold shadow placeholder:text-[#9CA3AF] focus:border-[#1A1A1A] focus:outline-none transition-all"
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="flex flex-col gap-4">
-              <div className="flex gap-2 overflow-x-auto no-scrollbar" role="tablist" aria-label="Filter matches by status">
-                {filters.map((f) => (
-                  <button
-                    key={f}
-                    role="tab"
-                    aria-selected={activeFilter === f}
-                    aria-label={`Filter by ${f}`}
-                    onClick={() => setActiveFilter(f)}
-                    className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
-                      activeFilter === f 
-                        ? "bg-[#1A1A1A] text-white shadow-lg scale-105" 
-                        : "bg-white text-[#6B7280] border-2 border-[#E5E7EB]"
-                    }`}
-                  >
-                    {f}
-                  </button>
-                ))}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[9px] font-black text-[#6B7280] uppercase tracking-widest">SORT BY:</span>
-                <div className="flex gap-2 overflow-x-auto no-scrollbar">
-                  {sortOptions.map(opt => (
+              <div className="flex flex-col gap-3">
+                <div className="flex gap-1.5 overflow-x-auto no-scrollbar" role="tablist" aria-label="Filter matches by status">
+                  {filters.map((f) => (
                     <button
-                      key={opt.value}
-                      onClick={() => setActiveSort(opt.value)}
-                      className={`px-4 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
-                        activeSort === opt.value
-                          ? "bg-[#A8E6CF] text-[#1A1A1A] border-2 border-[#1A1A1A]"
-                          : "bg-white text-[#6B7280] border-2 border-[#E5E7EB]"
+                      key={f}
+                      role="tab"
+                      aria-selected={activeFilter === f}
+                      aria-label={`Filter by ${f}`}
+                      onClick={() => setActiveFilter(f)}
+                      className={`px-4 py-2 rounded-lg text-[8px] font-black uppercase tracking-wide transition-all whitespace-nowrap ${
+                        activeFilter === f 
+                          ? "bg-[#1A1A1A] text-white shadow" 
+                          : "bg-white text-[#6B7280] border border-[#E5E7EB]"
                       }`}
                     >
-                      {opt.label}
+                      {f}
                     </button>
                   ))}
                 </div>
-              </div>
-          </div>
-        </section>
+                <div className="flex items-center gap-2">
+                  <span className="text-[8px] font-black text-[#6B7280] uppercase tracking-wide">SORT:</span>
+                  <div className="flex gap-1.5 overflow-x-auto no-scrollbar">
+                    {sortOptions.map(opt => (
+                      <button
+                        key={opt.value}
+                        onClick={() => setActiveSort(opt.value)}
+                        className={`px-3 py-1 rounded text-[8px] font-black uppercase tracking-wide transition-all whitespace-nowrap ${
+                          activeSort === opt.value
+                            ? "bg-[#A8E6CF] text-[#1A1A1A] border border-[#1A1A1A]"
+                            : "bg-white text-[#6B7280] border border-[#E5E7EB]"
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+            </div>
+          </section>
 
         {myEntries.length > 0 && activeFilter === "Upcoming" && (
-          <section className="px-5 pt-10">
-            <h3 className="text-sm font-black text-[#6B7280] uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
-              MY BATTLES <span className="w-6 h-6 rounded-lg bg-[#1A1A1A] text-white text-[10px] flex items-center justify-center font-black shadow-lg">{myEntries.length}</span>
+          <section className="px-4 pt-6">
+            <h3 className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-3 flex items-center gap-2">
+              MY BATTLES <span className="w-5 h-5 rounded bg-[#1A1A1A] text-white text-[8px] flex items-center justify-center font-black shadow">{myEntries.length}</span>
             </h3>
-            <div className="flex gap-5 overflow-x-auto no-scrollbar pb-4">
+            <div className="flex gap-3 overflow-x-auto no-scrollbar pb-3">
               {myEntries.map((match) => (
                 <BentoCard 
                   key={match.id} 
                   variant="dark" 
-                  className="w-[280px] flex-shrink-0 p-8 shadow-2xl relative overflow-hidden group"
+                  size="compact"
+                  className="w-[200px] flex-shrink-0 shadow-lg relative overflow-hidden group"
                   onClick={() => setSelectedMatch(match)}
                 >
                   <div className="relative z-10">
-                    <div className="flex justify-between items-start mb-6">
-                      <div className="bg-white/20 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest">JOINED</div>
-                      <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
-                        <ChevronRight size={20} className="text-white" />
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="bg-white/20 text-white px-2 py-0.5 rounded text-[7px] font-black uppercase tracking-wide">JOINED</div>
+                      <div className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center">
+                        <ChevronRight size={14} className="text-white" />
                       </div>
                     </div>
-                    <h4 className="text-xl font-heading text-white font-black leading-tight mb-6 tracking-tight">{match.title}</h4>
-                    <div className="flex justify-between items-end">
-                      <div className="space-y-1">
-                        <p className="text-[9px] font-black text-white/40 uppercase tracking-widest">BATTLE TIME</p>
-                        <p className="text-base font-black text-white">{new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                      </div>
+                    <h4 className="text-sm font-heading text-white font-black leading-tight mb-3 tracking-tight truncate">{match.title}</h4>
+                    <div className="space-y-0.5">
+                      <p className="text-[7px] font-black text-white/40 uppercase tracking-wide">BATTLE TIME</p>
+                      <p className="text-xs font-black text-white">{new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                     </div>
                   </div>
-                  <div className="absolute right-[-20px] bottom-[-20px] opacity-[0.05] group-hover:scale-110 transition-transform">
-                    <Zap size={120} />
+                  <div className="absolute right-[-10px] bottom-[-10px] opacity-[0.05]">
+                    <Zap size={60} />
                   </div>
                 </BentoCard>
               ))}
@@ -296,11 +295,11 @@ function MatchesContent() {
           </section>
         )}
 
-          <section className="px-5 pt-8 space-y-4">
+          <section className="px-4 pt-4 space-y-2.5">
             {loading ? (
-              <div className="space-y-4">
+              <div className="space-y-2.5">
                 {[1, 2, 3, 4].map((i) => (
-                  <Skeleton key={i} className="h-[120px] w-full rounded-[24px]" />
+                  <Skeleton key={i} className="h-[90px] w-full rounded-xl" />
                 ))}
               </div>
             ) : filteredAndSortedMatches.length > 0 ? (
@@ -321,39 +320,40 @@ function MatchesContent() {
                   >
                     <BentoCard 
                       variant={color}
-                      className={`p-5 sm:p-6 flex items-center justify-between border-none shadow-xl group relative overflow-hidden ${isJoined ? 'ring-4 ring-[#1A1A1A]' : ''}`}
+                      size="compact"
+                      className={`flex items-center justify-between border-none shadow group relative overflow-hidden ${isJoined ? 'ring-2 ring-[#1A1A1A]' : ''}`}
                     >
-                      <div className="flex items-center gap-4 sm:gap-5 relative z-10 flex-1 min-w-0">
-                        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-[20px] sm:rounded-[24px] bg-white/40 flex-shrink-0 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
-                          <Swords size={24} className="text-[#1A1A1A]" />
+                      <div className="flex items-center gap-3 relative z-10 flex-1 min-w-0">
+                        <div className="w-10 h-10 rounded-xl bg-white/40 flex-shrink-0 flex items-center justify-center">
+                          <Swords size={16} className="text-[#1A1A1A]" />
                         </div>
                         <div className="min-w-0">
-                          <h4 className="text-base sm:text-lg font-heading text-[#1A1A1A] font-black leading-tight mb-1 tracking-tight truncate">{match.title}</h4>
-                          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                            <span className="text-[9px] sm:text-[10px] font-black text-[#1A1A1A]/60 uppercase tracking-widest whitespace-nowrap">₹{match.tournament?.entry_fee} ENTRY</span>
-                            <span className="text-[9px] text-[#1A1A1A]/20 font-black">•</span>
-                            <span className="text-[9px] sm:text-[10px] font-black text-[#1A1A1A]/60 uppercase tracking-widest">{match.mode}</span>
+                          <h4 className="text-sm font-heading text-[#1A1A1A] font-black leading-tight mb-0.5 tracking-tight truncate">{match.title}</h4>
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="text-[8px] font-black text-[#1A1A1A]/60 uppercase tracking-wide whitespace-nowrap">₹{match.tournament?.entry_fee}</span>
+                            <span className="text-[8px] text-[#1A1A1A]/20 font-black">•</span>
+                            <span className="text-[8px] font-black text-[#1A1A1A]/60 uppercase tracking-wide">{match.mode}</span>
                           </div>
-                          <div className="flex items-center gap-3 mt-3">
-                            <div className="w-20 sm:w-28 h-2 bg-white/30 rounded-full overflow-hidden border border-white/20">
+                          <div className="flex items-center gap-2 mt-1.5">
+                            <div className="w-16 h-1.5 bg-white/30 rounded-full overflow-hidden">
                               <motion.div 
                                 initial={{ width: 0 }}
                                 animate={{ width: `${(filledSlots / totalSlots) * 100}%` }}
                                 className={`h-full ${isFull ? 'bg-red-500' : 'bg-[#1A1A1A]'} rounded-full`} 
                               />
                             </div>
-                            <span className="text-[9px] sm:text-[10px] font-black text-[#1A1A1A]/80 uppercase tracking-widest whitespace-nowrap">
+                            <span className="text-[7px] font-black text-[#1A1A1A]/80 uppercase tracking-wide whitespace-nowrap">
                               {isFull || match.status === 'live' ? "CLOSED" : `${filledSlots}/${totalSlots}`}
                             </span>
                           </div>
                         </div>
                       </div>
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-[#1A1A1A] text-white flex-shrink-0 flex items-center justify-center shadow-xl group-hover:translate-x-1 transition-transform relative z-10 ml-4">
-                        <ChevronRight size={20} strokeWidth={3} />
+                      <div className="w-8 h-8 rounded-lg bg-[#1A1A1A] text-white flex-shrink-0 flex items-center justify-center shadow relative z-10 ml-2">
+                        <ChevronRight size={14} strokeWidth={3} />
                       </div>
                       {isJoined && (
-                        <div className="absolute top-2 right-2 w-6 h-6 bg-[#1A1A1A] rounded-full flex items-center justify-center border-2 border-white shadow-lg z-20">
-                          <CheckCircle2 size={12} className="text-[#5FD3BC]" />
+                        <div className="absolute top-1.5 right-1.5 w-5 h-5 bg-[#1A1A1A] rounded-full flex items-center justify-center border-2 border-white shadow z-20">
+                          <CheckCircle2 size={10} className="text-[#5FD3BC]" />
                         </div>
                       )}
                     </BentoCard>
@@ -361,12 +361,12 @@ function MatchesContent() {
                 );
               })
           ) : (
-            <div className="py-20 text-center bg-white rounded-[40px] shadow-2xl border-none mx-2">
-              <div className="w-20 h-20 bg-[#F3F4F6] rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-xl">
-                <AlertCircle size={40} className="text-[#9CA3AF]" />
+            <div className="py-12 text-center bg-white rounded-2xl shadow border-none mx-1">
+              <div className="w-14 h-14 bg-[#F3F4F6] rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <AlertCircle size={24} className="text-[#9CA3AF]" />
               </div>
-              <h3 className="text-2xl font-heading text-[#1A1A1A] font-black tracking-tighter mb-2">ARENA EMPTY</h3>
-              <p className="text-[10px] text-[#6B7280] font-black uppercase tracking-widest">Try adjusting your filters</p>
+              <h3 className="text-base font-heading text-[#1A1A1A] font-black tracking-tight mb-1">ARENA EMPTY</h3>
+              <p className="text-[8px] text-[#6B7280] font-black uppercase tracking-wide">Try adjusting your filters</p>
             </div>
           )}
         </section>

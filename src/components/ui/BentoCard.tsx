@@ -8,6 +8,7 @@ interface BentoCardProps {
   className?: string;
   variant?: "default" | "hero" | "pastel" | "dark" | "vibrant" | "glass" | "mint" | "peach" | "purple" | "blue" | "pink" | "yellow" | "coral" | "orange" | "teal" | "lavender";
   pastelColor?: "yellow" | "mint" | "coral" | "lavender" | "peach" | "sky" | "rose" | "indigo" | "sage" | "salmon" | "lilac" | "blue" | "pink" | "purple" | "teal" | "orange";
+  size?: "compact" | "default" | "spacious";
   onClick?: () => void;
 }
 
@@ -16,6 +17,7 @@ export function BentoCard({
   className, 
   variant = "default",
   pastelColor = "yellow",
+  size = "default",
   onClick 
 }: BentoCardProps) {
   const pastelVariants = {
@@ -56,13 +58,20 @@ export function BentoCard({
     lavender: "bg-[#E8D4F0] text-[#1A1A1A]",
   };
 
+  const sizeClasses = {
+    compact: "p-3 rounded-[16px] sm:p-4 sm:rounded-[20px]",
+    default: "p-4 rounded-[20px] sm:p-5 sm:rounded-[24px]",
+    spacious: "p-5 rounded-[24px] sm:p-6 sm:rounded-[28px]",
+  };
+
   return (
     <motion.div
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
       className={cn(
-        "rounded-[24px] p-6 shadow-sm border-none box-border transition-all duration-200",
+        "shadow-sm border-none box-border transition-all duration-200",
         variantClasses[variant],
+        sizeClasses[size],
         className
       )}
     >
