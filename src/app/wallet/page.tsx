@@ -176,12 +176,31 @@ export default function WalletPage() {
     }
   };
 
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
+
   const filteredTransactions = transactions.filter(tx => {
     if (txFilter === "All") return true;
     if (txFilter === "Deposits") return tx.type === "deposit";
     if (txFilter === "Withdrawals") return tx.type === "withdrawal";
+    if (txFilter === "Pending") return tx.status === "pending";
     return true;
   });
+
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const depositAmt = searchParams.get('deposit');
+    if (depositAmt) {
+      setDepositAmount(depositAmt);
+      setIsDepositOpen(true);
+    }
+  }, [searchParams]);
 
   if (authLoading) return null;
 
@@ -206,15 +225,15 @@ export default function WalletPage() {
           <BentoCard variant="vibrant" className="p-6 relative overflow-hidden">
             <div className="relative z-10">
               <div className="flex items-start justify-between mb-6">
-                <div>
-                  <p className="text-[10px] font-bold text-[#1A1A1A]/60 uppercase tracking-wide mb-2">Available Balance</p>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-lg text-[#1A1A1A]/60 font-bold">₹</span>
-                    <h2 className="text-[36px] font-heading text-[#1A1A1A] leading-none font-bold">
-                      {(wallet?.balance || 0).toLocaleString()}
-                    </h2>
+                  <div>
+                    <p className="text-[10px] font-bold text-[#1A1A1A]/60 uppercase tracking-wide mb-2">Available Balance</p>
+                    <div className="flex items-baseline gap-1">
+                      <h2 className="text-[36px] font-heading text-[#1A1A1A] leading-none font-bold">
+                        {formatCurrency(wallet?.balance || 0)}
+                      </h2>
+                    </div>
                   </div>
-                </div>
+
                 <div className="w-12 h-12 rounded-xl bg-[#1A1A1A] flex items-center justify-center shadow-lg">
                   <WalletIcon size={22} className="text-[#5FD3BC]" />
                 </div>

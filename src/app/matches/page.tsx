@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
-const filters = ["Upcoming", "Live", "Completed"];
+const filters = ["All", "Upcoming", "Live", "Completed"];
 const sortOptions = [
   { label: "Start Time", value: "start_time" },
   { label: "Prize Pool", value: "prize" },
@@ -26,22 +26,63 @@ const sortOptions = [
 
 export default function MatchesPage() {
   const { user } = useAuth(false);
-  const [activeFilter, setActiveFilter] = useState("Upcoming");
-  const [activeSort, setActiveSort] = useState("start_time");
+  const [activeFilter, setActiveFilter] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('matches_filter') || "Upcoming";
+    }
+    return "Upcoming";
+  });
+  const [activeSort, setActiveSort] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('matches_sort') || "start_time";
+    }
+    return "start_time";
+  });
+
+  useEffect(() => {
+    localStorage.setItem('matches_filter', activeFilter);
+  }, [activeFilter]);
+
+  useEffect(() => {
+    localStorage.setItem('matches_sort', activeSort);
+  }, [activeSort]);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [matches, setMatches] = useState<any[]>([]);
   const [myEntries, setMyEntries] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [joining, setJoining] = useState<string | null>(null);
   const [selectedMatch, setSelectedMatch] = useState<any>(null);
+  const [walletBalance, setWalletBalance] = useState<number | null>(null);
+  const [isInsufficientFundsOpen, setIsInsufficientFundsOpen] = useState(false);
 
-  const fetchMatches = useCallback(async () => {
+  useEffect(() => {
+    const fetchBalance = async () => {
+      if (user) {
+        const { data } = await supabase.from('wallets').select('balance').eq('user_id', user.id).single();
+        if (data) setWalletBalance(data.balance);
+      }
+    };
+    fetchBalance();
+  }, [user]);
+
+  const handleJoinMatch = async (tournamentId: string, matchId: string, entryFee: number) => {
+    if (!user) {
+      toast.error("Please sign in to join");
+      return;
+    }
+
+    if (walletBalance !== null && walletBalance < entryFee) {
+      setIsInsufficientFundsOpen(true);
+      return;
+    }
+
+    setJoining(matchId);
     try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from("matches")
-        .select(`*, tournament:tournaments(*)`)
-        .order("start_time", { ascending: true });
+      const { data, error } = await supabase.rpc('join_tournament', {
+        p_tournament_id: tournamentId,
+        p_match_id: matchId
+      });
       
       if (error) throw error;
 
@@ -78,13 +119,14 @@ export default function MatchesPage() {
     fetchMatches();
   }, [fetchMatches]);
 
-  const filteredAndSortedMatches = useMemo(() => {
-    let result = matches.filter(m => {
-      const matchesSearch = m.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                           m.tournament?.title.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesFilter = m.status.toLowerCase() === activeFilter.toLowerCase();
-      return matchesSearch && matchesFilter;
-    });
+    const filteredAndSortedMatches = useMemo(() => {
+      let result = matches.filter(m => {
+        const matchesSearch = m.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                             m.tournament?.title.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesFilter = activeFilter === "All" || m.status.toLowerCase() === activeFilter.toLowerCase();
+        return matchesSearch && matchesFilter;
+      });
+
 
     result.sort((a, b) => {
       if (activeSort === "start_time") {
@@ -284,9 +326,10 @@ export default function MatchesPage() {
                             className={`h-full ${isFull ? 'bg-[#EF4444]' : 'bg-[#5FD3BC]'} rounded-full`} 
                           />
                         </div>
-                        <span className="text-[9px] font-bold text-[#6B7280]">
-                          {isFull ? "REGISTRATION CLOSED" : `${filledSlots}/${totalSlots} SLOTS`}
-                        </span>
+                          <span className="text-[9px] font-bold text-[#6B7280]">
+                            {isFull || match.status === 'live' ? "REGISTRATION CLOSED" : `${filledSlots}/${totalSlots} SLOTS`}
+                          </span>
+
                       </div>
                     </div>
                   </div>
@@ -449,9 +492,47 @@ export default function MatchesPage() {
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
+        </AnimatePresence>
+  
+        <Dialog open={isInsufficientFundsOpen} onOpenChange={setIsInsufficientFundsOpen}>
+          <DialogContent className="p-0 border-none bg-white rounded-t-2xl sm:rounded-2xl overflow-hidden max-w-[100vw] sm:max-w-[400px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0 z-[100]">
+            <div className="bg-[#FEF2F2] p-8 relative">
+              <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center mb-4 shadow-sm">
+                <AlertCircle size={24} className="text-[#EF4444]" />
+              </div>
+              <DialogTitle className="text-[28px] font-heading text-[#1A1A1A] leading-none font-bold mb-2">Insufficient Funds</DialogTitle>
+              <DialogDescription className="text-[#1A1A1A]/60 text-[10px] font-bold uppercase tracking-wide">Top up to join the battle</DialogDescription>
+            </div>
+            <div className="p-6 space-y-6">
+              <p className="text-sm font-medium text-[#6B7280]">Your current balance (₹{walletBalance?.toLocaleString()}) is lower than the entry fee. Add funds to continue.</p>
+              
+              <div className="grid grid-cols-2 gap-3">
+                {[50, 100, 200, 500].map(amt => (
+                  <Link key={amt} href={`/wallet?deposit=${amt}`} className="block">
+                    <motion.button
+                      whileTap={{ scale: 0.95 }}
+                      className="w-full py-4 rounded-lg bg-[#F5F5F5] border border-[#E5E7EB] text-[12px] font-bold uppercase tracking-wide text-[#1A1A1A]"
+                    >
+                      + ₹{amt}
+                    </motion.button>
+                  </Link>
+                ))}
+              </div>
 
-      <BottomNav />
-    </div>
-  );
-}
+              <Link href="/wallet" className="block">
+                <motion.button 
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full h-14 bg-[#1A1A1A] text-white rounded-lg text-[12px] font-bold uppercase tracking-wide shadow-lg flex items-center justify-center gap-2"
+                >
+                  Go to Wallet
+                </motion.button>
+              </Link>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <BottomNav />
+      </div>
+    );
+  }
+

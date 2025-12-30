@@ -78,25 +78,29 @@ export default function Profile() {
     fetchProfileData();
   }, [fetchProfileData]);
 
-  const handleUpdateProfile = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSaving(true);
-    try {
-      const { error } = await supabase
-        .from("profiles")
-        .update(formData)
-        .eq("id", user!.id);
+    const [showTooltip, setShowTooltip] = useState<string | null>(null);
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
+    const statTooltips: Record<string, string> = {
+      "Total Wins": "Matches won across all tournaments.",
+      "Win Rate": "Percentage of matches won. Updated every 24 hours.",
+      "Earnings": "Total ₹ earned from prizes and kill rewards.",
+      "Matches": "Total number of tournament entries."
+    };
+
+    const handleUpdateProfile = async (e: React.FormEvent) => {
+      e.preventDefault();
       
-      if (error) throw error;
-      toast.success("Profile updated successfully");
-      setIsEditing(false);
-      fetchProfileData();
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
-      setSaving(false);
-    }
-  };
+      const hasCriticalChanges = formData.phone !== profile?.phone || formData.username !== profile?.username;
+      
+      if (hasCriticalChanges && !isConfirmOpen) {
+        setIsConfirmOpen(true);
+        return;
+      }
+
+      setSaving(true);
+      // ...
+
 
   const handleLogout = async () => {
     await supabase.auth.signOut();

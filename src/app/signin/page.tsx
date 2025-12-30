@@ -38,27 +38,38 @@ export default function Signin() {
     return true;
   };
 
-  const handleSignin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validate()) return;
+    const [cooldown, setCooldown] = useState(0);
+    const [failedAttempts, setFailedAttempts] = useState(0);
 
-    setLoading(true);
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
-        password: formData.password,
-      });
+    useEffect(() => {
+      if (cooldown > 0) {
+        const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+        return () => clearTimeout(timer);
+      }
+    }, [cooldown]);
 
-      if (error) {
-        if (error.message === "Email not confirmed") {
-          toast.error("Please confirm your email address before signing in.");
-        } else if (error.message.includes("Invalid login credentials")) {
-          toast.error("Invalid email or password. Please try again.");
-        } else {
-          toast.error(error.message || "An error occurred during signin");
-        }
+    const handleSignin = async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!validate()) return;
+      if (cooldown > 0) {
+        toast.error(`Too many attempts. Please wait ${cooldown} seconds.`);
         return;
       }
+
+      setLoading(true);
+      try {
+        const { error } = await supabase.auth.signInWithPassword({
+          email: formData.email,
+          password: formData.password,
+        });
+
+        if (error) {
+          setFailedAttempts(prev => prev + 1);
+          if (failedAttempts >= 2) {
+            setCooldown(30 * (failedAttempts - 1));
+          }
+          // ...
+
 
       toast.success("Welcome back to Smartking's Arena!");
       router.push("/");
