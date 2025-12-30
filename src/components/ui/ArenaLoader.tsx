@@ -60,68 +60,6 @@ export function ArenaLoader({ size = 120, className = "" }: ArenaLoaderProps) {
           </filter>
         </defs>
 
-        {/* Stage 1: Arena Ring Pulse (0–0.45s) */}
-        <motion.ellipse
-          cx="60"
-          cy="95"
-          rx="45"
-          ry="12"
-          fill="url(#arena-glow)"
-          animate={{
-            opacity: [0, 0.8, 0.5, 0.6, 0.4, 0.5, 0],
-            scale: [0.6, 1.2, 1, 1.05, 0.98, 1.02, 0.6],
-          }}
-          transition={{
-            duration: DURATION,
-            repeat: Infinity,
-            ease: "easeInOut",
-            times: [0, RING_PULSE_END, CREST_RISE_END, FLASH_END, 0.85, 0.95, 1],
-          }}
-        />
-
-        {/* Ring ripple effect */}
-        <motion.ellipse
-          cx="60"
-          cy="95"
-          rx="35"
-          ry="8"
-          fill="none"
-          stroke="#FFD24D"
-          strokeWidth="1.5"
-          strokeOpacity="0.4"
-          animate={{
-            scale: [0.5, 1.3, 1.5],
-            opacity: [0, 0.6, 0],
-          }}
-          transition={{
-            duration: DURATION * 0.5,
-            repeat: Infinity,
-            ease: "easeOut",
-          }}
-        />
-
-        {/* Secondary ripple */}
-        <motion.ellipse
-          cx="60"
-          cy="95"
-          rx="35"
-          ry="8"
-          fill="none"
-          stroke="#FFE6A7"
-          strokeWidth="1"
-          strokeOpacity="0.3"
-          animate={{
-            scale: [0.5, 1.4, 1.6],
-            opacity: [0, 0.4, 0],
-          }}
-          transition={{
-            duration: DURATION * 0.5,
-            repeat: Infinity,
-            ease: "easeOut",
-            delay: 0.15,
-          }}
-        />
-
         {/* Stage 2 & 3: Warrior Crest (S + Crown) */}
         <motion.g
           filter="url(#glow-filter)"
@@ -194,44 +132,6 @@ export function ArenaLoader({ size = 120, className = "" }: ArenaLoaderProps) {
           </motion.g>
         </motion.g>
 
-        {/* Flash burst effect (at 0.8s) */}
-        <motion.circle
-          cx="60"
-          cy="65"
-          r="20"
-          fill="#FFE6A7"
-          filter="url(#flash-filter)"
-          animate={{
-            scale: [0, 1.5, 2.5],
-            opacity: [0, 0.8, 0],
-          }}
-          transition={{
-            duration: 0.3,
-            repeat: Infinity,
-            repeatDelay: DURATION - 0.3,
-            delay: DURATION * CREST_RISE_END,
-            ease: "easeOut",
-          }}
-        />
-
-        {/* Red accent flash */}
-        <motion.circle
-          cx="60"
-          cy="65"
-          r="10"
-          fill="#FF6B6B"
-          animate={{
-            scale: [0, 1, 1.8],
-            opacity: [0, 0.6, 0],
-          }}
-          transition={{
-            duration: 0.25,
-            repeat: Infinity,
-            repeatDelay: DURATION - 0.25,
-            delay: DURATION * CREST_RISE_END + 0.05,
-            ease: "easeOut",
-          }}
-        />
       </svg>
     </div>
   );
