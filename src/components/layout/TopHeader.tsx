@@ -18,14 +18,14 @@ export function TopHeader() {
     }
   };
 
-  const itemVariants = {
-    hidden: { y: 10, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1,
-      transition: { duration: 0.5, ease: "easeOut" }
-    }
-  };
+    const itemVariants = {
+      hidden: { opacity: 0, scale: 0.95 },
+      visible: { 
+        opacity: 1,
+        scale: 1,
+        transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] }
+      }
+    };
 
   return (
     <motion.header 
@@ -41,21 +41,21 @@ export function TopHeader() {
       {/* Subtle Grain Texture */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat" />
 
-      <div className="flex items-center gap-4 relative z-10">
-          <motion.div variants={itemVariants}>
-            <LogoAnimation size={48} />
-          </motion.div>
+      <div className="flex items-center gap-3 relative z-10">
+        <motion.div variants={itemVariants} className="flex-shrink-0">
+          <LogoAnimation size={42} />
+        </motion.div>
         
-        <div className="flex flex-col">
+        <div className="flex flex-col justify-center">
           <motion.h1 
             variants={itemVariants}
-            className="text-xl font-heading text-[#1A1A1A] font-black tracking-tight leading-none uppercase"
+            className="text-xl font-heading text-[#1A1A1A] font-black tracking-tighter leading-[0.9] uppercase"
           >
             Smartking's
           </motion.h1>
           <motion.span 
             variants={itemVariants}
-            className="text-[9px] font-black text-[#6B7280] uppercase tracking-[0.1em] mt-1"
+            className="text-[8px] font-black text-[#6B7280] uppercase tracking-[0.05em] mt-0.5"
           >
             SAID HAMARE ZAMANE MEIN......
           </motion.span>
