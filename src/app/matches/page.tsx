@@ -3,13 +3,13 @@
 import { BottomNav } from "@/components/layout/BottomNav";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { useState, useEffect, useCallback } from "react";
-import { LoadingScreen } from "@/components/ui/LoadingScreen";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { 
   Search, Trophy, Calendar, Users, 
   ChevronRight, AlertCircle, Swords, Zap, 
-  Map as MapIcon, ShieldCheck, Target, Loader2
+  Map as MapIcon, ShieldCheck, Target, Loader2,
+  Filter, ArrowUpDown
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/hooks/useAuth";
@@ -18,10 +18,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
 const filters = ["Upcoming", "Live", "Completed"];
+const sortOptions = [
+  { label: "Start Time", value: "start_time" },
+  { label: "Prize Pool", value: "prize" },
+  { label: "Entry Fee", value: "entry" }
+];
 
 export default function MatchesPage() {
   const { user } = useAuth(false);
   const [activeFilter, setActiveFilter] = useState("Upcoming");
+  const [activeSort, setActiveSort] = useState("start_time");
   const [searchQuery, setSearchQuery] = useState("");
   const [matches, setMatches] = useState<any[]>([]);
   const [myEntries, setMyEntries] = useState<any[]>([]);
@@ -72,12 +78,29 @@ export default function MatchesPage() {
     fetchMatches();
   }, [fetchMatches]);
 
-  const filteredMatches = matches.filter(m => {
-    const matchesSearch = m.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         m.tournament?.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesFilter = m.status.toLowerCase() === activeFilter.toLowerCase();
-    return matchesSearch && matchesFilter;
-  });
+  const filteredAndSortedMatches = useMemo(() => {
+    let result = matches.filter(m => {
+      const matchesSearch = m.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                           m.tournament?.title.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesFilter = m.status.toLowerCase() === activeFilter.toLowerCase();
+      return matchesSearch && matchesFilter;
+    });
+
+    result.sort((a, b) => {
+      if (activeSort === "start_time") {
+        return new Date(a.start_time).getTime() - new Date(b.start_time).getTime();
+      }
+      if (activeSort === "prize") {
+        return (b.tournament?.prize_pool || 0) - (a.tournament?.prize_pool || 0);
+      }
+      if (activeSort === "entry") {
+        return (a.tournament?.entry_fee || 0) - (b.tournament?.entry_fee || 0);
+      }
+      return 0;
+    });
+
+    return result;
+  }, [matches, searchQuery, activeFilter, activeSort]);
 
   const handleJoinMatch = async (tournamentId: string, matchId: string) => {
     if (!user) {
@@ -126,17 +149,17 @@ export default function MatchesPage() {
       <div className="unified-bg" />
       
       <main className="pb-[80px] relative z-10">
-          <section className="px-4 pt-6 pb-4">
-            <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mb-2">
-              Tournament Hub
-            </p>
-            <h2 className="text-[32px] font-heading text-[#1A1A1A] leading-tight font-bold">
-              Tournament Arena
-            </h2>
-            <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mt-1">
-              Ready to Win?
-            </p>
-          </section>
+        <section className="px-4 pt-6 pb-4">
+          <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mb-2">
+            Tournament Hub
+          </p>
+          <h2 className="text-[32px] font-heading text-[#1A1A1A] leading-tight font-bold">
+            Arena
+          </h2>
+          <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mt-1">
+            Ready to Win?
+          </p>
+        </section>
 
         <section className="px-4 space-y-4 pt-2">
           <div className="flex gap-3">
@@ -150,28 +173,35 @@ export default function MatchesPage() {
                 className="w-full bg-white border border-[#E5E7EB] rounded-lg py-3 pl-12 pr-4 text-sm font-medium shadow-[2px_8px_16px_rgba(0,0,0,0.06)] placeholder:text-[#9CA3AF] focus:border-[#5FD3BC] focus:ring-2 focus:ring-[#5FD3BC]/20 focus:outline-none"
               />
             </div>
-            <motion.button 
-              whileTap={{ scale: 0.9 }}
-              className="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-[2px_8px_16px_rgba(0,0,0,0.06)] border border-[#E5E7EB]"
-            >
-              <Zap size={20} className="text-[#1A1A1A]" />
-            </motion.button>
           </div>
 
-          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
-            {filters.map((f) => (
-              <button
-                key={f}
-                onClick={() => setActiveFilter(f)}
-                className={`px-5 py-2.5 rounded-lg text-[11px] font-bold uppercase tracking-wide transition-all touch-target ${
-                  activeFilter === f 
-                    ? "bg-[#1A1A1A] text-white shadow-lg" 
-                    : "bg-white text-[#6B7280] shadow-[2px_8px_16px_rgba(0,0,0,0.06)] border border-[#E5E7EB]"
-                }`}
+          <div className="flex items-center justify-between">
+            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+              {filters.map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setActiveFilter(f)}
+                  className={`px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wide transition-all ${
+                    activeFilter === f 
+                      ? "bg-[#1A1A1A] text-white" 
+                      : "bg-white text-[#6B7280] border border-[#E5E7EB]"
+                  }`}
+                >
+                  {f}
+                </button>
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <select 
+                value={activeSort}
+                onChange={(e) => setActiveSort(e.target.value)}
+                className="bg-white border border-[#E5E7EB] rounded-lg px-3 py-2 text-[10px] font-bold uppercase tracking-wide focus:outline-none"
               >
-                {f}
-              </button>
-            ))}
+                {sortOptions.map(opt => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+            </div>
           </div>
         </section>
 
@@ -208,29 +238,33 @@ export default function MatchesPage() {
           </section>
         )}
 
-            <section className="px-4 pt-6 space-y-3">
-              {loading ? (
-                <div className="space-y-4">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <div key={i} className="bg-white rounded-2xl p-4 flex items-center justify-between border border-[#E5E7EB]">
-                      <div className="flex items-center gap-4">
-                        <Skeleton className="w-12 h-12 rounded-xl" />
-                        <div className="space-y-2">
-                          <Skeleton className="h-4 w-32" />
-                          <Skeleton className="h-3 w-20" />
-                        </div>
-                      </div>
-                      <Skeleton className="w-10 h-10 rounded-full" />
+        <section className="px-4 pt-6 space-y-3">
+          {loading ? (
+            <div className="space-y-4">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-white rounded-2xl p-4 flex items-center justify-between border border-[#E5E7EB]">
+                  <div className="flex items-center gap-4">
+                    <Skeleton className="w-12 h-12 rounded-xl" />
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-32" />
+                      <Skeleton className="h-3 w-20" />
                     </div>
-                  ))}
+                  </div>
+                  <Skeleton className="w-10 h-10 rounded-full" />
                 </div>
-              ) : filteredMatches.length > 0 ? (
-              filteredMatches.map((match) => (
+              ))}
+            </div>
+          ) : filteredAndSortedMatches.length > 0 ? (
+            filteredAndSortedMatches.map((match) => {
+              const totalSlots = match.tournament?.slots || 48;
+              const filledSlots = match.current_slots;
+              const isFull = filledSlots >= totalSlots;
+              
+              return (
                 <BentoCard 
                   key={match.id} 
                   className="p-4 flex items-center justify-between cursor-pointer hover:border-[#5FD3BC] transition-colors group"
                   onClick={() => setSelectedMatch(match)}
-                  aria-label={`View details for ${match.title}`}
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-14 h-14 rounded-xl bg-[#F0FDF4] flex items-center justify-center group-hover:bg-[#5FD3BC] transition-colors">
@@ -238,19 +272,21 @@ export default function MatchesPage() {
                     </div>
                     <div>
                       <h4 className="text-[15px] font-heading text-[#1A1A1A] font-bold leading-tight mb-1">{match.title}</h4>
-                      <div className="flex items-center gap-3">
-                        <span className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide bg-[#F3F4F6] px-2 py-0.5 rounded">₹{match.tournament?.entry_fee} ENTRY</span>
-                        <span className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide bg-[#F3F4F6] px-2 py-0.5 rounded">{match.mode}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[9px] font-bold text-[#6B7280] uppercase tracking-wide bg-[#F3F4F6] px-2 py-0.5 rounded">₹{match.tournament?.entry_fee} ENTRY</span>
+                        <span className="text-[9px] font-bold text-[#6B7280] uppercase tracking-wide bg-[#F3F4F6] px-2 py-0.5 rounded">{match.mode}</span>
                       </div>
                       <div className="flex items-center gap-2 mt-2.5">
-                        <div className="w-24 h-2 bg-[#E5E7EB] rounded-full overflow-hidden">
+                        <div className="w-24 h-1.5 bg-[#E5E7EB] rounded-full overflow-hidden">
                           <motion.div 
                             initial={{ width: 0 }}
-                            animate={{ width: `${(match.current_slots / (match.tournament?.slots || 48)) * 100}%` }}
-                            className="h-full bg-[#5FD3BC] rounded-full" 
+                            animate={{ width: `${(filledSlots / totalSlots) * 100}%` }}
+                            className={`h-full ${isFull ? 'bg-[#EF4444]' : 'bg-[#5FD3BC]'} rounded-full`} 
                           />
                         </div>
-                        <span className="text-[9px] font-bold text-[#6B7280]">{match.current_slots}/{match.tournament?.slots || 48} <span className="opacity-50">SLOTS</span></span>
+                        <span className="text-[9px] font-bold text-[#6B7280]">
+                          {isFull ? "REGISTRATION CLOSED" : `${filledSlots}/${totalSlots} SLOTS`}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -258,8 +294,9 @@ export default function MatchesPage() {
                     <ChevronRight size={18} className="text-[#1A1A1A] group-hover:text-white transition-colors" />
                   </div>
                 </BentoCard>
-              ))
-            ) : (
+              );
+            })
+          ) : (
             <div className="py-16 text-center">
               <div className="w-14 h-14 bg-[#F5F5F5] rounded-full flex items-center justify-center mx-auto mb-4">
                 <AlertCircle size={24} className="text-[#9CA3AF]" />
@@ -305,7 +342,7 @@ export default function MatchesPage() {
 
               <BentoCard variant="vibrant" className="p-6 mb-6 text-center relative overflow-hidden">
                 <p className="text-[10px] font-bold text-[#1A1A1A]/60 uppercase tracking-wide mb-2">Grand Prize Pool</p>
-                <p className="text-[48px] font-heading text-[#1A1A1A] font-bold leading-none mb-2">₹{selectedMatch.tournament?.prize_pool}</p>
+                <p className="text-[48px] font-heading text-[#1A1A1A] font-bold leading-none mb-2">₹{selectedMatch.tournament?.prize_pool?.toLocaleString()}</p>
                 <div className="absolute right-[-20px] bottom-[-20px] rotate-[-15deg] opacity-10">
                   <Trophy size={100} />
                 </div>
@@ -344,13 +381,6 @@ export default function MatchesPage() {
                     </div>
                     <span className="text-base font-bold text-[#1A1A1A]">₹2,500</span>
                   </div>
-                  <div className="flex justify-between items-center py-2 border-b border-[#1A1A1A]/5">
-                    <div className="flex items-center gap-3">
-                      <div className="w-7 h-7 rounded-md bg-[#E5E7EB] flex items-center justify-center font-bold text-xs">2nd</div>
-                      <span className="text-sm font-bold text-[#1A1A1A]">Runner Up</span>
-                    </div>
-                    <span className="text-base font-bold text-[#1A1A1A]">₹1,200</span>
-                  </div>
                   <div className="flex justify-between items-center py-2">
                     <div className="flex items-center gap-3">
                       <div className="w-7 h-7 rounded-md bg-[#F5F5F5] flex items-center justify-center font-bold text-xs">K</div>
@@ -364,10 +394,10 @@ export default function MatchesPage() {
               <BentoCard variant="pastel" pastelColor="mint" className="p-6 mb-6">
                 <div className="flex items-center gap-3 mb-4">
                   <ShieldCheck size={22} className="text-[#1A1A1A]" />
-                  <h4 className="text-lg font-heading text-[#1A1A1A] font-bold">Rules & Guidelines</h4>
+                  <h4 className="text-lg font-heading text-[#1A1A1A] font-bold">Rules</h4>
                 </div>
                 <ul className="space-y-2">
-                  {['No emulators allowed', 'Mobile only tournament', 'Team up = Ban', 'Min Level 40 required'].map((rule, i) => (
+                  {['No emulators allowed', 'Mobile only', 'Team up = Ban'].map((rule, i) => (
                     <li key={i} className="flex items-center gap-2 text-xs font-bold text-[#1A1A1A]/70">
                       <div className="w-1.5 h-1.5 bg-[#1A1A1A]/30 rounded-full" />
                       {rule}
@@ -375,20 +405,6 @@ export default function MatchesPage() {
                   ))}
                 </ul>
               </BentoCard>
-
-              <div className="space-y-3 mb-6">
-                <h4 className="text-lg font-heading text-[#1A1A1A] font-bold px-1">How to Join</h4>
-                {[
-                  "1. Pay the entry fee from your wallet",
-                  "2. You'll be added to the match lobby",
-                  "3. Room ID & Password will be shared 15m before start",
-                  "4. Join the Free Fire custom room and win!"
-                ].map((step, i) => (
-                  <div key={i} className="p-4 bg-white rounded-lg shadow-[2px_8px_16px_rgba(0,0,0,0.06)] text-[12px] font-bold text-[#6B7280] leading-relaxed">
-                    {step}
-                  </div>
-                ))}
-              </div>
             </div>
 
             <div className="relative z-[70] px-4 py-6 bg-white shadow-[0_-4px_24px_rgba(0,0,0,0.08)] rounded-t-2xl">
@@ -398,8 +414,8 @@ export default function MatchesPage() {
                   <p className="text-2xl font-heading text-[#1A1A1A] font-bold">₹{selectedMatch.tournament?.entry_fee}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide mb-1">Available Slots</p>
-                  <p className="text-lg font-heading text-[#1A1A1A] font-bold">{selectedMatch.tournament?.slots - selectedMatch.current_slots} LEFT</p>
+                  <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide mb-1">Remaining Slots</p>
+                  <p className="text-lg font-heading text-[#1A1A1A] font-bold">{Math.max(0, (selectedMatch.tournament?.slots || 48) - selectedMatch.current_slots)}</p>
                 </div>
               </div>
               
@@ -407,13 +423,14 @@ export default function MatchesPage() {
                 <motion.button 
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleJoinMatch(selectedMatch.tournament_id, selectedMatch.id)}
-                  disabled={joining === selectedMatch.id}
+                  disabled={joining === selectedMatch.id || (selectedMatch.current_slots >= (selectedMatch.tournament?.slots || 48))}
                   className="w-full py-4 bg-[#5FD3BC] text-[#1A1A1A] rounded-lg text-[12px] font-bold uppercase tracking-wide shadow-lg flex items-center justify-center gap-2 disabled:bg-[#D1D5DB]"
                 >
-                  {joining === selectedMatch.id ? <Loader2 size={20} className="animate-spin" /> : "Confirm Entry"}
+                  {joining === selectedMatch.id ? <Loader2 size={20} className="animate-spin" /> : 
+                   (selectedMatch.current_slots >= (selectedMatch.tournament?.slots || 48)) ? "Registration Closed" : "Confirm Entry"}
                 </motion.button>
               ) : selectedMatch.status === 'live' ? (
-                <Link href={`/live?match=${selectedMatch.id}`}>
+                <Link href={`/live?match=${selectedMatch.id}`} className="w-full">
                   <motion.button 
                     whileTap={{ scale: 0.95 }}
                     className="w-full py-4 bg-[#5FD3BC] text-[#1A1A1A] rounded-lg text-[12px] font-bold uppercase tracking-wide shadow-lg flex items-center justify-center gap-2"

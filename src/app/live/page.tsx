@@ -5,7 +5,8 @@ import { VintageTV } from "@/components/ui/VintageTV";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { LoadingScreen } from "@/components/ui/LoadingScreen";
-import { motion } from "framer-motion";
+import { Skeleton } from "@/components/ui/skeleton";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   Clock, 
   ChevronRight, 
@@ -16,7 +17,8 @@ import {
   Play,
   ShieldCheck,
   Zap,
-  Swords
+  Swords,
+  Users
 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
@@ -84,9 +86,21 @@ function LiveContent() {
     };
   }, [fetchLiveMatches]);
 
-    if (loading) {
-      return <LoadingScreen />;
-    }
+  if (loading) {
+    return (
+      <main className="pb-[80px]">
+        <section className="px-4 pt-6 pb-6">
+          <Skeleton className="h-4 w-32 mb-2" />
+          <Skeleton className="h-10 w-48 mb-2" />
+          <Skeleton className="h-4 w-40" />
+        </section>
+        <div className="px-4 space-y-6">
+          <Skeleton className="h-[250px] w-full rounded-3xl" />
+          <Skeleton className="h-[200px] w-full rounded-3xl" />
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="pb-[80px]">
@@ -145,49 +159,9 @@ function LiveContent() {
               </div>
             </BentoCard>
 
-            <BentoCard variant="pastel" pastelColor="indigo" className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h4 className="text-lg font-heading text-[#1A1A1A] font-bold">Today's Schedule</h4>
-                <div className="w-10 h-10 rounded-lg bg-white/40 flex items-center justify-center">
-                  <Calendar size={18} className="text-[#1A1A1A]" />
-                </div>
-              </div>
-              <div className="space-y-4">
-                {[
-                  { time: "12:00 PM", title: "Solo Championship", status: "completed" },
-                  { time: "03:00 PM", title: "Squad Showdown", status: "live" },
-                  { time: "06:00 PM", title: "Duo Battle Royale", status: "upcoming" },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center justify-between py-2 border-b border-[#1A1A1A]/5 last:border-0 last:pb-0">
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-[#1A1A1A]/20" />
-                      <div>
-                        <p className="text-[10px] font-bold text-[#1A1A1A]/60 uppercase tracking-wide">{item.time}</p>
-                        <p className="text-sm font-bold text-[#1A1A1A]">{item.title}</p>
-                      </div>
-                    </div>
-                    <StatusBadge variant={item.status as any} className="text-[8px] px-2 py-0.5" />
-                  </div>
-                ))}
-              </div>
-            </BentoCard>
-
-            <BentoCard variant="pastel" pastelColor="mint" className="p-6 flex items-center gap-4">
-              <div className="w-14 h-14 rounded-xl bg-white/40 flex items-center justify-center flex-shrink-0">
-                <ShieldCheck size={28} className="text-[#1A1A1A]" />
-              </div>
-              <div>
-                <h4 className="font-heading text-[#1A1A1A] font-bold text-base">Fair Play Rules</h4>
-                <p className="text-[10px] font-bold text-[#1A1A1A]/60 uppercase tracking-wide mt-0.5">Zero tolerance for cheating</p>
-                <Link href="#" className="inline-flex items-center gap-1 text-[10px] font-bold text-[#1A1A1A] uppercase tracking-wide mt-2">
-                  Read More <ChevronRight size={12} strokeWidth={3} />
-                </Link>
-              </div>
-            </BentoCard>
-
             {otherMatches.length > 0 && (
               <section className="space-y-4 pt-2">
-                <h4 className="text-lg font-heading text-[#1A1A1A] font-bold px-1">More Streams</h4>
+                <h4 className="text-lg font-heading text-[#1A1A1A] font-bold px-1">Other Live Matches</h4>
                 <div className="flex flex-col gap-3">
                   {otherMatches.map((match) => (
                     <motion.div 
@@ -221,6 +195,32 @@ function LiveContent() {
                 </div>
               </section>
             )}
+
+            <BentoCard variant="pastel" pastelColor="indigo" className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h4 className="text-lg font-heading text-[#1A1A1A] font-bold">Upcoming Broadcasts</h4>
+                <div className="w-10 h-10 rounded-lg bg-white/40 flex items-center justify-center">
+                  <Calendar size={18} className="text-[#1A1A1A]" />
+                </div>
+              </div>
+              <div className="space-y-4">
+                {[
+                  { time: "06:00 PM", title: "Duo Battle Royale", status: "upcoming" },
+                  { time: "09:00 PM", title: "Pro League Finals", status: "upcoming" },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center justify-between py-2 border-b border-[#1A1A1A]/5 last:border-0 last:pb-0">
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-[#1A1A1A]/20" />
+                      <div>
+                        <p className="text-[10px] font-bold text-[#1A1A1A]/60 uppercase tracking-wide">{item.time}</p>
+                        <p className="text-sm font-bold text-[#1A1A1A]">{item.title}</p>
+                      </div>
+                    </div>
+                    <StatusBadge variant={item.status as any} className="text-[8px] px-2 py-0.5" />
+                  </div>
+                ))}
+              </div>
+            </BentoCard>
           </>
         ) : (
           <BentoCard className="p-12 text-center">
