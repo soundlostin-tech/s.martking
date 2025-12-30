@@ -42,9 +42,9 @@ export function TopHeader() {
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat" />
 
       <div className="flex items-center gap-4 relative z-10">
-        <motion.div variants={itemVariants}>
-          <LogoAnimation size={40} />
-        </motion.div>
+          <motion.div variants={itemVariants}>
+            <LogoAnimation size={48} />
+          </motion.div>
         
         <div className="flex flex-col">
           <motion.h1 
