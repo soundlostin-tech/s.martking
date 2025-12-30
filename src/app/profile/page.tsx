@@ -313,41 +313,7 @@ function ProfileContent() {
 
   return (
     <div className="min-h-screen bg-[#F8F6F0] text-[#1A1A1A] relative">
-      {/* Top App Bar */}
-      <header className="fixed top-0 left-0 right-0 h-20 bg-[#F8F6F0]/80 backdrop-blur-md z-[50] border-b border-[#1A1A1A]/5 flex items-center justify-between px-5">
-        <div className="flex items-center gap-4">
-          <button onClick={() => router.back()} className="w-10 h-10 rounded-xl bg-white border border-[#E5E7EB] flex items-center justify-center text-[#1A1A1A] hover:bg-gray-50 transition-all">
-            <ArrowLeft size={20} strokeWidth={3} />
-          </button>
-          <h1 className="text-lg font-heading font-black tracking-tighter uppercase">PROFILE</h1>
-        </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="w-10 h-10 rounded-xl bg-white border border-[#E5E7EB] flex items-center justify-center text-[#1A1A1A] hover:bg-gray-50 transition-all">
-              <MoreVertical size={20} strokeWidth={3} />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-64 rounded-[32px] p-3 shadow-2xl border-none mt-2">
-            <DropdownMenuLabel className="text-[10px] font-black text-[#6B7280] uppercase tracking-[0.2em] px-4 py-3">Operations</DropdownMenuLabel>
-            <DropdownMenuSeparator className="bg-[#1A1A1A]/5" />
-            <DropdownMenuItem onClick={() => setIsEditDialogOpen(true)} className="rounded-2xl px-4 py-3 cursor-pointer focus:bg-[#F5F5F5]">
-              <Settings className="mr-3 h-5 w-5 text-[#1A1A1A]" />
-              <span className="font-black text-sm uppercase tracking-widest">Configuration</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleShare} className="rounded-2xl px-4 py-3 cursor-pointer focus:bg-[#F5F5F5]">
-              <Share2 className="mr-3 h-5 w-5 text-[#1A1A1A]" />
-              <span className="font-black text-sm uppercase tracking-widest">Broadcast</span>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator className="bg-[#1A1A1A]/5" />
-            <DropdownMenuItem onClick={signOut} className="rounded-2xl px-4 py-3 cursor-pointer text-red-500 focus:text-red-500 focus:bg-red-50">
-              <LogOut className="mr-3 h-5 w-5" />
-              <span className="font-black text-sm uppercase tracking-widest">Terminate</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </header>
-
-      <main className="pt-24 pb-[100px] relative z-10">
+      <main className="pt-8 pb-[100px] relative z-10">
         {/* Profile Header */}
         <section className="px-5 pt-4 pb-8">
           <div className="flex items-center gap-8">
@@ -583,7 +549,7 @@ function ProfileContent() {
         {/* Content Tabs */}
         <section className="mt-12">
           <Tabs defaultValue="grid" className="w-full" onValueChange={setActiveTab}>
-            <TabsList className="w-full bg-white h-20 p-0 rounded-none border-t-2 border-b-2 border-[#E5E7EB] sticky top-[80px] z-40">
+            <TabsList className="w-full bg-white h-20 p-0 rounded-none border-t-2 border-b-2 border-[#E5E7EB] sticky top-0 z-40">
               <TabsTrigger 
                 value="grid" 
                 className="flex-1 h-full rounded-none data-[state=active]:bg-transparent data-[state=active]:border-b-4 data-[state=active]:border-[#1A1A1A] data-[state=active]:text-[#1A1A1A] transition-all text-[#9CA3AF]"
