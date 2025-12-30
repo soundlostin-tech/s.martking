@@ -199,40 +199,45 @@ export default function MatchesPage() {
         </section>
 
         <section className="px-4 space-y-4 pt-2">
-          <div className="flex gap-3">
-            <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={18} />
-              <input 
-                type="text" 
-                placeholder="Search matches..." 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white border border-[#E5E7EB] rounded-lg py-3 pl-12 pr-4 text-sm font-medium shadow-[2px_8px_16px_rgba(0,0,0,0.06)] placeholder:text-[#9CA3AF] focus:border-[#5FD3BC] focus:ring-2 focus:ring-[#5FD3BC]/20 focus:outline-none"
-              />
+            <div className="flex gap-3">
+              <div className="relative flex-1">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={18} />
+                <input 
+                  type="text" 
+                  placeholder="Search matches..." 
+                  aria-label="Search for matches"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-white border border-[#E5E7EB] rounded-lg py-3 pl-12 pr-4 text-sm font-medium shadow-[2px_8px_16px_rgba(0,0,0,0.06)] placeholder:text-[#9CA3AF] focus:border-[#5FD3BC] focus:ring-2 focus:ring-[#5FD3BC]/20 focus:outline-none"
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
-              {filters.map((f) => (
-                <button
-                  key={f}
-                  onClick={() => setActiveFilter(f)}
-                  className={`px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wide transition-all ${
-                    activeFilter === f 
-                      ? "bg-[#1A1A1A] text-white" 
-                      : "bg-white text-[#6B7280] border border-[#E5E7EB]"
-                  }`}
-                >
-                  {f}
-                </button>
-              ))}
-            </div>
-            <select 
-              value={activeSort}
-              onChange={(e) => setActiveSort(e.target.value)}
-              className="bg-white border border-[#E5E7EB] rounded-lg px-3 py-2 text-[10px] font-bold uppercase tracking-wide focus:outline-none"
-            >
+            <div className="flex items-center justify-between">
+              <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1" role="tablist" aria-label="Filter matches by status">
+                {filters.map((f) => (
+                  <button
+                    key={f}
+                    role="tab"
+                    aria-selected={activeFilter === f}
+                    aria-label={`Filter by ${f}`}
+                    onClick={() => setActiveFilter(f)}
+                    className={`px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wide transition-all ${
+                      activeFilter === f 
+                        ? "bg-[#1A1A1A] text-white shadow-lg" 
+                        : "bg-white text-[#6B7280] border border-[#E5E7EB]"
+                    }`}
+                  >
+                    {f}
+                  </button>
+                ))}
+              </div>
+              <select 
+                value={activeSort}
+                aria-label="Sort matches by"
+                onChange={(e) => setActiveSort(e.target.value)}
+                className="bg-white border border-[#E5E7EB] rounded-lg px-3 py-2 text-[10px] font-bold uppercase tracking-wide focus:outline-none focus:ring-2 focus:ring-[#5FD3BC]/20"
+              >
               {sortOptions.map(opt => (
                 <option key={opt.value} value={opt.value}>{opt.label}</option>
               ))}

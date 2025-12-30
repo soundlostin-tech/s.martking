@@ -110,10 +110,10 @@ export default function Home() {
               </div>
               <div>
                 <h2 className="text-[20px] font-heading text-[#1A1A1A] leading-tight font-bold">
-                  Hello, Warrior — ready to win?
+                  Hello, {profile?.full_name?.split(' ')[0] || 'Warrior'} — ready to win?
                 </h2>
                 <p className="text-[14px] font-bold text-[#6B7280]">
-                  {profile?.full_name || 'Smartking Warrior'}
+                  @{profile?.username || profile?.full_name?.toLowerCase().replace(/\s+/g, '') || 'warrior'}
                 </p>
               </div>
             </div>
@@ -193,40 +193,41 @@ export default function Home() {
                   <div className="px-3 py-1 bg-[#1A1A1A] text-white rounded-lg text-[10px] font-bold uppercase tracking-wider">SOLO MATCH</div>
                 </div>
                 
-                <div className="flex items-center justify-between mt-auto bg-white/40 backdrop-blur-sm p-4 rounded-2xl border border-white/40">
-                  <div className="flex flex-col">
-                    <span className="text-[11px] font-bold text-[#1A1A1A]/70 uppercase tracking-widest mb-1">Entry Fee</span>
-                    <span className="text-3xl font-heading text-[#1A1A1A] font-black">₹{featured?.tournament?.entry_fee}</span>
+                  <div className="flex items-center justify-between mt-auto bg-white/50 backdrop-blur-sm p-4 rounded-2xl border border-white/50">
+                    <div className="flex flex-col">
+                      <span className="text-[11px] font-bold text-[#1A1A1A]/70 uppercase tracking-widest mb-1">Entry Fee</span>
+                      <span className="text-3xl font-heading text-[#1A1A1A] font-black">₹{featured?.tournament?.entry_fee}</span>
+                    </div>
+                    <Link href={`/matches/${featured.id}`}>
+                      <motion.button 
+                        whileTap={{ scale: 0.95 }}
+                        className="bg-[#1A1A1A] text-white px-10 py-5 rounded-xl font-bold text-base shadow-[0_10px_20px_rgba(0,0,0,0.2)] flex items-center gap-2 hover:bg-[#2A2A2A] transition-colors focus:outline-none focus:ring-2 focus:ring-[#5FD3BC] focus:ring-offset-2"
+                        aria-label="Join this match now"
+                      >
+                        Join Now
+                        <ChevronRight size={20} strokeWidth={3} />
+                      </motion.button>
+                    </Link>
                   </div>
-                  <Link href={`/matches/${featured.id}`}>
-                    <motion.button 
-                      whileTap={{ scale: 0.95 }}
-                      className="bg-[#1A1A1A] text-white px-10 py-5 rounded-xl font-bold text-base shadow-[0_10px_20px_rgba(0,0,0,0.15)] flex items-center gap-2 hover:bg-[#2A2A2A] transition-colors"
-                    >
-                      Join Now
-                      <ChevronRight size={20} strokeWidth={3} />
-                    </motion.button>
-                  </Link>
-                </div>
 
-                <div className="mt-6 pt-4 border-t border-black/5 flex justify-between items-center">
-                  <div className="flex gap-6">
+                <div className="mt-4 pt-3 border-t border-black/5 flex justify-between items-center">
+                  <div className="flex gap-4">
                     <div className="flex flex-col">
-                      <span className="text-[9px] font-bold text-[#1A1A1A]/40 uppercase tracking-tight">Win Rate</span>
-                      <span className="text-[13px] font-bold text-[#1A1A1A]">{userStats.winRate}</span>
+                      <span className="text-[8px] font-bold text-[#1A1A1A]/40 uppercase tracking-tight">Your Win Rate</span>
+                      <span className="text-[12px] font-bold text-[#1A1A1A]">{userStats.winRate}</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[9px] font-bold text-[#1A1A1A]/40 uppercase tracking-tight">Rank</span>
-                      <span className="text-[13px] font-bold text-[#1A1A1A]">{userStats.rank}</span>
+                      <span className="text-[8px] font-bold text-[#1A1A1A]/40 uppercase tracking-tight">Rank</span>
+                      <span className="text-[12px] font-bold text-[#1A1A1A]">{userStats.rank}</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[9px] font-bold text-[#1A1A1A]/40 uppercase tracking-tight">Δ Growth</span>
-                      <span className="text-[13px] font-bold text-[#5FD3BC]">{userStats.growth}</span>
+                      <span className="text-[8px] font-bold text-[#1A1A1A]/40 uppercase tracking-tight">Δ Growth</span>
+                      <span className="text-[12px] font-bold text-[#059669]">{userStats.growth}</span>
                     </div>
                   </div>
                   <div className="flex flex-col items-end">
-                    <span className="text-[9px] font-bold text-[#1A1A1A]/40 uppercase tracking-tight">Prize Pool</span>
-                    <span className="text-[13px] font-bold text-[#1A1A1A]">₹{featured?.tournament?.prize_pool?.toLocaleString()}</span>
+                    <span className="text-[8px] font-bold text-[#1A1A1A]/40 uppercase tracking-tight">Prize Pool</span>
+                    <span className="text-[12px] font-bold text-[#1A1A1A]">₹{featured?.tournament?.prize_pool?.toLocaleString()}</span>
                   </div>
                 </div>
               </div>
