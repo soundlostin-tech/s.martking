@@ -90,6 +90,7 @@ interface ProfileExtended {
     });
     const [isSaving, setIsSaving] = useState(false);
     const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+    const [isUploadingVideo, setIsUploadingVideo] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [uploadError, setUploadError] = useState<string | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -101,6 +102,111 @@ interface ProfileExtended {
 
     const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
     const ALLOWED_TYPES = ["video/mp4", "video/quicktime", "video/x-msvideo", "video/x-matroska"];
+
+    useEffect(() => {
+      if (user) {
+        fetchData();
+      }
+    }, [user]);
+
+    useEffect(() => {
+      if (profile) {
+        setEditForm({
+          full_name: profile.full_name || "",
+          username: profile.username || "",
+          bio: profile.bio || "",
+          youtube_link: profile.youtube_link || "",
+          team_site: profile.team_site || "",
+          tournament_stats_url: profile.tournament_stats_url || ""
+        });
+      }
+    }, [profile]);
+
+    const fetchData = async () => {
+      if (!user) return;
+      setLoading(true);
+      setError(null);
+      try {
+        const [videosRes, matchesRes] = await Promise.all([
+          supabase.from('videos').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
+          supabase.from('matches').select('*').limit(9) // Mock or real matches
+        ]);
+
+        if (videosRes.error) throw videosRes.error;
+        if (matchesRes.error) throw matchesRes.error;
+
+        setVideos(videosRes.data || []);
+        setMatches(matchesRes.data || []);
+      } catch (err: any) {
+        console.error("Error fetching data:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const handleSaveProfile = async () => {
+      if (!user) return;
+      setIsSaving(true);
+      try {
+        const { error } = await supabase
+          .from('profiles')
+          .update({
+            full_name: editForm.full_name,
+            username: editForm.username,
+            bio: editForm.bio,
+            youtube_link: editForm.youtube_link,
+            team_site: editForm.team_site,
+            tournament_stats_url: editForm.tournament_stats_url
+          })
+          .eq('id', user.id);
+
+        if (error) throw error;
+        toast.success("Profile updated successfully");
+        setIsEditDialogOpen(false);
+        window.location.reload(); // Refresh to get latest auth profile
+      } catch (err: any) {
+        toast.error(err.message || "Failed to update profile");
+      } finally {
+        setIsSaving(false);
+      }
+    };
+
+    const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file || !user) return;
+
+      setIsUploadingAvatar(true);
+      try {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+        const filePath = `${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('avatars')
+          .upload(filePath, file);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('avatars')
+          .getPublicUrl(filePath);
+
+        const { error: updateError } = await supabase
+          .from('profiles')
+          .update({ avatar_url: publicUrl })
+          .eq('id', user.id);
+
+        if (updateError) throw updateError;
+
+        toast.success("Avatar updated");
+        window.location.reload();
+      } catch (err: any) {
+        toast.error(err.message || "Failed to upload avatar");
+      } finally {
+        setIsUploadingAvatar(false);
+      }
+    };
 
     const validateFile = (file: File) => {
       if (!ALLOWED_TYPES.includes(file.type)) {
@@ -140,7 +246,7 @@ interface ProfileExtended {
       try {
         const fileExt = selectedFile.name.split('.').pop();
         const fileName = `${user.id}-${Date.now()}.${fileExt}`;
-        const filePath = `videos/${fileName}`;
+        const filePath = `${fileName}`;
 
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from('videos')
@@ -478,18 +584,12 @@ interface ProfileExtended {
                       <video 
                         src={video.video_url} 
                         className="w-full h-full object-cover"
-                        controls={false}
+                        controls={true}
                         muted
                         playsInline
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col justify-end p-3">
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3 pointer-events-none">
                         <p className="text-[10px] font-black text-white uppercase tracking-tight line-clamp-1">{video.title}</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <div className="w-5 h-5 rounded-full bg-white/20 backdrop-blur flex items-center justify-center">
-                            <Play size={10} className="text-white" fill="white" />
-                          </div>
-                          <span className="text-[8px] font-black text-white uppercase tracking-wide">VIDEO</span>
-                        </div>
                       </div>
                     </div>
                   ))}

@@ -18,7 +18,6 @@ import {
   BarChart3,
   TrendingUp,
   Zap,
-  ImageIcon,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
@@ -26,7 +25,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/lib/supabase";
 import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import { Skeleton } from "@/components/ui/skeleton";
-import { StoryViewer } from "@/components/ui/StoryViewer";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
@@ -51,12 +49,11 @@ interface PublicProfile {
 export default function UserProfile({ params }: { params: Promise<{ username: string }> }) {
   const { username } = use(params);
   const router = useRouter();
-    const [profile, setProfile] = useState<PublicProfile | null>(null);
-    const [videos, setVideos] = useState<any[]>([]);
-    const [matches, setMatches] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-
+  const [profile, setProfile] = useState<PublicProfile | null>(null);
+  const [videos, setVideos] = useState<any[]>([]);
+  const [matches, setMatches] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     fetchProfile();
@@ -66,7 +63,6 @@ export default function UserProfile({ params }: { params: Promise<{ username: st
     setLoading(true);
     setError(false);
     try {
-      // 1. Fetch Profile by Username or ID
       const { data: profileData, error: profileError } = await supabase
         .from("profiles")
         .select("*")
@@ -76,35 +72,33 @@ export default function UserProfile({ params }: { params: Promise<{ username: st
       if (profileError) throw profileError;
       setProfile(profileData);
 
-        // 2. Fetch Matches
-        const { data: participantsData, error: participantsError } = await supabase
-          .from("participants")
-          .select(`
-            match_id,
-            matches (
-              id,
-              title,
-              status,
-              start_time
-            )
-          `)
-          .eq("user_id", profileData.id)
-          .order("joined_at", { ascending: false })
-          .limit(12);
+      const { data: participantsData, error: participantsError } = await supabase
+        .from("participants")
+        .select(`
+          match_id,
+          matches (
+            id,
+            title,
+            status,
+            start_time
+          )
+        `)
+        .eq("user_id", profileData.id)
+        .order("joined_at", { ascending: false })
+        .limit(12);
 
-        if (participantsError) throw participantsError;
-        
-        const matchesData = participantsData?.map(p => p.matches).filter(Boolean) || [];
-        setMatches(matchesData);
-        
-        // 3. Fetch Videos for FEEDS tab
-        const { data: videosData } = await supabase
-          .from("videos")
-          .select("*")
-          .eq("user_id", profileData.id)
-          .order("created_at", { ascending: false });
-        
-        setVideos(videosData || []);
+      if (participantsError) throw participantsError;
+      
+      const matchesData = participantsData?.map(p => p.matches).filter(Boolean) || [];
+      setMatches(matchesData);
+      
+      const { data: videosData } = await supabase
+        .from("videos")
+        .select("*")
+        .eq("user_id", profileData.id)
+        .order("created_at", { ascending: false });
+      
+      setVideos(videosData || []);
 
     } catch (err) {
       console.error("Error fetching public profile:", err);
@@ -229,33 +223,13 @@ export default function UserProfile({ params }: { params: Promise<{ username: st
           </BentoCard>
         </section>
 
-        {stories.length > 0 && (
-          <section className="mt-12">
-            <h3 className="px-5 text-sm font-black uppercase tracking-[0.2em] mb-6">COMBAT HIGHLIGHTS</h3>
-            <div className="flex gap-6 overflow-x-auto no-scrollbar px-5 pb-6">
-              {stories.map((h, i) => (
-                <div key={i} className="flex flex-col items-center gap-3" onClick={() => { setSelectedStoryIndex(i); setIsStoryViewerOpen(true); }}>
-                  <div className="w-20 h-20 rounded-[32px] p-[4px] bg-[#1A1A1A] shadow-xl rotate-[-2deg]">
-                    <div className="w-full h-full rounded-[28px] bg-white p-[2px]">
-                      <div className="w-full h-full rounded-[26px] overflow-hidden relative">
-                        <img src={h.media_url} alt="" className="w-full h-full object-cover" />
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-[9px] font-black uppercase tracking-widest truncate max-w-[80px]">{h.caption || `LOG ${i+1}`}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
         <section className="mt-8">
           <Tabs defaultValue="grid" className="w-full">
             <TabsList className="w-full bg-white h-20 p-0 rounded-none border-y-2 border-[#E5E7EB]">
               <TabsTrigger value="grid" className="flex-1 h-full rounded-none"><Grid size={24} /></TabsTrigger>
               <TabsTrigger value="reels" className="flex-1 h-full rounded-none"><Play size={24} /></TabsTrigger>
             </TabsList>
-            <TabsContent value="grid" className="m-0">
+            <TabsContent value="grid" className="m-0 focus-visible:ring-0">
               <div className="grid grid-cols-3 gap-1 bg-[#E5E7EB] p-1">
                 {matches.map((match, i) => (
                   <div key={match.id} className="aspect-square relative overflow-hidden">
@@ -266,17 +240,27 @@ export default function UserProfile({ params }: { params: Promise<{ username: st
                 ))}
               </div>
             </TabsContent>
+            <TabsContent value="reels" className="m-0 focus-visible:ring-0">
+              <div className="grid grid-cols-2 gap-2 p-4">
+                {videos.length > 0 ? (
+                  videos.map((video) => (
+                    <div key={video.id} className="aspect-[9/16] relative rounded-2xl overflow-hidden bg-[#F3F4F6] shadow">
+                      <video src={video.video_url} className="w-full h-full object-cover" muted playsInline />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-3 pointer-events-none">
+                        <p className="text-[10px] font-black text-white uppercase truncate">{video.title}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="col-span-2 py-20 text-center">
+                    <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest">No footage available</p>
+                  </div>
+                )}
+              </div>
+            </TabsContent>
           </Tabs>
         </section>
       </main>
-
-      <StoryViewer 
-        stories={stories} 
-        initialIndex={selectedStoryIndex} 
-        isOpen={isStoryViewerOpen} 
-        onClose={() => setIsStoryViewerOpen(false)} 
-      />
-      
       <BottomNav />
     </div>
   );

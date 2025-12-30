@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutDashboard, PlayCircle, Trophy, BarChart3, ReceiptIndianRupee, ImageIcon } from "lucide-react";
+import { LayoutDashboard, PlayCircle, Trophy, BarChart3, ReceiptIndianRupee } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
@@ -11,7 +11,6 @@ const navItems = [
   { label: "Tournaments", icon: Trophy, href: "/admin/tournaments" },
   { label: "Leaderboard", icon: BarChart3, href: "/admin/leaderboard" },
   { label: "Transactions", icon: ReceiptIndianRupee, href: "/admin/transactions" },
-  { label: "Stories", icon: ImageIcon, href: "/admin/stories" },
 ];
 
 export function AdminNav() {

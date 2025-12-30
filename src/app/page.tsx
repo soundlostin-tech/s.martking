@@ -10,8 +10,6 @@ import {
   Trophy, ChevronRight, Play, TrendingUp, Award, Plus,
   Wallet, Zap, Swords, Target, Crown
 } from "lucide-react";
-import { StoryViewer } from "@/components/StoryViewer";
-import { StoryUpload } from "@/components/StoryUpload";
 import { TopHeader } from "@/components/layout/TopHeader";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
@@ -20,24 +18,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function Home() {
   const { user, profile, loading: authLoading } = useAuth(false);
   const [profiles, setProfiles] = useState<any[]>([]);
-  const [stories, setStories] = useState<any[]>([]);
   const [featuredMatches, setFeaturedMatches] = useState<any[]>([]);
   const [userStats, setUserStats] = useState({ wins: 0, rank: "-", winRate: "0%", growth: "+0%" });
   const [loading, setLoading] = useState(true);
   
-  const [isViewerOpen, setIsViewerOpen] = useState(false);
-  const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const [selectedStoryIndex, setSelectedStoryIndex] = useState(0);
-  const [activeStories, setActiveStories] = useState<any[]>([]);
-
   const fetchData = useCallback(async () => {
     try {
-      const [profilesRes, storiesRes, matchesRes] = await Promise.all([
+      const [profilesRes, matchesRes] = await Promise.all([
         supabase.from("profiles").select("*").limit(15),
-        supabase.from("stories")
-          .select(`*, user:profiles(full_name, avatar_url)`)
-          .gt('expires_at', new Date().toISOString())
-          .order('created_at', { ascending: false }),
         supabase.from("matches")
           .select(`*, tournament:tournaments(title, entry_fee, prize_pool)`)
           .or('status.eq.live,status.eq.upcoming')
@@ -46,8 +34,6 @@ export default function Home() {
       ]);
 
       setProfiles(profilesRes.data || []);
-      const validStories = (storiesRes.data || []).filter(s => s.user);
-      setStories(validStories);
       setFeaturedMatches(matchesRes.data || []);
 
       if (profile) {
@@ -69,18 +55,8 @@ export default function Home() {
     fetchData();
   }, [fetchData]);
 
-  const openStory = (userId: string) => {
-    const userStories = stories.filter(s => s.user_id === userId);
-    if (userStories.length > 0) {
-      setActiveStories(userStories);
-      setSelectedStoryIndex(0);
-      setIsViewerOpen(true);
-    }
-  };
-
   const featured = featuredMatches[0];
   const isLoading = loading || authLoading;
-  const storyColors = ['#6EBF8B', '#FFCDB2', '#C9B6E4', '#A8D8EA', '#FFB6C1', '#F5E6A3'];
 
   return (
     <div className="min-h-screen bg-[#F8F6F0] text-[#1A1A1A] relative">
@@ -90,26 +66,6 @@ export default function Home() {
         <section className="py-4">
           <div className="flex gap-3 overflow-x-auto no-scrollbar px-4 items-start">
             <div className="flex gap-3 items-start pr-6">
-              <div className="flex-shrink-0 flex flex-col items-center gap-2">
-                <motion.div 
-                  whileTap={{ scale: 0.92 }}
-                  onClick={() => setIsUploadOpen(true)}
-                  className="relative w-14 h-14 rounded-2xl p-[2px] bg-white shadow-sm border-2 border-dashed border-[#D1D5DB]"
-                >
-                  <div className="w-full h-full rounded-[14px] bg-[#F9FAFB] flex items-center justify-center overflow-hidden">
-                    {profile?.avatar_url ? (
-                      <img src={profile.avatar_url} alt="" className="w-full h-full object-cover opacity-40" />
-                    ) : (
-                      <Plus size={18} strokeWidth={3} className="text-[#9CA3AF]" />
-                    )}
-                  </div>
-                  <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 bg-[#1A1A1A] rounded-lg border-2 border-white flex items-center justify-center shadow">
-                    <Plus size={10} strokeWidth={4} className="text-white" />
-                  </div>
-                </motion.div>
-                <span className="text-[8px] font-black text-[#6B7280] uppercase tracking-wide">You</span>
-              </div>
-
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <div key={i} className="flex-shrink-0 flex flex-col items-center gap-2">
@@ -118,28 +74,23 @@ export default function Home() {
                   </div>
                 ))
               ) : (
-                profiles.filter(p => p.id !== profile?.id).map((p, index) => {
-                  const hasStories = stories.some(s => s.user_id === p.id);
-                  const color = storyColors[index % storyColors.length];
+                profiles.map((p, index) => {
                   return (
                     <div key={p.id} className="flex-shrink-0 flex flex-col items-center gap-2">
-                      <motion.div 
-                        whileTap={{ scale: 0.92 }}
-                        onClick={() => hasStories && openStory(p.id)}
-                        className="w-14 h-14 rounded-2xl p-[2px] bg-white shadow border-2 transition-all duration-300"
-                        style={{ 
-                          borderColor: hasStories ? color : '#E5E7EB',
-                          cursor: hasStories ? 'pointer' : 'default'
-                        }}
-                      >
-                        <div className="w-full h-full rounded-[14px] bg-[#F3F4F6] flex items-center justify-center overflow-hidden">
-                          {p.avatar_url ? (
-                            <img src={p.avatar_url} alt="" className="w-full h-full object-cover" />
-                          ) : (
-                            <span className="text-sm font-heading font-black text-[#9CA3AF]">{p.full_name?.[0]?.toUpperCase()}</span>
-                          )}
-                        </div>
-                      </motion.div>
+                      <Link href={`/u/${p.username || p.id}`}>
+                        <motion.div 
+                          whileTap={{ scale: 0.92 }}
+                          className="w-14 h-14 rounded-2xl p-[2px] bg-white shadow border-2 border-[#E5E7EB] transition-all duration-300"
+                        >
+                          <div className="w-full h-full rounded-[14px] bg-[#F3F4F6] flex items-center justify-center overflow-hidden">
+                            {p.avatar_url ? (
+                              <img src={p.avatar_url} alt="" className="w-full h-full object-cover" />
+                            ) : (
+                              <span className="text-sm font-heading font-black text-[#9CA3AF]">{p.full_name?.[0]?.toUpperCase()}</span>
+                            )}
+                          </div>
+                        </motion.div>
+                      </Link>
                       <span className="text-[8px] font-black text-[#1A1A1A] uppercase tracking-wide truncate max-w-[56px]">{p.full_name?.split(' ')[0]}</span>
                     </div>
                   );
@@ -304,19 +255,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-
-      <StoryViewer 
-        stories={activeStories}
-        initialIndex={selectedStoryIndex}
-        isOpen={isViewerOpen}
-        onClose={() => setIsViewerOpen(false)}
-      />
-
-      <StoryUpload 
-        isOpen={isUploadOpen}
-        onClose={() => setIsUploadOpen(false)}
-        onSuccess={fetchData}
-      />
 
       <BottomNav />
     </div>
