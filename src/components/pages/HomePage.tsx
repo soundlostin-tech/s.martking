@@ -16,26 +16,22 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { GlobalSearch } from "@/components/search/GlobalSearch";
 import { FeedList } from "@/components/feed/FeedList";
+import { Stories } from "@/components/feed/Stories";
 
 export function HomePage() {
   const { user, profile, loading: authLoading } = useAuth(false);
-  const [profiles, setProfiles] = useState<any[]>([]);
   const [featuredMatches, setFeaturedMatches] = useState<any[]>([]);
   const [userStats, setUserStats] = useState({ wins: 0, rank: "-", winRate: "0%", growth: "+0%" });
   const [loading, setLoading] = useState(true);
   
   const fetchData = useCallback(async () => {
     try {
-      const [profilesRes, matchesRes] = await Promise.all([
-        supabase.from("profiles").select("*").limit(15),
-        supabase.from("matches")
-          .select(`*, tournament:tournaments(title, entry_fee, prize_pool)`)
-          .or('status.eq.live,status.eq.upcoming')
-          .order('status', { ascending: false })
-          .limit(10)
-      ]);
+      const matchesRes = await supabase.from("matches")
+        .select(`*, tournament:tournaments(title, entry_fee, prize_pool)`)
+        .or('status.eq.live,status.eq.upcoming')
+        .order('status', { ascending: false })
+        .limit(10);
 
-      setProfiles(profilesRes.data || []);
       setFeaturedMatches(matchesRes.data || []);
 
       if (profile) {
@@ -65,44 +61,9 @@ export function HomePage() {
         <main className="pb-20 relative z-10">
           <TopHeader />
           
-          <section className="py-2">
-          <div className="flex gap-3 overflow-x-auto no-scrollbar px-4 items-start">
-            <div className="flex gap-3 items-start pr-6">
-              {isLoading ? (
-                Array.from({ length: 5 }).map((_, i) => (
-                  <div key={i} className="flex-shrink-0 flex flex-col items-center gap-2">
-                    <Skeleton className="w-14 h-14 rounded-2xl" />
-                    <Skeleton className="h-2 w-8" />
-                  </div>
-                ))
-              ) : (
-                profiles.map((p) => {
-                  return (
-                    <div key={p.id} className="flex-shrink-0 flex flex-col items-center gap-2">
-                      <Link href={`/u/${p.username || p.id}`}>
-                        <motion.div 
-                          whileTap={{ scale: 0.92 }}
-                          className="w-14 h-14 rounded-2xl p-[2px] bg-white shadow border-2 border-[#E5E7EB] transition-all duration-300"
-                        >
-                          <div className="w-full h-full rounded-[14px] bg-[#F3F4F6] flex items-center justify-center overflow-hidden">
-                            {p.avatar_url ? (
-                              <img src={p.avatar_url} alt="" className="w-full h-full object-cover" />
-                            ) : (
-                              <span className="text-sm font-heading font-black text-[#9CA3AF]">{p.full_name?.[0]?.toUpperCase()}</span>
-                            )}
-                          </div>
-                        </motion.div>
-                      </Link>
-                      <span className="text-[8px] font-black text-[#1A1A1A] uppercase tracking-wide truncate max-w-[56px]">{p.full_name?.split(' ')[0]}</span>
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          </div>
-        </section>
+          <Stories />
 
-        <section className="px-4 mb-4">
+          <section className="px-4 mb-4">
           {isLoading ? (
             <Skeleton className="h-[180px] w-full rounded-2xl" />
           ) : featured ? (
