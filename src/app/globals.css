@@ -243,3 +243,30 @@
 .safe-bottom {
   padding-bottom: env(safe-area-inset-bottom, 12px);
 }
+
+/* ============================================
+   BOTTOM NAVIGATION STYLES
+   ============================================ */
+.nav-icon-active {
+  color: #A8E6CF;
+}
+
+.nav-icon-inactive {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.nav-label-active {
+  color: #A8E6CF;
+}
+
+.nav-label-inactive {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.nav-item-inner {
+  @apply transition-all duration-200;
+}
+
+.nav-item:active .nav-item-inner {
+  @apply scale-90;
+}
