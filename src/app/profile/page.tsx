@@ -114,7 +114,7 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
-      <div className="unified-bg" />
+      {/* Background is now global */}
       
       <main className="pb-[80px] relative z-10">
         <section className="px-4 pt-6 pb-4">

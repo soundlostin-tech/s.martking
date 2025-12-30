@@ -119,7 +119,7 @@ export default function Signup() {
 
   return (
     <main className="min-h-screen bg-[#F5F5F5] relative flex flex-col">
-      <div className="unified-bg" />
+      {/* Background is now global */}
       
       <div className="flex-1 flex flex-col px-4 py-8">
         <div className="max-w-md w-full mx-auto space-y-6">

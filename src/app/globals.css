@@ -278,35 +278,7 @@
   box-shadow: 2px 8px 16px rgba(0, 0, 0, 0.06);
 }
 
-/* ============================================
-   BACKGROUND ANIMATION
-   ============================================ */
-@keyframes gradient-flow {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-.unified-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: linear-gradient(
-    135deg,
-    rgba(252, 211, 77, 0.08) 0%,
-    rgba(95, 211, 188, 0.08) 25%,
-    rgba(252, 211, 77, 0.06) 50%,
-    rgba(95, 211, 188, 0.08) 75%,
-    rgba(167, 139, 250, 0.08) 100%
-  );
-  background-size: 400% 400%;
-  animation: gradient-flow 30s ease infinite;
-  opacity: 0.1;
-}
+/* Removed legacy unified-bg */
 
 /* Remove blob headers - seamless backgrounds */
 .blob-header,

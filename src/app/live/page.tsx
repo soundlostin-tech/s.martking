@@ -247,7 +247,7 @@ function LiveContent() {
 export default function Live() {
   return (
     <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
-      <div className="unified-bg" />
+      {/* Background is now global */}
       <Suspense fallback={<LoadingScreen />}>
         <LiveContent />
       </Suspense>

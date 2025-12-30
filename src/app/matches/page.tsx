@@ -186,7 +186,7 @@ export default function MatchesPage() {
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
-      <div className="unified-bg" />
+      {/* Background is now global */}
       
       <main className="pb-[80px] relative z-10">
         <section className="px-4 pt-6 pb-4">
@@ -363,7 +363,7 @@ export default function MatchesPage() {
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
             className="fixed inset-0 z-[60] bg-[#F5F5F5] flex flex-col"
           >
-            <div className="unified-bg" />
+            {/* Background is now global */}
             
             <header className="relative z-10 px-4 py-6 flex items-center justify-between">
               <motion.button 

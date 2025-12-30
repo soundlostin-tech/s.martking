@@ -83,7 +83,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
-      <div className="unified-bg" />
+      {/* Background is now global in layout via AnimatedBackground component */}
       
       <main className="pb-[80px] relative z-10">
         <TopHeader />

@@ -1,0 +1,29 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <desc>Smartking's Arena - Source Background Layers</desc>
+  
+  <!-- Layer 1: Base Gradient -->
+  <rect id="base-layer" width="1920" height="1080" fill="#0F172A"/>
+  
+  <!-- Layer 2: Radial Depth -->
+  <circle id="radial-depth" cx="960" cy="540" r="1000" fill="url(#radial-gradient)" opacity="0.4"/>
+  
+  <!-- Layer 3: Accent Wave Midground (Gold) -->
+  <path id="midground-wave" d="M0 640L160 693.3C320 747 640 853 960 853C1280 853 1600 747 1760 693.3L1920 640V1080H1760C1600 1080 1280 1080 960 1080C640 1080 320 1080 160 1080H0V640Z" fill="#FFD24D" opacity="0.1"/>
+  
+  <!-- Layer 4: Accent Wave Foreground (Orange) -->
+  <path id="foreground-wave" d="M0 853L160 810.7C320 768 640 683 960 683C1280 683 1600 768 1760 810.7L1920 853V1080H1760C1600 1080 1280 1080 960 1080C640 1080 320 1080 160 1080H0V853Z" fill="#FF7A18" opacity="0.08"/>
+  
+  <!-- Layer 5: Vignette -->
+  <rect id="vignette" width="1920" height="1080" fill="url(#vignette-gradient)" opacity="0.5"/>
+
+  <defs>
+    <radialGradient id="radial-gradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(960 540) rotate(90) scale(1000 1777.78)">
+      <stop stop-color="#111827"/>
+      <stop offset="1" stop-color="#0F172A"/>
+    </radialGradient>
+    <radialGradient id="vignette-gradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(960 540) rotate(90) scale(540 960)">
+      <stop offset="0.6" stop-color="black" stop-opacity="0"/>
+      <stop offset="1" stop-color="black" stop-opacity="1"/>
+    </radialGradient>
+  </defs>
+</svg>
