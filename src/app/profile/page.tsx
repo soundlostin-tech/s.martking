@@ -196,24 +196,6 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] font-sans selection:bg-[#5FD3BC]/30">
       <main className="pb-[80px]">
-        {/* Top Navigation */}
-        <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-[#E5E7EB] px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link href="/" className="p-2 hover:bg-[#F3F4F6] rounded-xl transition-colors text-[#1A1A1A]">
-              <ArrowLeft size={22} strokeWidth={2.5} />
-            </Link>
-          </div>
-          <div className="flex flex-col items-center">
-            <h1 className="text-lg font-heading font-bold tracking-tight text-[#1A1A1A]">Profile</h1>
-            <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-widest">Your Arena Identity</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <button onClick={handleShare} className="p-2 hover:bg-[#F3F4F6] rounded-xl transition-colors text-[#1A1A1A]">
-              <Share2 size={20} strokeWidth={2.5} />
-            </button>
-          </div>
-        </header>
-
         {/* Profile Header Section */}
         <section className="px-5 pt-8 pb-6">
           <div className="flex items-center gap-6">
@@ -469,7 +451,7 @@ export default function Profile() {
         {/* Tabs and Content Grid */}
         <section className="mt-8">
           <Tabs defaultValue="grid" className="w-full" onValueChange={setActiveTab}>
-            <TabsList className="w-full bg-white h-16 p-0 rounded-none border-t border-b border-[#E5E7EB] sticky top-[72px] z-40">
+            <TabsList className="w-full bg-white h-16 p-0 rounded-none border-t border-b border-[#E5E7EB] sticky top-0 z-40">
               <TabsTrigger 
                 value="grid" 
                 className="flex-1 h-full rounded-none data-[state=active]:bg-transparent data-[state=active]:border-b-4 data-[state=active]:border-[#1A1A1A] data-[state=active]:text-[#1A1A1A] transition-all text-[#9CA3AF]"
