@@ -88,38 +88,6 @@ export default function Home() {
       <main className="pb-[80px] relative z-10">
         <TopHeader />
         
-        <section className="px-4 pt-6 pb-4">
-          {isLoading ? (
-            <div className="flex items-center gap-4">
-              <Skeleton className="w-12 h-12 rounded-full" />
-              <div className="space-y-2">
-                <Skeleton className="h-6 w-48" />
-                <Skeleton className="h-4 w-32" />
-              </div>
-            </div>
-          ) : (
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full border-2 border-[#5FD3BC] p-0.5 shadow-lg">
-                <div className="w-full h-full rounded-full bg-[#E5E7EB] overflow-hidden flex items-center justify-center">
-                  {profile?.avatar_url ? (
-                    <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
-                  ) : (
-                    <span className="text-lg font-heading text-[#6B7280]">{profile?.full_name?.[0]?.toUpperCase() || 'W'}</span>
-                  )}
-                </div>
-              </div>
-              <div>
-                <h2 className="text-[20px] font-heading text-[#1A1A1A] leading-tight font-bold">
-                  Hello, {profile?.full_name?.split(' ')[0] || 'Warrior'} — ready to win?
-                </h2>
-                <p className="text-[14px] font-bold text-[#6B7280]">
-                  @{profile?.username || profile?.full_name?.toLowerCase().replace(/\s+/g, '') || 'warrior'}
-                </p>
-              </div>
-            </div>
-          )}
-        </section>
-
         <section className="py-4">
           <div className="flex gap-3 overflow-x-auto no-scrollbar px-4 items-start">
             <div className="flex-shrink-0 flex flex-col items-center gap-2">
