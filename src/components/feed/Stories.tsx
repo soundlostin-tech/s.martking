@@ -172,7 +172,7 @@ export function Stories() {
           {/* Create Story Button */}
           {user && (
             <div className="flex-shrink-0 flex flex-col items-center gap-2">
-              <label className="cursor-pointer group">
+              <label className="cursor-pointer group rounded-full">
                 <input type="file" className="hidden" accept="image/*,video/*" onChange={handleUpload} disabled={uploading} />
                 <div className="w-16 h-16 rounded-full p-[2.5px] bg-gradient-to-tr from-[#FEF3C7] to-[#FCD34D] shadow-sm relative">
                   <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden border-2 border-white">
@@ -181,7 +181,7 @@ export function Stories() {
                     ) : (
                       <div className="w-full h-full bg-gray-100 flex items-center justify-center" />
                     )}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/20 transition-all">
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/20 transition-all rounded-full">
                       {uploading ? (
                         <div className="w-5 h-5 border-2 border-white border-t-transparent animate-spin rounded-full" />
                       ) : (
@@ -198,11 +198,11 @@ export function Stories() {
           {/* User Stories */}
           {userStories.map((group, index) => (
             <div key={group.user.id} className="flex-shrink-0 flex flex-col items-center gap-2">
-              <motion.button
-                whileTap={{ scale: 0.92 }}
-                onClick={() => openStory(index)}
-                className="w-16 h-16 rounded-full p-[2.5px] bg-gradient-to-tr from-[#5FD3BC] to-[#A8E6CF] shadow-sm active:opacity-75 transition-opacity"
-              >
+                <motion.button
+                  whileTap={{ scale: 0.92 }}
+                  onClick={() => openStory(index)}
+                  className="w-16 h-16 rounded-full p-[2.5px] bg-gradient-to-tr from-[#5FD3BC] to-[#A8E6CF] shadow-sm active:opacity-75 transition-opacity focus:outline-none focus:ring-0"
+                >
                 <div className="w-full h-full rounded-full bg-white p-[2px] flex items-center justify-center overflow-hidden">
                   {group.user.avatar_url ? (
                     <img src={group.user.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
