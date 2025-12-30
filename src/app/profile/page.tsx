@@ -21,9 +21,12 @@ import {
   Loader2,
   Camera,
   Link as LinkIcon,
-  Swords
+  Swords,
+  LogOut,
+  Image as ImageIcon,
+  Video
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
@@ -39,6 +42,14 @@ import {
   DialogDescription,
   DialogFooter
 } from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -64,7 +75,7 @@ interface ProfileExtended {
 }
 
 export default function Profile() {
-  const { user, profile: authProfile, loading: authLoading } = useAuth();
+  const { user, profile: authProfile, loading: authLoading, signOut } = useAuth();
   const [activeTab, setActiveTab] = useState("grid");
   const [stories, setStories] = useState<any[]>([]);
   const [matches, setMatches] = useState<any[]>([]);
@@ -79,6 +90,11 @@ export default function Profile() {
     tournament_stats_url: ""
   });
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [isUploadingClip, setIsUploadingClip] = useState(false);
+  
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+  const clipInputRef = useRef<HTMLInputElement>(null);
 
   const profile = authProfile as unknown as ProfileExtended;
 
@@ -123,7 +139,7 @@ export default function Profile() {
         .eq("user_id", user?.id)
         .limit(12);
       
-      const matchesData = participantsData?.map(p => p.matches) || [];
+      const matchesData = participantsData?.map(p => p.matches).filter(Boolean) || [];
       setMatches(matchesData);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -151,12 +167,88 @@ export default function Profile() {
       
       toast.success("Profile updated successfully");
       setIsEditDialogOpen(false);
-      // Refreshing via window for simplicity to update useAuth state
       window.location.reload();
     } catch (error: any) {
       toast.error(error.message || "Failed to update profile");
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    setIsUploadingAvatar(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}-${Math.random()}.${fileExt}`;
+      const filePath = `avatars/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: publicUrl })
+        .eq('id', user.id);
+
+      if (updateError) throw updateError;
+
+      toast.success("Avatar updated");
+      window.location.reload();
+    } catch (error: any) {
+      toast.error(error.message || "Failed to upload avatar");
+    } finally {
+      setIsUploadingAvatar(false);
+    }
+  };
+
+  const handleClipUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    setIsUploadingClip(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}-${Math.random()}.${fileExt}`;
+      const filePath = `stories/${fileName}`;
+      const mediaType = file.type.startsWith('video') ? 'video' : 'image';
+
+      const { error: uploadError } = await supabase.storage
+        .from('stories')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('stories')
+        .getPublicUrl(filePath);
+
+      const { error: storyError } = await supabase
+        .from('stories')
+        .insert({
+          user_id: user.id,
+          media_url: publicUrl,
+          media_type: mediaType,
+          expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+        });
+
+      if (storyError) throw storyError;
+
+      toast.success("Clip shared to Arena Highlights");
+      fetchData();
+    } catch (error: any) {
+      toast.error(error.message || "Failed to upload clip");
+    } finally {
+      setIsUploadingClip(false);
     }
   };
 
@@ -201,9 +293,35 @@ export default function Profile() {
           <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mb-2">
             Arena Identity
           </p>
-          <h2 className="text-[32px] font-heading text-[#1A1A1A] leading-tight font-bold">
-            My Profile
-          </h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-[32px] font-heading text-[#1A1A1A] leading-tight font-bold">
+              My Profile
+            </h2>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="w-10 h-10 rounded-full bg-white border border-[#E5E7EB] flex items-center justify-center text-[#6B7280] hover:bg-gray-50 shadow-sm">
+                  <Settings size={20} />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2">
+                <DropdownMenuLabel className="text-[10px] font-bold text-[#6B7280] uppercase tracking-widest px-3 py-2">Account Settings</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setIsEditDialogOpen(true)} className="rounded-xl px-3 py-2.5 cursor-pointer">
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span className="font-bold text-sm">Edit Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleShare} className="rounded-xl px-3 py-2.5 cursor-pointer">
+                  <Share2 className="mr-2 h-4 w-4" />
+                  <span className="font-bold text-sm">Share Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={signOut} className="rounded-xl px-3 py-2.5 cursor-pointer text-red-500 focus:text-red-500">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span className="font-bold text-sm">Log Out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
           <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mt-1">
             Statistics & Reputation
           </p>
@@ -223,8 +341,19 @@ export default function Profile() {
                   </Avatar>
                 </div>
               </div>
-              <button className="absolute -bottom-1 -right-1 w-8 h-8 bg-[#1A1A1A] rounded-xl border-4 border-white flex items-center justify-center text-white shadow-lg">
-                <Camera size={14} strokeWidth={3} />
+              <input 
+                type="file" 
+                ref={avatarInputRef} 
+                onChange={handleAvatarUpload} 
+                className="hidden" 
+                accept="image/*"
+              />
+              <button 
+                onClick={() => avatarInputRef.current?.click()}
+                disabled={isUploadingAvatar}
+                className="absolute -bottom-1 -right-1 w-8 h-8 bg-[#1A1A1A] rounded-xl border-4 border-white flex items-center justify-center text-white shadow-lg"
+              >
+                {isUploadingAvatar ? <Loader2 size={14} className="animate-spin" /> : <Camera size={14} strokeWidth={3} />}
               </button>
             </div>
             
@@ -244,10 +373,90 @@ export default function Profile() {
                   </div>
                   <span className="text-[10px] font-bold text-[#1A1A1A]">₹{profile?.total_posts || 0}</span>
                 </Link>
-                <button className="flex items-center gap-1.5 bg-white border border-[#E5E7EB] px-3 py-1.5 rounded-lg shadow-sm hover:bg-[#F9FAFB] transition-colors">
-                  <Settings size={12} className="text-[#6B7280]" />
-                  <span className="text-[10px] font-bold text-[#1A1A1A]">Settings</span>
-                </button>
+                <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                  <DialogTrigger asChild>
+                    <button className="flex items-center gap-1.5 bg-white border border-[#E5E7EB] px-3 py-1.5 rounded-lg shadow-sm hover:bg-[#F9FAFB] transition-colors">
+                      <Settings size={12} className="text-[#6B7280]" />
+                      <span className="text-[10px] font-bold text-[#1A1A1A]">Edit Profile</span>
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-white border-none text-[#1A1A1A] max-w-[95%] sm:max-w-[425px] rounded-3xl shadow-2xl">
+                    <DialogHeader>
+                      <DialogTitle className="text-2xl font-heading font-bold">Edit Profile</DialogTitle>
+                      <DialogDescription className="text-[#6B7280] font-medium">
+                        Update your public arena presence.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-6 py-6 max-h-[60vh] overflow-y-auto no-scrollbar pr-1">
+                      <div className="grid gap-2">
+                        <Label htmlFor="full_name" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">Display Name</Label>
+                        <Input 
+                          id="full_name" 
+                          value={editForm.full_name} 
+                          onChange={(e) => setEditForm({...editForm, full_name: e.target.value})}
+                          className="bg-[#F3F4F6] border-none h-12 rounded-xl focus:ring-2 focus:ring-[#5FD3BC]/50 font-medium" 
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="username" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">Username</Label>
+                        <Input 
+                          id="username" 
+                          value={editForm.username} 
+                          onChange={(e) => setEditForm({...editForm, username: e.target.value})}
+                          className="bg-[#F3F4F6] border-none h-12 rounded-xl focus:ring-2 focus:ring-[#5FD3BC]/50 font-medium" 
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="bio" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">Arena Bio</Label>
+                        <Textarea 
+                          id="bio" 
+                          value={editForm.bio} 
+                          onChange={(e) => setEditForm({...editForm, bio: e.target.value})}
+                          className="bg-[#F3F4F6] border-none rounded-xl focus:ring-2 focus:ring-[#5FD3BC]/50 min-h-[100px] font-medium" 
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="youtube" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">YouTube Channel</Label>
+                        <Input 
+                          id="youtube" 
+                          value={editForm.youtube_link} 
+                          onChange={(e) => setEditForm({...editForm, youtube_link: e.target.value})}
+                          placeholder="https://youtube.com/@channel"
+                          className="bg-[#F3F4F6] border-none h-12 rounded-xl focus:ring-2 focus:ring-[#5FD3BC]/50 font-medium" 
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="team_site" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">Team Website</Label>
+                        <Input 
+                          id="team_site" 
+                          value={editForm.team_site} 
+                          onChange={(e) => setEditForm({...editForm, team_site: e.target.value})}
+                          placeholder="https://yourteam.com"
+                          className="bg-[#F3F4F6] border-none h-12 rounded-xl focus:ring-2 focus:ring-[#5FD3BC]/50 font-medium" 
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="tournament_stats_url" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">Stats URL</Label>
+                        <Input 
+                          id="tournament_stats_url" 
+                          value={editForm.tournament_stats_url} 
+                          onChange={(e) => setEditForm({...editForm, tournament_stats_url: e.target.value})}
+                          placeholder="https://stats-link.com"
+                          className="bg-[#F3F4F6] border-none h-12 rounded-xl focus:ring-2 focus:ring-[#5FD3BC]/50 font-medium" 
+                        />
+                      </div>
+                    </div>
+                    <DialogFooter className="mt-2">
+                      <Button 
+                        onClick={handleSaveProfile} 
+                        disabled={isSaving}
+                        className="w-full bg-[#1A1A1A] hover:bg-black text-white font-bold h-14 rounded-2xl shadow-lg"
+                      >
+                        {isSaving ? <Loader2 className="animate-spin" /> : "Save Changes"}
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </div>
@@ -337,69 +546,12 @@ export default function Profile() {
 
         {/* Action Buttons */}
         <section className="px-5 mt-8 flex gap-3">
-          <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-            <DialogTrigger asChild>
-              <Button className="flex-[2] bg-[#1A1A1A] hover:bg-black text-white h-14 rounded-2xl text-sm font-bold shadow-xl transition-all active:scale-[0.98]">
-                Edit Arena Profile
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="bg-white border-none text-[#1A1A1A] max-w-[95%] sm:max-w-[425px] rounded-3xl shadow-2xl">
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-heading font-bold">Edit Profile</DialogTitle>
-                <DialogDescription className="text-[#6B7280] font-medium">
-                  Update your public arena presence.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-6 py-6 max-h-[60vh] overflow-y-auto no-scrollbar pr-1">
-                <div className="grid gap-2">
-                  <Label htmlFor="full_name" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">Display Name</Label>
-                  <Input 
-                    id="full_name" 
-                    value={editForm.full_name} 
-                    onChange={(e) => setEditForm({...editForm, full_name: e.target.value})}
-                    className="bg-[#F3F4F6] border-none h-12 rounded-xl focus:ring-2 focus:ring-[#5FD3BC]/50 font-medium" 
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="username" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">Username</Label>
-                  <Input 
-                    id="username" 
-                    value={editForm.username} 
-                    onChange={(e) => setEditForm({...editForm, username: e.target.value})}
-                    className="bg-[#F3F4F6] border-none h-12 rounded-xl focus:ring-2 focus:ring-[#5FD3BC]/50 font-medium" 
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="bio" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">Arena Bio</Label>
-                  <Textarea 
-                    id="bio" 
-                    value={editForm.bio} 
-                    onChange={(e) => setEditForm({...editForm, bio: e.target.value})}
-                    className="bg-[#F3F4F6] border-none rounded-xl focus:ring-2 focus:ring-[#5FD3BC]/50 min-h-[100px] font-medium" 
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="youtube" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">YouTube Channel</Label>
-                  <Input 
-                    id="youtube" 
-                    value={editForm.youtube_link} 
-                    onChange={(e) => setEditForm({...editForm, youtube_link: e.target.value})}
-                    placeholder="https://youtube.com/@channel"
-                    className="bg-[#F3F4F6] border-none h-12 rounded-xl focus:ring-2 focus:ring-[#5FD3BC]/50 font-medium" 
-                  />
-                </div>
-              </div>
-              <DialogFooter className="mt-2">
-                <Button 
-                  onClick={handleSaveProfile} 
-                  disabled={isSaving}
-                  className="w-full bg-[#1A1A1A] hover:bg-black text-white font-bold h-14 rounded-2xl shadow-lg"
-                >
-                  {isSaving ? <Loader2 className="animate-spin" /> : "Save Changes"}
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <Button 
+            onClick={() => setIsEditDialogOpen(true)}
+            className="flex-[2] bg-[#1A1A1A] hover:bg-black text-white h-14 rounded-2xl text-sm font-bold shadow-xl transition-all active:scale-[0.98]"
+          >
+            Edit Arena Profile
+          </Button>
           <Button 
             variant="outline"
             onClick={handleShare}
@@ -416,9 +568,20 @@ export default function Profile() {
           </div>
           <div className="flex gap-6 overflow-x-auto no-scrollbar px-5 pb-4">
             <div className="flex flex-col items-center gap-3">
-              <div className="w-[72px] h-[72px] rounded-[28px] border-2 border-dashed border-[#D1D5DB] flex items-center justify-center group hover:border-[#5FD3BC] transition-all cursor-pointer bg-white">
-                <Plus size={24} className="text-[#9CA3AF] group-hover:text-[#5FD3BC] transition-all" />
-              </div>
+              <input 
+                type="file" 
+                ref={clipInputRef} 
+                onChange={handleClipUpload} 
+                className="hidden" 
+                accept="image/*,video/*"
+              />
+              <button 
+                onClick={() => clipInputRef.current?.click()}
+                disabled={isUploadingClip}
+                className="w-[72px] h-[72px] rounded-[28px] border-2 border-dashed border-[#D1D5DB] flex items-center justify-center group hover:border-[#5FD3BC] transition-all cursor-pointer bg-white"
+              >
+                {isUploadingClip ? <Loader2 size={24} className="animate-spin text-[#5FD3BC]" /> : <Plus size={24} className="text-[#9CA3AF] group-hover:text-[#5FD3BC] transition-all" />}
+              </button>
               <span className="text-[9px] font-bold text-[#6B7280] uppercase tracking-widest">Add Clip</span>
             </div>
             {stories.map((h, i) => (
@@ -432,7 +595,7 @@ export default function Profile() {
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute inset-0 flex items-center justify-center bg-black/10">
-                        {h.media_type === "video" ? <Play size={16} fill="white" className="text-white" /> : <Trophy size={16} className="text-white" />}
+                        {h.media_type === "video" ? <Play size={16} fill="white" className="text-white" /> : <ImageIcon size={16} className="text-white" />}
                       </div>
                     </div>
                   </div>
@@ -546,20 +709,43 @@ export default function Profile() {
               )}
             </TabsContent>
             
-            <TabsContent value="reels" className="m-0 min-h-[400px] flex flex-col items-center justify-center text-[#9CA3AF] bg-white">
-              <div className="w-20 h-20 rounded-full bg-[#F9FAFB] flex items-center justify-center mb-6 shadow-sm">
-                <Play size={32} className="text-[#D1D5DB]" />
-              </div>
-              <p className="text-sm font-heading font-bold text-[#1A1A1A] uppercase tracking-[0.2em]">No Match Clips</p>
-              <p className="text-xs text-[#6B7280] mt-2 font-medium uppercase">Record your gameplay to show off!</p>
+            <TabsContent value="reels" className="m-0 min-h-[400px] bg-white">
+              {stories.length > 0 ? (
+                <div className="grid grid-cols-2 gap-2 p-4">
+                  {stories.map((story, i) => (
+                    <div key={story.id} className="aspect-[9/16] relative rounded-2xl overflow-hidden bg-[#F3F4F6] shadow-sm">
+                      <img src={story.media_url} alt="" className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-4">
+                        <div className="flex items-center gap-2">
+                          {story.media_type === 'video' ? <Play size={14} className="text-white" fill="white" /> : <ImageIcon size={14} className="text-white" />}
+                          <span className="text-[10px] font-bold text-white uppercase tracking-wider">{story.media_type}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-20 text-[#9CA3AF]">
+                  <div className="w-20 h-20 rounded-full bg-[#F9FAFB] flex items-center justify-center mb-6 shadow-sm">
+                    <Play size={32} className="text-[#D1D5DB]" />
+                  </div>
+                  <p className="text-sm font-heading font-bold text-[#1A1A1A] uppercase tracking-[0.2em]">No Match Clips</p>
+                  <p className="text-xs text-[#6B7280] mt-2 font-medium uppercase">Record your gameplay to show off!</p>
+                </div>
+              )}
             </TabsContent>
 
-            <TabsContent value="saved" className="m-0 min-h-[400px] flex flex-col items-center justify-center text-[#9CA3AF] bg-white">
-              <div className="w-20 h-20 rounded-full bg-[#F9FAFB] flex items-center justify-center mb-6 shadow-sm">
-                <Bookmark size={32} className="text-[#D1D5DB]" />
+            <TabsContent value="saved" className="m-0 min-h-[400px] bg-white">
+              <div className="flex flex-col items-center justify-center py-20 text-[#9CA3AF]">
+                <div className="w-20 h-20 rounded-full bg-[#F9FAFB] flex items-center justify-center mb-6 shadow-sm">
+                  <Bookmark size={32} className="text-[#D1D5DB]" />
+                </div>
+                <p className="text-sm font-heading font-bold text-[#1A1A1A] uppercase tracking-[0.2em]">Saved Collections</p>
+                <p className="text-xs text-[#6B7280] mt-2 font-medium uppercase text-center max-w-[200px]">Save tournaments or player profiles to view them later</p>
+                <Button variant="outline" className="mt-8 rounded-xl font-bold text-xs uppercase tracking-widest border-[#E5E7EB]">
+                  Explore Arena
+                </Button>
               </div>
-              <p className="text-sm font-heading font-bold text-[#1A1A1A] uppercase tracking-[0.2em]">Saved Collections</p>
-              <p className="text-xs text-[#6B7280] mt-2 font-medium uppercase">Save tournaments or players here</p>
             </TabsContent>
           </Tabs>
         </section>

@@ -73,5 +73,10 @@ export function useAuth(requireAuth = true) {
 
   const isAdmin = profile?.role === "Admin" || profile?.role === "Organizer";
 
-  return { user, profile, loading, isAdmin };
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    router.push("/signin");
+  };
+
+  return { user, profile, loading, isAdmin, signOut };
 }
