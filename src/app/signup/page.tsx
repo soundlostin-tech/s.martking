@@ -136,63 +136,69 @@ export default function Signup() {
           <form onSubmit={handleSignup} className="space-y-6 relative z-10">
             <div className="space-y-3">
               <Label className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest ml-1">CALLSIGN (FULL NAME)</Label>
-              <Input 
-                ref={nameInputRef}
-                placeholder="Operative Name"
-                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 focus:border-[#6EBF8B] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
-                value={formData.fullname}
-                onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
-                required
-              />
-            </div>
-
-            <div className="space-y-3">
-              <Label className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest ml-1">COMM LINK (EMAIL)</Label>
-              <Input 
-                type="email"
-                placeholder="intel@arena.com"
-                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 focus:border-[#6EBF8B] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                required
-              />
-            </div>
-
-            <div className="space-y-3">
-              <Label className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest ml-1">MOBILE ID</Label>
-              <div className="flex gap-3">
-                <Select value={countryCode} onValueChange={setCountryCode}>
-                  <SelectTrigger className="w-28 h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white font-black text-[#1A1A1A] focus:border-[#5FD3BC] focus:ring-0 shadow-sm">
-                    <SelectValue placeholder="+91" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white rounded-2xl border-none shadow-2xl p-2">
-                    <SelectItem value="+91" className="font-black rounded-xl px-4 py-2">+91</SelectItem>
-                    <SelectItem value="+1" className="font-black rounded-xl px-4 py-2">+1</SelectItem>
-                    <SelectItem value="+44" className="font-black rounded-xl px-4 py-2">+44</SelectItem>
-                  </SelectContent>
-                </Select>
                 <Input 
-                  type="tel"
-                  placeholder="9876543210"
-                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 flex-1 focus:border-[#5FD3BC] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
+                  ref={nameInputRef}
+                  autoComplete="name"
+                  placeholder="Operative Name"
+                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 focus:border-[#6EBF8B] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
+                  value={formData.fullname}
+                  onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
                   required
                 />
               </div>
-            </div>
 
-            <div className="space-y-3">
-              <Label className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest ml-1">ACCESS KEY (PASSWORD)</Label>
-              <div className="relative">
+              <div className="space-y-3">
+                <Label className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest ml-1">COMM LINK (EMAIL)</Label>
                 <Input 
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Secret Code"
-                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 pr-14 focus:border-[#6EBF8B] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  type="email"
+                  autoComplete="email"
+                  placeholder="intel@arena.com"
+                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 focus:border-[#6EBF8B] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
                 />
+              </div>
+
+              <div className="space-y-3">
+                <Label className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest ml-1">MOBILE ID</Label>
+                <div className="flex gap-3">
+                  <Select value={countryCode} onValueChange={setCountryCode}>
+                    <SelectTrigger className="w-28 h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white font-black text-[#1A1A1A] focus:border-[#5FD3BC] focus:ring-0 shadow-sm">
+                      <SelectValue placeholder="+91" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white rounded-2xl border-none shadow-2xl p-2">
+                      <SelectItem value="+91" className="font-black rounded-xl px-4 py-2">+91</SelectItem>
+                      <SelectItem value="+1" className="font-black rounded-xl px-4 py-2">+1</SelectItem>
+                      <SelectItem value="+44" className="font-black rounded-xl px-4 py-2">+44</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Input 
+                    type="tel"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    placeholder="9876543210"
+                    className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 flex-1 focus:border-[#5FD3BC] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <Label className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest ml-1">ACCESS KEY (PASSWORD)</Label>
+                <div className="relative">
+                  <Input 
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                    placeholder="Secret Code"
+                    className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 pr-14 focus:border-[#6EBF8B] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    required
+                  />
+
                 <button 
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}

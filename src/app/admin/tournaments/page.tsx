@@ -427,28 +427,31 @@ export default function AdminTournaments() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-3">
-                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6B7280] ml-1">PASS (₹)</Label>
-                    <Input 
-                      type="number" 
-                      className="h-16 rounded-[20px] bg-[#F5F5F5] border-4 border-transparent font-black text-base focus-visible:ring-0 focus:border-[#1A1A1A] px-6 transition-all" 
-                      value={formData.entry_fee} 
-                      onChange={(e) => setFormData({ ...formData, entry_fee: Number(e.target.value) })} 
-                      required 
-                    />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-3">
+                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6B7280] ml-1">PASS (₹)</Label>
+                      <Input 
+                        type="number" 
+                        inputMode="numeric"
+                        className="h-16 rounded-[20px] bg-[#F5F5F5] border-4 border-transparent font-black text-base focus-visible:ring-0 focus:border-[#1A1A1A] px-6 transition-all" 
+                        value={formData.entry_fee} 
+                        onChange={(e) => setFormData({ ...formData, entry_fee: Number(e.target.value) })} 
+                        required 
+                      />
+                    </div>
+                    <div className="space-y-3">
+                      <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6B7280] ml-1">LOOT (₹)</Label>
+                      <Input 
+                        type="number" 
+                        inputMode="numeric"
+                        className="h-16 rounded-[20px] bg-[#F5F5F5] border-4 border-transparent font-black text-base focus-visible:ring-0 focus:border-[#1A1A1A] px-6 transition-all" 
+                        value={formData.prize_pool} 
+                        onChange={(e) => setFormData({ ...formData, prize_pool: Number(e.target.value) })} 
+                        required 
+                      />
+                    </div>
                   </div>
-                  <div className="space-y-3">
-                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6B7280] ml-1">LOOT (₹)</Label>
-                    <Input 
-                      type="number" 
-                      className="h-16 rounded-[20px] bg-[#F5F5F5] border-4 border-transparent font-black text-base focus-visible:ring-0 focus:border-[#1A1A1A] px-6 transition-all" 
-                      value={formData.prize_pool} 
-                      onChange={(e) => setFormData({ ...formData, prize_pool: Number(e.target.value) })} 
-                      required 
-                    />
-                  </div>
-                </div>
+
               </div>
 
               <div className="space-y-8">

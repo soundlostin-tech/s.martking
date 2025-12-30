@@ -396,6 +396,7 @@ function WalletContent() {
               <div className="relative">
                 <Input 
                   type="number" 
+                  inputMode="numeric"
                   placeholder="0" 
                   className="h-20 rounded-[24px] border-4 border-[#F5F5F5] bg-white text-4xl font-heading font-black px-8 focus:border-[#6EBF8B] focus:ring-0 text-[#1A1A1A] placeholder:text-[#9CA3AF] shadow-inner transition-all"
                   value={depositAmount}

@@ -81,33 +81,36 @@ export default function Signin() {
           <form onSubmit={handleSignin} className="space-y-6 relative z-10">
             <div className="space-y-3">
               <Label className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest ml-1">COMM LINK (EMAIL)</Label>
-              <Input 
-                ref={emailInputRef}
-                type="email"
-                placeholder="intel@arena.com"
-                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 focus:border-[#6EBF8B] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                required
-              />
-            </div>
-
-            <div className="space-y-3">
-              <div className="flex justify-between items-center ml-1">
-                <Label className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest">ACCESS KEY (PASSWORD)</Label>
-                <Link href="#" className="text-[9px] font-black text-[#9CA3AF] uppercase tracking-widest hover:text-[#1A1A1A] transition-colors">
-                  Lost Key?
-                </Link>
-              </div>
-              <div className="relative">
                 <Input 
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Secret Code"
-                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 pr-14 focus:border-[#6EBF8B] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  ref={emailInputRef}
+                  type="email"
+                  autoComplete="email"
+                  placeholder="intel@arena.com"
+                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 focus:border-[#6EBF8B] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
                 />
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex justify-between items-center ml-1">
+                  <Label className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest">ACCESS KEY (PASSWORD)</Label>
+                  <Link href="#" className="text-[9px] font-black text-[#9CA3AF] uppercase tracking-widest hover:text-[#1A1A1A] transition-colors">
+                    Lost Key?
+                  </Link>
+                </div>
+                <div className="relative">
+                  <Input 
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    placeholder="Secret Code"
+                    className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 pr-14 focus:border-[#6EBF8B] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    required
+                  />
+
                 <button 
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}

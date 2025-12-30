@@ -373,27 +373,29 @@ function MatchesContent() {
       </main>
 
       <AnimatePresence>
-        {selectedMatch && (
-          <motion.div 
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "100%" }}
-            transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed inset-0 z-[60] bg-[#F8F6F0] flex flex-col"
-          >
-            <header className="relative z-10 px-5 py-8 flex items-center justify-between">
-              <motion.button 
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setSelectedMatch(null)}
-                className="w-12 h-12 bg-white border-2 border-[#E5E7EB] rounded-2xl flex items-center justify-center shadow-lg"
-              >
-                <ChevronRight className="rotate-180 text-[#1A1A1A]" size={24} strokeWidth={3} />
-              </motion.button>
-              <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6B7280]">Match Intelligence</h2>
-              <div className="w-12" />
-            </header>
+          {selectedMatch && (
+            <motion.div 
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="fixed inset-0 z-[60] bg-[#F8F6F0] flex flex-col"
+              style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+            >
+              <header className="relative z-10 px-5 py-6 flex items-center justify-between">
+                <motion.button 
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setSelectedMatch(null)}
+                  className="w-12 h-12 bg-white border-2 border-[#E5E7EB] rounded-2xl flex items-center justify-center shadow-lg"
+                >
+                  <ChevronRight className="rotate-180 text-[#1A1A1A]" size={24} strokeWidth={3} />
+                </motion.button>
+                <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6B7280]">Match Intelligence</h2>
+                <div className="w-12" />
+              </header>
 
-            <div className="relative z-10 flex-1 overflow-y-auto no-scrollbar px-5 pb-32">
+              <div className="relative z-10 flex-1 overflow-y-auto no-scrollbar px-5 pb-32">
+
               <div className="mb-8">
                 <div className="flex items-center gap-3 mb-4">
                   <StatusBadge variant={selectedMatch.status} className="bg-[#1A1A1A] text-white px-4 py-1.5 rounded-full font-black text-[10px]" />

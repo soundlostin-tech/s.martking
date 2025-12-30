@@ -18,13 +18,13 @@ export function BottomNav() {
 
   return (
     <nav 
-      className="fixed bottom-0 left-0 right-0 z-[1000] bg-[#1A1A1A] border-t border-white/5 rounded-t-[32px] shadow-[0_-12px_40px_rgba(0,0,0,0.5)]"
+      className="fixed bottom-0 left-0 right-0 z-[1000] bg-[#1A1A1A]/95 backdrop-blur-xl border-t border-white/10 rounded-t-[32px] shadow-[0_-12px_40px_rgba(0,0,0,0.5)]"
       style={{ 
-        paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.5rem)',
+        paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.75rem)',
         paddingTop: '0.75rem'
       }}
     >
-      <div className="flex justify-around items-center h-16 px-6">
+      <div className="flex justify-around items-center h-16 px-4">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
@@ -33,22 +33,22 @@ export function BottomNav() {
             <Link
               key={item.label}
               href={item.href}
-              className="nav-item relative flex flex-col items-center justify-center flex-1 h-full group"
+              className="nav-item relative flex flex-col items-center justify-center flex-1 min-w-[64px] h-full group touch-manipulation"
               aria-label={item.label}
               aria-current={isActive ? "page" : undefined}
             >
               <motion.div 
-                className="nav-item-inner relative flex flex-col items-center justify-center"
+                className="nav-item-inner relative flex flex-col items-center justify-center w-full"
                 animate={isActive ? { y: -2 } : { y: 0 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
-                <div className="relative flex items-center justify-center w-12 h-9 mb-1">
+                <div className="relative flex items-center justify-center w-12 h-10 mb-1">
                   <AnimatePresence>
                     {isActive && (
                       <motion.div 
                         layoutId="nav-active-pill"
                         className="absolute inset-0 rounded-2xl"
-                        style={{ backgroundColor: `${item.color}20` }} // 12% opacity
+                        style={{ backgroundColor: `${item.color}25` }} // 15% opacity
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
@@ -59,28 +59,25 @@ export function BottomNav() {
                   
                   <motion.div
                     animate={isActive ? { 
-                      scale: [1, 1.2, 1],
-                      rotate: [0, -10, 10, 0]
-                    } : { scale: 1, rotate: 0 }}
+                      scale: [1, 1.15, 1],
+                    } : { scale: 1 }}
                     transition={{ 
-                      duration: 0.4,
-                      times: [0, 0.2, 0.5, 1],
-                      ease: "easeInOut"
+                      duration: 0.3,
                     }}
                   >
                     <Icon 
                       size={24} 
                       className="relative z-10 transition-colors duration-300"
-                      style={{ color: isActive ? item.color : 'rgba(255, 255, 255, 0.3)' }}
+                      style={{ color: isActive ? item.color : 'rgba(255, 255, 255, 0.4)' }}
                       strokeWidth={isActive ? 2.5 : 2}
                     />
                   </motion.div>
                 </div>
                 
                 <motion.span 
-                  className="nav-label text-[9px] font-black uppercase tracking-[0.1em] transition-colors duration-300"
-                  style={{ color: isActive ? item.color : 'rgba(255, 255, 255, 0.3)' }}
-                  animate={isActive ? { scale: 1.1 } : { scale: 1 }}
+                  className="nav-label text-[10px] font-black uppercase tracking-[0.1em] transition-colors duration-300"
+                  style={{ color: isActive ? item.color : 'rgba(255, 255, 255, 0.4)' }}
+                  animate={isActive ? { scale: 1.05 } : { scale: 1 }}
                 >
                   {item.label}
                 </motion.span>

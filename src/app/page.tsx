@@ -89,62 +89,65 @@ export default function Home() {
         
         <section className="py-6">
           <div className="flex gap-4 overflow-x-auto no-scrollbar px-5 items-start">
-            <div className="flex-shrink-0 flex flex-col items-center gap-3">
-              <motion.div 
-                whileTap={{ scale: 0.92 }}
-                onClick={() => setIsUploadOpen(true)}
-                className="relative w-[72px] h-[72px] rounded-[28px] p-[3px] bg-white shadow-sm border-2 border-dashed border-[#D1D5DB]"
-              >
-                <div className="w-full h-full rounded-[23px] bg-[#F9FAFB] flex items-center justify-center overflow-hidden">
-                  {profile?.avatar_url ? (
-                    <img src={profile.avatar_url} alt="" className="w-full h-full object-cover opacity-40" />
-                  ) : (
-                    <Plus size={24} strokeWidth={3} className="text-[#9CA3AF]" />
-                  )}
-                </div>
-                <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-[#1A1A1A] rounded-xl border-4 border-white flex items-center justify-center shadow-lg">
-                  <Plus size={14} strokeWidth={4} className="text-white" />
-                </div>
-              </motion.div>
-              <span className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest">You</span>
-            </div>
-
-            {isLoading ? (
-              Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="flex-shrink-0 flex flex-col items-center gap-3">
-                  <Skeleton className="w-[72px] h-[72px] rounded-[28px]" />
-                  <Skeleton className="h-2 w-10" />
-                </div>
-              ))
-            ) : (
-              profiles.filter(p => p.id !== profile?.id).map((p, index) => {
-                const hasStories = stories.some(s => s.user_id === p.id);
-                const color = storyColors[index % storyColors.length];
-                return (
-                  <div key={p.id} className="flex-shrink-0 flex flex-col items-center gap-3">
-                    <motion.div 
-                      whileTap={{ scale: 0.92 }}
-                      onClick={() => hasStories && openStory(p.id)}
-                      className="w-[72px] h-[72px] rounded-[28px] p-[3px] bg-white shadow-md border-2 transition-all duration-300"
-                      style={{ 
-                        borderColor: hasStories ? color : '#E5E7EB',
-                        cursor: hasStories ? 'pointer' : 'default',
-                        transform: hasStories ? 'rotate(-3deg)' : 'none'
-                      }}
-                    >
-                      <div className="w-full h-full rounded-[23px] bg-[#F3F4F6] flex items-center justify-center overflow-hidden">
-                        {p.avatar_url ? (
-                          <img src={p.avatar_url} alt="" className="w-full h-full object-cover" />
-                        ) : (
-                          <span className="text-xl font-heading font-black text-[#9CA3AF]">{p.full_name?.[0]?.toUpperCase()}</span>
-                        )}
-                      </div>
-                    </motion.div>
-                    <span className="text-[10px] font-black text-[#1A1A1A] uppercase tracking-widest">{p.full_name?.split(' ')[0]}</span>
+            {/* Added extra padding div at the end for scroll finish */}
+            <div className="flex gap-4 items-start pr-10">
+              <div className="flex-shrink-0 flex flex-col items-center gap-3">
+                <motion.div 
+                  whileTap={{ scale: 0.92 }}
+                  onClick={() => setIsUploadOpen(true)}
+                  className="relative w-[72px] h-[72px] rounded-[28px] p-[3px] bg-white shadow-sm border-2 border-dashed border-[#D1D5DB]"
+                >
+                  <div className="w-full h-full rounded-[23px] bg-[#F9FAFB] flex items-center justify-center overflow-hidden">
+                    {profile?.avatar_url ? (
+                      <img src={profile.avatar_url} alt="" className="w-full h-full object-cover opacity-40" />
+                    ) : (
+                      <Plus size={24} strokeWidth={3} className="text-[#9CA3AF]" />
+                    )}
                   </div>
-                );
-              })
-            )}
+                  <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-[#1A1A1A] rounded-xl border-4 border-white flex items-center justify-center shadow-lg">
+                    <Plus size={14} strokeWidth={4} className="text-white" />
+                  </div>
+                </motion.div>
+                <span className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest">You</span>
+              </div>
+
+              {isLoading ? (
+                Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="flex-shrink-0 flex flex-col items-center gap-3">
+                    <Skeleton className="w-[72px] h-[72px] rounded-[28px]" />
+                    <Skeleton className="h-2 w-10" />
+                  </div>
+                ))
+              ) : (
+                profiles.filter(p => p.id !== profile?.id).map((p, index) => {
+                  const hasStories = stories.some(s => s.user_id === p.id);
+                  const color = storyColors[index % storyColors.length];
+                  return (
+                    <div key={p.id} className="flex-shrink-0 flex flex-col items-center gap-3">
+                      <motion.div 
+                        whileTap={{ scale: 0.92 }}
+                        onClick={() => hasStories && openStory(p.id)}
+                        className="w-[72px] h-[72px] rounded-[28px] p-[3px] bg-white shadow-md border-2 transition-all duration-300"
+                        style={{ 
+                          borderColor: hasStories ? color : '#E5E7EB',
+                          cursor: hasStories ? 'pointer' : 'default',
+                          transform: hasStories ? 'rotate(-3deg)' : 'none'
+                        }}
+                      >
+                        <div className="w-full h-full rounded-[23px] bg-[#F3F4F6] flex items-center justify-center overflow-hidden">
+                          {p.avatar_url ? (
+                            <img src={p.avatar_url} alt="" className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="text-xl font-heading font-black text-[#9CA3AF]">{p.full_name?.[0]?.toUpperCase()}</span>
+                          )}
+                        </div>
+                      </motion.div>
+                      <span className="text-[10px] font-black text-[#1A1A1A] uppercase tracking-widest">{p.full_name?.split(' ')[0]}</span>
+                    </div>
+                  );
+                })
+              )}
+            </div>
           </div>
         </section>
 
