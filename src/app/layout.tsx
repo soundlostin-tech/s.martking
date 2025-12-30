@@ -1,6 +1,5 @@
 import { Geist, Geist_Mono, Playfair_Display, Berkshire_Swash, Outfit } from "next/font/google";
 import "./globals.css";
-import { AnimatedBackground } from "@/components/layout/AnimatedBackground";
 import { ClientLayout } from "@/components/layout/ClientLayout";
 import { Metadata, Viewport } from "next";
 
@@ -56,13 +55,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        suppressHydrationWarning
-        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${berkshire.variable} ${outfit.variable} font-sans antialiased bg-background text-foreground`}
-      >
-        <AnimatedBackground />
-        <ClientLayout>{children}</ClientLayout>
-      </body>
+        <body
+          suppressHydrationWarning
+          className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${berkshire.variable} ${outfit.variable} font-sans antialiased bg-background text-foreground`}
+        >
+          <ClientLayout>{children}</ClientLayout>
+        </body>
     </html>
   );
 }
