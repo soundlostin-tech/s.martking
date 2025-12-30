@@ -14,6 +14,8 @@ import { TopHeader } from "@/components/layout/TopHeader";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { GlobalSearch } from "@/components/search/GlobalSearch";
+import { FeedList } from "@/components/feed/FeedList";
 
 export function HomePage() {
   const { user, profile, loading: authLoading } = useAuth(false);
@@ -62,8 +64,12 @@ export function HomePage() {
     <div className="min-h-screen bg-[#F8F6F0] text-[#1A1A1A] relative">
       <main className="pb-20 relative z-10">
         <TopHeader />
+
+        <section className="px-4 pt-2 pb-4">
+          <GlobalSearch />
+        </section>
         
-        <section className="py-4">
+        <section className="py-2">
           <div className="flex gap-3 overflow-x-auto no-scrollbar px-4 items-start">
             <div className="flex gap-3 items-start pr-6">
               {isLoading ? (
@@ -74,7 +80,7 @@ export function HomePage() {
                   </div>
                 ))
               ) : (
-                profiles.map((p, index) => {
+                profiles.map((p) => {
                   return (
                     <div key={p.id} className="flex-shrink-0 flex flex-col items-center gap-2">
                       <Link href={`/u/${p.username || p.id}`}>
@@ -213,7 +219,7 @@ export function HomePage() {
           ))}
         </section>
 
-        <section className="px-4 mb-6">
+        <section className="px-4 mb-4">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-base font-heading text-[#1A1A1A] font-black tracking-tight">Arena Battles</h3>
             <Link href="/matches" className="text-[8px] font-black text-[#6B7280] uppercase tracking-wide bg-white px-2.5 py-1 rounded-lg border border-[#E5E7EB]">All</Link>
@@ -225,7 +231,7 @@ export function HomePage() {
                 <Skeleton key={i} className="h-16 w-full rounded-xl" />
               ))
             ) : (
-              featuredMatches.slice(1, 5).map((match, idx) => {
+              featuredMatches.slice(1, 4).map((match, idx) => {
                 const colors = ["mint", "blue", "pink", "yellow", "coral", "teal"];
                 const color = colors[idx % colors.length] as any;
                 return (
@@ -253,6 +259,15 @@ export function HomePage() {
               })
             )}
           </div>
+        </section>
+
+        <section className="px-4 mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-base font-heading text-[#1A1A1A] font-black tracking-tight">Player Feed</h3>
+            <Link href="/feed" className="text-[8px] font-black text-[#6B7280] uppercase tracking-wide bg-white px-2.5 py-1 rounded-lg border border-[#E5E7EB]">View All</Link>
+          </div>
+          
+          <FeedList userId={user?.id} />
         </section>
       </main>
 
