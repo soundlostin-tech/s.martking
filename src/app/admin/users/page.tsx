@@ -24,7 +24,11 @@ import {
   ShieldCheck,
   Zap,
   CheckCircle2,
-  XCircle
+  XCircle,
+  AlertCircle,
+  Star,
+  Download,
+  Filter
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState, useMemo } from "react";
@@ -131,7 +135,6 @@ export default function AdminUsers() {
 
       if (error) throw error;
 
-      // Log to audit_logs
       if (adminUser) {
         await supabase.from("audit_logs").insert({
           admin_id: adminUser.id,
@@ -220,116 +223,89 @@ export default function AdminUsers() {
   }, [users, search, roleFilter, statusFilter, sortBy]);
 
   return (
-    <main className="min-h-screen p-8 lg:p-12 space-y-12 bg-background">
-      {/* Header Section */}
-      <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 blob-header blob-header-sky">
-        <div className="relative z-10">
-          <p className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em] mb-2">Registry Command</p>
-          <h1 className="text-[44px] font-heading font-black leading-none tracking-tight text-onyx">
-            Warriors <br />
-            <span className="text-charcoal-brown/40">Player Database</span>
-          </h1>
+    <main className="min-h-screen pb-32 bg-[#F5F5F5] text-[#1A1A1A]">
+      <div className="px-8 pt-24 relative z-10 space-y-12 max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+          <div className="space-y-1">
+            <p className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-[0.3em] mb-2">Registry Command</p>
+            <h1 className="text-[44px] font-heading font-black leading-none tracking-tight text-[#1A1A1A]">
+              OPERATIVES <br />
+              <span className="text-[#6B7280]/40">DATABASE</span>
+            </h1>
+          </div>
+          <div className="flex items-center gap-3 bg-white px-6 py-3 rounded-2xl shadow-md border-2 border-[#E5E7EB]">
+            <div className="w-2 h-2 rounded-full bg-[#5FD3BC] animate-pulse" />
+            <p className="text-[10px] font-black text-[#1A1A1A] uppercase tracking-widest">DATA CHANNEL ACTIVE</p>
+          </div>
         </div>
-      </section>
 
-      {/* KPI Strip */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <BentoCard variant="vibrant" className="p-8 h-44 flex flex-col justify-between overflow-hidden relative">
-          <div className="relative z-10">
-            <p className="text-[10px] font-black text-onyx/40 uppercase tracking-widest mb-4">Total Population</p>
-            <h3 className="text-4xl font-heading font-black text-onyx">{stats.total.toLocaleString()}</h3>
-          </div>
-          <div className="absolute right-[-10px] bottom-[-10px] rotate-[-15deg] opacity-5 pointer-events-none">
-            <Users size={100} />
-          </div>
-        </BentoCard>
-
-        <BentoCard variant="dark" className="p-8 h-44 flex flex-col justify-between overflow-hidden relative">
-          <div className="relative z-10">
-            <p className="text-[10px] font-black text-white/40 uppercase tracking-widest mb-4">Active Deployments</p>
-            <h3 className="text-4xl font-heading font-black text-white">{stats.active.toLocaleString()}</h3>
-          </div>
-          <div className="absolute right-[-10px] bottom-[-10px] rotate-[15deg] opacity-5 pointer-events-none">
-            <UserCheck size={100} />
-          </div>
-        </BentoCard>
-
-        <BentoCard variant="pastel" pastelColor="coral" className="p-8 h-44 flex flex-col justify-between overflow-hidden relative">
-          <div className="relative z-10">
-            <p className="text-[10px] font-black text-onyx/40 uppercase tracking-widest mb-4">Restricted Access</p>
-            <h3 className="text-4xl font-heading font-black text-onyx">{stats.suspended.toLocaleString()}</h3>
-          </div>
-          <div className="absolute right-[-10px] bottom-[-10px] rotate-[-5deg] opacity-5 pointer-events-none">
-            <ShieldAlert size={100} />
-          </div>
-        </BentoCard>
-      </section>
-
-      {/* Bulk Action Bar */}
-      <AnimatePresence>
-        {selectedUserIds.length > 0 && (
-          <motion.div 
-            initial={{ y: 100 }}
-            animate={{ y: 0 }}
-            exit={{ y: 100 }}
-            className="fixed bottom-12 left-1/2 -translate-x-1/2 z-[100] bg-onyx text-white px-8 py-4 rounded-[32px] shadow-2xl flex items-center gap-8"
-          >
-            <p className="text-[10px] font-black uppercase tracking-widest">
-              {selectedUserIds.length} Warriors Selected
-            </p>
-            <div className="h-6 w-px bg-white/20" />
-            <div className="flex gap-4">
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="text-[10px] font-black uppercase tracking-widest hover:bg-white/10"
-                onClick={() => handleBulkAction('Active')}
-              >
-                Activate
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="text-[10px] font-black uppercase tracking-widest text-pastel-coral hover:bg-white/10"
-                onClick={() => handleBulkAction('Suspended')}
-              >
-                Suspend
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="text-[10px] font-black uppercase tracking-widest text-red-500 hover:bg-white/10"
-                onClick={() => handleBulkAction('Banned')}
-              >
-                Ban
-              </Button>
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <BentoCard variant="mint" className="p-8 h-48 flex flex-col justify-between overflow-hidden relative shadow-xl border-none">
+            <div className="relative z-10">
+              <p className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-widest mb-4">Total Operatives</p>
+              <h3 className="text-5xl font-heading font-black text-[#1A1A1A]">{stats.total.toLocaleString()}</h3>
             </div>
-            <div className="h-6 w-px bg-white/20" />
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-[10px] font-black uppercase tracking-widest hover:bg-white/10"
-              onClick={() => setSelectedUserIds([])}
-            >
-              Cancel
-            </Button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <div className="absolute right-[-10px] bottom-[-10px] rotate-[-15deg] opacity-[0.05] pointer-events-none">
+              <Users size={140} />
+            </div>
+          </BentoCard>
 
-      {/* Filter Bar */}
-      <section className="flex flex-col md:flex-row gap-4 bg-white p-6 rounded-[32px] shadow-sm border border-black/5">
-        <div className="relative flex-1">
-          <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-charcoal/30" size={20} />
-          <Input 
-            className="bg-background border-none pl-14 rounded-2xl h-14 text-sm font-bold focus-visible:ring-onyx placeholder:text-charcoal/30 text-onyx" 
-            placeholder="Search Registry..." 
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-          <div className="flex gap-2 items-center">
-            <div className="flex items-center gap-2 px-4 h-14 bg-background rounded-2xl border-none">
+          <BentoCard variant="blue" className="p-8 h-48 flex flex-col justify-between overflow-hidden relative shadow-xl border-none">
+            <div className="relative z-10">
+              <p className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-widest mb-4">Active Signals</p>
+              <h3 className="text-5xl font-heading font-black text-[#1A1A1A]">{stats.active.toLocaleString()}</h3>
+            </div>
+            <div className="absolute right-[-10px] bottom-[-10px] rotate-[15deg] opacity-[0.05] pointer-events-none">
+              <UserCheck size={140} />
+            </div>
+          </BentoCard>
+
+          <BentoCard variant="pink" className="p-8 h-48 flex flex-col justify-between overflow-hidden relative shadow-xl border-none">
+            <div className="relative z-10">
+              <p className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-widest mb-4">Restricted Access</p>
+              <h3 className="text-5xl font-heading font-black text-[#1A1A1A]">{stats.suspended.toLocaleString()}</h3>
+            </div>
+            <div className="absolute right-[-10px] bottom-[-10px] rotate-[-5deg] opacity-[0.05] pointer-events-none">
+              <ShieldAlert size={140} />
+            </div>
+          </BentoCard>
+        </section>
+
+        <AnimatePresence>
+          {selectedUserIds.length > 0 && (
+            <motion.div 
+              initial={{ y: 100 }}
+              animate={{ y: 0 }}
+              exit={{ y: 100 }}
+              className="fixed bottom-12 left-1/2 -translate-x-1/2 z-[100] bg-[#1A1A1A] text-white px-10 py-5 rounded-[32px] shadow-2xl flex items-center gap-10 border-4 border-white"
+            >
+              <p className="text-[11px] font-black uppercase tracking-widest">
+                {selectedUserIds.length} Warriors Selected
+              </p>
+              <div className="h-8 w-0.5 bg-white/10" />
+              <div className="flex gap-6">
+                <button onClick={() => handleBulkAction('Active')} className="text-[11px] font-black uppercase tracking-widest text-[#A8E6CF] hover:scale-110 transition-transform">ACTIVATE</button>
+                <button onClick={() => handleBulkAction('Suspended')} className="text-[11px] font-black uppercase tracking-widest text-[#FFD8B1] hover:scale-110 transition-transform">SUSPEND</button>
+                <button onClick={() => handleBulkAction('Banned')} className="text-[11px] font-black uppercase tracking-widest text-red-500 hover:scale-110 transition-transform">TERMINATE</button>
+              </div>
+              <div className="h-8 w-0.5 bg-white/10" />
+              <button onClick={() => setSelectedUserIds([])} className="text-[11px] font-black uppercase tracking-widest text-white/40 hover:text-white">CANCEL</button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <section className="flex flex-col md:flex-row gap-6 bg-white p-8 rounded-[40px] shadow-xl border-2 border-[#E5E7EB]">
+          <div className="relative flex-1">
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={22} strokeWidth={3} />
+            <Input 
+              className="bg-[#F5F5F5] border-none pl-14 rounded-2xl h-16 text-sm font-black focus-visible:ring-[#1A1A1A] placeholder:text-[#9CA3AF] text-[#1A1A1A]" 
+              placeholder="SEARCH REGISTRY..." 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          <div className="flex gap-3 flex-wrap">
+            <div className="flex items-center gap-3 px-6 h-16 bg-[#F5F5F5] rounded-2xl">
               <Checkbox 
                 checked={selectedUserIds.length === filteredUsers.length && filteredUsers.length > 0}
                 onCheckedChange={(checked) => {
@@ -339,145 +315,170 @@ export default function AdminUsers() {
                     setSelectedUserIds([]);
                   }
                 }}
+                className="w-6 h-6 rounded-lg data-[state=checked]:bg-[#1A1A1A] border-2 border-[#D1D5DB]"
               />
-              <span className="text-[10px] font-black tracking-widest text-charcoal/60 uppercase">ALL</span>
+              <span className="text-[10px] font-black tracking-widest text-[#6B7280] uppercase">SELECT ALL</span>
             </div>
             <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-background border-none font-black text-[10px] tracking-widest text-charcoal/60">
+              <SelectTrigger className="w-[160px] h-16 rounded-2xl bg-[#F5F5F5] border-none font-black text-[10px] tracking-widest text-[#1A1A1A] uppercase px-6">
                 <SelectValue placeholder="SORT BY" />
               </SelectTrigger>
-              <SelectContent className="rounded-2xl border-none shadow-2xl">
-                <SelectItem value="newest" className="text-[10px] font-black">NEWEST</SelectItem>
-                <SelectItem value="balance" className="text-[10px] font-black">BALANCE</SelectItem>
-                <SelectItem value="winrate" className="text-[10px] font-black">WIN RATE</SelectItem>
+              <SelectContent className="rounded-2xl border-none shadow-2xl p-2 bg-white">
+                <SelectItem value="newest" className="text-[10px] font-black py-3 rounded-xl">NEWEST</SelectItem>
+                <SelectItem value="balance" className="text-[10px] font-black py-3 rounded-xl">BALANCE</SelectItem>
+                <SelectItem value="winrate" className="text-[10px] font-black py-3 rounded-xl">WIN RATE</SelectItem>
               </SelectContent>
             </Select>
             <Select value={roleFilter} onValueChange={setRoleFilter}>
-            <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-background border-none font-black text-[10px] tracking-widest text-charcoal/60">
-              <SelectValue placeholder="ROLE" />
-            </SelectTrigger>
-            <SelectContent className="rounded-2xl border-none shadow-2xl">
-              <SelectItem value="all" className="text-[10px] font-black">ALL ROLES</SelectItem>
-              <SelectItem value="Pro Player" className="text-[10px] font-black">PLAYER</SelectItem>
-              <SelectItem value="Admin" className="text-[10px] font-black">ADMIN</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-[140px] h-14 rounded-2xl bg-background border-none font-black text-[10px] tracking-widest text-charcoal/60">
-              <SelectValue placeholder="STATUS" />
-            </SelectTrigger>
-            <SelectContent className="rounded-2xl border-none shadow-2xl">
-              <SelectItem value="all" className="text-[10px] font-black">ALL STATUS</SelectItem>
-              <SelectItem value="Active" className="text-[10px] font-black">ACTIVE</SelectItem>
-              <SelectItem value="Suspended" className="text-[10px] font-black">SUSPENDED</SelectItem>
-              <SelectItem value="Banned" className="text-[10px] font-black">BANNED</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </section>
-
-      {/* User Grid */}
-      <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-        {loading ? (
-          <div className="col-span-full py-32 flex flex-col items-center gap-4">
-            <Loader2 className="w-12 h-12 animate-spin text-onyx/20" />
-            <p className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em]">Querying Database...</p>
+              <SelectTrigger className="w-[160px] h-16 rounded-2xl bg-[#F5F5F5] border-none font-black text-[10px] tracking-widest text-[#1A1A1A] uppercase px-6">
+                <SelectValue placeholder="ROLE" />
+              </SelectTrigger>
+              <SelectContent className="rounded-2xl border-none shadow-2xl p-2 bg-white">
+                <SelectItem value="all" className="text-[10px] font-black py-3 rounded-xl">ALL ROLES</SelectItem>
+                <SelectItem value="Pro Player" className="text-[10px] font-black py-3 rounded-xl">PLAYER</SelectItem>
+                <SelectItem value="Admin" className="text-[10px] font-black py-3 rounded-xl">ADMIN</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-[160px] h-16 rounded-2xl bg-[#F5F5F5] border-none font-black text-[10px] tracking-widest text-[#1A1A1A] uppercase px-6">
+                <SelectValue placeholder="STATUS" />
+              </SelectTrigger>
+              <SelectContent className="rounded-2xl border-none shadow-2xl p-2 bg-white">
+                <SelectItem value="all" className="text-[10px] font-black py-3 rounded-xl">ALL STATUS</SelectItem>
+                <SelectItem value="Active" className="text-[10px] font-black py-3 rounded-xl">ACTIVE</SelectItem>
+                <SelectItem value="Suspended" className="text-[10px] font-black py-3 rounded-xl">SUSPENDED</SelectItem>
+                <SelectItem value="Banned" className="text-[10px] font-black py-3 rounded-xl">BANNED</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-        ) : filteredUsers.length > 0 ? (
-          <AnimatePresence mode="popLayout">
-            {filteredUsers.map((u, idx) => (
-              <motion.div 
-                key={u.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.05 }}
-                layout
-              >
-                  <BentoCard 
-                    className="p-8 border-none shadow-sm cursor-pointer group hover:shadow-xl transition-all relative"
-                    onClick={() => { setSelectedUser(u); setIsDetailOpen(true); }}
-                  >
-                    <div 
-                      className="absolute top-4 left-4 z-20"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <Checkbox 
-                        checked={selectedUserIds.includes(u.id)}
-                        onCheckedChange={() => toggleUserSelection(u.id)}
-                      />
-                    </div>
-                    <div className="flex justify-between items-start mb-8">
-                      <Avatar className="w-20 h-20 border-4 border-white shadow-xl group-hover:scale-110 transition-transform duration-500">
-                      <AvatarImage src={u.avatar_url} />
-                      <AvatarFallback className="bg-lime-yellow text-onyx text-2xl font-heading font-black">
-                        {u.full_name?.substring(0, 2).toUpperCase() || "SK"}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col items-end gap-2">
-                      <StatusBadge variant={u.status === 'Active' ? 'completed' : u.status === 'Suspended' ? 'pending' : 'failed'} className="px-3 py-1 text-[8px]" />
-                      <div className="px-2 py-0.5 bg-onyx/5 rounded-md">
-                        <span className="text-[8px] font-black uppercase tracking-widest text-charcoal/40">{u.role}</span>
-                      </div>
-                    </div>
-                  </div>
+        </section>
 
-                  <div className="space-y-1 mb-8">
-                    <h4 className="text-xl font-heading font-black text-onyx leading-tight group-hover:text-charcoal-brown transition-colors">{u.full_name}</h4>
-                    <p className="text-[10px] font-bold text-charcoal/40 tracking-[0.2em] uppercase">@{u.username || u.email.split('@')[0]}</p>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 pt-6 border-t border-onyx/5">
-                    <div>
-                      <p className="text-[8px] font-bold text-charcoal/40 uppercase tracking-widest mb-1">Lifetime Earnings</p>
-                      <p className="text-sm font-black text-onyx">₹{u.lifetime_earnings?.toLocaleString() || 0}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-[8px] font-bold text-charcoal/40 uppercase tracking-widest mb-1">Win Rate</p>
-                      <p className="text-sm font-black text-onyx">{u.win_rate || 0}%</p>
-                    </div>
-                  </div>
-                </BentoCard>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        ) : (
-          <div className="col-span-full py-32 text-center bg-white rounded-[40px] shadow-sm flex flex-col items-center gap-6">
-            <div className="w-24 h-24 rounded-full bg-off-white flex items-center justify-center">
-              <Zap size={48} strokeWidth={1} className="text-charcoal/20" />
+        <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+          {loading ? (
+            <div className="col-span-full py-32 flex flex-col items-center gap-6">
+              <Loader2 className="w-14 h-14 animate-spin text-[#1A1A1A]/10" />
+              <p className="text-[11px] font-black text-[#6B7280] uppercase tracking-[0.4em]">Acquiring Registry Access...</p>
             </div>
-            <h3 className="text-2xl font-heading text-onyx font-black">No Warriors Classified</h3>
-            <Button variant="link" onClick={() => { setSearch(""); setRoleFilter("all"); setStatusFilter("all"); }} className="text-onyx font-black text-[10px] tracking-widest uppercase underline underline-offset-8">
-              Reset Registry Scan
-            </Button>
-          </div>
-        )}
-      </section>
+          ) : filteredUsers.length > 0 ? (
+            <AnimatePresence mode="popLayout">
+              {filteredUsers.map((u, idx) => (
+                <motion.div 
+                  key={u.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                  layout
+                >
+                    <BentoCard 
+                      className="p-10 border-none shadow-lg cursor-pointer group hover:shadow-2xl transition-all relative overflow-hidden bg-white"
+                      onClick={() => { setSelectedUser(u); setIsDetailOpen(true); }}
+                    >
+                      <div 
+                        className="absolute top-6 left-6 z-20"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Checkbox 
+                          checked={selectedUserIds.includes(u.id)}
+                          onCheckedChange={() => toggleUserSelection(u.id)}
+                          className="w-6 h-6 rounded-lg data-[state=checked]:bg-[#1A1A1A] border-2 border-[#D1D5DB]"
+                        />
+                      </div>
+                      <div className="flex justify-between items-start mb-10">
+                        <div className="relative">
+                          <Avatar className="w-24 h-24 border-4 border-[#F5F5F5] shadow-xl group-hover:scale-110 transition-transform duration-500">
+                            <AvatarImage src={u.avatar_url} />
+                            <AvatarFallback className="bg-[#1A1A1A] text-white text-3xl font-heading font-black">
+                              {u.full_name?.substring(0, 2).toUpperCase() || "SK"}
+                            </AvatarFallback>
+                          </Avatar>
+                          {u.status === 'Active' && (
+                            <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-[#5FD3BC] rounded-xl border-4 border-white flex items-center justify-center shadow-lg">
+                              <UserCheck size={14} className="text-[#1A1A1A]" strokeWidth={3} />
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex flex-col items-end gap-3">
+                          <StatusBadge variant={u.status === 'Active' ? 'completed' : u.status === 'Suspended' ? 'pending' : 'failed'} className="px-4 py-1.5 text-[9px] font-black" />
+                          <div className="px-3 py-1 bg-[#F5F5F5] rounded-xl border border-[#E5E7EB]">
+                            <span className="text-[9px] font-black uppercase tracking-widest text-[#6B7280]">{u.role}</span>
+                          </div>
+                        </div>
+                      </div>
 
-      {/* User Detail Sheet */}
+                      <div className="space-y-2 mb-10">
+                        <h4 className="text-2xl font-heading font-black text-[#1A1A1A] leading-tight tracking-tight group-hover:text-[#5FD3BC] transition-colors">{u.full_name}</h4>
+                        <p className="text-[11px] font-black text-[#6B7280] tracking-[0.2em] uppercase">TAG: @{u.username || 'unidentified'}</p>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-6 pt-8 border-t-2 border-[#F5F5F5]">
+                        <div className="space-y-1">
+                          <p className="text-[9px] font-black text-[#6B7280] uppercase tracking-widest mb-1">TOTAL LOOT</p>
+                          <p className="text-xl font-heading font-black text-[#1A1A1A]">₹{u.lifetime_earnings?.toLocaleString() || 0}</p>
+                        </div>
+                        <div className="text-right space-y-1">
+                          <p className="text-[9px] font-black text-[#6B7280] uppercase tracking-widest mb-1">EFFICIENCY</p>
+                          <p className="text-xl font-heading font-black text-[#1A1A1A]">{u.win_rate || 0}%</p>
+                        </div>
+                      </div>
+                      
+                      <div className="absolute right-[-30px] bottom-[-30px] opacity-[0.02] rotate-12 group-hover:opacity-[0.05] transition-opacity">
+                        <Swords size={160} />
+                      </div>
+                    </BentoCard>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          ) : (
+            <div className="col-span-full py-32 text-center bg-white rounded-[48px] shadow-2xl border-none flex flex-col items-center gap-8 mx-4">
+              <div className="w-24 h-24 rounded-[32px] bg-[#F5F5F5] flex items-center justify-center rotate-6 shadow-inner">
+                <AlertCircle size={48} strokeWidth={1} className="text-[#9CA3AF]" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-3xl font-heading text-[#1A1A1A] font-black tracking-tighter">NO WARRIORS CLASSIFIED</h3>
+                <p className="text-[11px] font-black text-[#6B7280] uppercase tracking-[0.2em]">Adjust scan filters to detect operatives</p>
+              </div>
+              <motion.button 
+                whileTap={{ scale: 0.95 }}
+                onClick={() => { setSearch(""); setRoleFilter("all"); setStatusFilter("all"); }}
+                className="px-12 py-5 bg-[#1A1A1A] text-white rounded-[24px] text-[11px] font-black uppercase tracking-widest shadow-2xl"
+              >
+                RESET REGISTRY SCAN
+              </motion.button>
+            </div>
+          )}
+        </section>
+      </div>
+
       <Sheet open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-        <SheetContent className="bg-white border-none w-full sm:max-w-xl p-0 overflow-y-auto no-scrollbar text-onyx">
+        <SheetContent className="bg-white border-none w-full sm:max-w-2xl p-0 overflow-y-auto no-scrollbar text-[#1A1A1A] rounded-l-[48px] shadow-2xl">
           {selectedUser && (
             <div className="flex flex-col h-full">
-              <div className="p-10 bg-lime-yellow relative overflow-hidden">
+              <div className="p-12 bg-[#B3E5FC] relative overflow-hidden">
                 <SheetHeader className="relative z-10">
-                  <div className="flex justify-between items-start mb-10">
-                    <StatusBadge variant={selectedUser.status === 'Active' ? 'completed' : 'failed'} className="bg-onyx text-white shadow-none" />
-                    <Button variant="ghost" size="icon" className="w-12 h-12 rounded-2xl bg-white/20 hover:bg-white/40 text-onyx">
-                      <ShieldCheck size={24} strokeWidth={3} />
-                    </Button>
+                  <div className="flex justify-between items-start mb-12">
+                    <StatusBadge variant={selectedUser.status === 'Active' ? 'completed' : 'failed'} className="bg-[#1A1A1A] text-white px-4 py-1.5 rounded-full font-black text-[10px]" />
+                    <button className="w-12 h-12 rounded-2xl bg-white border-2 border-[#E5E7EB] flex items-center justify-center text-[#1A1A1A] shadow-lg hover:scale-110 transition-transform">
+                      <Download size={24} strokeWidth={3} />
+                    </button>
                   </div>
-                  <div className="flex items-center gap-8">
-                    <Avatar className="w-32 h-32 border-8 border-white/20 shadow-2xl">
-                      <AvatarImage src={selectedUser.avatar_url} />
-                      <AvatarFallback className="bg-onyx text-lime-yellow text-4xl font-heading font-black">
-                        {selectedUser.full_name?.substring(0, 2).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="space-y-2">
-                      <SheetTitle className="text-onyx text-4xl font-heading font-black leading-tight">{selectedUser.full_name}</SheetTitle>
-                      <p className="text-onyx/40 text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-3">
-                        @{selectedUser.username || selectedUser.email.split('@')[0]}
-                        <span className="w-1 h-1 bg-onyx/20 rounded-full" />
+                  <div className="flex flex-col md:flex-row items-center gap-10">
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-white/20 rounded-full blur-2xl animate-pulse" />
+                      <Avatar className="w-40 h-40 border-8 border-white/40 shadow-2xl relative z-10">
+                        <AvatarImage src={selectedUser.avatar_url} />
+                        <AvatarFallback className="bg-[#1A1A1A] text-[#B3E5FC] text-5xl font-heading font-black">
+                          {selectedUser.full_name?.substring(0, 2).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                    </div>
+                    <div className="space-y-4 text-center md:text-left">
+                      <div className="bg-[#1A1A1A] text-white px-4 py-1 rounded-xl inline-block shadow-lg">
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] font-mono">OP_ID: {selectedUser.id.slice(0, 12).toUpperCase()}</p>
+                      </div>
+                      <SheetTitle className="text-[#1A1A1A] text-5xl font-heading font-black leading-tight tracking-tighter">{selectedUser.full_name}</SheetTitle>
+                      <p className="text-[#1A1A1A]/60 text-[11px] font-black uppercase tracking-[0.4em] flex items-center justify-center md:justify-start gap-4">
+                        @{selectedUser.username || 'unknown'}
+                        <span className="w-2 h-2 bg-[#1A1A1A]/20 rounded-full" />
                         {selectedUser.role.toUpperCase()}
                       </p>
                     </div>
@@ -488,68 +489,68 @@ export default function AdminUsers() {
                 </div>
               </div>
 
-              <div className="p-10 space-y-12 flex-1">
-                {/* Stats Grid */}
+              <div className="p-12 space-y-12 flex-1">
                 <div className="grid grid-cols-2 gap-6">
                   {[
-                    { label: "Matches", value: selectedUser.matches_played || 0, icon: Swords, color: "mint" },
-                    { label: "Win Rate", value: `${selectedUser.win_rate || 0}%`, icon: TrendingUp, color: "sky" },
-                    { label: "Earnings", value: `₹${(selectedUser.lifetime_earnings || 0).toLocaleString()}`, icon: Trophy, color: "yellow" },
-                    { label: "Balance", value: `₹${(selectedUser.balance || 0).toLocaleString()}`, icon: Wallet, color: "peach" },
+                    { label: "MISSIONS", value: selectedUser.matches_played || 0, icon: Swords, color: "mint" },
+                    { label: "EFFICIENCY", value: `${selectedUser.win_rate || 0}%`, icon: TrendingUp, color: "blue" },
+                    { label: "TOTAL LOOT", value: `₹${(selectedUser.lifetime_earnings || 0).toLocaleString()}`, icon: Trophy, color: "yellow" },
+                    { label: "RESERVES", value: `₹${(selectedUser.balance || 0).toLocaleString()}`, icon: Wallet, color: "pink" },
                   ].map((stat, i) => (
-                    <div key={i} className={`bg-pastel-${stat.color}/20 p-8 rounded-[32px] border-none flex flex-col gap-4`}>
-                      <div className={`w-12 h-12 rounded-2xl bg-pastel-${stat.color} flex items-center justify-center text-onyx shadow-inner`}>
-                        <stat.icon size={24} />
+                    <BentoCard key={i} variant={stat.color as any} className="p-8 shadow-xl border-none flex flex-col gap-6 relative overflow-hidden group">
+                      <div className="w-12 h-12 rounded-2xl bg-[#1A1A1A] flex items-center justify-center text-white shadow-lg group-hover:rotate-12 transition-transform">
+                        <stat.icon size={24} strokeWidth={3} />
                       </div>
-                      <div className="space-y-1">
-                        <p className="text-[9px] text-charcoal/40 uppercase font-black tracking-widest">{stat.label}</p>
-                        <p className="text-3xl font-heading text-onyx font-black">{stat.value}</p>
+                      <div className="space-y-1 relative z-10">
+                        <p className="text-[9px] text-[#1A1A1A]/40 uppercase font-black tracking-[0.2em]">{stat.label}</p>
+                        <p className="text-3xl font-heading text-[#1A1A1A] font-black tracking-tighter">{stat.value}</p>
                       </div>
-                    </div>
+                    </BentoCard>
                   ))}
                 </div>
 
-                {/* Account Details */}
-                <div className="space-y-8">
-                  <h4 className="text-[10px] text-charcoal/40 uppercase font-black tracking-[0.3em] ml-2">Account Dossier</h4>
-                  <div className="space-y-4">
-                    {[
-                      { label: "Email", value: selectedUser.email, icon: Mail },
-                      { label: "Phone", value: selectedUser.phone || 'UNVERIFIED', icon: Phone },
-                      { label: "Member Since", value: new Date(selectedUser.created_at).toLocaleDateString(), icon: Calendar },
-                      { label: "Last Active", value: selectedUser.last_sign_in_at ? new Date(selectedUser.last_sign_in_at).toLocaleString() : 'N/A', icon: Clock },
-                    ].map((item, i) => (
-                      <div key={i} className="flex items-center justify-between p-6 bg-background rounded-2xl border border-black/5">
-                        <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-charcoal/40 shadow-sm">
-                            <item.icon size={18} strokeWidth={2.5} />
+                <div className="space-y-10">
+                  <div>
+                    <h4 className="text-[11px] text-[#6B7280] uppercase font-black tracking-[0.4em] ml-4 mb-6">OPERATIVE DOSSIER</h4>
+                    <div className="bg-white rounded-[40px] border-4 border-[#F5F5F5] divide-y-4 divide-[#F5F5F5] overflow-hidden shadow-2xl">
+                      {[
+                        { label: "COMM LINK", value: selectedUser.email, icon: Mail },
+                        { label: "SECURE PHONE", value: selectedUser.phone || 'UNVERIFIED', icon: Phone },
+                        { label: "ENLISTED", value: new Date(selectedUser.created_at).toLocaleDateString(), icon: Calendar },
+                        { label: "LAST SIGNAL", value: selectedUser.last_sign_in_at ? new Date(selectedUser.last_sign_in_at).toLocaleString() : 'OFFLINE', icon: Clock },
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-center justify-between p-8 hover:bg-[#F9FAFB] transition-colors">
+                          <div className="flex items-center gap-6">
+                            <div className="w-12 h-12 rounded-2xl bg-[#F5F5F5] flex items-center justify-center text-[#1A1A1A] shadow-inner border-2 border-[#E5E7EB]">
+                              <item.icon size={20} strokeWidth={3} />
+                            </div>
+                            <span className="text-[10px] text-[#6B7280] font-black uppercase tracking-widest">{item.label}</span>
                           </div>
-                          <span className="text-[10px] text-charcoal/40 font-black uppercase tracking-widest">{item.label}</span>
+                          <span className="text-[12px] font-black text-[#1A1A1A] uppercase truncate max-w-[240px] tracking-tight">{item.value}</span>
                         </div>
-                        <span className="text-[11px] font-black text-onyx uppercase truncate max-w-[200px]">{item.value}</span>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Action Footer */}
-              <div className="p-10 bg-background border-t border-black/5">
-                <div className="grid grid-cols-2 gap-4">
-                  <Button 
-                    variant="outline"
-                    className="h-20 rounded-[32px] border-none bg-white text-onyx font-black uppercase tracking-[0.2em] text-[11px] gap-3 shadow-sm hover:bg-white/80 transition-all"
+              <div className="p-12 bg-[#F5F5F5] border-t-4 border-white shadow-[0_-20px_50px_rgba(0,0,0,0.05)] rounded-t-[48px]">
+                <div className="grid grid-cols-2 gap-6">
+                  <motion.button 
+                    whileTap={{ scale: 0.95 }}
+                    className="h-20 rounded-[28px] bg-white border-2 border-[#E5E7EB] text-[#1A1A1A] font-black uppercase tracking-[0.2em] text-[11px] flex items-center justify-center gap-4 shadow-xl hover:bg-[#F9FAFB] transition-all"
                     onClick={() => handleUpdateUser(selectedUser.id, { status: selectedUser.status === 'Suspended' ? 'Active' : 'Suspended' })}
                   >
-                    {updatingId === selectedUser.id ? <Loader2 className="animate-spin" /> : <UserMinus size={20} strokeWidth={3} />} 
-                    {selectedUser.status === 'Suspended' ? 'Unsuspend' : 'Suspend'}
-                  </Button>
-                  <Button 
-                    className="h-20 rounded-[32px] bg-onyx text-white font-black uppercase tracking-[0.2em] text-[11px] gap-3 shadow-2xl shadow-onyx/20 border-none"
+                    {updatingId === selectedUser.id ? <Loader2 className="animate-spin" /> : (selectedUser.status === 'Suspended' ? <CheckCircle2 size={24} className="text-emerald-500" strokeWidth={3} /> : <UserMinus size={24} strokeWidth={3} />)} 
+                    {selectedUser.status === 'Suspended' ? 'ACTIVATE' : 'SUSPEND'}
+                  </motion.button>
+                  <motion.button 
+                    whileTap={{ scale: 0.95 }}
+                    className="h-20 rounded-[28px] bg-[#1A1A1A] text-white font-black uppercase tracking-[0.2em] text-[11px] flex items-center justify-center gap-4 shadow-2xl hover:bg-black transition-all"
                     onClick={() => handleUpdateUser(selectedUser.id, { status: 'Banned' })}
                   >
-                    <Ban size={20} strokeWidth={3} className="text-pastel-coral" /> BAN WARRIOR
-                  </Button>
+                    <Ban size={24} strokeWidth={3} className="text-red-500" /> TERMINATE
+                  </motion.button>
                 </div>
               </div>
             </div>

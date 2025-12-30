@@ -25,16 +25,14 @@ import {
   YAxis, 
   CartesianGrid, 
   Tooltip, 
-  ResponsiveContainer,
-  BarChart,
-  Bar
+  ResponsiveContainer
 } from 'recharts';
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
 import { format } from "date-fns";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const revenueData = [
   { name: 'Mon', value: 4000 },
@@ -103,32 +101,31 @@ export default function AdminOverview() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-12 h-12 animate-spin text-onyx/20" />
+      <div className="min-h-screen flex items-center justify-center bg-[#F5F5F5]">
+        <Loader2 className="w-12 h-12 animate-spin text-[#1A1A1A]/20" />
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen p-8 lg:p-12 space-y-12 relative z-10 bg-[#F3F4F6]">
-      {/* Header Section */}
+    <main className="min-h-screen p-8 lg:p-12 space-y-12 relative z-10 bg-[#F5F5F5]">
       <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
         <div>
-          <p className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-[0.3em] mb-2">Operations Hub</p>
+          <p className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-[0.3em] mb-2">HQ DASHBOARD</p>
           <h1 className="text-[44px] font-heading font-black leading-none tracking-tight text-[#1A1A1A]">
-            Overview <br />
-            <span className="text-[#6B7280]/40">Arena Performance</span>
+            OVERVIEW <br />
+            <span className="text-[#6B7280]/40">ARENA CONTROL</span>
           </h1>
         </div>
         
-        <div className="flex bg-white p-1.5 rounded-[20px] shadow-sm border border-black/5 overflow-x-auto no-scrollbar">
+        <div className="flex bg-white p-1.5 rounded-[24px] shadow-md border-2 border-[#E5E7EB] overflow-x-auto no-scrollbar">
           {["Today", "Week", "Month", "All"].map((range) => (
             <button
               key={range}
               onClick={() => setTimeRange(range)}
               className={`px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
                 timeRange === range 
-                  ? "bg-[#1A1A1A] text-white shadow-lg shadow-[#1A1A1A]/10" 
+                  ? "bg-[#1A1A1A] text-white shadow-xl shadow-[#1A1A1A]/10" 
                   : "text-[#6B7280]/40 hover:text-[#1A1A1A]"
               }`}
             >
@@ -138,20 +135,19 @@ export default function AdminOverview() {
         </div>
       </section>
 
-      {/* KPI Bento Grid */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <BentoCard variant="pastel" pastelColor="sky" className="p-8 relative overflow-hidden h-48 flex flex-col justify-between border-none">
+        <BentoCard variant="blue" className="p-8 relative overflow-hidden h-48 flex flex-col justify-between border-none shadow-xl">
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-4">
-              <p className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-widest">Total Revenue</p>
+              <p className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-widest">TOTAL LOOT</p>
               <div className="w-10 h-10 rounded-xl bg-[#1A1A1A] flex items-center justify-center shadow-lg">
-                <IndianRupee size={20} className="text-[#5FD3BC]" />
+                <IndianRupee size={20} className="text-[#A8E6CF]" />
               </div>
             </div>
             <h3 className="text-3xl font-heading font-black text-[#1A1A1A]">₹{stats.totalRevenue.toLocaleString()}</h3>
-            <div className="mt-2 flex items-center gap-1 text-[9px] font-black text-[#1A1A1A]/60 uppercase">
+            <div className="mt-2 flex items-center gap-1 text-[9px] font-black text-emerald-600 uppercase">
               <TrendingUp size={12} strokeWidth={3} />
-              {stats.revenueGrowth} this {timeRange.toLowerCase()}
+              {stats.revenueGrowth} GROWTH
             </div>
           </div>
           <div className="absolute right-[-10px] bottom-[-10px] rotate-[-15deg] opacity-[0.05] pointer-events-none">
@@ -159,69 +155,68 @@ export default function AdminOverview() {
           </div>
         </BentoCard>
 
-        <BentoCard variant="pastel" pastelColor="lavender" className="p-8 h-48 flex flex-col justify-between border-none">
+        <BentoCard variant="purple" className="p-8 h-48 flex flex-col justify-between border-none shadow-xl">
           <div>
             <div className="flex items-center justify-between mb-4">
-              <p className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-widest">Active Members</p>
-              <div className="w-10 h-10 rounded-xl bg-[#1A1A1A]/10 flex items-center justify-center">
+              <p className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-widest">OPERATIVES</p>
+              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-md">
                 <Users size={20} className="text-[#1A1A1A]" />
               </div>
             </div>
             <h3 className="text-3xl font-heading font-black text-[#1A1A1A]">{stats.totalUsers.toLocaleString()}</h3>
-            <div className="mt-2 flex items-center gap-1 text-[9px] font-black text-[#059669] uppercase">
+            <div className="mt-2 flex items-center gap-1 text-[9px] font-black text-[#1A1A1A]/60 uppercase">
               <ArrowUpRight size={12} strokeWidth={3} />
-              {stats.userGrowth} new entries
+              {stats.userGrowth} ENLISTED
             </div>
           </div>
         </BentoCard>
 
-        <BentoCard variant="pastel" pastelColor="mint" className="p-8 h-48 flex flex-col justify-between border-none">
+        <BentoCard variant="mint" className="p-8 h-48 flex flex-col justify-between border-none shadow-xl">
           <div>
             <div className="flex items-center justify-between mb-4">
-              <p className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-widest">Live Today</p>
-              <div className="w-10 h-10 rounded-xl bg-white/40 flex items-center justify-center">
+              <p className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-widest">ACTIVE NOW</p>
+              <div className="w-10 h-10 rounded-xl bg-white/60 flex items-center justify-center shadow-sm">
                 <Activity size={20} className="text-[#1A1A1A]" />
               </div>
             </div>
             <h3 className="text-3xl font-heading font-black text-[#1A1A1A]">{stats.activeToday}</h3>
             <div className="mt-2 flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#1A1A1A] animate-pulse" />
-              <p className="text-[9px] font-black text-[#1A1A1A]/40 uppercase tracking-widest">Real-time Telemetry</p>
+              <p className="text-[9px] font-black text-[#1A1A1A]/40 uppercase tracking-widest">REAL-TIME INTEL</p>
             </div>
           </div>
         </BentoCard>
 
-        <BentoCard variant="pastel" pastelColor="salmon" className={`p-8 h-48 flex flex-col justify-between border-none ${stats.pendingWithdrawals > 0 ? 'ring-2 ring-[#1A1A1A] shadow-xl' : ''}`}>
+        <BentoCard variant="pink" className={`p-8 h-48 flex flex-col justify-between border-none shadow-xl ${stats.pendingWithdrawals > 0 ? 'ring-4 ring-[#1A1A1A]' : ''}`}>
           <div>
             <div className="flex items-center justify-between mb-4">
-              <p className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-widest">Pending Payouts</p>
-              <div className="w-10 h-10 rounded-xl bg-white/40 flex items-center justify-center">
+              <p className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-widest">PENDING PAYOUTS</p>
+              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-md">
                 <Wallet size={20} className="text-[#1A1A1A]" />
               </div>
             </div>
             <h3 className="text-3xl font-heading font-black text-[#1A1A1A]">{stats.pendingWithdrawals}</h3>
             <div className="mt-2">
               {stats.pendingWithdrawals > 0 ? (
-                <Link href="/admin/transactions" className="text-[9px] font-black text-[#1A1A1A] uppercase underline underline-offset-4">Process Now</Link>
+                <Link href="/admin/transactions" className="text-[9px] font-black text-[#1A1A1A] uppercase underline decoration-4 underline-offset-4 decoration-[#1A1A1A]/20">EXECUTE TRANSFERS</Link>
               ) : (
-                <p className="text-[9px] font-black text-[#1A1A1A]/40 uppercase tracking-widest">Queue is clear</p>
+                <p className="text-[9px] font-black text-[#1A1A1A]/40 uppercase tracking-widest">QUEUE SECURE</p>
               )}
             </div>
           </div>
         </BentoCard>
       </section>
 
-      {/* Charts Section */}
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <BentoCard variant="pastel" pastelColor="lilac" className="lg:col-span-2 p-8 border-none shadow-sm h-[400px] flex flex-col">
+        <BentoCard className="lg:col-span-2 p-8 border-none shadow-2xl h-[400px] flex flex-col bg-white">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h3 className="text-xl font-heading font-black text-[#1A1A1A]">Revenue Trend</h3>
-              <p className="text-[10px] font-black text-[#6B7280]/40 uppercase tracking-widest mt-1">Volume vs Time</p>
+              <h3 className="text-2xl font-heading font-black text-[#1A1A1A]">REVENUE TELEMETRY</h3>
+              <p className="text-[10px] font-black text-[#6B7280]/40 uppercase tracking-widest mt-1">OPERATIONAL VOLUME</p>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#1A1A1A]" />
-              <span className="text-[10px] font-black text-[#1A1A1A]/60 uppercase">Successful deposits</span>
+            <div className="flex items-center gap-2 bg-[#F5F5F5] px-4 py-2 rounded-xl">
+              <div className="w-2 h-2 rounded-full bg-[#1A1A1A]" />
+              <span className="text-[9px] font-black text-[#1A1A1A] uppercase">Validated Deposits</span>
             </div>
           </div>
           <div className="flex-1 -ml-6">
@@ -237,82 +232,81 @@ export default function AdminOverview() {
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: '900', fill: '#1A1A1A', opacity: 0.4}} />
                 <YAxis hide />
                 <Tooltip 
-                  contentStyle={{ borderRadius: '20px', border: 'none', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', background: '#FFFFFF', padding: '15px' }}
-                  itemStyle={{ color: '#1A1A1A', fontSize: '14px', fontWeight: 'bold' }}
-                  labelStyle={{ fontWeight: 'black', fontSize: '10px', color: 'rgba(0,0,0,0.4)', textTransform: 'uppercase', marginBottom: '5px' }}
+                  contentStyle={{ borderRadius: '24px', border: 'none', boxShadow: '0 20px 50px rgba(0,0,0,0.15)', background: '#FFFFFF', padding: '20px' }}
+                  itemStyle={{ color: '#1A1A1A', fontSize: '16px', fontWeight: '900' }}
+                  labelStyle={{ fontWeight: '900', fontSize: '10px', color: 'rgba(0,0,0,0.4)', textTransform: 'uppercase', marginBottom: '8px' }}
                 />
-                <Area type="monotone" dataKey="value" stroke="#1A1A1A" strokeWidth={4} fillOpacity={1} fill="url(#colorValue)" />
+                <Area type="monotone" dataKey="value" stroke="#1A1A1A" strokeWidth={6} fillOpacity={1} fill="url(#colorValue)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </BentoCard>
 
         <div className="space-y-8">
-          {/* Quick Actions */}
-          <BentoCard variant="pastel" pastelColor="peach" className="p-8 border-none shadow-sm flex flex-col justify-between h-[180px]">
-            <h4 className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-[0.2em]">Quick Publish</h4>
+          <BentoCard variant="peach" className="p-8 border-none shadow-xl flex flex-col justify-between h-[180px]">
+            <h4 className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-[0.2em]">MISSION CONTROL</h4>
             <div className="grid grid-cols-2 gap-4">
               <Link href="/admin/tournaments">
-                <button className="w-full bg-[#1A1A1A] text-white rounded-2xl py-4 flex flex-col items-center gap-2 shadow-lg active:scale-95 transition-all">
-                  <Trophy size={18} className="text-[#5FD3BC]" />
-                  <span className="text-[9px] font-black uppercase">Event</span>
+                <button className="w-full bg-[#1A1A1A] text-white rounded-[20px] py-5 flex flex-col items-center gap-2 shadow-xl active:scale-95 transition-all">
+                  <Trophy size={20} className="text-[#A8E6CF]" />
+                  <span className="text-[9px] font-black uppercase">NEW BATTLE</span>
                 </button>
               </Link>
               <Link href="/admin/live">
-                <button className="w-full bg-white text-[#1A1A1A] rounded-2xl py-4 flex flex-col items-center gap-2 shadow-sm active:scale-95 transition-all">
-                  <Activity size={18} className="text-[#6B7280]/40" />
-                  <span className="text-[9px] font-black uppercase">Stream</span>
+                <button className="w-full bg-white text-[#1A1A1A] rounded-[20px] py-5 flex flex-col items-center gap-2 shadow-md active:scale-95 transition-all border border-[#E5E7EB]">
+                  <Activity size={20} className="text-[#1A1A1A]/40" />
+                  <span className="text-[9px] font-black uppercase">LIVE FEED</span>
                 </button>
               </Link>
             </div>
           </BentoCard>
 
-          {/* System Status */}
-          <BentoCard variant="pastel" pastelColor="rose" className="p-8 border-none shadow-sm flex flex-col justify-between h-[180px]">
-            <h4 className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-[0.2em]">System Guard</h4>
+          <BentoCard variant="yellow" className="p-8 border-none shadow-xl flex flex-col justify-between h-[180px]">
+            <h4 className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-[0.2em]">CORE INTEGRITY</h4>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 rounded-full bg-[#1A1A1A]" />
-                  <span className="text-[11px] font-black text-[#1A1A1A]">DB Response</span>
+                  <span className="text-[11px] font-black text-[#1A1A1A]">LATENCY</span>
                 </div>
-                <span className="text-[11px] font-black text-[#1A1A1A]/40">12ms</span>
+                <span className="text-[11px] font-black text-emerald-600">8MS</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 rounded-full bg-[#1A1A1A]" />
-                  <span className="text-[11px] font-black text-[#1A1A1A]">Auth Engine</span>
+                  <span className="text-[11px] font-black text-[#1A1A1A]">SHIELD</span>
                 </div>
-                <StatusBadge variant="completed" className="px-2 py-0.5 text-[8px] bg-[#1A1A1A] text-white">ACTIVE</StatusBadge>
+                <StatusBadge variant="completed" className="px-3 py-1 text-[8px] bg-[#1A1A1A] text-white rounded-lg">MAX</StatusBadge>
               </div>
             </div>
           </BentoCard>
         </div>
       </section>
 
-      {/* Latest Tournaments */}
       <section className="space-y-6 pb-12">
         <div className="flex items-center justify-between px-1">
-          <h3 className="text-2xl font-heading text-[#1A1A1A] font-black">Latest Arenas</h3>
-          <Link href="/admin/tournaments" className="text-[10px] font-black text-[#6B7280]/40 uppercase tracking-widest hover:text-[#1A1A1A] transition-colors">View All Resources</Link>
+          <h3 className="text-3xl font-heading text-[#1A1A1A] font-black tracking-tighter">LATEST MISSIONS</h3>
+          <Link href="/admin/tournaments" className="text-[10px] font-black text-[#1A1A1A] uppercase tracking-widest bg-white px-4 py-2 rounded-xl border-2 border-[#E5E7EB] hover:bg-gray-50 transition-all">ALL RESOURCES</Link>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {latestTournaments.map((t, idx) => {
-            const colors = ["mint", "peach", "sky", "lavender", "rose", "yellow", "lilac", "salmon"];
+            const colors = ["mint", "blue", "pink", "peach"];
             const color = colors[idx % colors.length] as any;
             return (
-              <BentoCard key={t.id} variant="pastel" pastelColor={color} className="p-6 flex items-center justify-between shadow-sm border-none active:scale-[0.98] transition-all cursor-pointer">
+              <BentoCard key={t.id} variant={color} className="p-6 flex items-center justify-between shadow-lg border-none active:scale-[0.98] transition-all cursor-pointer">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-white/40 flex items-center justify-center">
-                    <Trophy size={20} className="text-[#1A1A1A]/40" />
+                  <div className="w-14 h-14 rounded-2xl bg-white/40 flex items-center justify-center shadow-sm">
+                    <Trophy size={24} className="text-[#1A1A1A]" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-black text-[#1A1A1A] leading-tight truncate max-w-[120px]">{t.title}</h4>
+                    <h4 className="text-base font-black text-[#1A1A1A] leading-tight truncate max-w-[120px] tracking-tight">{t.title}</h4>
                     <p className="text-[9px] font-bold text-[#1A1A1A]/40 uppercase tracking-widest mt-1">{format(new Date(t.created_at), "MMM d, HH:mm")}</p>
                   </div>
                 </div>
-                <StatusBadge variant={t.status === 'active' ? 'live' : 'upcoming'} className="text-[8px] px-2 py-0.5 bg-[#1A1A1A] text-white" />
+                <div className="w-10 h-10 rounded-full bg-[#1A1A1A] flex items-center justify-center shadow-lg">
+                  <ChevronRight size={20} className="text-white" strokeWidth={3} />
+                </div>
               </BentoCard>
             );
           })}

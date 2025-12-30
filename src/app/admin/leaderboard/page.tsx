@@ -19,7 +19,9 @@ import {
   MoreVertical,
   Download,
   ShieldCheck,
-  Star
+  Star,
+  Award,
+  Crown
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/lib/supabase";
@@ -44,6 +46,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
+import { BentoCard } from "@/components/ui/BentoCard";
 
 export default function AdminLeaderboard() {
   const [loading, setLoading] = useState(true);
@@ -158,16 +161,21 @@ export default function AdminLeaderboard() {
   const topPlayer = leaderboard[0];
 
   return (
-    <main className="min-h-screen pb-32 bg-background text-foreground">
-      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-20">
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px]" />
-      </div>
-
-      <div className="px-6 pt-24 relative z-10 space-y-10 max-w-6xl mx-auto">
+    <main className="min-h-screen pb-32 bg-[#F5F5F5] text-[#1A1A1A]">
+      <div className="px-8 pt-24 space-y-12 max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <div className="space-y-1">
-          <h4 className="text-[10px] font-bold text-secondary uppercase tracking-[0.4em]">Ranking Protocols</h4>
-          <h1 className="text-4xl font-heading text-foreground">Elite <span className="italic font-serif opacity-60">Registry</span></h1>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+          <div className="space-y-1">
+            <p className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-[0.3em] mb-2">RANKING PROTOCOLS</p>
+            <h1 className="text-[44px] font-heading font-black leading-none tracking-tight text-[#1A1A1A]">
+              ELITE <br />
+              <span className="text-[#6B7280]/40">REGISTRY</span>
+            </h1>
+          </div>
+          <div className="flex items-center gap-3 bg-white px-6 py-3 rounded-2xl shadow-md border-2 border-[#E5E7EB]">
+            <div className="w-2 h-2 rounded-full bg-[#5FD3BC] animate-pulse" />
+            <p className="text-[10px] font-black text-[#1A1A1A] uppercase tracking-widest">REGISTRY SYNCED</p>
+          </div>
         </div>
 
         {/* Top Player Highlight */}
@@ -175,164 +183,175 @@ export default function AdminLeaderboard() {
           <motion.div 
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="bg-accent/10 border border-accent/30 p-10 rounded-[3rem] shadow-lg relative overflow-hidden group"
           >
-            <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
-              <div className="relative">
-                <div className="absolute -inset-4 bg-accent/20 rounded-full blur-2xl animate-pulse" />
-                <Avatar className="w-40 h-40 border-8 border-background shadow-2xl relative z-10">
-                  <AvatarImage src={topPlayer.avatar_url} />
-                  <AvatarFallback className="bg-muted text-foreground text-4xl font-heading">
-                    {topPlayer.name.substring(0, 2).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="absolute -bottom-2 -right-2 bg-accent text-primary p-3 rounded-2xl shadow-xl z-20 border-4 border-background">
-                  <Medal size={24} strokeWidth={3} />
-                </div>
-              </div>
-
-              <div className="flex-1 text-center md:text-left space-y-4">
-                <div className="flex items-center justify-center md:justify-start gap-3">
-                  <Badge className="bg-accent text-primary border-none rounded-full px-4 py-1.5 text-[9px] font-bold uppercase tracking-widest shadow-lg shadow-accent/20">
-                    ARENA CHAMPION
-                  </Badge>
-                  <span className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
-                    <Star size={12} className="text-accent" /> RANK #1
-                  </span>
-                </div>
-                <h2 className="text-5xl font-heading tracking-tight leading-none text-foreground">{topPlayer.name}</h2>
-                <p className="text-muted-foreground font-bold text-xs uppercase tracking-[0.2em]">Affiliation: <span className="text-secondary">{topPlayer.team}</span></p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4 w-full md:w-auto">
-                {[
-                  { label: "Arena Points", value: topPlayer.points, icon: Trophy },
-                  { label: "Eliminations", value: topPlayer.kills, icon: Target },
-                ].map((stat, i) => (
-                  <div key={i} className="bg-card p-6 rounded-[2rem] border border-border text-center min-w-[140px] group-hover:border-accent/30 transition-all shadow-sm">
-                    <stat.icon size={20} className="mx-auto mb-2 text-accent opacity-60" />
-                    <p className="text-[9px] text-muted-foreground uppercase font-bold tracking-widest">{stat.label}</p>
-                    <p className="text-2xl font-heading text-foreground">{stat.value.toLocaleString()}</p>
+            <BentoCard variant="mint" className="p-10 shadow-2xl relative overflow-hidden group">
+              <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
+                <div className="relative">
+                  <div className="w-44 h-44 rounded-[48px] p-[4px] bg-[#1A1A1A] shadow-2xl rotate-3 group-hover:rotate-0 transition-transform duration-500">
+                    <div className="w-full h-full rounded-[44px] bg-white p-[4px]">
+                      <Avatar className="w-full h-full rounded-[40px]">
+                        <AvatarImage src={topPlayer.avatar_url} />
+                        <AvatarFallback className="bg-[#F3F4F6] text-4xl font-heading font-black">
+                          {topPlayer.name.substring(0, 2).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                    </div>
                   </div>
-                ))}
+                  <div className="absolute -bottom-2 -right-2 bg-[#1A1A1A] text-white p-4 rounded-2xl shadow-xl z-20 border-4 border-white rotate-[-6deg] group-hover:rotate-0 transition-transform">
+                    <Crown size={28} strokeWidth={3} className="text-[#FEF3C7]" />
+                  </div>
+                </div>
+
+                <div className="flex-1 text-center md:text-left space-y-6">
+                  <div className="flex items-center justify-center md:justify-start gap-4">
+                    <div className="bg-[#1A1A1A] text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg">
+                      ARENA CHAMPION
+                    </div>
+                    <span className="text-[#1A1A1A]/60 text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2">
+                      <Star size={12} fill="#1A1A1A" className="text-[#1A1A1A]" /> RANK #1
+                    </span>
+                  </div>
+                  <h2 className="text-5xl font-heading font-black tracking-tighter leading-none text-[#1A1A1A]">{topPlayer.name}</h2>
+                  <p className="text-[#1A1A1A]/40 font-black text-xs uppercase tracking-[0.3em]">OPERATIVE ID: <span className="text-[#1A1A1A]">@{topPlayer.username}</span></p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-6 w-full md:w-auto">
+                  {[
+                    { label: "ARENA POINTS", value: topPlayer.points, icon: Trophy, color: "blue" },
+                    { label: "ELIMINATIONS", value: topPlayer.kills, icon: Target, color: "pink" },
+                  ].map((stat, i) => (
+                    <BentoCard key={i} variant={stat.color as any} className="p-6 text-center min-w-[160px] shadow-lg border-none group-hover:scale-105 transition-transform">
+                      <stat.icon size={20} className="mx-auto mb-2 text-[#1A1A1A] opacity-40" />
+                      <p className="text-[9px] text-[#1A1A1A]/60 uppercase font-black tracking-widest">{stat.label}</p>
+                      <p className="text-2xl font-heading font-black text-[#1A1A1A] tracking-tighter">{stat.value.toLocaleString()}</p>
+                    </BentoCard>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-accent/10 rounded-full blur-[100px]" />
+              <div className="absolute right-[-40px] bottom-[-40px] rotate-[-15deg] opacity-[0.03] group-hover:opacity-[0.06] transition-opacity pointer-events-none">
+                <Medal size={240} strokeWidth={1} />
+              </div>
+            </BentoCard>
           </motion.div>
         )}
 
         {/* Filter Bar */}
-        <div className="bg-card rounded-[2.5rem] border border-border p-6 shadow-lg flex flex-col md:flex-row gap-4">
+        <div className="bg-white rounded-[32px] border-2 border-[#E5E7EB] p-6 shadow-xl flex flex-col md:flex-row gap-6">
           <div className="relative flex-1">
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={20} strokeWidth={3} />
             <Input 
-              className="bg-muted border-none pl-14 rounded-2xl h-14 text-xs font-bold tracking-wide focus-visible:ring-accent placeholder:text-muted-foreground/50 text-foreground" 
-              placeholder="SEARCH WARRIORS OR AFFILIATIONS..." 
+              className="bg-[#F5F5F5] border-none pl-14 rounded-2xl h-16 text-sm font-black tracking-tight focus-visible:ring-[#1A1A1A] placeholder:text-[#9CA3AF] text-[#1A1A1A]" 
+              placeholder="SEARCH OPERATIVES OR SQUADRONS..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <Select value={selectedTournament} onValueChange={setSelectedTournament}>
-              <SelectTrigger className="w-[200px] h-14 rounded-2xl bg-muted border-none font-bold text-[10px] tracking-widest text-muted-foreground">
+              <SelectTrigger className="w-[240px] h-16 rounded-2xl bg-[#F5F5F5] border-none font-black text-[11px] tracking-widest text-[#1A1A1A] uppercase px-6">
                 <SelectValue placeholder="ARENA SCALE" />
               </SelectTrigger>
-              <SelectContent className="rounded-2xl border-border bg-popover text-popover-foreground shadow-2xl">
-                <SelectItem value="global" className="text-[10px] uppercase font-bold">GLOBAL ARENA</SelectItem>
+              <SelectContent className="rounded-2xl border-none shadow-2xl p-2 bg-white">
+                <SelectItem value="global" className="text-[10px] uppercase font-black rounded-xl py-3">GLOBAL ARENA</SelectItem>
                 {tournaments.map((t) => (
-                  <SelectItem key={t.id} value={t.id} className="text-[10px] uppercase font-bold">{t.title}</SelectItem>
+                  <SelectItem key={t.id} value={t.id} className="text-[10px] uppercase font-black rounded-xl py-3">{t.title}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            <Button className="h-14 w-14 rounded-2xl bg-muted text-muted-foreground hover:bg-accent hover:text-primary transition-all p-0 border border-border">
-              <Download size={20} />
-            </Button>
+            <motion.button 
+              whileTap={{ scale: 0.9 }}
+              className="h-16 w-16 rounded-2xl bg-[#1A1A1A] text-white flex items-center justify-center shadow-xl active:bg-black p-0"
+            >
+              <Download size={24} strokeWidth={3} />
+            </motion.button>
           </div>
         </div>
 
         {/* Leaderboard Table */}
-        <div className="space-y-6">
+        <section className="space-y-8 pb-12">
           <div className="flex items-end justify-between px-2">
             <div className="space-y-1">
-              <h3 className="text-2xl font-heading text-foreground">Ranking <span className="italic font-serif opacity-60">Table</span></h3>
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">{filteredLeaderboard.length} WARRIORS CLASSIFIED</p>
-            </div>
-            <div className="flex items-center gap-2 bg-accent/10 px-4 py-2 rounded-full border border-accent/20">
-              <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              <p className="text-[8px] font-bold text-accent uppercase tracking-widest">Live Sync: Active</p>
+              <h3 className="text-3xl font-heading font-black text-[#1A1A1A] tracking-tighter uppercase">RANKING <span className="text-[#1A1A1A]/20 italic">TABLE</span></h3>
+              <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-[0.2em]">{filteredLeaderboard.length} OPERATIVES CLASSIFIED</p>
             </div>
           </div>
 
-          <div className="bg-card rounded-[3rem] border border-border shadow-lg overflow-hidden">
+          <div className="bg-white rounded-[48px] border-none shadow-2xl overflow-hidden">
             <Table>
-              <TableHeader className="bg-muted/30">
-                <TableRow className="border-border hover:bg-transparent h-20">
-                  <TableHead className="w-24 pl-10 font-bold text-muted-foreground uppercase text-[9px] tracking-[0.3em]">Pos</TableHead>
-                  <TableHead className="font-bold text-muted-foreground uppercase text-[9px] tracking-[0.3em]">Warrior</TableHead>
-                  <TableHead className="font-bold text-muted-foreground uppercase text-[9px] tracking-[0.3em]">Affiliation</TableHead>
-                  <TableHead className="font-bold text-muted-foreground uppercase text-[9px] tracking-[0.3em] text-center">Wins</TableHead>
-                  <TableHead className="font-bold text-muted-foreground uppercase text-[9px] tracking-[0.3em] text-center cursor-pointer hover:text-accent transition-colors" onClick={() => handleSort("points")}>
-                    <div className="flex items-center justify-center gap-2">AP <ArrowUpDown size={12} /></div>
+              <TableHeader className="bg-[#F9FAFB]">
+                <TableRow className="border-b-2 border-[#E5E7EB] hover:bg-transparent h-24">
+                  <TableHead className="w-32 pl-12 font-black text-[#1A1A1A]/40 uppercase text-[10px] tracking-[0.3em]">POS</TableHead>
+                  <TableHead className="font-black text-[#1A1A1A]/40 uppercase text-[10px] tracking-[0.3em]">OPERATIVE</TableHead>
+                  <TableHead className="font-black text-[#1A1A1A]/40 uppercase text-[10px] tracking-[0.3em]">SQUADRON</TableHead>
+                  <TableHead className="font-black text-[#1A1A1A]/40 uppercase text-[10px] tracking-[0.3em] text-center">WINS</TableHead>
+                  <TableHead className="font-black text-[#1A1A1A]/40 uppercase text-[10px] tracking-[0.3em] text-center cursor-pointer hover:text-[#1A1A1A] transition-colors" onClick={() => handleSort("points")}>
+                    <div className="flex items-center justify-center gap-2">ARENA PTS <ArrowUpDown size={14} strokeWidth={3} /></div>
                   </TableHead>
-                  <TableHead className="font-bold text-muted-foreground uppercase text-[9px] tracking-[0.3em] text-right pr-10">Earnings</TableHead>
+                  <TableHead className="font-black text-[#1A1A1A]/40 uppercase text-[10px] tracking-[0.3em] text-right pr-12">LOOTED</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {loading ? (
                   <TableRow>
-                    <TableCell colSpan={6} className="h-64 text-center">
-                      <div className="flex flex-col items-center gap-4">
-                        <Loader2 className="w-10 h-10 animate-spin text-accent mx-auto" />
-                        <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Syncing Registry...</p>
+                    <TableCell colSpan={6} className="h-96 text-center">
+                      <div className="flex flex-col items-center gap-6">
+                        <Loader2 className="w-14 h-14 animate-spin text-[#1A1A1A]/10 mx-auto" />
+                        <p className="text-[11px] font-black uppercase tracking-[0.4em] text-[#6B7280]">Synchronizing Registry...</p>
                       </div>
                     </TableCell>
                   </TableRow>
                 ) : filteredLeaderboard.map((player, index) => (
-                  <TableRow key={player.id} className="border-border hover:bg-muted/20 transition-colors h-24 group">
-                    <TableCell className="pl-10">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-heading text-lg transition-all duration-500 ${
-                        index === 0 ? "bg-accent text-primary shadow-lg shadow-accent/20 scale-110" :
-                        index === 1 ? "bg-muted text-foreground" :
-                        index === 2 ? "bg-muted/50 text-muted-foreground" :
-                        "text-muted-foreground/40"
+                  <TableRow key={player.id} className="border-b border-[#E5E7EB] hover:bg-[#F9FAFB] transition-colors h-28 group">
+                    <TableCell className="pl-12">
+                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-heading text-xl font-black transition-all duration-500 ${
+                        index === 0 ? "bg-[#1A1A1A] text-white shadow-xl scale-110" :
+                        index === 1 ? "bg-[#F5F5F5] text-[#1A1A1A] border-2 border-[#E5E7EB]" :
+                        index === 2 ? "bg-[#F5F5F5] text-[#1A1A1A]/60 border-2 border-[#E5E7EB]" :
+                        "text-[#1A1A1A]/30"
                       }`}>
                         {index + 1}
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center gap-5">
-                        <Avatar className="w-12 h-12 border-2 border-border shadow-sm group-hover:scale-110 transition-transform duration-500">
-                          <AvatarImage src={player.avatar_url} />
-                          <AvatarFallback className="bg-muted text-muted-foreground text-sm font-heading">
-                            {player.name.substring(0, 2).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="space-y-0.5">
-                          <p className="font-heading text-foreground group-hover:text-accent transition-colors">{player.name}</p>
-                          <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest">@{player.username}</p>
+                      <div className="flex items-center gap-6">
+                        <div className="w-14 h-14 rounded-2xl p-1 bg-[#1A1A1A]/5 shadow-inner group-hover:scale-110 transition-transform duration-500">
+                          <Avatar className="w-full h-full rounded-[14px]">
+                            <AvatarImage src={player.avatar_url} />
+                            <AvatarFallback className="bg-[#F3F4F6] text-[#1A1A1A] text-sm font-black uppercase">
+                              {player.name.substring(0, 2)}
+                            </AvatarFallback>
+                          </Avatar>
+                        </div>
+                        <div className="space-y-1">
+                          <p className="font-heading font-black text-[#1A1A1A] text-lg group-hover:text-[#5FD3BC] transition-colors">{player.name}</p>
+                          <p className="text-[10px] text-[#1A1A1A]/40 font-black uppercase tracking-[0.2em]">TAG: @{player.username}</p>
                         </div>
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline" className="rounded-full border-border text-muted-foreground font-bold text-[9px] tracking-widest px-3 py-0.5 group-hover:border-accent/20 group-hover:text-accent transition-all">
+                      <Badge variant="outline" className="rounded-xl border-2 border-[#E5E7EB] text-[#1A1A1A]/60 font-black text-[9px] tracking-widest px-4 py-1 group-hover:border-[#1A1A1A] group-hover:text-[#1A1A1A] transition-all bg-white shadow-sm">
                         {player.team}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-center font-heading text-muted-foreground group-hover:text-foreground transition-colors">{player.wins}</TableCell>
-                    <TableCell className="text-center font-heading text-xl text-foreground">{player.points}</TableCell>
-                    <TableCell className="text-right pr-10 font-heading text-foreground text-lg">₹{player.earnings.toLocaleString()}</TableCell>
+                    <TableCell className="text-center font-heading font-black text-[#1A1A1A]/40 group-hover:text-[#1A1A1A] transition-colors text-lg">{player.wins}</TableCell>
+                    <TableCell className="text-center">
+                      <span className="font-heading font-black text-2xl text-[#1A1A1A] tracking-tighter">{player.points}</span>
+                    </TableCell>
+                    <TableCell className="text-right pr-12">
+                      <span className="font-heading font-black text-[#1A1A1A] text-xl tracking-tighter">₹{player.earnings.toLocaleString()}</span>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
             {!loading && filteredLeaderboard.length === 0 && (
-              <div className="py-32 text-center flex flex-col items-center gap-4 bg-muted/10">
-                <Users size={48} strokeWidth={1} className="text-muted-foreground/20" />
-                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">No matching warrior data found</p>
+              <div className="py-32 text-center flex flex-col items-center gap-6 bg-[#F9FAFB]">
+                <Users size={64} strokeWidth={1} className="text-[#D1D5DB]" />
+                <p className="text-[12px] font-black uppercase tracking-[0.4em] text-[#9CA3AF]">NO MATCHING OPERATIVE DATA DETECTED</p>
               </div>
             )}
           </div>
-        </div>
+        </section>
       </div>
 
       <AdminNav />

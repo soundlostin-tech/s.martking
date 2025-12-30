@@ -16,7 +16,9 @@ import {
   ChevronRight,
   Zap,
   Settings,
-  AlertCircle
+  AlertCircle,
+  Award,
+  Swords
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -200,14 +202,13 @@ export default function AdminTournaments() {
   }, [tournaments, search, statusFilter]);
 
   return (
-    <main className="min-h-screen p-8 lg:p-12 space-y-12 bg-background">
-      {/* Header Section */}
-      <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 blob-header blob-header-mint">
-        <div className="relative z-10">
-          <p className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em] mb-2">Event Management</p>
-          <h1 className="text-[44px] font-heading font-black leading-none tracking-tight text-onyx">
-            Tournaments <br />
-            <span className="text-charcoal-brown/40">Resource Control</span>
+    <main className="min-h-screen p-8 lg:p-12 space-y-12 bg-[#F5F5F5]">
+      <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 relative z-10">
+        <div>
+          <p className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-[0.3em] mb-2">Resource Management</p>
+          <h1 className="text-[44px] font-heading font-black leading-none tracking-tight text-[#1A1A1A]">
+            BATTLEGROUNDS <br />
+            <span className="text-[#6B7280]/40">RESOURCE CONTROL</span>
           </h1>
         </div>
         
@@ -218,33 +219,32 @@ export default function AdminTournaments() {
             resetForm();
             setIsDialogOpen(true);
           }}
-          className="relative z-10 h-16 px-10 bg-onyx text-white rounded-[24px] font-black text-[12px] uppercase tracking-[0.2em] shadow-2xl flex items-center gap-3"
+          className="h-16 px-10 bg-[#1A1A1A] text-white rounded-[24px] font-black text-[12px] uppercase tracking-[0.2em] shadow-2xl flex items-center gap-3 active:scale-95 transition-all"
         >
-          <Plus size={20} strokeWidth={3} className="text-lime-yellow" /> Initialize New
+          <Plus size={20} strokeWidth={4} className="text-[#A8E6CF]" /> INITIALIZE NEW
         </motion.button>
       </section>
 
-      {/* Filter & Search Strip */}
       <section className="flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-charcoal/30" size={20} />
+          <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={20} strokeWidth={3} />
           <input 
             type="text" 
-            placeholder="Search Arena Resources..." 
+            placeholder="Search active sectors..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-white border-none rounded-[24px] py-5 pl-14 pr-6 text-sm font-bold shadow-sm placeholder:text-charcoal/30 focus:ring-2 focus:ring-onyx/5 transition-all"
+            className="w-full bg-white border-2 border-[#E5E7EB] rounded-[24px] py-5 pl-14 pr-6 text-sm font-black shadow-md placeholder:text-[#9CA3AF] focus:border-[#1A1A1A] focus:outline-none transition-all"
           />
         </div>
-        <div className="flex bg-white p-1.5 rounded-[24px] shadow-sm border border-black/5">
+        <div className="flex bg-white p-1.5 rounded-[24px] shadow-md border-2 border-[#E5E7EB] overflow-x-auto no-scrollbar">
           {["All", "Upcoming", "Active", "Completed"].map((filter) => (
             <button
               key={filter}
               onClick={() => setStatusFilter(filter)}
-              className={`px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${
+              className={`px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
                 statusFilter === filter 
-                  ? "bg-onyx text-white shadow-lg" 
-                  : "text-charcoal/40 hover:text-onyx"
+                  ? "bg-[#1A1A1A] text-white shadow-xl shadow-[#1A1A1A]/10" 
+                  : "text-[#6B7280]/40 hover:text-[#1A1A1A]"
               }`}
             >
               {filter}
@@ -253,135 +253,137 @@ export default function AdminTournaments() {
         </div>
       </section>
 
-      {/* Results Grid */}
       <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
         {loading ? (
           <div className="col-span-full py-32 flex flex-col items-center gap-4">
-            <Loader2 className="w-12 h-12 animate-spin text-onyx/20" />
-            <p className="text-[10px] font-black text-charcoal/40 uppercase tracking-[0.3em]">Querying Arena Database...</p>
+            <Loader2 className="w-12 h-12 animate-spin text-[#1A1A1A]/20" />
+            <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-[0.3em]">Scaning Arena Frequencies...</p>
           </div>
         ) : filteredTournaments.length > 0 ? (
           <AnimatePresence mode="popLayout">
-            {filteredTournaments.map((t, idx) => (
-              <motion.div
-                key={t.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.05 }}
-              >
-                <BentoCard className="p-8 space-y-8 border-none shadow-sm relative overflow-hidden group">
-                  <div className="flex justify-between items-start relative z-10">
-                    <div className="flex items-center gap-4">
-                      <div className="w-14 h-14 rounded-2xl bg-pastel-mint flex items-center justify-center shadow-inner">
-                        <Trophy size={28} className="text-onyx" />
+            {filteredTournaments.map((t, idx) => {
+              const colors = ["mint", "blue", "pink", "peach", "purple", "yellow"];
+              const color = colors[idx % colors.length] as any;
+              return (
+                <motion.div
+                  key={t.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                >
+                  <BentoCard variant={color} className="p-8 space-y-8 border-none shadow-xl relative overflow-hidden group min-h-[380px] flex flex-col">
+                    <div className="flex justify-between items-start relative z-10">
+                      <div className="flex items-center gap-4">
+                        <div className="w-14 h-14 rounded-2xl bg-white/40 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                          <Trophy size={28} className="text-[#1A1A1A]" strokeWidth={2.5} />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-heading text-[#1A1A1A] font-black leading-tight truncate max-w-[160px] tracking-tight">{t.title}</h3>
+                          <p className="text-[9px] text-[#1A1A1A]/40 font-black uppercase tracking-widest mt-1">{t.game_mode} ARENA • {t.slots} SLOTS</p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="text-xl font-heading text-onyx font-black leading-tight truncate max-w-[180px]">{t.title}</h3>
-                        <p className="text-[10px] text-charcoal/40 font-bold uppercase tracking-widest mt-1">{t.game_mode} • {t.slots} SLOTS</p>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button className="w-10 h-10 rounded-xl bg-white/60 flex items-center justify-center hover:bg-white transition-all shadow-sm">
+                            <MoreVertical size={20} className="text-[#1A1A1A]" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="rounded-[24px] border-none p-3 shadow-2xl bg-white min-w-[180px]">
+                          <DropdownMenuItem onClick={() => handleEdit(t)} className="rounded-xl flex gap-3 px-4 py-3 cursor-pointer focus:bg-[#F5F5F5]">
+                            <Edit2 size={16} strokeWidth={2.5} /> <span className="text-[10px] font-black uppercase tracking-widest">Adjust Intel</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="rounded-xl flex gap-3 px-4 py-3 cursor-pointer focus:bg-[#F5F5F5]">
+                            <Copy size={16} strokeWidth={2.5} /> <span className="text-[10px] font-black uppercase tracking-widest">Clone Data</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator className="bg-[#1A1A1A]/5 my-1" />
+                          <DropdownMenuItem onClick={() => handleDelete(t.id)} className="rounded-xl flex gap-3 px-4 py-3 cursor-pointer text-red-500 focus:text-red-500 focus:bg-red-50">
+                            <Trash2 size={16} strokeWidth={2.5} /> <span className="text-[10px] font-black uppercase tracking-widest">Wipe Log</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 relative z-10">
+                      <div className="bg-white/40 backdrop-blur-md rounded-[20px] p-5 border border-white/20 shadow-sm">
+                        <p className="text-[9px] font-black text-[#1A1A1A]/40 uppercase tracking-widest mb-1">Prize Pool</p>
+                        <p className="text-2xl font-heading text-[#1A1A1A] font-black tracking-tighter">₹{t.prize_pool.toLocaleString()}</p>
                       </div>
-                    </div>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <button className="w-10 h-10 rounded-xl bg-off-white flex items-center justify-center hover:bg-silver/20 transition-colors">
-                          <MoreVertical size={20} className="text-charcoal" />
-                        </button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="rounded-2xl border-none p-2 shadow-2xl bg-white min-w-[160px]">
-                        <DropdownMenuItem onClick={() => handleEdit(t)} className="rounded-xl flex gap-3 px-4 py-3 cursor-pointer hover:bg-off-white transition-colors">
-                          <Edit2 size={16} /> <span className="text-[11px] font-black uppercase">Edit Parameters</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="rounded-xl flex gap-3 px-4 py-3 cursor-pointer hover:bg-off-white transition-colors">
-                          <Copy size={16} /> <span className="text-[11px] font-black uppercase">Clone Resource</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator className="bg-onyx/5 my-1" />
-                        <DropdownMenuItem onClick={() => handleDelete(t.id)} className="rounded-xl flex gap-3 px-4 py-3 cursor-pointer text-pastel-coral hover:bg-pastel-coral/10 transition-colors">
-                          <Trash2 size={16} /> <span className="text-[11px] font-black uppercase">Decommission</span>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 relative z-10">
-                    <div className="bg-background rounded-2xl p-5 border border-black/5">
-                      <p className="text-[9px] font-bold text-charcoal/40 uppercase tracking-widest mb-1">Prize Pool</p>
-                      <p className="text-2xl font-heading text-onyx font-black">₹{t.prize_pool.toLocaleString()}</p>
-                    </div>
-                    <div className="bg-background rounded-2xl p-5 border border-black/5">
-                      <p className="text-[9px] font-bold text-charcoal/40 uppercase tracking-widest mb-1">Entry Fee</p>
-                      <p className="text-2xl font-heading text-onyx font-black">₹{t.entry_fee.toLocaleString()}</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3 relative z-10">
-                    <div className="flex justify-between items-end mb-1">
-                      <div className="flex items-center gap-2 text-[9px] font-bold text-charcoal/40 uppercase tracking-widest">
-                        <Users size={12} strokeWidth={3} />
-                        <span>Recruitment Status</span>
-                      </div>
-                      <span className="text-[10px] font-black text-onyx">{t.participants_count} / {t.slots}</span>
-                    </div>
-                    <div className="w-full h-2.5 bg-background rounded-full overflow-hidden border border-black/5">
-                      <div 
-                        className="h-full bg-onyx rounded-full transition-all duration-1000 ease-out"
-                        style={{ width: `${((t.participants_count || 0) / t.slots) * 100}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-6 border-t border-onyx/5 relative z-10">
-                    <div className="flex items-center gap-3">
-                      <StatusBadge variant={t.status === 'active' ? 'live' : t.status === 'upcoming' ? 'upcoming' : 'completed'} className="px-3 py-1 text-[8px]" />
-                      <div className="flex items-center gap-1.5 text-[9px] font-bold text-charcoal/40 uppercase tracking-widest">
-                        <Calendar size={12} strokeWidth={3} />
-                        {t.start_time ? format(new Date(t.start_time), "MMM d, HH:mm") : 'TBD'}
+                      <div className="bg-white/40 backdrop-blur-md rounded-[20px] p-5 border border-white/20 shadow-sm">
+                        <p className="text-[9px] font-black text-[#1A1A1A]/40 uppercase tracking-widest mb-1">Entry Fee</p>
+                        <p className="text-2xl font-heading text-[#1A1A1A] font-black tracking-tighter">₹{t.entry_fee.toLocaleString()}</p>
                       </div>
                     </div>
-                    <button className="w-10 h-10 rounded-full bg-off-white flex items-center justify-center hover:bg-onyx hover:text-white transition-all">
-                      <ChevronRight size={20} />
-                    </button>
-                  </div>
 
-                  {/* Decorative Background Icon */}
-                  <div className="absolute right-[-20px] bottom-[-20px] rotate-[-15deg] opacity-[0.02] group-hover:opacity-[0.05] transition-opacity">
-                    <Zap size={160} strokeWidth={1} />
-                  </div>
-                </BentoCard>
-              </motion.div>
-            ))}
+                    <div className="space-y-3 relative z-10 mt-auto">
+                      <div className="flex justify-between items-end mb-1">
+                        <div className="flex items-center gap-2 text-[9px] font-black text-[#1A1A1A]/40 uppercase tracking-widest">
+                          <Users size={12} strokeWidth={3} />
+                          <span>Recruitment Profile</span>
+                        </div>
+                        <span className="text-[10px] font-black text-[#1A1A1A]">{t.participants_count} / {t.slots}</span>
+                      </div>
+                      <div className="w-full h-3 bg-white/20 rounded-full overflow-hidden border border-white/10 p-[2px]">
+                        <motion.div 
+                          initial={{ width: 0 }}
+                          animate={{ width: `${((t.participants_count || 0) / t.slots) * 100}%` }}
+                          className="h-full bg-[#1A1A1A] rounded-full"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-6 border-t-2 border-[#1A1A1A]/5 relative z-10">
+                      <div className="flex items-center gap-3">
+                        <StatusBadge variant={t.status === 'active' ? 'live' : t.status === 'upcoming' ? 'upcoming' : 'completed'} className="bg-[#1A1A1A] text-white px-3 py-1 text-[8px] font-black" />
+                        <div className="flex items-center gap-1.5 text-[9px] font-black text-[#1A1A1A]/40 uppercase tracking-widest">
+                          <Calendar size={12} strokeWidth={3} />
+                          {t.start_time ? format(new Date(t.start_time), "MMM d, HH:mm") : 'TBD'}
+                        </div>
+                      </div>
+                      <button className="w-12 h-12 rounded-2xl bg-white shadow-md flex items-center justify-center hover:scale-110 transition-transform active:scale-95">
+                        <ChevronRight size={22} className="text-[#1A1A1A]" strokeWidth={3} />
+                      </button>
+                    </div>
+
+                    <div className="absolute right-[-20px] bottom-[-20px] rotate-[-15deg] opacity-[0.03] group-hover:opacity-[0.06] transition-opacity pointer-events-none">
+                      <Zap size={180} strokeWidth={1} />
+                    </div>
+                  </BentoCard>
+                </motion.div>
+              );
+            })}
           </AnimatePresence>
         ) : (
-          <div className="col-span-full py-32 text-center flex flex-col items-center gap-6 bg-white rounded-[40px] shadow-sm">
-            <div className="w-24 h-24 rounded-full bg-off-white flex items-center justify-center">
-              <AlertCircle size={48} strokeWidth={1} className="text-charcoal/20" />
+          <div className="col-span-full py-32 text-center flex flex-col items-center gap-6 bg-white rounded-[40px] shadow-2xl border-none">
+            <div className="w-24 h-24 rounded-3xl bg-[#F5F5F5] flex items-center justify-center mx-auto mb-4 shadow-inner rotate-6">
+              <AlertCircle size={48} strokeWidth={1} className="text-[#9CA3AF]" />
             </div>
             <div className="space-y-2">
-              <h3 className="text-2xl font-heading text-onyx font-black">No Arenas Found</h3>
-              <p className="text-[10px] font-bold text-charcoal/40 uppercase tracking-[0.2em]">Deployment list is currently clear</p>
+              <h3 className="text-3xl font-heading text-[#1A1A1A] font-black tracking-tighter">ARENA VOID</h3>
+              <p className="text-[11px] font-black text-[#6B7280] uppercase tracking-[0.2em]">Deployment list is currently clear</p>
             </div>
             <motion.button 
               whileTap={{ scale: 0.95 }}
               onClick={() => { setSearch(""); setStatusFilter("All"); }}
-              className="px-10 py-5 bg-onyx text-white rounded-2xl text-[11px] font-bold uppercase tracking-widest shadow-xl"
+              className="px-10 py-5 bg-[#1A1A1A] text-white rounded-[24px] text-[11px] font-black uppercase tracking-widest shadow-xl"
             >
-              Reset Protocols
+              RESET PROTOCOLS
             </motion.button>
           </div>
         )}
       </section>
 
-      {/* Deployment Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-[95vw] sm:max-w-2xl rounded-t-[40px] sm:rounded-[40px] p-0 overflow-hidden border-none shadow-2xl bg-white fixed bottom-0 sm:bottom-auto sm:top-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 m-0">
-          <div className="bg-lime-yellow p-10 relative overflow-hidden">
+        <DialogContent className="max-w-[95vw] sm:max-w-2xl rounded-t-[40px] sm:rounded-[40px] p-0 overflow-hidden border-none shadow-2xl bg-white fixed bottom-0 sm:bottom-auto sm:top-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 m-0 z-[100]">
+          <div className="bg-[#FEF3C7] p-10 relative overflow-hidden">
             <div className="relative z-10">
-              <div className="w-12 h-12 rounded-2xl bg-onyx flex items-center justify-center text-lime-yellow mb-6 shadow-xl">
-                <Settings size={24} strokeWidth={3} />
+              <div className="w-14 h-14 rounded-[20px] bg-[#1A1A1A] flex items-center justify-center text-[#FEF3C7] mb-6 shadow-xl rotate-6 hover:rotate-0 transition-transform">
+                <Settings size={28} strokeWidth={3} />
               </div>
-              <DialogTitle className="text-3xl font-heading font-black text-onyx leading-none">{editingTournament ? "Update" : "Initialize"} Event</DialogTitle>
-              <DialogDescription className="text-onyx/40 font-bold text-[10px] uppercase tracking-[0.3em] mt-2">Configure Arena Deployment Parameters</DialogDescription>
+              <DialogTitle className="text-4xl font-heading font-black text-[#1A1A1A] leading-none tracking-tighter">{editingTournament ? "ADJUST" : "INITIALIZE"} RESOURCE</DialogTitle>
+              <DialogDescription className="text-[#1A1A1A]/40 font-black text-[10px] uppercase tracking-[0.3em] mt-3">Configure Arena Deployment Parameters</DialogDescription>
             </div>
             <div className="absolute right-[-20px] top-[-20px] rotate-[15deg] opacity-10">
-              <Zap size={180} strokeWidth={1} />
+              <Zap size={200} strokeWidth={1} />
             </div>
           </div>
           
@@ -389,10 +391,10 @@ export default function AdminTournaments() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
               <div className="space-y-8">
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-charcoal/40 ml-1">Arena Title</Label>
+                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6B7280] ml-1">ARENA CALLSIGN</Label>
                   <Input 
-                    className="h-16 rounded-[20px] bg-background border-none font-bold text-sm focus-visible:ring-onyx px-6" 
-                    placeholder="Event Name"
+                    className="h-16 rounded-[20px] bg-[#F5F5F5] border-4 border-transparent font-black text-base focus-visible:ring-0 focus:border-[#1A1A1A] px-6 transition-all" 
+                    placeholder="Operation Name"
                     value={formData.title} 
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })} 
                     required 
@@ -401,23 +403,23 @@ export default function AdminTournaments() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-3">
-                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-charcoal/40 ml-1">Mode</Label>
+                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6B7280] ml-1">DEPLOY MODE</Label>
                     <Select value={formData.game_mode} onValueChange={(v) => setFormData({...formData, game_mode: v})}>
-                      <SelectTrigger className="h-16 rounded-[20px] bg-background border-none font-bold text-sm text-onyx">
+                      <SelectTrigger className="h-16 rounded-[20px] bg-[#F5F5F5] border-none font-black text-sm text-[#1A1A1A] px-6">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="rounded-2xl border-none shadow-2xl">
+                      <SelectContent className="rounded-[24px] border-none shadow-2xl p-2">
                         {["Solo", "Duo", "Squad"].map(m => (
-                          <SelectItem key={m} value={m} className="font-bold text-xs py-3">{m}</SelectItem>
+                          <SelectItem key={m} value={m} className="font-black text-[10px] uppercase tracking-widest py-3 rounded-xl">{m}</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="space-y-3">
-                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-charcoal/40 ml-1">Capacity</Label>
+                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6B7280] ml-1">RECRUITS</Label>
                     <Input 
                       type="number" 
-                      className="h-16 rounded-[20px] bg-background border-none font-bold text-sm focus-visible:ring-onyx px-6" 
+                      className="h-16 rounded-[20px] bg-[#F5F5F5] border-4 border-transparent font-black text-base focus-visible:ring-0 focus:border-[#1A1A1A] px-6 transition-all" 
                       value={formData.slots} 
                       onChange={(e) => setFormData({ ...formData, slots: Number(e.target.value) })} 
                       required 
@@ -427,20 +429,20 @@ export default function AdminTournaments() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-3">
-                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-charcoal/40 ml-1">Entry (₹)</Label>
+                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6B7280] ml-1">PASS (₹)</Label>
                     <Input 
                       type="number" 
-                      className="h-16 rounded-[20px] bg-background border-none font-bold text-sm focus-visible:ring-onyx px-6" 
+                      className="h-16 rounded-[20px] bg-[#F5F5F5] border-4 border-transparent font-black text-base focus-visible:ring-0 focus:border-[#1A1A1A] px-6 transition-all" 
                       value={formData.entry_fee} 
                       onChange={(e) => setFormData({ ...formData, entry_fee: Number(e.target.value) })} 
                       required 
                     />
                   </div>
                   <div className="space-y-3">
-                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-charcoal/40 ml-1">Prize (₹)</Label>
+                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6B7280] ml-1">LOOT (₹)</Label>
                     <Input 
                       type="number" 
-                      className="h-16 rounded-[20px] bg-background border-none font-bold text-sm focus-visible:ring-onyx px-6" 
+                      className="h-16 rounded-[20px] bg-[#F5F5F5] border-4 border-transparent font-black text-base focus-visible:ring-0 focus:border-[#1A1A1A] px-6 transition-all" 
                       value={formData.prize_pool} 
                       onChange={(e) => setFormData({ ...formData, prize_pool: Number(e.target.value) })} 
                       required 
@@ -451,10 +453,10 @@ export default function AdminTournaments() {
 
               <div className="space-y-8">
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-charcoal/40 ml-1">Start Timeline</Label>
+                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6B7280] ml-1">START TIMELINE</Label>
                   <Input 
                     type="datetime-local" 
-                    className="h-16 rounded-[20px] bg-background border-none font-bold text-sm focus-visible:ring-onyx px-6" 
+                    className="h-16 rounded-[20px] bg-[#F5F5F5] border-4 border-transparent font-black text-sm focus-visible:ring-0 focus:border-[#1A1A1A] px-6 transition-all" 
                     value={formData.start_time} 
                     onChange={(e) => setFormData({ ...formData, start_time: e.target.value })} 
                     required 
@@ -462,23 +464,23 @@ export default function AdminTournaments() {
                 </div>
 
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-charcoal/40 ml-1">Current Status</Label>
+                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6B7280] ml-1">OPERATIONAL STATUS</Label>
                   <Select value={formData.status} onValueChange={(v) => setFormData({...formData, status: v})}>
-                    <SelectTrigger className="h-16 rounded-[20px] bg-background border-none font-bold text-sm text-onyx">
+                    <SelectTrigger className="h-16 rounded-[20px] bg-[#F5F5F5] border-none font-black text-sm text-[#1A1A1A] px-6">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="rounded-2xl border-none shadow-2xl">
+                    <SelectContent className="rounded-[24px] border-none shadow-2xl p-2">
                       {["upcoming", "active", "completed", "draft"].map(s => (
-                        <SelectItem key={s} value={s} className="font-bold text-xs py-3 capitalize">{s}</SelectItem>
+                        <SelectItem key={s} value={s} className="font-black text-[10px] uppercase tracking-widest py-3 rounded-xl capitalize">{s}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-charcoal/40 ml-1">Operational Rules</Label>
+                  <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6B7280] ml-1">RULES OF ENGAGEMENT</Label>
                   <Textarea 
-                    className="rounded-[20px] bg-background border-none min-h-[120px] font-bold text-sm focus-visible:ring-onyx p-6" 
+                    className="rounded-[24px] bg-[#F5F5F5] border-4 border-transparent font-bold text-sm focus-visible:ring-0 focus:border-[#1A1A1A] p-6 transition-all min-h-[120px]" 
                     placeholder="Enter guidelines..."
                     value={formData.rules} 
                     onChange={(e) => setFormData({ ...formData, rules: e.target.value })} 
@@ -487,15 +489,15 @@ export default function AdminTournaments() {
               </div>
             </div>
 
-            <DialogFooter>
+            <DialogFooter className="pt-4">
               <motion.button 
                 type="submit" 
                 whileTap={{ scale: 0.98 }}
                 disabled={submitting}
-                className="w-full h-20 bg-onyx text-white rounded-[32px] font-black uppercase tracking-[0.3em] text-[14px] shadow-2xl flex items-center justify-center gap-4"
+                className="w-full h-20 bg-[#1A1A1A] text-white rounded-[32px] font-black uppercase tracking-[0.3em] text-[14px] shadow-2xl flex items-center justify-center gap-4 hover:bg-black transition-all"
               >
                 {submitting ? <Loader2 className="animate-spin" /> : (
-                  editingTournament ? "Apply Parameters" : "Deploy Arena Resource"
+                  editingTournament ? "APPLY PARAMETERS" : "DEPLOY ARENA RESOURCE"
                 )}
               </motion.button>
             </DialogFooter>

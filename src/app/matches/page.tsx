@@ -9,7 +9,7 @@ import {
   Search, Trophy, Calendar, Users, 
   ChevronRight, AlertCircle, Swords, Zap, 
   Map as MapIcon, Target, Loader2,
-  CheckCircle2
+  CheckCircle2, Clock
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/hooks/useAuth";
@@ -195,32 +195,32 @@ function MatchesContent() {
   return (
     <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
       <main className="pb-[80px] relative z-10">
-        <section className="px-4 pt-6 pb-4">
-          <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mb-2">
+        <section className="px-5 pt-8 pb-4">
+          <p className="text-[12px] font-black text-[#6B7280] uppercase tracking-widest mb-2">
             Tournament Hub
           </p>
-          <h2 className="text-[32px] font-heading text-[#1A1A1A] leading-tight font-bold">
-            Arena
+          <h2 className="text-[36px] font-heading text-[#1A1A1A] leading-tight font-black tracking-tighter">
+            ARENA BATTLES
           </h2>
         </section>
 
-        <section className="px-4 space-y-4 pt-2">
-            <div className="flex gap-3">
+        <section className="px-5 space-y-6 pt-2">
+            <div className="flex gap-4">
               <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={18} />
+                <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={20} strokeWidth={3} />
                 <input 
                   type="text" 
                   placeholder="Search matches..." 
                   aria-label="Search for matches"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-white border border-[#E5E7EB] rounded-lg py-3 pl-12 pr-4 text-sm font-medium shadow-[2px_8px_16px_rgba(0,0,0,0.06)] placeholder:text-[#9CA3AF] focus:border-[#5FD3BC] focus:ring-2 focus:ring-[#5FD3BC]/20 focus:outline-none"
+                  className="w-full bg-white border-2 border-[#E5E7EB] rounded-2xl py-4 pl-14 pr-6 text-sm font-bold shadow-md placeholder:text-[#9CA3AF] focus:border-[#1A1A1A] focus:outline-none transition-all"
                 />
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
-              <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1" role="tablist" aria-label="Filter matches by status">
+            <div className="flex flex-col gap-4">
+              <div className="flex gap-2 overflow-x-auto no-scrollbar" role="tablist" aria-label="Filter matches by status">
                 {filters.map((f) => (
                   <button
                     key={f}
@@ -228,55 +228,67 @@ function MatchesContent() {
                     aria-selected={activeFilter === f}
                     aria-label={`Filter by ${f}`}
                     onClick={() => setActiveFilter(f)}
-                    className={`px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wide transition-all ${
+                    className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
                       activeFilter === f 
-                        ? "bg-[#1A1A1A] text-white shadow-lg" 
-                        : "bg-white text-[#6B7280] border border-[#E5E7EB]"
+                        ? "bg-[#1A1A1A] text-white shadow-lg scale-105" 
+                        : "bg-white text-[#6B7280] border-2 border-[#E5E7EB]"
                     }`}
                   >
                     {f}
                   </button>
                 ))}
               </div>
-              <select 
-                value={activeSort}
-                aria-label="Sort matches by"
-                onChange={(e) => setActiveSort(e.target.value)}
-                className="bg-white border border-[#E5E7EB] rounded-lg px-3 py-2 text-[10px] font-bold uppercase tracking-wide focus:outline-none focus:ring-2 focus:ring-[#5FD3BC]/20"
-              >
-              {sortOptions.map(opt => (
-                <option key={opt.value} value={opt.value}>{opt.label}</option>
-              ))}
-            </select>
+              <div className="flex items-center gap-2">
+                <span className="text-[9px] font-black text-[#6B7280] uppercase tracking-widest">SORT BY:</span>
+                <div className="flex gap-2 overflow-x-auto no-scrollbar">
+                  {sortOptions.map(opt => (
+                    <button
+                      key={opt.value}
+                      onClick={() => setActiveSort(opt.value)}
+                      className={`px-4 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
+                        activeSort === opt.value
+                          ? "bg-[#D9F9E6] text-[#1A1A1A] border-2 border-[#1A1A1A]"
+                          : "bg-white text-[#6B7280] border-2 border-[#E5E7EB]"
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
           </div>
         </section>
 
         {myEntries.length > 0 && activeFilter === "Upcoming" && (
-          <section className="px-4 pt-6">
-            <h3 className="text-lg font-heading text-[#1A1A1A] font-bold mb-4 flex items-center gap-2">
-              My Entries <span className="w-6 h-6 rounded-full bg-[#5FD3BC] text-[10px] flex items-center justify-center font-bold">{myEntries.length}</span>
+          <section className="px-5 pt-10">
+            <h3 className="text-sm font-black text-[#6B7280] uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
+              MY BATTLES <span className="w-6 h-6 rounded-lg bg-[#1A1A1A] text-white text-[10px] flex items-center justify-center font-black shadow-lg">{myEntries.length}</span>
             </h3>
-            <div className="flex gap-3 overflow-x-auto no-scrollbar">
+            <div className="flex gap-5 overflow-x-auto no-scrollbar pb-4">
               {myEntries.map((match) => (
                 <BentoCard 
                   key={match.id} 
                   variant="dark" 
-                  className="w-64 flex-shrink-0 p-5"
+                  className="w-[280px] flex-shrink-0 p-8 shadow-2xl relative overflow-hidden group"
                   onClick={() => setSelectedMatch(match)}
                 >
-                  <div className="flex justify-between items-start mb-4">
-                    <StatusBadge variant="upcoming" className="bg-white/10 text-white" />
-                    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                      <ChevronRight size={16} className="text-white" />
+                  <div className="relative z-10">
+                    <div className="flex justify-between items-start mb-6">
+                      <div className="bg-white/20 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest">JOINED</div>
+                      <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                        <ChevronRight size={20} className="text-white" />
+                      </div>
+                    </div>
+                    <h4 className="text-xl font-heading text-white font-black leading-tight mb-6 tracking-tight">{match.title}</h4>
+                    <div className="flex justify-between items-end">
+                      <div className="space-y-1">
+                        <p className="text-[9px] font-black text-white/40 uppercase tracking-widest">BATTLE TIME</p>
+                        <p className="text-base font-black text-white">{new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                      </div>
                     </div>
                   </div>
-                  <h4 className="text-base font-heading text-white font-bold leading-tight mb-3">{match.title}</h4>
-                  <div className="flex justify-between items-end">
-                    <div className="space-y-1">
-                      <p className="text-[8px] font-bold text-white/50 uppercase tracking-wide">Starts at</p>
-                      <p className="text-sm font-bold text-white">{new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                    </div>
-                    <p className="text-sm font-bold text-[#5FD3BC]">JOINED</p>
+                  <div className="absolute right-[-20px] bottom-[-20px] opacity-[0.05] group-hover:scale-110 transition-transform">
+                    <Zap size={120} />
                   </div>
                 </BentoCard>
               ))}
@@ -284,77 +296,77 @@ function MatchesContent() {
           </section>
         )}
 
-        <section className="px-4 pt-6 space-y-3">
+        <section className="px-5 pt-8 space-y-4">
           {loading ? (
             <div className="space-y-4">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="bg-white rounded-2xl p-4 flex items-center justify-between border border-[#E5E7EB]">
-                  <div className="flex items-center gap-4 flex-1">
-                    <Skeleton className="w-14 h-14 rounded-xl" />
-                    <div className="space-y-2 flex-1">
-                      <Skeleton className="h-5 w-3/4" />
-                      <Skeleton className="h-3 w-1/2" />
-                      <Skeleton className="h-2 w-1/4 mt-2" />
-                    </div>
-                  </div>
-                  <Skeleton className="w-10 h-10 rounded-full" />
-                </div>
+                <Skeleton key={i} className="h-[100px] w-full rounded-[24px]" />
               ))}
             </div>
           ) : filteredAndSortedMatches.length > 0 ? (
-            filteredAndSortedMatches.map((match) => {
+            filteredAndSortedMatches.map((match, idx) => {
               const totalSlots = match.tournament?.slots || 48;
               const filledSlots = match.current_slots;
               const isFull = filledSlots >= totalSlots;
               const isJoined = myEntries.some(e => e.id === match.id);
               
+              const colors = ["mint", "blue", "pink", "yellow"];
+              const color = colors[idx % colors.length] as any;
+              
               return (
-                <BentoCard 
-                  key={match.id} 
-                  className={`p-4 flex items-center justify-between cursor-pointer transition-all group ${isJoined ? 'border-l-4 border-l-[#5FD3BC]' : 'hover:border-[#5FD3BC]'}`}
+                <motion.div 
+                  key={match.id}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => setSelectedMatch(match)}
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-[#F0FDF4] flex items-center justify-center group-hover:bg-[#5FD3BC] transition-colors relative">
-                      <Swords size={24} className="text-[#1A1A1A]" />
-                      {isJoined && (
-                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-[#1A1A1A] rounded-full flex items-center justify-center border-2 border-white">
-                          <CheckCircle2 size={12} className="text-[#5FD3BC]" />
-                        </div>
-                      )}
-                    </div>
-                    <div>
-                      <h4 className="text-[15px] font-heading text-[#1A1A1A] font-bold leading-tight mb-1">{match.title}</h4>
-                      <div className="flex items-center gap-2">
-                        <span className="text-[9px] font-bold text-[#6B7280] uppercase tracking-wide bg-[#F3F4F6] px-2 py-0.5 rounded">₹{match.tournament?.entry_fee} ENTRY</span>
-                        <span className="text-[9px] font-bold text-[#6B7280] uppercase tracking-wide bg-[#F3F4F6] px-2 py-0.5 rounded">{match.mode}</span>
+                  <BentoCard 
+                    variant={color}
+                    className={`p-6 flex items-center justify-between border-none shadow-xl group relative overflow-hidden ${isJoined ? 'ring-4 ring-[#1A1A1A]' : ''}`}
+                  >
+                    <div className="flex items-center gap-5 relative z-10">
+                      <div className="w-16 h-16 rounded-[24px] bg-white/40 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
+                        <Swords size={28} className="text-[#1A1A1A]" />
                       </div>
-                      <div className="flex items-center gap-2 mt-2.5">
-                        <div className="w-24 h-1.5 bg-[#E5E7EB] rounded-full overflow-hidden">
-                          <motion.div 
-                            initial={{ width: 0 }}
-                            animate={{ width: `${(filledSlots / totalSlots) * 100}%` }}
-                            className={`h-full ${isFull ? 'bg-[#EF4444]' : 'bg-[#5FD3BC]'} rounded-full`} 
-                          />
+                      <div>
+                        <h4 className="text-lg font-heading text-[#1A1A1A] font-black leading-tight mb-1 tracking-tight">{match.title}</h4>
+                        <div className="flex items-center gap-3">
+                          <span className="text-[10px] font-black text-[#1A1A1A]/60 uppercase tracking-widest">₹{match.tournament?.entry_fee} ENTRY</span>
+                          <span className="text-[10px] text-[#1A1A1A]/20 font-black">•</span>
+                          <span className="text-[10px] font-black text-[#1A1A1A]/60 uppercase tracking-widest">{match.mode}</span>
                         </div>
-                        <span className="text-[9px] font-bold text-[#6B7280]">
-                          {isFull || match.status === 'live' ? "CLOSED" : `${filledSlots}/${totalSlots}`}
-                        </span>
+                        <div className="flex items-center gap-3 mt-3">
+                          <div className="w-28 h-2 bg-white/30 rounded-full overflow-hidden border border-white/20">
+                            <motion.div 
+                              initial={{ width: 0 }}
+                              animate={{ width: `${(filledSlots / totalSlots) * 100}%` }}
+                              className={`h-full ${isFull ? 'bg-red-500' : 'bg-[#1A1A1A]'} rounded-full`} 
+                            />
+                          </div>
+                          <span className="text-[10px] font-black text-[#1A1A1A]/80 uppercase tracking-widest">
+                            {isFull || match.status === 'live' ? "CLOSED" : `${filledSlots}/${totalSlots}`}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-[#F9FAFB] flex items-center justify-center group-hover:bg-[#1A1A1A] transition-colors">
-                    <ChevronRight size={18} className="text-[#1A1A1A] group-hover:text-white transition-colors" />
-                  </div>
-                </BentoCard>
+                    <div className="w-12 h-12 rounded-2xl bg-[#1A1A1A] text-white flex items-center justify-center shadow-xl group-hover:translate-x-1 transition-transform relative z-10">
+                      <ChevronRight size={22} strokeWidth={3} />
+                    </div>
+                    {isJoined && (
+                      <div className="absolute top-2 right-2 w-6 h-6 bg-[#1A1A1A] rounded-full flex items-center justify-center border-2 border-white shadow-lg z-20">
+                        <CheckCircle2 size={12} className="text-[#5FD3BC]" />
+                      </div>
+                    )}
+                  </BentoCard>
+                </motion.div>
               );
             })
           ) : (
-            <div className="py-16 text-center">
-              <div className="w-14 h-14 bg-[#F5F5F5] rounded-full flex items-center justify-center mx-auto mb-4">
-                <AlertCircle size={24} className="text-[#9CA3AF]" />
+            <div className="py-20 text-center bg-white rounded-[40px] shadow-2xl border-none mx-2">
+              <div className="w-20 h-20 bg-[#F3F4F6] rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-xl">
+                <AlertCircle size={40} className="text-[#9CA3AF]" />
               </div>
-              <h3 className="text-lg font-heading text-[#1A1A1A] font-bold">No Matches Found</h3>
+              <h3 className="text-2xl font-heading text-[#1A1A1A] font-black tracking-tighter mb-2">ARENA EMPTY</h3>
+              <p className="text-[10px] text-[#6B7280] font-black uppercase tracking-widest">Try adjusting your filters</p>
             </div>
           )}
         </section>
@@ -369,93 +381,110 @@ function MatchesContent() {
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
             className="fixed inset-0 z-[60] bg-[#F5F5F5] flex flex-col"
           >
-            <header className="relative z-10 px-4 py-6 flex items-center justify-between">
+            <header className="relative z-10 px-5 py-8 flex items-center justify-between">
               <motion.button 
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setSelectedMatch(null)}
-                className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-[2px_8px_16px_rgba(0,0,0,0.06)]"
+                className="w-12 h-12 bg-white border-2 border-[#E5E7EB] rounded-2xl flex items-center justify-center shadow-lg"
               >
-                <ChevronRight className="rotate-180 text-[#1A1A1A]" size={20} />
+                <ChevronRight className="rotate-180 text-[#1A1A1A]" size={24} strokeWidth={3} />
               </motion.button>
-              <h2 className="text-sm font-bold uppercase tracking-wide text-[#1A1A1A]">Match Details</h2>
-              <div className="w-10" />
+              <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6B7280]">Match Intelligence</h2>
+              <div className="w-12" />
             </header>
 
-            <div className="relative z-10 flex-1 overflow-y-auto no-scrollbar px-4 pb-32">
-              <div className="mb-6">
-                <StatusBadge variant={selectedMatch.status} className="mb-3" />
-                <h1 className="text-[32px] font-heading text-[#1A1A1A] font-bold leading-tight mb-2">
+            <div className="relative z-10 flex-1 overflow-y-auto no-scrollbar px-5 pb-32">
+              <div className="mb-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <StatusBadge variant={selectedMatch.status} className="bg-[#1A1A1A] text-white px-4 py-1.5 rounded-full font-black text-[10px]" />
+                  <div className="px-3 py-1 bg-white border-2 border-[#E5E7EB] rounded-xl text-[10px] font-black text-[#1A1A1A] flex items-center gap-1.5 shadow-sm">
+                    <Clock size={12} strokeWidth={3} />
+                    {selectedMatch.status === 'live' ? 'LIVE' : 'SOON'}
+                  </div>
+                </div>
+                <h1 className="text-[40px] font-heading text-[#1A1A1A] font-black leading-[0.9] mb-4 tracking-tighter">
                   {selectedMatch.title}
                 </h1>
-                <p className="text-sm font-bold text-[#6B7280] uppercase tracking-wide">{selectedMatch.tournament?.title}</p>
+                <p className="text-[11px] font-black text-[#6B7280] uppercase tracking-widest">{selectedMatch.tournament?.title}</p>
               </div>
 
-              <BentoCard variant="vibrant" className="p-6 mb-6 text-center relative overflow-hidden">
-                <p className="text-[10px] font-bold text-[#1A1A1A]/60 uppercase tracking-wide mb-2">Grand Prize Pool</p>
-                <p className="text-[48px] font-heading text-[#1A1A1A] font-bold leading-none mb-2">₹{selectedMatch.tournament?.prize_pool?.toLocaleString()}</p>
-                <div className="absolute right-[-20px] bottom-[-20px] rotate-[-15deg] opacity-10">
-                  <Trophy size={100} />
+              <BentoCard variant="purple" className="p-8 mb-8 text-center relative overflow-hidden shadow-2xl">
+                <p className="text-[11px] font-black text-[#1A1A1A]/40 uppercase tracking-[0.2em] mb-3">GRAND PRIZE POOL</p>
+                <p className="text-[56px] font-heading text-[#1A1A1A] font-black leading-none mb-2 tracking-tighter">₹{selectedMatch.tournament?.prize_pool?.toLocaleString()}</p>
+                <div className="absolute right-[-30px] bottom-[-30px] rotate-[-15deg] opacity-[0.03] pointer-events-none">
+                  <Trophy size={180} />
                 </div>
               </BentoCard>
 
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                <BentoCard className="p-4">
-                  <Calendar size={16} className="text-[#9CA3AF] mb-2" />
-                  <p className="text-[9px] font-bold text-[#6B7280] uppercase tracking-wide mb-1">Date & Time</p>
-                  <p className="text-sm font-bold text-[#1A1A1A]">{new Date(selectedMatch.start_time).toLocaleDateString([], { month: 'short', day: 'numeric' })} • {new Date(selectedMatch.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <BentoCard className="p-6 bg-white shadow-xl border-none">
+                  <div className="w-10 h-10 rounded-xl bg-[#B3E5FC]/30 flex items-center justify-center mb-4">
+                    <Calendar size={20} className="text-[#1A1A1A]" strokeWidth={2.5} />
+                  </div>
+                  <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-1">SCHEDULE</p>
+                  <p className="text-sm font-black text-[#1A1A1A] tracking-tight">{new Date(selectedMatch.start_time).toLocaleDateString([], { month: 'short', day: 'numeric' })} • {new Date(selectedMatch.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                 </BentoCard>
-                <BentoCard className="p-4">
-                  <MapIcon size={16} className="text-[#9CA3AF] mb-2" />
-                  <p className="text-[9px] font-bold text-[#6B7280] uppercase tracking-wide mb-1">Game Map</p>
-                  <p className="text-sm font-bold text-[#1A1A1A]">{selectedMatch.map || 'Bermuda'}</p>
+                <BentoCard className="p-6 bg-white shadow-xl border-none">
+                  <div className="w-10 h-10 rounded-xl bg-[#D9F9E6]/30 flex items-center justify-center mb-4">
+                    <MapIcon size={20} className="text-[#1A1A1A]" strokeWidth={2.5} />
+                  </div>
+                  <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-1">ARENA MAP</p>
+                  <p className="text-sm font-black text-[#1A1A1A] tracking-tight">{selectedMatch.map || 'Bermuda'}</p>
                 </BentoCard>
-                <BentoCard className="p-4">
-                  <Target size={16} className="text-[#9CA3AF] mb-2" />
-                  <p className="text-[9px] font-bold text-[#6B7280] uppercase tracking-wide mb-1">Mode</p>
-                  <p className="text-sm font-bold text-[#1A1A1A]">{selectedMatch.mode}</p>
+                <BentoCard className="p-6 bg-white shadow-xl border-none">
+                  <div className="w-10 h-10 rounded-xl bg-[#FFD8B1]/30 flex items-center justify-center mb-4">
+                    <Target size={20} className="text-[#1A1A1A]" strokeWidth={2.5} />
+                  </div>
+                  <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-1">BATTLE MODE</p>
+                  <p className="text-sm font-black text-[#1A1A1A] tracking-tight">{selectedMatch.mode}</p>
                 </BentoCard>
-                <BentoCard className="p-4">
-                  <Users size={16} className="text-[#9CA3AF] mb-2" />
-                  <p className="text-[9px] font-bold text-[#6B7280] uppercase tracking-wide mb-1">Slots Filled</p>
-                  <p className="text-sm font-bold text-[#1A1A1A]">{selectedMatch.current_slots} / {selectedMatch.tournament?.slots || 48}</p>
+                <BentoCard className="p-6 bg-white shadow-xl border-none">
+                  <div className="w-10 h-10 rounded-xl bg-[#FFC0CB]/30 flex items-center justify-center mb-4">
+                    <Users size={20} className="text-[#1A1A1A]" strokeWidth={2.5} />
+                  </div>
+                  <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-1">POPULATION</p>
+                  <p className="text-sm font-black text-[#1A1A1A] tracking-tight">{selectedMatch.current_slots} / {selectedMatch.tournament?.slots || 48}</p>
                 </BentoCard>
               </div>
 
-              <BentoCard variant="pastel" pastelColor="sky" className="p-6 mb-6">
-                <h4 className="text-lg font-heading text-[#1A1A1A] font-bold mb-4">Prize Breakdown</h4>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center py-2 border-b border-[#1A1A1A]/5">
-                    <div className="flex items-center gap-3">
-                      <div className="w-7 h-7 rounded-md bg-[#5FD3BC] flex items-center justify-center font-bold text-xs">1st</div>
-                      <span className="text-sm font-bold text-[#1A1A1A]">Winner</span>
+              <BentoCard variant="mint" className="p-8 mb-8 shadow-2xl relative overflow-hidden group">
+                <h4 className="text-xl font-heading text-[#1A1A1A] font-black tracking-tight mb-6">BATTLE REWARDS</h4>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center py-3 border-b-2 border-white/40">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-[#1A1A1A] text-white flex items-center justify-center font-black text-sm shadow-lg">1st</div>
+                      <span className="text-base font-black text-[#1A1A1A] tracking-tight">Champion</span>
                     </div>
-                    <span className="text-base font-bold text-[#1A1A1A]">₹2,500</span>
+                    <span className="text-xl font-black text-[#1A1A1A]">₹2,500</span>
                   </div>
-                  <div className="flex justify-between items-center py-2">
-                    <div className="flex items-center gap-3">
-                      <div className="w-7 h-7 rounded-md bg-[#F5F5F5] flex items-center justify-center font-bold text-xs">K</div>
-                      <span className="text-sm font-bold text-[#1A1A1A]">Per Kill</span>
+                  <div className="flex justify-between items-center py-3">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-white/60 flex items-center justify-center font-black text-sm shadow-sm">K</div>
+                      <span className="text-base font-black text-[#1A1A1A] tracking-tight">Per Kill</span>
                     </div>
-                    <span className="text-base font-bold text-[#1A1A1A]">₹10</span>
+                    <span className="text-xl font-black text-[#1A1A1A]">₹10</span>
                   </div>
+                </div>
+                <div className="absolute right-[-10px] top-[-10px] opacity-[0.05] group-hover:rotate-12 transition-transform">
+                  <Award size={100} />
                 </div>
               </BentoCard>
             </div>
 
-            <div className="relative z-[70] px-4 py-6 bg-white shadow-[0_-4px_24px_rgba(0,0,0,0.08)] rounded-t-2xl">
-              <div className="flex items-center justify-between mb-4">
+            <div className="relative z-[70] px-5 py-8 bg-white shadow-[0_-15px_40px_rgba(0,0,0,0.1)] rounded-t-[40px] border-t-2 border-[#E5E7EB]">
+              <div className="flex items-center justify-between mb-6">
                 <div>
-                  <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide mb-1">Entry Fee</p>
-                  <p className="text-2xl font-heading text-[#1A1A1A] font-bold">₹{selectedMatch.tournament?.entry_fee}</p>
+                  <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-1">ENTRY PASS</p>
+                  <p className="text-4xl font-heading text-[#1A1A1A] font-black tracking-tighter">₹{selectedMatch.tournament?.entry_fee}</p>
                 </div>
                 {myEntries.some(e => e.id === selectedMatch.id) ? (
                    <div className="text-right">
-                    <span className="bg-[#D1FAE5] text-[#065F46] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide">Already Joined</span>
+                    <span className="bg-[#D9F9E6] text-[#1A1A1A] border-2 border-[#1A1A1A] px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-md">PASS SECURED</span>
                    </div>
                 ) : (
                   <div className="text-right">
-                    <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide mb-1">Remaining Slots</p>
-                    <p className="text-lg font-heading text-[#1A1A1A] font-bold">{Math.max(0, (selectedMatch.tournament?.slots || 48) - selectedMatch.current_slots)}</p>
+                    <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-1">VACANCIES</p>
+                    <p className="text-2xl font-heading text-[#1A1A1A] font-black tracking-tighter">{Math.max(0, (selectedMatch.tournament?.slots || 48) - selectedMatch.current_slots)}</p>
                   </div>
                 )}
               </div>
@@ -465,19 +494,20 @@ function MatchesContent() {
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleJoinMatch(selectedMatch.tournament_id, selectedMatch.id)}
                   disabled={joining === selectedMatch.id || (selectedMatch.current_slots >= (selectedMatch.tournament?.slots || 48)) || myEntries.some(e => e.id === selectedMatch.id)}
-                  className="w-full py-4 bg-[#1A1A1A] text-white rounded-xl text-[12px] font-bold uppercase tracking-wide shadow-xl flex items-center justify-center gap-2 disabled:bg-[#E5E7EB] disabled:text-[#9CA3AF] transition-colors"
+                  className="w-full py-5 bg-[#1A1A1A] text-white rounded-[24px] text-sm font-black uppercase tracking-[0.2em] shadow-2xl flex items-center justify-center gap-3 disabled:bg-[#E5E7EB] disabled:text-[#9CA3AF] disabled:shadow-none transition-all"
                 >
-                  {joining === selectedMatch.id ? <Loader2 size={20} className="animate-spin" /> : 
-                   myEntries.some(e => e.id === selectedMatch.id) ? "You're in the Battle" :
-                   (selectedMatch.current_slots >= (selectedMatch.tournament?.slots || 48)) ? "Registration Closed" : "Confirm Entry"}
+                  {joining === selectedMatch.id ? <Loader2 size={24} className="animate-spin" /> : 
+                   myEntries.some(e => e.id === selectedMatch.id) ? "READY FOR BATTLE" :
+                   (selectedMatch.current_slots >= (selectedMatch.tournament?.slots || 48)) ? "ARENA FULL" : "DEPLOY TO BATTLE"}
                 </motion.button>
               ) : (
                 <Link href={`/live?match=${selectedMatch.id}`} className="w-full">
                   <motion.button 
                     whileTap={{ scale: 0.95 }}
-                    className="w-full py-4 bg-[#5FD3BC] text-[#1A1A1A] rounded-xl text-[12px] font-bold uppercase tracking-wide shadow-lg flex items-center justify-center gap-2"
+                    className="w-full py-5 bg-[#5FD3BC] text-[#1A1A1A] rounded-[24px] text-sm font-black uppercase tracking-[0.2em] shadow-xl flex items-center justify-center gap-3"
                   >
-                    Watch Now
+                    WATCH LIVE
+                    <Play size={20} fill="#1A1A1A" />
                   </motion.button>
                 </Link>
               )}
@@ -487,23 +517,23 @@ function MatchesContent() {
       </AnimatePresence>
 
       <Dialog open={isInsufficientFundsOpen} onOpenChange={setIsInsufficientFundsOpen}>
-        <DialogContent className="p-0 border-none bg-white rounded-t-2xl sm:rounded-2xl overflow-hidden max-w-[100vw] sm:max-w-[400px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0 z-[100]">
-          <div className="bg-[#FEF2F2] p-8 relative">
-            <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center mb-4 shadow-sm">
-              <AlertCircle size={24} className="text-[#EF4444]" />
+        <DialogContent className="p-0 border-none bg-white rounded-[40px] overflow-hidden max-w-[95vw] sm:max-w-[420px] shadow-2xl fixed bottom-4 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-1/2 -translate-x-1/2 m-0 z-[100]">
+          <div className="bg-[#FFF1E6] p-10 relative">
+            <div className="w-16 h-16 rounded-[24px] bg-white flex items-center justify-center mb-6 shadow-xl rotate-6">
+              <AlertCircle size={32} className="text-orange-500" strokeWidth={3} />
             </div>
-            <DialogTitle className="text-[28px] font-heading text-[#1A1A1A] leading-none font-bold mb-2">Insufficient Funds</DialogTitle>
-            <DialogDescription className="text-[#1A1A1A]/60 text-[10px] font-bold uppercase tracking-wide">Top up to join the battle</DialogDescription>
+            <DialogTitle className="text-4xl font-heading text-[#1A1A1A] leading-none font-black mb-3 tracking-tighter">EMPTY TANK</DialogTitle>
+            <DialogDescription className="text-[#1A1A1A]/60 text-[10px] font-black uppercase tracking-[0.2em]">Add fuel to join the arena</DialogDescription>
           </div>
-          <div className="p-6 space-y-6">
-            <p className="text-sm font-medium text-[#6B7280]">Your balance (₹{walletBalance?.toLocaleString()}) is lower than the entry fee. Add funds to continue.</p>
+          <div className="p-8 space-y-8">
+            <p className="text-base font-bold text-[#6B7280] leading-relaxed">Your balance (₹{walletBalance?.toLocaleString()}) is insufficient for this entry pass.</p>
             
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-4">
               {[50, 100, 200, 500].map(amt => (
                 <Link key={amt} href={`/wallet?deposit=${amt}`} className="block">
                   <motion.button
                     whileTap={{ scale: 0.95 }}
-                    className="w-full py-4 rounded-lg bg-[#F5F5F5] border border-[#E5E7EB] text-[12px] font-bold uppercase tracking-wide text-[#1A1A1A]"
+                    className="w-full py-5 rounded-2xl bg-white border-2 border-[#E5E7EB] text-[11px] font-black uppercase tracking-widest text-[#1A1A1A] hover:bg-[#F5F5F5] transition-all shadow-sm"
                   >
                     + ₹{amt}
                   </motion.button>
@@ -514,9 +544,10 @@ function MatchesContent() {
             <Link href="/wallet" className="block">
               <motion.button 
                 whileTap={{ scale: 0.98 }}
-                className="w-full h-14 bg-[#1A1A1A] text-white rounded-lg text-[12px] font-bold uppercase tracking-wide shadow-lg flex items-center justify-center gap-2"
+                className="w-full h-16 bg-[#1A1A1A] text-white rounded-[24px] text-sm font-black uppercase tracking-[0.2em] shadow-2xl flex items-center justify-center gap-3"
               >
-                Go to Wallet
+                VISIT REFUEL STATION
+                <ChevronRight size={20} strokeWidth={3} />
               </motion.button>
             </Link>
           </div>
@@ -529,29 +560,29 @@ function MatchesContent() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-md flex items-center justify-center p-6"
+            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-xl flex items-center justify-center p-6"
           >
             <motion.div 
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              className="bg-white rounded-3xl p-8 max-w-xs w-full text-center shadow-2xl"
+              className="bg-white rounded-[40px] p-10 max-w-sm w-full text-center shadow-[0_30px_60px_rgba(0,0,0,0.3)] border-4 border-white"
             >
-              <div className="relative w-20 h-20 mx-auto mb-6">
-                <div className="absolute inset-0 border-4 border-[#5FD3BC]/20 rounded-full" />
+              <div className="relative w-24 h-24 mx-auto mb-8">
+                <div className="absolute inset-0 border-8 border-[#F5F5F5] rounded-full" />
                 <motion.div 
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  className="absolute inset-0 border-4 border-t-[#5FD3BC] rounded-full"
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-0 border-8 border-t-[#1A1A1A] border-r-transparent border-b-transparent border-l-transparent rounded-full"
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <Zap size={32} className="text-[#5FD3BC] animate-pulse" />
+                  <Zap size={40} className="text-[#1A1A1A] animate-pulse" />
                 </div>
               </div>
-              <h3 className="text-xl font-heading text-[#1A1A1A] font-bold mb-2">Processing Battle Entry</h3>
-              <p className="text-sm text-[#6B7280]">Verifying transaction and reserving your slot. Do not close this page.</p>
+              <h3 className="text-3xl font-heading text-[#1A1A1A] font-black mb-3 tracking-tighter">AUTHORIZING...</h3>
+              <p className="text-sm font-bold text-[#6B7280] leading-relaxed">Securing your deployment slot in the arena. Stay in line.</p>
               {transactionId && (
-                <div className="mt-4 p-2 bg-[#F0FDF4] rounded-lg border border-[#DCFCE7]">
-                  <p className="text-[10px] font-bold text-[#166534] uppercase tracking-wider">TX ID: {transactionId.slice(0, 12)}...</p>
+                <div className="mt-8 p-4 bg-[#D9F9E6] rounded-2xl border-2 border-[#1A1A1A] shadow-md">
+                  <p className="text-[10px] font-black text-[#1A1A1A] uppercase tracking-widest">TX AUTH: {transactionId.slice(0, 16)}</p>
                 </div>
               )}
             </motion.div>

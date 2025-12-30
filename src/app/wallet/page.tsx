@@ -14,7 +14,10 @@ import {
   CreditCard,
   Banknote,
   ChevronRight,
-  Loader2
+  Loader2,
+  ArrowUpRight,
+  Zap,
+  Target
 } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
@@ -39,7 +42,7 @@ function WalletContent() {
   
   const [depositAmount, setDepositAmount] = useState("");
   const [withdrawAmount, setWithdrawAmount] = useState("");
-
+  
   const fetchWalletData = useCallback(async () => {
     if (!user) return;
     setLoading(true);
@@ -207,102 +210,100 @@ function WalletContent() {
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
-      {/* Background is now global */}
-      
       <main className="pb-[80px] relative z-10">
-          <section className="px-4 pt-6 pb-4">
-            <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mb-2">
-              Financial Hub
+          <section className="px-5 pt-8 pb-4">
+            <p className="text-[12px] font-black text-[#6B7280] uppercase tracking-widest mb-2">
+              Financial Intelligence
             </p>
-            <h2 className="text-[32px] font-heading text-[#1A1A1A] leading-tight font-bold">
-              My Wallet
+            <h2 className="text-[36px] font-heading text-[#1A1A1A] leading-tight font-black tracking-tighter">
+              MY WALLET
             </h2>
-            <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mt-1">
-              Manage Winnings & Funds
-            </p>
           </section>
 
-        <div className="px-4 space-y-4">
-          <BentoCard variant="vibrant" className="p-6 relative overflow-hidden">
+        <div className="px-5 space-y-8">
+          <BentoCard variant="mint" className="p-8 relative overflow-hidden shadow-2xl border-none">
             <div className="relative z-10">
-              <div className="flex items-start justify-between mb-6">
+              <div className="flex items-start justify-between mb-8">
                   <div>
-                    <p className="text-[10px] font-bold text-[#1A1A1A]/60 uppercase tracking-wide mb-2">Available Balance</p>
+                    <p className="text-[10px] font-black text-[#1A1A1A]/60 uppercase tracking-widest mb-2">Available Balance</p>
                     <div className="flex items-baseline gap-1">
-                      <h2 className="text-[36px] font-heading text-[#1A1A1A] leading-none font-bold">
+                      <h2 className="text-[48px] font-heading text-[#1A1A1A] leading-none font-black tracking-tighter">
                         {formatCurrency(wallet?.balance || 0)}
                       </h2>
                     </div>
                   </div>
 
-                <div className="w-12 h-12 rounded-xl bg-[#1A1A1A] flex items-center justify-center shadow-lg">
-                  <WalletIcon size={22} className="text-[#5FD3BC]" />
+                <div className="w-14 h-14 rounded-2xl bg-[#1A1A1A] flex items-center justify-center shadow-xl">
+                  <WalletIcon size={28} className="text-[#A8E6CF]" strokeWidth={2.5} />
                 </div>
               </div>
 
-              <div className="flex items-center gap-6 pt-4 border-t border-[#1A1A1A]/10">
+              <div className="flex items-center gap-10 pt-6 border-t-2 border-[#1A1A1A]/5">
                 <div>
-                  <p className="text-[9px] font-bold text-[#1A1A1A]/60 uppercase tracking-wide mb-1">Lifetime Earnings</p>
-                  <p className="text-base font-heading text-[#1A1A1A] font-bold">₹{(wallet?.lifetime_earnings || 0).toLocaleString()}</p>
+                  <p className="text-[10px] font-black text-[#1A1A1A]/60 uppercase tracking-widest mb-1">Lifetime Loot</p>
+                  <p className="text-xl font-heading text-[#1A1A1A] font-black tracking-tight">₹{(wallet?.lifetime_earnings || 0).toLocaleString()}</p>
                 </div>
-                <div className="h-6 w-px bg-[#1A1A1A]/10" />
+                <div className="h-10 w-0.5 bg-[#1A1A1A]/5" />
                 <div>
-                  <p className="text-[9px] font-bold text-[#1A1A1A]/60 uppercase tracking-wide mb-1">Pending</p>
-                  <p className="text-base font-heading text-[#1A1A1A]/60 font-bold">₹{(wallet?.pending_withdrawals || 0).toLocaleString()}</p>
+                  <p className="text-[10px] font-black text-[#1A1A1A]/60 uppercase tracking-widest mb-1">In Transit</p>
+                  <p className="text-xl font-heading text-[#1A1A1A]/40 font-black tracking-tight">₹{(wallet?.pending_withdrawals || 0).toLocaleString()}</p>
                 </div>
               </div>
             </div>
             
-            <div className="absolute right-[-20px] bottom-[-20px] scale-[1.5] opacity-5 pointer-events-none">
-              <Banknote size={100} />
+            <div className="absolute right-[-30px] bottom-[-30px] scale-[1.8] opacity-[0.03] rotate-12 pointer-events-none">
+              <Banknote size={180} />
             </div>
           </BentoCard>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             <motion.button 
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsDepositOpen(true)}
-              className="bg-[#1A1A1A] text-white rounded-lg py-6 flex flex-col items-center gap-2 shadow-lg"
+              className="bg-[#1A1A1A] text-white rounded-[24px] py-8 flex flex-col items-center gap-3 shadow-xl hover:bg-black transition-all"
             >
-              <div className="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center">
-                <Plus size={24} strokeWidth={3} className="text-[#5FD3BC]" />
+              <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center shadow-inner">
+                <Plus size={28} strokeWidth={4} className="text-[#A8E6CF]" />
               </div>
-              <span className="text-[11px] font-bold uppercase tracking-wide">Add Funds</span>
+              <span className="text-[11px] font-black uppercase tracking-widest">Add Loot</span>
             </motion.button>
             <motion.button 
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsWithdrawOpen(true)}
-              className="bg-white text-[#1A1A1A] rounded-lg py-6 flex flex-col items-center gap-2 shadow-[2px_8px_16px_rgba(0,0,0,0.06)]"
+              className="bg-white text-[#1A1A1A] rounded-[24px] py-8 flex flex-col items-center gap-3 shadow-lg border-2 border-[#E5E7EB] hover:bg-[#F9FAFB] transition-all"
             >
-              <div className="w-12 h-12 rounded-lg bg-[#F5F5F5] flex items-center justify-center">
-                <ArrowDownLeft size={24} strokeWidth={3} className="text-[#1A1A1A]" />
+              <div className="w-14 h-14 rounded-2xl bg-[#F5F5F5] flex items-center justify-center shadow-sm">
+                <ArrowDownLeft size={28} strokeWidth={4} className="text-[#1A1A1A]" />
               </div>
-              <span className="text-[11px] font-bold uppercase tracking-wide">Withdraw</span>
+              <span className="text-[11px] font-black uppercase tracking-widest">Withdraw</span>
             </motion.button>
           </div>
 
-          <BentoCard variant="pastel" pastelColor="lavender" className="p-5 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-lg bg-white/40 flex items-center justify-center">
-                <CreditCard size={22} className="text-[#1A1A1A]" />
+          <BentoCard variant="blue" className="p-6 flex items-center justify-between shadow-xl border-none overflow-hidden relative group">
+            <div className="flex items-center gap-5 relative z-10">
+              <div className="w-14 h-14 rounded-2xl bg-white/40 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                <CreditCard size={28} className="text-[#1A1A1A]" strokeWidth={2.5} />
               </div>
               <div>
-                <h4 className="font-heading text-[#1A1A1A] font-bold text-base">Bank & UPI</h4>
-                <p className="text-[9px] font-bold text-[#1A1A1A]/60 uppercase tracking-wide mt-0.5">For Instant Withdrawals</p>
+                <h4 className="font-heading text-[#1A1A1A] font-black text-lg tracking-tight">Refuel Station</h4>
+                <p className="text-[10px] font-black text-[#1A1A1A]/60 uppercase tracking-widest mt-0.5">Instant UPI & Bank Connect</p>
               </div>
             </div>
             <motion.button 
               whileTap={{ scale: 0.9 }}
-              className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm"
+              className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-lg group-hover:translate-x-1 transition-transform"
             >
-              <ChevronRight size={20} className="text-[#1A1A1A]" />
+              <ChevronRight size={24} className="text-[#1A1A1A]" strokeWidth={3} />
             </motion.button>
+            <div className="absolute right-[-10px] top-[-10px] opacity-[0.05] group-hover:rotate-12 transition-transform">
+              <Zap size={100} />
+            </div>
           </BentoCard>
 
-          <section className="space-y-4 pt-2">
+          <section className="space-y-6 pt-2">
             <div className="flex items-center justify-between px-1">
-              <h3 className="text-xl font-heading text-[#1A1A1A] font-bold">History</h3>
-              <Link href="#" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide">See All</Link>
+              <h3 className="text-2xl font-heading text-[#1A1A1A] font-black tracking-tight">Ledger History</h3>
+              <Link href="#" className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest bg-white px-3 py-1.5 rounded-lg border border-[#E5E7EB]">All Activity</Link>
             </div>
 
             <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
@@ -310,10 +311,10 @@ function WalletContent() {
                 <button
                   key={f}
                   onClick={() => setTxFilter(f)}
-                  className={`px-5 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wide transition-all touch-target ${
+                  className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
                     txFilter === f 
-                      ? "bg-[#1A1A1A] text-white shadow-lg" 
-                      : "bg-white text-[#6B7280] shadow-[2px_8px_16px_rgba(0,0,0,0.06)]"
+                      ? "bg-[#1A1A1A] text-white shadow-xl scale-105" 
+                      : "bg-white text-[#6B7280] border-2 border-[#E5E7EB]"
                   }`}
                 >
                   {f}
@@ -321,67 +322,58 @@ function WalletContent() {
               ))}
             </div>
 
-                <div className="space-y-3">
-                  {loading ? (
-                    <div className="space-y-3">
-                      {[1, 2, 3].map((i) => (
-                        <div key={i} className="bg-white rounded-2xl p-4 flex items-center justify-between border border-[#E5E7EB]">
-                          <div className="flex items-center gap-4">
-                            <Skeleton className="w-12 h-12 rounded-xl" />
-                            <div className="space-y-2">
-                              <Skeleton className="h-4 w-32" />
-                              <Skeleton className="h-3 w-20" />
-                            </div>
-                          </div>
-                          <Skeleton className="w-16 h-6 rounded-md" />
-                        </div>
-                      ))}
-                    </div>
-                  ) : filteredTransactions.length > 0 ? (
-                  filteredTransactions.map((tx, i) => (
+            <div className="space-y-4">
+              {loading ? (
+                <div className="space-y-4">
+                  {[1, 2, 3].map((i) => (
+                    <Skeleton key={i} className="h-20 w-full rounded-[24px]" />
+                  ))}
+                </div>
+              ) : filteredTransactions.length > 0 ? (
+                filteredTransactions.map((tx, i) => {
+                  const colors = ["mint", "blue", "pink", "yellow"];
+                  const color = colors[i % colors.length] as any;
+                  return (
                     <motion.div 
                       key={tx.id}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.05 }}
                     >
-                      <BentoCard className="p-4 flex items-center justify-between group hover:border-[#5FD3BC] transition-colors">
-                        <div className="flex items-center gap-4">
-                          <div className={`w-14 h-14 rounded-xl flex items-center justify-center transition-colors ${
-                            ['deposit', 'prize'].includes(tx.type) ? 'bg-[#F0FDF4] group-hover:bg-[#5FD3BC]' : 'bg-[#FEF2F2] group-hover:bg-[#FF6B6B]'
-                          }`}>
-                            {tx.type === 'deposit' ? <Plus size={24} className="text-[#1A1A1A]" /> : 
-                             tx.type === 'withdrawal' ? <ArrowDownLeft size={24} className="text-[#1A1A1A]" /> : 
-                             <TrendingUp size={24} className="text-[#1A1A1A]" />}
+                      <BentoCard variant={color} className="p-5 flex items-center justify-between border-none shadow-md group hover:translate-y-[-2px] transition-transform">
+                        <div className="flex items-center gap-5">
+                          <div className={`w-14 h-14 rounded-2xl bg-white/40 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform`}>
+                            {tx.type === 'deposit' ? <Plus size={24} strokeWidth={3} className="text-[#1A1A1A]" /> : 
+                             tx.type === 'withdrawal' ? <ArrowDownLeft size={24} strokeWidth={3} className="text-[#1A1A1A]" /> : 
+                             <TrendingUp size={24} strokeWidth={3} className="text-[#1A1A1A]" />}
                           </div>
                           <div>
-                            <h4 className="text-[15px] font-heading font-bold text-[#1A1A1A] capitalize leading-tight mb-1">{tx.description || tx.type}</h4>
+                            <h4 className="text-base font-heading font-black text-[#1A1A1A] capitalize leading-tight mb-1 tracking-tight">{tx.description || tx.type}</h4>
                             <div className="flex items-center gap-3">
-                              <span className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide flex items-center gap-1 bg-[#F3F4F6] px-2 py-0.5 rounded">
-                                <Clock size={10} strokeWidth={3} /> {new Date(tx.created_at).toLocaleDateString([], { month: 'short', day: 'numeric' })}
+                              <span className="text-[10px] font-black text-[#1A1A1A]/60 uppercase tracking-widest flex items-center gap-1">
+                                <Clock size={12} strokeWidth={3} /> {new Date(tx.created_at).toLocaleDateString([], { month: 'short', day: 'numeric' })}
                               </span>
                               <StatusBadge 
                                 variant={tx.status === 'completed' ? 'completed' : tx.status === 'pending' ? 'pending' : 'failed'} 
-                                className="text-[9px] px-2 py-0.5"
+                                className="text-[9px] px-2 py-0.5 font-black uppercase tracking-widest"
                               />
                             </div>
                           </div>
                         </div>
-                        <p className={`text-xl font-heading font-bold ${
-                          ['deposit', 'prize'].includes(tx.type) ? 'text-[#1A1A1A]' : 'text-[#6B7280]'
-                        }`}>
+                        <p className={`text-2xl font-heading font-black tracking-tighter text-[#1A1A1A]`}>
                           {['deposit', 'prize'].includes(tx.type) ? '+' : '-'}₹{tx.amount}
                         </p>
                       </BentoCard>
                     </motion.div>
-                  ))
-                ) : (
-                <div className="py-16 text-center">
-                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
-                    <Banknote size={28} className="text-[#9CA3AF]" />
+                  );
+                })
+              ) : (
+                <div className="py-20 text-center bg-white rounded-[40px] shadow-2xl border-none">
+                  <div className="w-20 h-20 bg-[#F3F4F6] rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-xl">
+                    <Banknote size={40} className="text-[#9CA3AF]" />
                   </div>
-                  <h3 className="text-lg font-heading text-[#1A1A1A] font-bold">No Transactions</h3>
-                  <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide mt-1">History is currently clear</p>
+                  <h3 className="text-2xl font-heading text-[#1A1A1A] font-black tracking-tighter mb-2">LEDGER VOID</h3>
+                  <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest">Your transaction history is clear</p>
                 </div>
               )}
             </div>
@@ -390,32 +382,40 @@ function WalletContent() {
       </main>
 
       <Dialog open={isDepositOpen} onOpenChange={setIsDepositOpen}>
-        <DialogContent className="p-0 border-none bg-white rounded-t-2xl sm:rounded-2xl overflow-hidden max-w-[100vw] sm:max-w-[400px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0">
-          <div className="bg-[#5FD3BC] p-8 relative">
-            <DialogTitle className="text-[28px] font-heading text-[#1A1A1A] leading-none font-bold mb-2">Deposit</DialogTitle>
-            <DialogDescription className="text-[#1A1A1A]/60 text-[10px] font-bold uppercase tracking-wide">Fuel your arena journey</DialogDescription>
-          </div>
-          <div className="p-6 space-y-6">
-            <div className="space-y-3">
-              <label className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide ml-1">Enter Amount (₹)</label>
-              <Input 
-                type="number" 
-                placeholder="0" 
-                className="h-16 rounded-lg border border-[#E5E7EB] bg-white text-2xl font-heading font-bold px-6 focus:border-[#5FD3BC] focus:ring-2 focus:ring-[#5FD3BC]/20 text-[#1A1A1A] placeholder:text-[#9CA3AF]"
-                value={depositAmount}
-                onChange={(e) => setDepositAmount(e.target.value)}
-              />
+        <DialogContent className="p-0 border-none bg-white rounded-t-[40px] sm:rounded-[40px] overflow-hidden max-w-[100vw] sm:max-w-[420px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0 z-[100]">
+          <div className="bg-[#A8E6CF] p-10 relative">
+            <div className="w-16 h-16 rounded-[24px] bg-white flex items-center justify-center mb-6 shadow-xl rotate-6">
+              <Plus size={32} className="text-[#1A1A1A]" strokeWidth={4} />
             </div>
-            <div className="grid grid-cols-4 gap-2">
+            <DialogTitle className="text-4xl font-heading text-[#1A1A1A] leading-none font-black mb-3 tracking-tighter">ADD LOOT</DialogTitle>
+            <DialogDescription className="text-[#1A1A1A]/60 text-[10px] font-black uppercase tracking-[0.2em]">Fuel your next victory</DialogDescription>
+          </div>
+          <div className="p-8 space-y-8">
+            <div className="space-y-4">
+              <label className="text-[11px] font-black text-[#6B7280] uppercase tracking-widest ml-1">AMOUNT TO LOAD (₹)</label>
+              <div className="relative">
+                <Input 
+                  type="number" 
+                  placeholder="0" 
+                  className="h-20 rounded-[24px] border-4 border-[#F5F5F5] bg-white text-4xl font-heading font-black px-8 focus:border-[#A8E6CF] focus:ring-0 text-[#1A1A1A] placeholder:text-[#9CA3AF] shadow-inner transition-all"
+                  value={depositAmount}
+                  onChange={(e) => setDepositAmount(e.target.value)}
+                />
+                <div className="absolute right-6 top-1/2 -translate-y-1/2">
+                   <Zap size={24} className="text-[#A8E6CF]" />
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-4 gap-3">
               {[100, 200, 500, 1000].map(amt => (
                 <motion.button
                   key={amt}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setDepositAmount(String(amt))}
-                  className={`py-3 rounded-lg text-[11px] font-bold uppercase tracking-wide transition-all ${
+                  className={`py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all border-2 ${
                     depositAmount === String(amt) 
-                      ? 'bg-[#1A1A1A] text-white shadow-lg' 
-                      : 'bg-[#F5F5F5] text-[#1A1A1A] border border-[#E5E7EB]'
+                      ? 'bg-[#1A1A1A] text-white border-[#1A1A1A] shadow-xl' 
+                      : 'bg-white text-[#1A1A1A] border-[#E5E7EB] hover:bg-[#F9FAFB]'
                   }`}
                 >
                   ₹{amt}
@@ -426,42 +426,50 @@ function WalletContent() {
               whileTap={{ scale: 0.98 }}
               onClick={handleDeposit}
               disabled={processing}
-              className="w-full h-14 bg-[#5FD3BC] text-[#1A1A1A] rounded-lg text-[12px] font-bold uppercase tracking-wide shadow-lg flex items-center justify-center gap-2 disabled:bg-[#D1D5DB]"
+              className="w-full h-16 bg-[#1A1A1A] text-white rounded-[24px] text-sm font-black uppercase tracking-[0.2em] shadow-2xl flex items-center justify-center gap-3 disabled:bg-[#E5E7EB] transition-all"
             >
-              {processing ? <Loader2 className="w-6 h-6 animate-spin" /> : "Confirm Deposit"}
+              {processing ? <Loader2 className="w-8 h-8 animate-spin" /> : "SECURE DEPOSIT"}
             </motion.button>
           </div>
         </DialogContent>
       </Dialog>
 
       <Dialog open={isWithdrawOpen} onOpenChange={setIsWithdrawOpen}>
-        <DialogContent className="p-0 border-none bg-white rounded-t-2xl sm:rounded-2xl overflow-hidden max-w-[100vw] sm:max-w-[400px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0">
-          <div className="bg-[#F5F5F5] p-8 relative">
-            <DialogTitle className="text-[28px] font-heading text-[#1A1A1A] leading-none font-bold mb-2">Withdraw</DialogTitle>
-            <DialogDescription className="text-[#6B7280] text-[10px] font-bold uppercase tracking-wide">Claim your spoils of war</DialogDescription>
-          </div>
-          <div className="p-6 space-y-6">
-            <div className="space-y-3">
-              <label className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide ml-1">Withdraw Amount (₹)</label>
-              <Input 
-                type="number" 
-                placeholder="Min ₹100" 
-                className="h-16 rounded-lg border border-[#E5E7EB] bg-white text-2xl font-heading font-bold px-6 focus:border-[#5FD3BC] focus:ring-2 focus:ring-[#5FD3BC]/20 text-[#1A1A1A] placeholder:text-[#9CA3AF]"
-                value={withdrawAmount}
-                onChange={(e) => setWithdrawAmount(e.target.value)}
-              />
+        <DialogContent className="p-0 border-none bg-white rounded-t-[40px] sm:rounded-[40px] overflow-hidden max-w-[100vw] sm:max-w-[420px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0 z-[100]">
+          <div className="bg-[#FFD8B1] p-10 relative">
+             <div className="w-16 h-16 rounded-[24px] bg-white flex items-center justify-center mb-6 shadow-xl -rotate-6">
+              <ArrowDownLeft size={32} className="text-[#1A1A1A]" strokeWidth={4} />
             </div>
-            <div className="bg-[#FFEDD5] rounded-lg p-4 flex items-center gap-3">
-              <Clock size={20} strokeWidth={3} className="text-[#1A1A1A]" />
-              <p className="text-[10px] text-[#1A1A1A] font-bold uppercase tracking-wide leading-relaxed">Processing time: 24 hours to your linked bank account.</p>
+            <DialogTitle className="text-4xl font-heading text-[#1A1A1A] leading-none font-black mb-3 tracking-tighter">CLAIM SPOILS</DialogTitle>
+            <DialogDescription className="text-[#1A1A1A]/60 text-[10px] font-black uppercase tracking-[0.2em]">Liquidate your winnings</DialogDescription>
+          </div>
+          <div className="p-8 space-y-8">
+            <div className="space-y-4">
+              <label className="text-[11px] font-black text-[#6B7280] uppercase tracking-widest ml-1">WITHDRAW AMOUNT (₹)</label>
+              <div className="relative">
+                <Input 
+                  type="number" 
+                  placeholder="Min ₹100" 
+                  className="h-20 rounded-[24px] border-4 border-[#F5F5F5] bg-white text-4xl font-heading font-black px-8 focus:border-[#FFD8B1] focus:ring-0 text-[#1A1A1A] placeholder:text-[#9CA3AF] shadow-inner transition-all"
+                  value={withdrawAmount}
+                  onChange={(e) => setWithdrawAmount(e.target.value)}
+                />
+                <div className="absolute right-6 top-1/2 -translate-y-1/2">
+                   <Banknote size={24} className="text-[#FFD8B1]" />
+                </div>
+              </div>
+            </div>
+            <div className="bg-[#FFF1E6] rounded-[24px] p-6 flex items-start gap-4 border-2 border-[#FFD8B1]/20">
+              <Clock size={24} strokeWidth={3} className="text-[#1A1A1A] mt-1" />
+              <p className="text-[11px] text-[#1A1A1A] font-black uppercase tracking-widest leading-relaxed">Intelligence Report: Payouts are processed within 24 hours to your linked UPI/Bank.</p>
             </div>
             <motion.button 
               whileTap={{ scale: 0.98 }}
               onClick={handleWithdraw}
               disabled={processing}
-              className="w-full h-14 bg-[#1A1A1A] text-white rounded-lg text-[12px] font-bold uppercase tracking-wide shadow-lg flex items-center justify-center gap-2 disabled:bg-[#D1D5DB]"
+              className="w-full h-16 bg-[#1A1A1A] text-white rounded-[24px] text-sm font-black uppercase tracking-[0.2em] shadow-2xl flex items-center justify-center gap-3 disabled:bg-[#E5E7EB] transition-all"
             >
-              {processing ? <Loader2 className="w-6 h-6 animate-spin" /> : "Request Payout"}
+              {processing ? <Loader2 className="w-8 h-8 animate-spin" /> : "REQUEST PAYOUT"}
             </motion.button>
           </div>
         </DialogContent>

@@ -40,16 +40,16 @@ export function AdminNav() {
                 className="relative flex flex-col items-center gap-1"
               >
                 <div className={`relative z-10 p-2 rounded-xl transition-all duration-300 ${
-                  isActive 
-                    ? "bg-[#D7FD03] text-[#11130D] shadow-lg shadow-[#D7FD03]/30" 
-                    : "text-[#4A4B48] hover:text-[#11130D]"
-                }`}>
-                  <Icon size={18} strokeWidth={isActive ? 2.5 : 2} />
-                </div>
+                    isActive 
+                      ? "bg-[#A8E6CF] text-[#1A1A1A] shadow-lg shadow-[#A8E6CF]/30" 
+                      : "text-[#4A4B48] hover:text-[#11130D]"
+                  }`}>
+                    <Icon size={18} strokeWidth={isActive ? 2.5 : 2} />
+                  </div>
 
-                <span className={`text-[8px] font-bold uppercase tracking-wide transition-colors duration-200 ${
-                  isActive ? "text-[#11130D]" : "text-[#4A4B48]"
-                }`}>
+                  <span className={`text-[8px] font-black uppercase tracking-wide transition-colors duration-200 ${
+                    isActive ? "text-[#1A1A1A]" : "text-[#4A4B48]"
+                  }`}>
                   {item.label}
                 </span>
               </motion.div>

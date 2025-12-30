@@ -6,47 +6,56 @@ import { cn } from "@/lib/utils";
 interface BentoCardProps {
   children: React.ReactNode;
   className?: string;
-    variant?: "default" | "hero" | "pastel" | "dark" | "vibrant" | "glass";
-    pastelColor?: "yellow" | "mint" | "coral" | "lavender" | "peach" | "sky" | "rose" | "indigo" | "sage" | "salmon" | "lilac";
-    onClick?: () => void;
-  }
-  
-  export function BentoCard({ 
-    children, 
-    className, 
-    variant = "default",
-    pastelColor = "yellow",
-    onClick 
-  }: BentoCardProps) {
-    const pastelVariants = {
-      yellow: "bg-[#FEF08A]",
-      mint: "bg-[#C6F6D5]",
-      coral: "bg-[#FEE2E2]",
-      lavender: "bg-[#E9D5FF]",
-      peach: "bg-[#FED7AA]",
-      sky: "bg-[#BAE6FD]",
-      rose: "bg-[#FCE7F3]",
-      indigo: "bg-[#E0E7FF]",
-      sage: "bg-[#DCFCE7]",
-      salmon: "bg-[#FECACA]",
-      lilac: "bg-[#D8B4FE]",
-    };
-  
-    const variantClasses = {
-      default: "bg-white text-[#1A1A1A]",
-      dark: "bg-[#1A1A1A] text-white",
-      vibrant: "bg-[#5FD3BC] text-[#1A1A1A]",
-      glass: "bg-white/40 backdrop-blur-xl border border-white/40 text-[#1A1A1A]",
-      hero: `${pastelVariants[pastelColor]} text-[#1A1A1A]`,
-      pastel: `${pastelVariants[pastelColor]} text-[#1A1A1A]`,
-    };
+  variant?: "default" | "hero" | "pastel" | "dark" | "vibrant" | "glass" | "mint" | "peach" | "purple" | "blue" | "pink" | "yellow";
+  pastelColor?: "yellow" | "mint" | "coral" | "lavender" | "peach" | "sky" | "rose" | "indigo" | "sage" | "salmon" | "lilac" | "blue" | "pink" | "purple";
+  onClick?: () => void;
+}
+
+export function BentoCard({ 
+  children, 
+  className, 
+  variant = "default",
+  pastelColor = "yellow",
+  onClick 
+}: BentoCardProps) {
+  const pastelVariants = {
+    yellow: "bg-[#FEF3C7]",
+    mint: "bg-[#D9F9E6]",
+    coral: "bg-[#FFE4E6]",
+    lavender: "bg-[#F3E8FF]",
+    peach: "bg-[#FFD8B1]",
+    sky: "bg-[#E0F2FE]",
+    rose: "bg-[#FFE4E6]",
+    indigo: "bg-[#E0E7FF]",
+    sage: "bg-[#D9F9E6]",
+    salmon: "bg-[#FFE4E6]",
+    lilac: "bg-[#F3E8FF]",
+    blue: "bg-[#B3E5FC]",
+    pink: "bg-[#FFC0CB]",
+    purple: "bg-[#DCD3FF]",
+  };
+
+  const variantClasses = {
+    default: "bg-white text-[#1A1A1A]",
+    dark: "bg-[#1A1A1A] text-white",
+    vibrant: "bg-[#A8E6CF] text-[#1A1A1A]",
+    glass: "bg-white/40 backdrop-blur-xl border border-white/40 text-[#1A1A1A]",
+    hero: `${pastelVariants[pastelColor]} text-[#1A1A1A]`,
+    pastel: `${pastelVariants[pastelColor]} text-[#1A1A1A]`,
+    mint: "bg-[#D9F9E6] text-[#1A1A1A]",
+    peach: "bg-[#FFD8B1] text-[#1A1A1A]",
+    purple: "bg-[#DCD3FF] text-[#1A1A1A]",
+    blue: "bg-[#B3E5FC] text-[#1A1A1A]",
+    pink: "bg-[#FFC0CB] text-[#1A1A1A]",
+    yellow: "bg-[#FEF3C7] text-[#1A1A1A]",
+  };
 
   return (
     <motion.div
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
       className={cn(
-        "rounded-lg p-4 shadow-[2px_8px_16px_rgba(0,0,0,0.06)] border-none box-border transition-shadow duration-150 hover:shadow-[4px_12px_24px_rgba(0,0,0,0.12)]",
+        "rounded-[24px] p-6 shadow-sm border-none box-border transition-all duration-200",
         variantClasses[variant],
         className
       )}

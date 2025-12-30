@@ -4,11 +4,12 @@ import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, LogIn, Zap } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { BentoCard } from "@/components/ui/BentoCard";
 
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -28,160 +29,119 @@ export default function Signin() {
 
   const validate = () => {
     if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
-      toast.error("Please enter a valid email");
+      toast.error("Valid comm link required");
       return false;
     }
     if (!formData.password || formData.password.length < 6) {
-      toast.error("Password must be at least 6 characters");
+      toast.error("Access key must be 6+ characters");
       return false;
     }
     return true;
   };
 
-    const [cooldown, setCooldown] = useState(0);
-    const [failedAttempts, setFailedAttempts] = useState(0);
+  const handleSignin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
 
-    useEffect(() => {
-      if (cooldown > 0) {
-        const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
-        return () => clearTimeout(timer);
-      }
-    }, [cooldown]);
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
 
-    const handleSignin = async (e: React.FormEvent) => {
-      e.preventDefault();
-      if (!validate()) return;
-      if (cooldown > 0) {
-        toast.error(`Too many attempts. Please wait ${cooldown} seconds.`);
-        return;
-      }
+      if (error) throw error;
 
-      setLoading(true);
-      try {
-        const { error } = await supabase.auth.signInWithPassword({
-          email: formData.email,
-          password: formData.password,
-        });
-
-        if (error) {
-          setFailedAttempts(prev => prev + 1);
-          if (failedAttempts >= 2) {
-            setCooldown(30 * (failedAttempts - 1));
-          }
-          // ...
-
-
-      toast.success("Welcome back to Smartking's Arena!");
+      toast.success("Identity verified. Welcome back to the Arena.");
       router.push("/");
       router.refresh();
     } catch (error: any) {
-      toast.error("An unexpected error occurred. Please try again.");
-      console.error("Signin error:", error);
+      toast.error(error.message || "Authorization failed. Check your credentials.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main className="min-h-screen bg-[#F5F5F5] relative flex flex-col">
-      {/* Background is now global */}
-      
-      <div className="flex-1 flex flex-col justify-center px-4 py-8">
-        <div className="max-w-md w-full mx-auto space-y-8">
-          <section>
-            <h1 className="text-[32px] font-heading text-[#1A1A1A] leading-tight font-bold">
-              Welcome Back
-            </h1>
-            <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-[0.1em] mt-2">
-              Sign in to resume your legend
-            </p>
-          </section>
-
-          <div className="bg-white rounded-lg p-6 shadow-[2px_8px_16px_rgba(0,0,0,0.06)]">
-            <form onSubmit={handleSignin} className="space-y-6">
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <Label 
-                    htmlFor="email"
-                    className="form-label"
-                  >
-                    Email Address
-                  </Label>
-                  <Input 
-                    ref={emailInputRef}
-                    id="email"
-                    type="email"
-                    placeholder="name@example.com"
-                    autoComplete="email"
-                    className="form-input h-12 rounded-lg bg-white border border-[#E5E7EB] text-[#1A1A1A] font-medium px-4 focus:border-[#5FD3BC] focus:ring-2 focus:ring-[#5FD3BC]/20 placeholder:text-[#9CA3AF]"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <Label 
-                      htmlFor="password"
-                      className="form-label"
-                    >
-                      Password
-                    </Label>
-                    <Link href="#" className="text-[11px] font-bold text-[#6B7280] uppercase tracking-wide hover:text-[#1A1A1A]">
-                      Forgot?
-                    </Link>
-                  </div>
-                  <div className="relative">
-                    <Input 
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
-                      autoComplete="current-password"
-                      className="form-input h-12 rounded-lg bg-white border border-[#E5E7EB] text-[#1A1A1A] font-medium px-4 pr-12 focus:border-[#5FD3BC] focus:ring-2 focus:ring-[#5FD3BC]/20 placeholder:text-[#9CA3AF]"
-                      value={formData.password}
-                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      required
-                    />
-                    <button 
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#1A1A1A] transition-colors touch-target"
-                      aria-label={showPassword ? "Hide password" : "Show password"}
-                    >
-                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <motion.button
-                whileTap={{ scale: 0.98 }}
-                type="submit"
-                disabled={loading}
-                className="w-full h-12 bg-[#5FD3BC] text-[#1A1A1A] rounded-lg font-bold uppercase tracking-[0.1em] text-[12px] shadow-lg shadow-[#5FD3BC]/20 flex items-center justify-center relative overflow-hidden disabled:bg-[#D1D5DB] disabled:cursor-not-allowed transition-colors"
-              >
-                <span className={loading ? "opacity-0" : "opacity-100 transition-opacity"}>Sign In</span>
-                {loading && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Loader2 className="w-5 h-5 animate-spin text-[#1A1A1A]" />
-                  </div>
-                )}
-              </motion.button>
-
-              <div className="pt-4 text-center">
-                <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide">
-                  New to the Arena?{" "}
-                  <Link href="/signup" className="text-[#1A1A1A] font-bold underline decoration-[#5FD3BC] decoration-2 underline-offset-4">
-                    Create Account
-                  </Link>
-                </p>
-              </div>
-            </form>
+    <main className="min-h-screen bg-[#F5F5F5] flex flex-col items-center justify-center p-5 selection:bg-[#5FD3BC]/30">
+      <div className="w-full max-w-md space-y-8">
+        <section className="text-center">
+          <div className="w-20 h-20 bg-[#DCD3FF] rounded-[32px] flex items-center justify-center mx-auto mb-6 shadow-xl rotate-[-6deg] group hover:rotate-0 transition-transform">
+            <LogIn size={40} className="text-[#1A1A1A]" strokeWidth={2.5} />
           </div>
-        </div>
+          <h1 className="text-[44px] font-heading text-[#1A1A1A] leading-[0.9] font-black tracking-tighter">
+            AUTHORIZE
+          </h1>
+          <p className="text-[11px] font-black text-[#6B7280] uppercase tracking-[0.2em] mt-3">
+            Re-establish secure connection
+          </p>
+        </section>
+
+        <BentoCard className="p-8 shadow-2xl rounded-[40px] border-none bg-white relative overflow-hidden group">
+          <form onSubmit={handleSignin} className="space-y-6 relative z-10">
+            <div className="space-y-3">
+              <Label className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest ml-1">COMM LINK (EMAIL)</Label>
+              <Input 
+                ref={emailInputRef}
+                type="email"
+                placeholder="intel@arena.com"
+                className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 focus:border-[#5FD3BC] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                required
+              />
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex justify-between items-center ml-1">
+                <Label className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest">ACCESS KEY (PASSWORD)</Label>
+                <Link href="#" className="text-[9px] font-black text-[#9CA3AF] uppercase tracking-widest hover:text-[#1A1A1A] transition-colors">
+                  Lost Key?
+                </Link>
+              </div>
+              <div className="relative">
+                <Input 
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Secret Code"
+                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 pr-14 focus:border-[#5FD3BC] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  required
+                />
+                <button 
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-5 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#1A1A1A] transition-colors"
+                >
+                  {showPassword ? <EyeOff size={24} strokeWidth={2.5} /> : <Eye size={24} strokeWidth={2.5} />}
+                </button>
+              </div>
+            </div>
+
+            <motion.button
+              whileTap={{ scale: 0.98 }}
+              type="submit"
+              disabled={loading}
+              className="w-full h-16 bg-[#1A1A1A] text-white rounded-[24px] font-black uppercase tracking-[0.2em] text-sm shadow-2xl flex items-center justify-center relative overflow-hidden disabled:bg-[#E5E7EB] transition-all hover:bg-black"
+            >
+              {loading ? <Loader2 className="w-8 h-8 animate-spin" /> : "VERIFY IDENTITY"}
+            </motion.button>
+
+            <div className="pt-4 text-center">
+              <p className="text-[11px] font-black text-[#6B7280] uppercase tracking-widest">
+                NEW OPERATIVE?{" "}
+                <Link href="/signup" className="text-[#1A1A1A] underline decoration-[#5FD3BC] decoration-4 underline-offset-4 hover:decoration-[#FEF3C7] transition-all">
+                  ENLIST TODAY
+                </Link>
+              </p>
+            </div>
+          </form>
+          
+          <div className="absolute right-[-40px] bottom-[-40px] opacity-[0.03] rotate-12 group-hover:rotate-0 transition-transform duration-700 pointer-events-none">
+            <Zap size={240} />
+          </div>
+        </BentoCard>
       </div>
-      
-      <footer className="h-8" />
     </main>
   );
 }

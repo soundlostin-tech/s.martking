@@ -24,9 +24,13 @@ import {
   Swords,
   LogOut,
   Image as ImageIcon,
-  Video
+  Video,
+  Award,
+  Crown,
+  Zap,
+  Youtube
 } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
@@ -54,6 +58,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { LoadingScreen } from "@/components/ui/LoadingScreen";
 
 interface ProfileExtended {
   id: string;
@@ -74,8 +79,8 @@ interface ProfileExtended {
   mvp_count: number;
 }
 
-export default function Profile() {
-  const { user, profile: authProfile, loading: authLoading, signOut } = useAuth();
+function ProfileContent() {
+  const { user, profile: authProfile, loading: authLoading, signOut } = useAuth(true);
   const [activeTab, setActiveTab] = useState("grid");
   const [stories, setStories] = useState<any[]>([]);
   const [matches, setMatches] = useState<any[]>([]);
@@ -116,7 +121,6 @@ export default function Profile() {
 
   const fetchData = async () => {
     try {
-      // Fetch stories
       const { data: storiesData } = await supabase
         .from("stories")
         .select("*")
@@ -125,7 +129,6 @@ export default function Profile() {
       
       setStories(storiesData || []);
 
-      // Fetch matches via participants
       const { data: participantsData } = await supabase
         .from("participants")
         .select(`
@@ -273,71 +276,54 @@ export default function Profile() {
     }
   };
 
-  if (authLoading || loading) {
-    return (
-      <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-[#5FD3BC] animate-spin" />
-      </div>
-    );
-  }
-
-  const stats = [
-    { label: "Matches", value: profile?.matches_played || 0, color: "bg-white", textColor: "text-blue-500" },
-    { label: "Followers", value: profile?.followers_count || 0, color: "bg-white", textColor: "text-[#5FD3BC]" },
-    { label: "Following", value: profile?.following_count || 0, color: "bg-white", textColor: "text-purple-500" }
-  ];
+  if (authLoading || loading) return null;
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] font-sans selection:bg-[#5FD3BC]/30">
-      <main className="pb-[80px]">
-        {/* New Style Header Section */}
+    <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
+      <main className="pb-[80px] relative z-10">
         <section className="px-5 pt-8 pb-4">
-          <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mb-2">
-            Arena Identity
+          <p className="text-[12px] font-black text-[#6B7280] uppercase tracking-widest mb-2">
+            Arena Intelligence
           </p>
           <div className="flex items-center justify-between">
-            <h2 className="text-[32px] font-heading text-[#1A1A1A] leading-tight font-bold">
-              My Profile
+            <h2 className="text-[36px] font-heading text-[#1A1A1A] leading-tight font-black tracking-tighter">
+              MY PROFILE
             </h2>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="w-10 h-10 rounded-full bg-white border border-[#E5E7EB] flex items-center justify-center text-[#6B7280] hover:bg-gray-50 shadow-sm">
-                  <Settings size={20} />
+                <button className="w-12 h-12 rounded-2xl bg-white border-2 border-[#E5E7EB] flex items-center justify-center text-[#1A1A1A] hover:bg-gray-50 shadow-lg transition-all">
+                  <Settings size={22} strokeWidth={3} />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2">
-                <DropdownMenuLabel className="text-[10px] font-bold text-[#6B7280] uppercase tracking-widest px-3 py-2">Account Settings</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => setIsEditDialogOpen(true)} className="rounded-xl px-3 py-2.5 cursor-pointer">
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span className="font-bold text-sm">Edit Profile</span>
+              <DropdownMenuContent align="end" className="w-64 rounded-[32px] p-3 shadow-2xl border-none mt-2">
+                <DropdownMenuLabel className="text-[10px] font-black text-[#6B7280] uppercase tracking-[0.2em] px-4 py-3">Operations</DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-[#1A1A1A]/5" />
+                <DropdownMenuItem onClick={() => setIsEditDialogOpen(true)} className="rounded-2xl px-4 py-3 cursor-pointer focus:bg-[#F5F5F5]">
+                  <Settings className="mr-3 h-5 w-5 text-[#1A1A1A]" />
+                  <span className="font-black text-sm uppercase tracking-widest">Configuration</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleShare} className="rounded-xl px-3 py-2.5 cursor-pointer">
-                  <Share2 className="mr-2 h-4 w-4" />
-                  <span className="font-bold text-sm">Share Profile</span>
+                <DropdownMenuItem onClick={handleShare} className="rounded-2xl px-4 py-3 cursor-pointer focus:bg-[#F5F5F5]">
+                  <Share2 className="mr-3 h-5 w-5 text-[#1A1A1A]" />
+                  <span className="font-black text-sm uppercase tracking-widest">Broadcast</span>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={signOut} className="rounded-xl px-3 py-2.5 cursor-pointer text-red-500 focus:text-red-500">
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span className="font-bold text-sm">Log Out</span>
+                <DropdownMenuSeparator className="bg-[#1A1A1A]/5" />
+                <DropdownMenuItem onClick={signOut} className="rounded-2xl px-4 py-3 cursor-pointer text-red-500 focus:text-red-500 focus:bg-red-50">
+                  <LogOut className="mr-3 h-5 w-5" />
+                  <span className="font-black text-sm uppercase tracking-widest">Terminate</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mt-1">
-            Statistics & Reputation
-          </p>
         </section>
 
-        {/* Profile Header Section */}
-        <section className="px-5 pt-4 pb-6">
-          <div className="flex items-center gap-6">
+        <section className="px-5 pt-4 pb-8">
+          <div className="flex items-center gap-8">
             <div className="relative">
-              <div className="w-24 h-24 rounded-3xl p-[3px] bg-gradient-to-tr from-[#5FD3BC] via-emerald-400 to-teal-400 shadow-[0_10px_20px_rgba(95,211,188,0.2)]">
-                <div className="w-full h-full rounded-[21px] bg-white p-[3px]">
-                  <Avatar className="w-full h-full rounded-[18px]">
+              <div className="w-28 h-28 rounded-[40px] p-[4px] bg-[#1A1A1A] shadow-2xl rotate-3 transition-transform hover:rotate-0">
+                <div className="w-full h-full rounded-[36px] bg-white p-[4px]">
+                  <Avatar className="w-full h-full rounded-[32px]">
                     <AvatarImage src={profile?.avatar_url || ""} />
-                    <AvatarFallback className="bg-[#F3F4F6] text-2xl font-heading font-bold text-[#9CA3AF] uppercase">
+                    <AvatarFallback className="bg-[#F3F4F6] text-3xl font-heading font-black text-[#9CA3AF] uppercase">
                       {profile?.full_name?.charAt(0) || "?"}
                     </AvatarFallback>
                   </Avatar>
@@ -350,225 +336,134 @@ export default function Profile() {
                 className="hidden" 
                 accept="image/*"
               />
-              <button 
+              <motion.button 
+                whileTap={{ scale: 0.9 }}
                 onClick={() => avatarInputRef.current?.click()}
                 disabled={isUploadingAvatar}
-                className="absolute -bottom-1 -right-1 w-8 h-8 bg-[#1A1A1A] rounded-xl border-4 border-white flex items-center justify-center text-white shadow-lg"
+                className="absolute -bottom-2 -right-2 w-10 h-10 bg-[#1A1A1A] rounded-2xl border-4 border-white flex items-center justify-center text-white shadow-xl z-20"
               >
-                {isUploadingAvatar ? <Loader2 size={14} className="animate-spin" /> : <Camera size={14} strokeWidth={3} />}
-              </button>
+                {isUploadingAvatar ? <Loader2 size={18} className="animate-spin" /> : <Camera size={18} strokeWidth={3} />}
+              </motion.button>
             </div>
             
             <div className="flex-1">
-              <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-2xl font-heading font-black tracking-tight text-[#1A1A1A]">{profile?.full_name || "Arena Player"}</h2>
-                <div className="bg-[#5FD3BC] text-white px-2.5 py-0.5 rounded-lg">
-                  <span className="text-[9px] font-bold uppercase tracking-wider">{profile?.role || "Player"}</span>
-                </div>
+              <div className="flex flex-col gap-1">
+                <h2 className="text-3xl font-heading font-black tracking-tighter text-[#1A1A1A]">{profile?.full_name || "Arena Agent"}</h2>
+                <p className="text-sm text-[#6B7280] font-black uppercase tracking-widest">@{profile?.username || "identity_unknown"}</p>
               </div>
-              <p className="text-sm text-[#6B7280] font-bold mt-1">@{profile?.username || "username"}</p>
-              
-              <div className="flex gap-2 mt-4">
-                <Link href="/wallet" className="flex items-center gap-1.5 bg-white border border-[#E5E7EB] px-3 py-1.5 rounded-lg shadow-sm hover:bg-[#F9FAFB] transition-colors">
-                  <div className="w-4 h-4 rounded bg-emerald-100 flex items-center justify-center">
-                    <TrendingUp size={10} className="text-emerald-600" />
-                  </div>
-                  <span className="text-[10px] font-bold text-[#1A1A1A]">₹{profile?.total_posts || 0}</span>
-                </Link>
-                <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-                  <DialogTrigger asChild>
-                    <button className="flex items-center gap-1.5 bg-white border border-[#E5E7EB] px-3 py-1.5 rounded-lg shadow-sm hover:bg-[#F9FAFB] transition-colors">
-                      <Settings size={12} className="text-[#6B7280]" />
-                      <span className="text-[10px] font-bold text-[#1A1A1A]">Edit Profile</span>
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="bg-white border-none text-[#1A1A1A] max-w-[95%] sm:max-w-[425px] rounded-3xl shadow-2xl">
-                    <DialogHeader>
-                      <DialogTitle className="text-2xl font-heading font-bold">Edit Profile</DialogTitle>
-                      <DialogDescription className="text-[#6B7280] font-medium">
-                        Update your public arena presence.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="grid gap-6 py-6 max-h-[60vh] overflow-y-auto no-scrollbar pr-1">
-                      <div className="grid gap-2">
-                        <Label htmlFor="full_name" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">Display Name</Label>
-                        <Input 
-                          id="full_name" 
-                          value={editForm.full_name} 
-                          onChange={(e) => setEditForm({...editForm, full_name: e.target.value})}
-                          className="bg-[#F3F4F6] border-none h-12 rounded-xl focus:ring-2 focus:ring-[#5FD3BC]/50 font-medium" 
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="username" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">Username</Label>
-                        <Input 
-                          id="username" 
-                          value={editForm.username} 
-                          onChange={(e) => setEditForm({...editForm, username: e.target.value})}
-                          className="bg-[#F3F4F6] border-none h-12 rounded-xl focus:ring-2 focus:ring-[#5FD3BC]/50 font-medium" 
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="bio" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">Arena Bio</Label>
-                        <Textarea 
-                          id="bio" 
-                          value={editForm.bio} 
-                          onChange={(e) => setEditForm({...editForm, bio: e.target.value})}
-                          className="bg-[#F3F4F6] border-none rounded-xl focus:ring-2 focus:ring-[#5FD3BC]/50 min-h-[100px] font-medium" 
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="youtube" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">YouTube Channel</Label>
-                        <Input 
-                          id="youtube" 
-                          value={editForm.youtube_link} 
-                          onChange={(e) => setEditForm({...editForm, youtube_link: e.target.value})}
-                          placeholder="https://youtube.com/@channel"
-                          className="bg-[#F3F4F6] border-none h-12 rounded-xl focus:ring-2 focus:ring-[#5FD3BC]/50 font-medium" 
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="team_site" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">Team Website</Label>
-                        <Input 
-                          id="team_site" 
-                          value={editForm.team_site} 
-                          onChange={(e) => setEditForm({...editForm, team_site: e.target.value})}
-                          placeholder="https://yourteam.com"
-                          className="bg-[#F3F4F6] border-none h-12 rounded-xl focus:ring-2 focus:ring-[#5FD3BC]/50 font-medium" 
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="tournament_stats_url" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">Stats URL</Label>
-                        <Input 
-                          id="tournament_stats_url" 
-                          value={editForm.tournament_stats_url} 
-                          onChange={(e) => setEditForm({...editForm, tournament_stats_url: e.target.value})}
-                          placeholder="https://stats-link.com"
-                          className="bg-[#F3F4F6] border-none h-12 rounded-xl focus:ring-2 focus:ring-[#5FD3BC]/50 font-medium" 
-                        />
-                      </div>
-                    </div>
-                    <DialogFooter className="mt-2">
-                      <Button 
-                        onClick={handleSaveProfile} 
-                        disabled={isSaving}
-                        className="w-full bg-[#1A1A1A] hover:bg-black text-white font-bold h-14 rounded-2xl shadow-lg"
-                      >
-                        {isSaving ? <Loader2 className="animate-spin" /> : "Save Changes"}
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
+              <div className="mt-4 inline-flex items-center gap-2 bg-[#A8E6CF] text-[#1A1A1A] px-4 py-1.5 rounded-full shadow-md">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em]">{profile?.role || "Player"}</span>
               </div>
             </div>
           </div>
 
-          <div className="mt-8 grid grid-cols-3 gap-3">
-            {stats.map((stat, i) => (
-              <div key={i} className={`text-center py-4 px-2 rounded-2xl bg-white border border-[#E5E7EB] shadow-[2px_8px_16px_rgba(0,0,0,0.04)]`}>
-                <p className={`text-xl font-heading font-black ${stat.textColor}`}>{stat.value}</p>
-                <p className="text-[9px] uppercase tracking-widest text-[#6B7280] font-bold mt-1">{stat.label}</p>
-              </div>
+          <div className="mt-10 grid grid-cols-3 gap-4">
+            {[
+              { label: "Battles", value: profile?.matches_played || 0, color: "mint", icon: Swords },
+              { label: "Allies", value: profile?.followers_count || 0, color: "blue", icon: Users },
+              { label: "Targeting", value: profile?.following_count || 0, color: "pink", icon: Target }
+            ].map((stat, i) => (
+              <BentoCard key={i} variant={stat.color as any} className="text-center py-6 px-2 shadow-xl border-none">
+                <stat.icon size={16} className="mx-auto mb-2 opacity-40" />
+                <p className={`text-2xl font-heading font-black text-[#1A1A1A] tracking-tighter`}>{stat.value}</p>
+                <p className="text-[9px] uppercase tracking-widest text-[#1A1A1A]/60 font-black mt-1">{stat.label}</p>
+              </BentoCard>
             ))}
           </div>
 
-          <div className="mt-8 space-y-4">
+          <div className="mt-8 space-y-6">
             {profile?.bio && (
-              <p className="text-sm text-[#4B5563] font-medium leading-relaxed bg-white/50 p-4 rounded-2xl border border-[#E5E7EB]">
+              <div className="text-sm text-[#4B5563] font-bold leading-relaxed bg-white p-6 rounded-[32px] border-2 border-[#E5E7EB] shadow-lg relative overflow-hidden group">
                 {profile.bio}
-              </p>
+                <div className="absolute right-[-10px] bottom-[-10px] opacity-[0.03] group-hover:rotate-12 transition-transform">
+                  <Zap size={60} />
+                </div>
+              </div>
             )}
             <div className="flex flex-wrap gap-3">
               {profile?.youtube_link && (
-                <a href={profile.youtube_link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-[#FF0000]/5 text-[#FF0000] px-4 py-2 rounded-xl text-xs font-bold border border-[#FF0000]/10 hover:bg-[#FF0000]/10 transition-all">
-                  <Play size={14} fill="#FF0000" />
-                  <span>YouTube</span>
+                <a href={profile.youtube_link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[#FF0000] text-white px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:scale-105 transition-transform">
+                  <Youtube size={16} strokeWidth={3} />
+                  <span>INTEL FEED</span>
                 </a>
               )}
               {profile?.team_site && (
-                <a href={profile.team_site} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-2 rounded-xl text-xs font-bold border border-blue-100 hover:bg-blue-100 transition-all">
-                  <ExternalLink size={14} />
-                  <span>Team Site</span>
+                <a href={profile.team_site} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[#1A1A1A] text-white px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:scale-105 transition-transform">
+                  <ExternalLink size={16} strokeWidth={3} />
+                  <span>HQ SITE</span>
                 </a>
               )}
               {profile?.tournament_stats_url && (
-                <a href={profile.tournament_stats_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-purple-50 text-purple-600 px-4 py-2 rounded-xl text-xs font-bold border border-purple-100 hover:bg-purple-100 transition-all">
-                  <Trophy size={14} />
-                  <span>Stats</span>
+                <a href={profile.tournament_stats_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[#FEF3C7] text-[#1A1A1A] px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:scale-105 transition-transform">
+                  <Trophy size={16} strokeWidth={3} />
+                  <span>RECORDS</span>
                 </a>
               )}
             </div>
           </div>
         </section>
 
-        {/* Performance Metrics Section */}
-        <section className="px-5 mt-4">
-          <BentoCard variant="vibrant" className="p-6 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-4 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity">
-              <BarChart3 size={120} className="text-[#1A1A1A]" />
+        <section className="px-5 pt-4">
+          <BentoCard variant="purple" className="p-8 relative overflow-hidden group shadow-2xl">
+            <div className="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:scale-110 transition-transform">
+              <BarChart3 size={140} className="text-[#1A1A1A]" />
             </div>
             <div className="relative z-10">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-white/50 backdrop-blur-sm flex items-center justify-center border border-white/50 shadow-sm">
-                    <TrendingUp size={20} className="text-[#1A1A1A]" />
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-[20px] bg-white/50 flex items-center justify-center shadow-sm">
+                    <TrendingUp size={24} className="text-[#1A1A1A]" />
                   </div>
                   <div>
-                    <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A]/60">Arena Analytics</h3>
-                    <p className="text-sm font-heading font-bold text-[#1A1A1A]">Performance Metrics</p>
+                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#1A1A1A]/60">MISSION ANALYSIS</h3>
+                    <p className="text-xl font-heading font-black text-[#1A1A1A] tracking-tight">Efficiency Metrics</p>
                   </div>
                 </div>
-                <Link href="/analytics" className="w-8 h-8 rounded-full bg-[#1A1A1A] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg">
-                  <ChevronRight size={18} />
+                <Link href="/analytics" className="w-10 h-10 rounded-full bg-[#1A1A1A] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-xl">
+                  <ChevronRight size={20} strokeWidth={3} />
                 </Link>
               </div>
               <div className="grid grid-cols-3 gap-4">
-                <div className="bg-white/40 backdrop-blur-md rounded-2xl p-4 border border-white/40 shadow-sm">
-                  <p className="text-[9px] text-[#6B7280] font-bold uppercase tracking-tight mb-1">Win Rate</p>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-2xl font-heading font-black text-[#1A1A1A]">{profile?.win_rate || 0}%</span>
-                  </div>
+                <div className="bg-white/40 backdrop-blur-md rounded-[24px] p-5 border border-white/40 shadow-sm">
+                  <p className="text-[9px] text-[#6B7280] font-black uppercase tracking-widest mb-2">WIN RATIO</p>
+                  <span className="text-3xl font-heading font-black text-[#1A1A1A] tracking-tighter">{profile?.win_rate || 0}%</span>
                 </div>
-                <div className="bg-white/40 backdrop-blur-md rounded-2xl p-4 border border-white/40 shadow-sm">
-                  <p className="text-[9px] text-[#6B7280] font-bold uppercase tracking-tight mb-1">Arena Rank</p>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-2xl font-heading font-black text-[#1A1A1A]">#{profile?.rank || "---"}</span>
-                  </div>
+                <div className="bg-white/40 backdrop-blur-md rounded-[24px] p-5 border border-white/40 shadow-sm">
+                  <p className="text-[9px] text-[#6B7280] font-black uppercase tracking-widest mb-2">ARENA RANK</p>
+                  <span className="text-3xl font-heading font-black text-[#1A1A1A] tracking-tighter">#{profile?.rank || "--"}</span>
                 </div>
-                <div className="bg-white/40 backdrop-blur-md rounded-2xl p-4 border border-white/40 shadow-sm">
-                  <p className="text-[9px] text-[#6B7280] font-bold uppercase tracking-tight mb-1">MVP Count</p>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-2xl font-heading font-black text-[#1A1A1A]">{profile?.mvp_count || 0}</span>
-                  </div>
+                <div className="bg-white/40 backdrop-blur-md rounded-[24px] p-5 border border-white/40 shadow-sm">
+                  <p className="text-[9px] text-[#6B7280] font-black uppercase tracking-widest mb-2">MVP TITLES</p>
+                  <span className="text-3xl font-heading font-black text-[#1A1A1A] tracking-tighter">{profile?.mvp_count || 0}</span>
                 </div>
               </div>
             </div>
           </BentoCard>
         </section>
 
-        {/* Action Buttons */}
-        <section className="px-5 mt-8 flex gap-3">
-          <Button 
+        <section className="px-5 mt-10 flex gap-4">
+          <motion.button 
+            whileTap={{ scale: 0.95 }}
             onClick={() => setIsEditDialogOpen(true)}
-            className="flex-[2] bg-[#1A1A1A] hover:bg-black text-white h-14 rounded-2xl text-sm font-bold shadow-xl transition-all active:scale-[0.98]"
+            className="flex-[2] bg-[#1A1A1A] text-white h-16 rounded-[24px] text-[12px] font-black uppercase tracking-[0.2em] shadow-2xl flex items-center justify-center gap-3"
           >
-            Edit Arena Profile
-          </Button>
-          <Button 
-            variant="outline"
+            CONFIGURE IDENTITY
+          </motion.button>
+          <motion.button 
+            whileTap={{ scale: 0.95 }}
             onClick={handleShare}
-            className="flex-1 bg-white border-[#E5E7EB] hover:bg-[#F9FAFB] h-14 rounded-2xl text-sm font-bold shadow-sm transition-all active:scale-[0.98]"
+            className="flex-1 bg-white border-2 border-[#E5E7EB] text-[#1A1A1A] h-16 rounded-[24px] text-[12px] font-black uppercase tracking-[0.2em] shadow-lg flex items-center justify-center"
           >
-            Share
-          </Button>
+            BROADCAST
+          </motion.button>
         </section>
 
-        {/* Highlights Strip */}
         <section className="mt-12">
-          <div className="px-5 mb-4">
-            <h3 className="text-sm font-heading font-bold text-[#1A1A1A] uppercase tracking-widest">Highlights</h3>
+          <div className="px-5 mb-6 flex justify-between items-center">
+            <h3 className="text-sm font-black text-[#1A1A1A] uppercase tracking-[0.2em]">INTEL LOGS</h3>
+            <div className="h-0.5 flex-1 bg-[#1A1A1A]/5 mx-4" />
           </div>
-          <div className="flex gap-6 overflow-x-auto no-scrollbar px-5 pb-4">
+          <div className="flex gap-6 overflow-x-auto no-scrollbar px-5 pb-6">
             <div className="flex flex-col items-center gap-3">
               <input 
                 type="file" 
@@ -577,176 +472,164 @@ export default function Profile() {
                 className="hidden" 
                 accept="image/*,video/*"
               />
-              <button 
+              <motion.button 
+                whileTap={{ scale: 0.92 }}
                 onClick={() => clipInputRef.current?.click()}
                 disabled={isUploadingClip}
-                className="w-[72px] h-[72px] rounded-[28px] border-2 border-dashed border-[#D1D5DB] flex items-center justify-center group hover:border-[#5FD3BC] transition-all cursor-pointer bg-white"
+                className="w-20 h-20 rounded-[32px] border-4 border-dashed border-[#D1D5DB] flex items-center justify-center group hover:border-[#A8E6CF] transition-all cursor-pointer bg-white shadow-sm"
               >
-                {isUploadingClip ? <Loader2 size={24} className="animate-spin text-[#5FD3BC]" /> : <Plus size={24} className="text-[#9CA3AF] group-hover:text-[#5FD3BC] transition-all" />}
-              </button>
-              <span className="text-[9px] font-bold text-[#6B7280] uppercase tracking-widest">Add Clip</span>
+                {isUploadingClip ? <Loader2 size={28} className="animate-spin text-[#5FD3BC]" /> : <Plus size={28} strokeWidth={4} className="text-[#9CA3AF] group-hover:text-[#5FD3BC] transition-all" />}
+              </motion.button>
+              <span className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest">ADD LOG</span>
             </div>
             {stories.map((h, i) => (
               <div key={i} className="flex flex-col items-center gap-3">
-                <div className="w-[72px] h-[72px] rounded-[28px] p-[3px] bg-gradient-to-tr from-purple-400 via-[#5FD3BC] to-teal-400 shadow-md">
-                  <div className="w-full h-full rounded-[25px] bg-white p-[2px]">
-                    <div className="w-full h-full rounded-[23px] overflow-hidden relative bg-[#F3F4F6]">
+                <div className="w-20 h-20 rounded-[32px] p-[4px] bg-[#1A1A1A] shadow-xl rotate-[-2deg] transition-transform hover:rotate-0">
+                  <div className="w-full h-full rounded-[28px] bg-white p-[2px]">
+                    <div className="w-full h-full rounded-[26px] overflow-hidden relative bg-[#F3F4F6]">
                       <img 
                         src={h.media_url} 
                         alt="" 
                         className="w-full h-full object-cover"
                       />
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/10">
-                        {h.media_type === "video" ? <Play size={16} fill="white" className="text-white" /> : <ImageIcon size={16} className="text-white" />}
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                        {h.media_type === "video" ? <Play size={20} fill="white" className="text-white" /> : <ImageIcon size={20} className="text-white" />}
                       </div>
                     </div>
                   </div>
                 </div>
-                <span className="text-[9px] font-bold text-[#1A1A1A] uppercase tracking-widest truncate max-w-[70px]">
-                  {h.caption || `Clip ${i+1}`}
+                <span className="text-[9px] font-black text-[#1A1A1A] uppercase tracking-widest truncate max-w-[80px]">
+                  {h.caption || `LOG ${i+1}`}
                 </span>
               </div>
             ))}
-            {stories.length === 0 && (
-              <>
-                <div className="flex flex-col items-center gap-3 opacity-40">
-                  <div className="w-[72px] h-[72px] rounded-[28px] bg-white flex items-center justify-center border border-[#E5E7EB] shadow-sm">
-                    <Trophy size={22} className="text-[#9CA3AF]" />
-                  </div>
-                  <span className="text-[9px] font-bold text-[#6B7280] uppercase tracking-widest">Wins</span>
-                </div>
-                <div className="flex flex-col items-center gap-3 opacity-40">
-                  <div className="w-[72px] h-[72px] rounded-[28px] bg-white flex items-center justify-center border border-[#E5E7EB] shadow-sm">
-                    <Target size={22} className="text-[#9CA3AF]" />
-                  </div>
-                  <span className="text-[9px] font-bold text-[#6B7280] uppercase tracking-widest">Clutch</span>
-                </div>
-              </>
-            )}
           </div>
         </section>
 
-        {/* Tabs and Content Grid */}
         <section className="mt-8">
           <Tabs defaultValue="grid" className="w-full" onValueChange={setActiveTab}>
-            <TabsList className="w-full bg-white h-16 p-0 rounded-none border-t border-b border-[#E5E7EB] sticky top-0 z-40">
+            <TabsList className="w-full bg-white h-20 p-0 rounded-none border-t-2 border-b-2 border-[#E5E7EB] sticky top-0 z-40">
               <TabsTrigger 
                 value="grid" 
                 className="flex-1 h-full rounded-none data-[state=active]:bg-transparent data-[state=active]:border-b-4 data-[state=active]:border-[#1A1A1A] data-[state=active]:text-[#1A1A1A] transition-all text-[#9CA3AF]"
               >
-                <Grid size={20} strokeWidth={2.5} />
+                <Grid size={24} strokeWidth={3} />
               </TabsTrigger>
               <TabsTrigger 
                 value="reels" 
                 className="flex-1 h-full rounded-none data-[state=active]:bg-transparent data-[state=active]:border-b-4 data-[state=active]:border-[#1A1A1A] data-[state=active]:text-[#1A1A1A] transition-all text-[#9CA3AF]"
               >
-                <Play size={20} strokeWidth={2.5} />
+                <Play size={24} strokeWidth={3} />
               </TabsTrigger>
               <TabsTrigger 
                 value="saved" 
                 className="flex-1 h-full rounded-none data-[state=active]:bg-transparent data-[state=active]:border-b-4 data-[state=active]:border-[#1A1A1A] data-[state=active]:text-[#1A1A1A] transition-all text-[#9CA3AF]"
               >
-                <Bookmark size={20} strokeWidth={2.5} />
+                <Bookmark size={24} strokeWidth={3} />
               </TabsTrigger>
             </TabsList>
             
             <TabsContent value="grid" className="m-0 focus-visible:ring-0">
-              <div className="grid grid-cols-3 gap-[1px] bg-[#E5E7EB]">
-                {matches.length > 0 ? matches.map((match, i) => (
-                  <motion.div 
-                    key={match.id} 
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: i * 0.05 }}
-                    className="aspect-square relative group cursor-pointer bg-white overflow-hidden"
-                  >
-                    <div className="w-full h-full bg-[#F9FAFB] flex flex-col items-center justify-center p-4">
-                      <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center mb-2">
-                        <Trophy size={18} className={i % 2 === 0 ? "text-[#5FD3BC]" : "text-[#D1D5DB]"} />
-                      </div>
-                      <p className="text-[9px] font-bold text-[#1A1A1A] uppercase tracking-tighter truncate max-w-full px-2">
-                        {match.title}
-                      </p>
-                    </div>
-                    
-                    <div className="absolute top-2 left-2">
-                      <div className={`px-2 py-0.5 rounded-md ${i % 2 === 0 ? "bg-[#D1FAE5] text-[#065F46]" : "bg-[#FEE2E2] text-[#B91C1C]"} shadow-sm`}>
-                        <span className="text-[8px] font-bold uppercase">{i % 2 === 0 ? "WIN" : "LOSS"}</span>
-                      </div>
-                    </div>
-
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-                      <div className="flex items-center justify-between w-full">
-                        <div className="flex items-center gap-1.5">
-                          <div className="w-4 h-4 rounded-full bg-[#5FD3BC] flex items-center justify-center">
-                            <Target size={10} className="text-white" />
-                          </div>
-                          <span className="text-[10px] font-bold text-white">MVP</span>
+              <div className="grid grid-cols-3 gap-1 bg-[#E5E7EB] p-1">
+                {matches.length > 0 ? matches.map((match, i) => {
+                   const colors = ["mint", "blue", "pink", "yellow"];
+                   const color = colors[i % colors.length] as any;
+                   return (
+                    <motion.div 
+                      key={match.id} 
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="aspect-square relative group cursor-pointer overflow-hidden rounded-xl"
+                    >
+                      <BentoCard variant={color} className="w-full h-full p-0 rounded-none flex flex-col items-center justify-center text-center">
+                        <Trophy size={20} strokeWidth={3} className={i % 2 === 0 ? "text-[#1A1A1A]" : "text-[#1A1A1A]/30"} />
+                        <p className="text-[8px] font-black text-[#1A1A1A] uppercase tracking-tighter mt-2 px-2 truncate w-full">
+                          {match.title}
+                        </p>
+                      </BentoCard>
+                      
+                      <div className="absolute top-1.5 left-1.5">
+                        <div className={`px-1.5 py-0.5 rounded-md ${i % 2 === 0 ? "bg-[#1A1A1A] text-white" : "bg-white/60 text-[#1A1A1A]"} shadow-md`}>
+                          <span className="text-[7px] font-black uppercase tracking-widest">{i % 2 === 0 ? "W" : "L"}</span>
                         </div>
-                        <span className="text-[9px] text-white/80 font-bold">{new Date(match.start_time).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>
                       </div>
-                    </div>
-                  </motion.div>
-                )) : (
+
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2">
+                        <div className="flex items-center justify-between w-full">
+                          <span className="text-[8px] text-white font-black uppercase tracking-widest">MISSION</span>
+                          <span className="text-[8px] text-white/80 font-black">{new Date(match.start_time).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}) : (
                   Array.from({ length: 9 }).map((_, i) => (
-                    <div key={i} className="aspect-square bg-[#F9FAFB] flex items-center justify-center opacity-30">
+                    <div key={i} className="aspect-square bg-[#F9FAFB] rounded-xl flex items-center justify-center opacity-30">
                       <Trophy size={24} className="text-[#9CA3AF]" />
                     </div>
                   ))
                 )}
               </div>
               {matches.length === 0 && (
-                <div className="py-24 text-center bg-white">
-                  <div className="w-20 h-20 rounded-full bg-[#F9FAFB] flex items-center justify-center mx-auto mb-6 shadow-sm">
-                    <Swords size={32} className="text-[#D1D5DB]" />
+                <div className="py-24 text-center bg-white rounded-b-[40px]">
+                  <div className="w-24 h-24 rounded-full bg-[#F9FAFB] flex items-center justify-center mx-auto mb-8 shadow-inner">
+                    <Swords size={40} className="text-[#D1D5DB]" />
                   </div>
-                  <h4 className="text-lg font-heading font-bold text-[#1A1A1A]">No Match History</h4>
-                  <p className="text-sm text-[#6B7280] font-medium mt-1 max-w-[200px] mx-auto">Join a tournament to start your arena legacy.</p>
-                  <Link href="/matches" className="mt-8 block px-8">
-                    <Button className="w-full bg-[#1A1A1A] hover:bg-black text-white rounded-2xl h-14 font-bold shadow-xl">
-                      EXPLORE MATCHES
-                    </Button>
+                  <h4 className="text-2xl font-heading font-black text-[#1A1A1A] tracking-tighter">MISSION LOG EMPTY</h4>
+                  <p className="text-[11px] text-[#6B7280] font-black uppercase tracking-widest mt-2 max-w-[240px] mx-auto">Deploy to the arena to begin recording your legacy.</p>
+                  <Link href="/matches" className="mt-10 block px-10">
+                    <motion.button 
+                      whileTap={{ scale: 0.95 }}
+                      className="w-full bg-[#1A1A1A] text-white rounded-[24px] h-16 font-black uppercase tracking-[0.2em] shadow-2xl"
+                    >
+                      FIND MISSION
+                    </motion.button>
                   </Link>
                 </div>
               )}
             </TabsContent>
             
-            <TabsContent value="reels" className="m-0 min-h-[400px] bg-white">
+            <TabsContent value="reels" className="m-0 min-h-[400px] bg-white p-4">
               {stories.length > 0 ? (
-                <div className="grid grid-cols-2 gap-2 p-4">
+                <div className="grid grid-cols-2 gap-4">
                   {stories.map((story, i) => (
-                    <div key={story.id} className="aspect-[9/16] relative rounded-2xl overflow-hidden bg-[#F3F4F6] shadow-sm">
+                    <div key={story.id} className="aspect-[9/16] relative rounded-[32px] overflow-hidden bg-[#F3F4F6] shadow-xl border-4 border-white">
                       <img src={story.media_url} alt="" className="w-full h-full object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-4">
-                        <div className="flex items-center gap-2">
-                          {story.media_type === 'video' ? <Play size={14} className="text-white" fill="white" /> : <ImageIcon size={14} className="text-white" />}
-                          <span className="text-[10px] font-bold text-white uppercase tracking-wider">{story.media_type}</span>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-5">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
+                            {story.media_type === 'video' ? <Play size={14} className="text-white" fill="white" /> : <ImageIcon size={14} className="text-white" />}
+                          </div>
+                          <span className="text-[10px] font-black text-white uppercase tracking-[0.2em]">{story.media_type} LOG</span>
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center py-20 text-[#9CA3AF]">
-                  <div className="w-20 h-20 rounded-full bg-[#F9FAFB] flex items-center justify-center mb-6 shadow-sm">
-                    <Play size={32} className="text-[#D1D5DB]" />
+                <div className="flex flex-col items-center justify-center py-24 text-[#9CA3AF]">
+                  <div className="w-24 h-24 rounded-full bg-[#F9FAFB] flex items-center justify-center mb-8 shadow-inner">
+                    <Play size={40} className="text-[#D1D5DB]" />
                   </div>
-                  <p className="text-sm font-heading font-bold text-[#1A1A1A] uppercase tracking-[0.2em]">No Match Clips</p>
-                  <p className="text-xs text-[#6B7280] mt-2 font-medium uppercase">Record your gameplay to show off!</p>
+                  <p className="text-xl font-heading font-black text-[#1A1A1A] uppercase tracking-widest">NO FEEDS</p>
+                  <p className="text-[10px] text-[#6B7280] mt-3 font-black uppercase tracking-[0.2em]">Broadcast your victories to the arena!</p>
                 </div>
               )}
             </TabsContent>
 
-            <TabsContent value="saved" className="m-0 min-h-[400px] bg-white">
-              <div className="flex flex-col items-center justify-center py-20 text-[#9CA3AF]">
-                <div className="w-20 h-20 rounded-full bg-[#F9FAFB] flex items-center justify-center mb-6 shadow-sm">
-                  <Bookmark size={32} className="text-[#D1D5DB]" />
+            <TabsContent value="saved" className="m-0 min-h-[400px] bg-white p-4">
+              <div className="flex flex-col items-center justify-center py-24 text-[#9CA3AF]">
+                <div className="w-24 h-24 rounded-full bg-[#F9FAFB] flex items-center justify-center mb-8 shadow-inner">
+                  <Bookmark size={40} className="text-[#D1D5DB]" />
                 </div>
-                <p className="text-sm font-heading font-bold text-[#1A1A1A] uppercase tracking-[0.2em]">Saved Collections</p>
-                <p className="text-xs text-[#6B7280] mt-2 font-medium uppercase text-center max-w-[200px]">Save tournaments or player profiles to view them later</p>
-                <Button variant="outline" className="mt-8 rounded-xl font-bold text-xs uppercase tracking-widest border-[#E5E7EB]">
-                  Explore Arena
-                </Button>
+                <p className="text-xl font-heading font-black text-[#1A1A1A] uppercase tracking-widest">VAULT EMPTY</p>
+                <p className="text-[10px] text-[#6B7280] mt-3 font-black uppercase tracking-[0.2em] text-center max-w-[240px]">Secure mission data or operative profiles to view them here.</p>
+                <motion.button 
+                  whileTap={{ scale: 0.95 }}
+                  className="mt-10 bg-white border-2 border-[#E5E7EB] text-[#1A1A1A] px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg"
+                >
+                  EXPLORE ARCHIVES
+                </motion.button>
               </div>
             </TabsContent>
           </Tabs>
@@ -754,6 +637,71 @@ export default function Profile() {
       </main>
 
       <BottomNav />
+
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="p-0 border-none bg-white rounded-t-[40px] sm:rounded-[40px] overflow-hidden max-w-[100vw] sm:max-w-[480px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0 z-[100]">
+          <div className="bg-[#1A1A1A] p-10 relative">
+            <div className="w-16 h-16 rounded-[24px] bg-white/10 flex items-center justify-center mb-6 shadow-inner rotate-6">
+              <Settings size={32} className="text-white" strokeWidth={3} />
+            </div>
+            <DialogTitle className="text-4xl font-heading text-white leading-none font-black mb-3 tracking-tighter">IDENTITY CONFIG</DialogTitle>
+            <DialogDescription className="text-white/40 text-[10px] font-black uppercase tracking-[0.2em]">Modify Operative Parameters</DialogDescription>
+          </div>
+          <div className="p-8 space-y-8 max-h-[60vh] overflow-y-auto no-scrollbar">
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <Label className="text-[11px] font-black text-[#6B7280] uppercase tracking-widest ml-1">CALLSIGN (NAME)</Label>
+                <Input 
+                  value={editForm.full_name} 
+                  onChange={(e) => setEditForm({...editForm, full_name: e.target.value})}
+                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-lg font-black px-6 focus:border-[#1A1A1A] focus:ring-0 transition-all" 
+                />
+              </div>
+              <div className="space-y-3">
+                <Label className="text-[11px] font-black text-[#6B7280] uppercase tracking-widest ml-1">ID TAG (USERNAME)</Label>
+                <Input 
+                  value={editForm.username} 
+                  onChange={(e) => setEditForm({...editForm, username: e.target.value})}
+                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-lg font-black px-6 focus:border-[#1A1A1A] focus:ring-0 transition-all" 
+                />
+              </div>
+              <div className="space-y-3">
+                <Label className="text-[11px] font-black text-[#6B7280] uppercase tracking-widest ml-1">OPERATIVE BIO</Label>
+                <Textarea 
+                  value={editForm.bio} 
+                  onChange={(e) => setEditForm({...editForm, bio: e.target.value})}
+                  className="rounded-[24px] border-4 border-[#F5F5F5] bg-white text-sm font-bold p-6 focus:border-[#1A1A1A] focus:ring-0 transition-all min-h-[120px]" 
+                />
+              </div>
+              <div className="space-y-3">
+                <Label className="text-[11px] font-black text-[#6B7280] uppercase tracking-widest ml-1">FEED URL (YOUTUBE)</Label>
+                <Input 
+                  value={editForm.youtube_link} 
+                  onChange={(e) => setEditForm({...editForm, youtube_link: e.target.value})}
+                  placeholder="https://..."
+                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-sm font-bold px-6 focus:border-[#1A1A1A] focus:ring-0 transition-all" 
+                />
+              </div>
+            </div>
+            <motion.button 
+              whileTap={{ scale: 0.98 }}
+              onClick={handleSaveProfile} 
+              disabled={isSaving}
+              className="w-full h-16 bg-[#1A1A1A] text-white rounded-[24px] text-sm font-black uppercase tracking-[0.2em] shadow-2xl flex items-center justify-center gap-3"
+            >
+              {isSaving ? <Loader2 className="animate-spin" /> : "COMMIT CHANGES"}
+            </motion.button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
+  );
+}
+
+export default function Profile() {
+  return (
+    <Suspense fallback={<LoadingScreen />}>
+      <ProfileContent />
+    </Suspense>
   );
 }
