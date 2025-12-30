@@ -28,7 +28,8 @@ import {
   Award,
   Crown,
   Zap,
-  Youtube
+  Youtube,
+  Users as LucideUsers,
 } from "lucide-react";
 import { useState, useEffect, useRef, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -360,7 +361,7 @@ function ProfileContent() {
           <div className="mt-10 grid grid-cols-3 gap-4">
             {[
               { label: "Battles", value: profile?.matches_played || 0, color: "mint", icon: Swords },
-              { label: "Allies", value: profile?.followers_count || 0, color: "blue", icon: Users },
+              { label: "Allies", value: profile?.followers_count || 0, color: "blue", icon: LucideUsers },
               { label: "Targeting", value: profile?.following_count || 0, color: "pink", icon: Target }
             ].map((stat, i) => (
               <BentoCard key={i} variant={stat.color as any} className="text-center py-6 px-2 shadow-xl border-none">
