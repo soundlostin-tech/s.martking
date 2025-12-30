@@ -37,7 +37,7 @@ export default function Home() {
         supabase.from("stories")
           .select(`*, user:profiles(full_name, avatar_url)`)
           .gt('expires_at', new Date().toISOString())
-          .order('created_at', { ascending: true }),
+          .order('created_at', { ascending: false }),
         supabase.from("matches")
           .select(`*, tournament:tournaments(title, entry_fee, prize_pool)`)
           .or('status.eq.live,status.eq.upcoming')
@@ -46,7 +46,8 @@ export default function Home() {
       ]);
 
       setProfiles(profilesRes.data || []);
-      setStories(storiesRes.data || []);
+      const validStories = (storiesRes.data || []).filter(s => s.user);
+      setStories(validStories);
       setFeaturedMatches(matchesRes.data || []);
 
       if (profile) {
@@ -118,24 +119,29 @@ export default function Home() {
                 </div>
               ))
             ) : (
-              profiles.filter(p => p.id !== profile?.id).map((p) => (
-                <div key={p.id} className="flex-shrink-0 flex flex-col items-center gap-2">
-                  <motion.div 
-                    whileTap={{ scale: 0.92 }}
-                    onClick={() => openStory(p.id)}
-                    className="w-16 h-16 rounded-full p-[2px] bg-white shadow-[2px_8px_16px_rgba(0,0,0,0.06)] border-2 border-[#5FD3BC]"
-                  >
-                    <div className="w-full h-full rounded-full bg-[#E5E7EB] flex items-center justify-center overflow-hidden">
-                      {p.avatar_url ? (
-                        <img src={p.avatar_url} alt="" className="w-full h-full object-cover" />
-                      ) : (
-                        <span className="text-lg font-heading text-[#6B7280]">{p.full_name?.[0]?.toUpperCase()}</span>
-                      )}
-                    </div>
-                  </motion.div>
-                  <span className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide">{p.full_name?.split(' ')[0]}</span>
-                </div>
-              ))
+              profiles.filter(p => p.id !== profile?.id).map((p) => {
+                const hasStories = stories.some(s => s.user_id === p.id);
+                return (
+                  <div key={p.id} className="flex-shrink-0 flex flex-col items-center gap-2">
+                    <motion.div 
+                      whileTap={{ scale: 0.92 }}
+                      onClick={() => hasStories && openStory(p.id)}
+                      className={`w-16 h-16 rounded-full p-[2px] bg-white shadow-[2px_8px_16px_rgba(0,0,0,0.06)] border-2 ${
+                        hasStories ? 'border-[#5FD3BC] cursor-pointer' : 'border-[#E5E7EB] cursor-default opacity-60'
+                      }`}
+                    >
+                      <div className="w-full h-full rounded-full bg-[#E5E7EB] flex items-center justify-center overflow-hidden">
+                        {p.avatar_url ? (
+                          <img src={p.avatar_url} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="text-lg font-heading text-[#6B7280]">{p.full_name?.[0]?.toUpperCase()}</span>
+                        )}
+                      </div>
+                    </motion.div>
+                    <span className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide">{p.full_name?.split(' ')[0]}</span>
+                  </div>
+                );
+              })
             )}
           </div>
         </section>
