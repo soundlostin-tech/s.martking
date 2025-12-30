@@ -26,7 +26,6 @@ import {
   Users as LucideUsers,
   AlertCircle,
   RefreshCcw,
-  Image as ImageIcon,
 } from "lucide-react";
 import { useState, useEffect, useRef, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -48,7 +47,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import { Skeleton } from "@/components/ui/skeleton";
-import { StoryViewer } from "@/components/ui/StoryViewer";
 
 interface ProfileExtended {
   id: string;
@@ -69,87 +67,91 @@ interface ProfileExtended {
   mvp_count: number;
 }
 
-function ProfileContent() {
-  const { user, profile: authProfile, loading: authLoading } = useAuth(true);
-  const [activeTab, setActiveTab] = useState("grid");
-  const [stories, setStories] = useState<any[]>([]);
-  const [matches, setMatches] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [isStoryViewerOpen, setIsStoryViewerOpen] = useState(false);
-  const [selectedStoryIndex, setSelectedStoryIndex] = useState(0);
-  const [editForm, setEditForm] = useState({
-    full_name: "",
-    username: "",
-    bio: "",
-    youtube_link: "",
-    team_site: "",
-    tournament_stats_url: ""
-  });
-  const [isSaving, setIsSaving] = useState(false);
-  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
-  const [isUploadingClip, setIsUploadingClip] = useState(false);
-  
-  const avatarInputRef = useRef<HTMLInputElement>(null);
-  const clipInputRef = useRef<HTMLInputElement>(null);
+  function ProfileContent() {
+    const { user, profile: authProfile, loading: authLoading } = useAuth(true);
+    const [activeTab, setActiveTab] = useState("grid");
+    const [videos, setVideos] = useState<any[]>([]);
+    const [matches, setMatches] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+    const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
+    const [editForm, setEditForm] = useState({
+      full_name: "",
+      username: "",
+      bio: "",
+      youtube_link: "",
+      team_site: "",
+      tournament_stats_url: ""
+    });
+    const [uploadForm, setUploadForm] = useState({
+      title: "",
+      description: ""
+    });
+    const [isSaving, setIsSaving] = useState(false);
+    const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+    const [isUploadingVideo, setIsUploadingVideo] = useState(false);
+    
+    const avatarInputRef = useRef<HTMLInputElement>(null);
+    const videoInputRef = useRef<HTMLInputElement>(null);
 
-  const profile = authProfile as unknown as ProfileExtended;
+    const profile = authProfile as unknown as ProfileExtended;
 
-  useEffect(() => {
-    if (user) {
-      fetchData();
-      setEditForm({
-        full_name: profile?.full_name || "",
-        username: profile?.username || "",
-        bio: profile?.bio || "",
-        youtube_link: profile?.youtube_link || "",
-        team_site: profile?.team_site || "",
-        tournament_stats_url: profile?.tournament_stats_url || ""
-      });
-    }
-  }, [user, profile?.id]);
+    useEffect(() => {
+      if (user) {
+        fetchData();
+        setEditForm({
+          full_name: profile?.full_name || "",
+          username: profile?.username || "",
+          bio: profile?.bio || "",
+          youtube_link: profile?.youtube_link || "",
+          team_site: profile?.team_site || "",
+          tournament_stats_url: profile?.tournament_stats_url || ""
+        });
+      }
+    }, [user, profile?.id]);
 
-  const fetchData = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const [storiesRes, participantsRes] = await Promise.all([
-        supabase
-          .from("stories")
-          .select("*")
-          .eq("user_id", user?.id)
-          .order("created_at", { ascending: false }),
-        supabase
-          .from("participants")
-          .select(`
-            match_id,
-            matches (
-              id,
-              title,
-              status,
-              start_time,
-              live_stats
-            )
-          `)
-          .eq("user_id", user?.id)
-          .order("joined_at", { ascending: false })
-          .limit(12)
-      ]);
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const [videosRes, participantsRes] = await Promise.all([
+          supabase
+            .from("videos")
+            .select("*")
+            .eq("user_id", user?.id)
+            .order("created_at", { ascending: false }),
+          supabase
+            .from("participants")
+            .select(`
+              match_id,
+              matches (
+                id,
+                title,
+                status,
+                start_time,
+                live_stats
+              )
+            `)
+            .eq("user_id", user?.id)
+            .order("joined_at", { ascending: false })
+            .limit(12)
+        ]);
 
-      if (storiesRes.error) throw storiesRes.error;
-      if (participantsRes.error) throw participantsRes.error;
+        if (videosRes.error) throw videosRes.error;
+        if (participantsRes.error) throw participantsRes.error;
 
-      setStories(storiesRes.data || []);
-      const matchesData = participantsRes.data?.map(p => p.matches).filter(Boolean) || [];
-      setMatches(matchesData);
-    } catch (err: any) {
-      console.error("Error fetching data:", err);
-      setError(err.message || "Failed to sync with Arena servers.");
-    } finally {
-      setLoading(false);
-    }
-  };
+        setVideos(videosRes.data || []);
+        const matchesData = participantsRes.data?.map(p => p.matches).filter(Boolean) || [];
+        setMatches(matchesData);
+      } catch (err: any) {
+        console.error("Error fetching data:", err);
+        setError(err.message || "Failed to sync with Arena servers.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
 
   const handleSaveProfile = async () => {
     if (!editForm.username) return toast.error("Callsign is required");
@@ -215,44 +217,51 @@ function ProfileContent() {
     }
   };
 
-  const handleClipUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
 
-    setIsUploadingClip(true);
+    if (!uploadForm.title) {
+      toast.error("Please enter a title for your video");
+      return;
+    }
+
+    setIsUploadingVideo(true);
     try {
       const fileExt = file.name.split('.').pop();
       const fileName = `${user.id}-${Math.random()}.${fileExt}`;
-      const filePath = `stories/${fileName}`;
-      const mediaType = file.type.startsWith('video') ? 'video' : 'image';
+      const filePath = `videos/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
-        .from('stories')
+        .from('videos')
         .upload(filePath, file);
 
       if (uploadError) throw uploadError;
 
       const { data: { publicUrl } } = supabase.storage
-        .from('stories')
+        .from('videos')
         .getPublicUrl(filePath);
 
-      const { error: storyError } = await supabase
-        .from('stories')
+      const { error: videoError } = await supabase
+        .from('videos')
         .insert({
           user_id: user.id,
-          media_url: publicUrl,
-          media_type: mediaType,
-          expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+          video_url: publicUrl,
+          title: uploadForm.title,
+          description: uploadForm.description,
+          thumbnail_url: publicUrl // Using video URL as thumbnail for now
         });
 
-      if (storyError) throw storyError;
+      if (videoError) throw videoError;
 
-      toast.success("Clip shared to Arena Highlights");
+      toast.success("Combat footage uploaded to Arena Feeds");
+      setIsUploadDialogOpen(false);
+      setUploadForm({ title: "", description: "" });
       fetchData();
     } catch (error: any) {
-      toast.error(error.message || "Failed to upload clip");
+      toast.error(error.message || "Failed to upload footage");
     } finally {
-      setIsUploadingClip(false);
+      setIsUploadingVideo(false);
     }
   };
 
@@ -434,73 +443,6 @@ function ProfileContent() {
           </BentoCard>
         </section>
 
-        <section className="mt-6">
-          <div className="px-4 mb-3 flex justify-between items-center">
-            <h3 className="text-[10px] font-black text-[#1A1A1A] uppercase tracking-widest flex items-center gap-2">
-              <div className="w-6 h-6 rounded-lg bg-[#1A1A1A] flex items-center justify-center">
-                <Video size={12} className="text-white" />
-              </div>
-              HIGHLIGHTS
-            </h3>
-            <div className="h-px flex-1 bg-[#1A1A1A]/5 ml-4" />
-          </div>
-          <div className="flex gap-3 overflow-x-auto no-scrollbar px-4 pb-4">
-            <div className="flex flex-col items-center gap-2 flex-shrink-0">
-              <input 
-                type="file" 
-                ref={clipInputRef} 
-                onChange={handleClipUpload} 
-                className="hidden" 
-                accept="image/*,video/*"
-              />
-              <motion.button 
-                whileTap={{ scale: 0.95 }}
-                onClick={() => clipInputRef.current?.click()}
-                disabled={isUploadingClip}
-                className="w-14 h-14 rounded-2xl border-2 border-dashed border-[#D1D5DB] flex items-center justify-center bg-white shadow"
-              >
-                {isUploadingClip ? <Loader2 size={20} className="animate-spin text-[#6EBF8B]" /> : <Plus size={20} strokeWidth={3} className="text-[#9CA3AF]" />}
-              </motion.button>
-              <span className="text-[8px] font-black text-[#6B7280] uppercase tracking-wide">ADD</span>
-            </div>
-            
-            {loading ? (
-              Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="flex flex-col items-center gap-2 flex-shrink-0">
-                  <Skeleton className="w-14 h-14 rounded-2xl" />
-                  <Skeleton className="h-2 w-10 rounded" />
-                </div>
-              ))
-            ) : (
-              stories.map((h, i) => (
-                <motion.div 
-                  key={i} 
-                  whileTap={{ scale: 0.95 }}
-                  className="flex flex-col items-center gap-2 cursor-pointer flex-shrink-0"
-                  onClick={() => {
-                    setSelectedStoryIndex(i);
-                    setIsStoryViewerOpen(true);
-                  }}
-                >
-                  <div className="w-14 h-14 rounded-2xl p-[2px] bg-[#1A1A1A] shadow-lg">
-                    <div className="w-full h-full rounded-[14px] bg-white p-[2px]">
-                      <div className="w-full h-full rounded-[12px] overflow-hidden relative bg-[#F3F4F6]">
-                        <img src={h.media_url} alt="" className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                          {h.media_type === "video" ? <Play size={14} fill="white" className="text-white" /> : <ImageIcon size={14} className="text-white" />}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-[8px] font-black text-[#1A1A1A] uppercase tracking-wide truncate max-w-[56px]">
-                    {h.caption || `LOG ${i+1}`}
-                  </span>
-                </motion.div>
-              ))
-            )}
-          </div>
-        </section>
-
         <section className="px-4 mt-4 flex gap-3">
           <motion.button 
             whileTap={{ scale: 0.98 }}
@@ -509,6 +451,14 @@ function ProfileContent() {
           >
             <Settings size={14} />
             EDIT PROFILE
+          </motion.button>
+          <motion.button 
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setIsUploadDialogOpen(true)}
+            className="flex-1 bg-[#6EBF8B] text-white h-12 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg flex items-center justify-center gap-2"
+          >
+            <Video size={14} strokeWidth={3} />
+            UPLOAD
           </motion.button>
           <motion.button 
             whileTap={{ scale: 0.98 }}
@@ -599,24 +549,27 @@ function ProfileContent() {
             </TabsContent>
             
             <TabsContent value="reels" className="m-0 min-h-[200px] bg-white p-3">
-              {stories.length > 0 ? (
+              {videos.length > 0 ? (
                 <div className="grid grid-cols-2 gap-2">
-                  {stories.map((story, i) => (
+                  {videos.map((video, i) => (
                     <div 
-                      key={story.id} 
+                      key={video.id} 
                       className="aspect-[9/16] relative rounded-2xl overflow-hidden bg-[#F3F4F6] shadow border border-white cursor-pointer"
-                      onClick={() => {
-                        setSelectedStoryIndex(i);
-                        setIsStoryViewerOpen(true);
-                      }}
                     >
-                      <img src={story.media_url} alt="" className="w-full h-full object-cover" />
+                      <video 
+                        src={video.video_url} 
+                        className="w-full h-full object-cover"
+                        controls={false}
+                        muted
+                        playsInline
+                      />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col justify-end p-3">
-                        <div className="flex items-center gap-2">
+                        <p className="text-[10px] font-black text-white uppercase tracking-tight line-clamp-1">{video.title}</p>
+                        <div className="flex items-center gap-2 mt-1">
                           <div className="w-5 h-5 rounded-full bg-white/20 backdrop-blur flex items-center justify-center">
-                            {story.media_type === 'video' ? <Play size={10} className="text-white" fill="white" /> : <ImageIcon size={10} className="text-white" />}
+                            <Play size={10} className="text-white" fill="white" />
                           </div>
-                          <span className="text-[8px] font-black text-white uppercase tracking-wide">{story.media_type}</span>
+                          <span className="text-[8px] font-black text-white uppercase tracking-wide">VIDEO</span>
                         </div>
                       </div>
                     </div>
@@ -633,6 +586,7 @@ function ProfileContent() {
               )}
             </TabsContent>
 
+
             <TabsContent value="saved" className="m-0 min-h-[200px] bg-white p-3">
               <div className="flex flex-col items-center justify-center py-12 text-[#9CA3AF]">
                 <div className="w-14 h-14 rounded-full bg-[#F9FAFB] flex items-center justify-center mb-4 shadow-inner">
@@ -648,12 +602,64 @@ function ProfileContent() {
 
       <BottomNav />
 
-      <StoryViewer 
-        stories={stories} 
-        initialIndex={selectedStoryIndex} 
-        isOpen={isStoryViewerOpen} 
-        onClose={() => setIsStoryViewerOpen(false)} 
-      />
+      <Dialog open={isUploadDialogOpen} onOpenChange={setIsUploadDialogOpen}>
+        <DialogContent className="p-0 border-none bg-white rounded-t-[24px] sm:rounded-[24px] overflow-hidden max-w-[100vw] sm:max-w-[400px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0 z-[100]">
+          <div className="bg-[#6EBF8B] p-5">
+            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-3">
+              <Video size={20} className="text-white" strokeWidth={3} />
+            </div>
+            <DialogTitle className="text-xl font-heading text-white leading-none font-black mb-1 tracking-tight">UPLOAD FOOTAGE</DialogTitle>
+            <DialogDescription className="text-white/60 text-[9px] font-black uppercase tracking-widest text-white/70">Share your combat records</DialogDescription>
+          </div>
+          <div className="p-4 space-y-4">
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <Label className="text-[9px] font-black text-[#6B7280] uppercase tracking-widest">VIDEO TITLE</Label>
+                <Input 
+                  value={uploadForm.title} 
+                  onChange={(e) => setUploadForm({...uploadForm, title: e.target.value})}
+                  placeholder="Epic Victory at Arena..."
+                  className="h-11 rounded-xl border-2 border-[#F5F5F5] bg-white text-sm font-bold px-4 focus:border-[#6EBF8B] focus:ring-0" 
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-[9px] font-black text-[#6B7280] uppercase tracking-widest">DESCRIPTION</Label>
+                <Textarea 
+                  value={uploadForm.description} 
+                  onChange={(e) => setUploadForm({...uploadForm, description: e.target.value})}
+                  placeholder="Briefly explain the combat scenario..."
+                  className="rounded-xl border-2 border-[#F5F5F5] bg-white text-xs font-medium p-3 focus:border-[#6EBF8B] focus:ring-0 min-h-[80px]" 
+                />
+              </div>
+              
+              <div className="pt-2">
+                <input 
+                  type="file" 
+                  ref={videoInputRef} 
+                  onChange={handleVideoUpload} 
+                  className="hidden" 
+                  accept="video/*"
+                />
+                <motion.button 
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => videoInputRef.current?.click()}
+                  disabled={isUploadingVideo}
+                  className="w-full h-14 rounded-2xl border-2 border-dashed border-[#6EBF8B]/30 bg-[#6EBF8B]/5 flex items-center justify-center gap-3 text-[#6EBF8B] font-black uppercase tracking-widest text-[10px]"
+                >
+                  {isUploadingVideo ? (
+                    <Loader2 size={20} className="animate-spin" />
+                  ) : (
+                    <>
+                      <Plus size={20} strokeWidth={3} />
+                      SELECT VIDEO FILE
+                    </>
+                  )}
+                </motion.button>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="p-0 border-none bg-white rounded-t-[24px] sm:rounded-[24px] overflow-hidden max-w-[100vw] sm:max-w-[400px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0 z-[100]">
