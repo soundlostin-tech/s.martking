@@ -36,10 +36,10 @@ export function LogoAnimation({ size = 36, className = "" }: LogoAnimationProps)
       <div className="relative w-full h-full flex items-center justify-center">
         {/* Glow Background - Dynamic size based on 'size' prop */}
         <motion.div
-          className="absolute inset-[-20%] rounded-full bg-yellow-400/30 blur-xl"
+          className="absolute inset-[-20%] rounded-full bg-yellow-400/20 blur-2xl"
           animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.3, 0.6, 0.3],
+            scale: [1, 1.2, 1],
+            opacity: [0.2, 0.4, 0.2],
           }}
           transition={{
             duration: DURATION,
@@ -61,12 +61,30 @@ export function LogoAnimation({ size = 36, className = "" }: LogoAnimationProps)
               <stop offset="50%" stopColor="#FFD24D" />
               <stop offset="100%" stopColor="#E6B800" />
             </linearGradient>
+            
+            <linearGradient id="crown-gold-rich" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#FFF2CC" />
+              <stop offset="40%" stopColor="#FFD966" />
+              <stop offset="60%" stopColor="#F1C232" />
+              <stop offset="100%" stopColor="#BF9000" />
+            </linearGradient>
+
+            <radialGradient id="jewel-gradient" cx="35%" cy="35%" r="50%">
+              <stop offset="0%" stopColor="#FF9999" />
+              <stop offset="70%" stopColor="#E60000" />
+              <stop offset="100%" stopColor="#800000" />
+            </radialGradient>
+
             <filter id="glow-logo" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
               <feMerge>
                 <feMergeNode in="coloredBlur"/>
                 <feMergeNode in="SourceGraphic"/>
               </feMerge>
+            </filter>
+
+            <filter id="crown-shadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="1" stdDeviation="1" shadowOpacity="0.3"/>
             </filter>
           </defs>
 
@@ -75,11 +93,11 @@ export function LogoAnimation({ size = 36, className = "" }: LogoAnimationProps)
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            {/* Stylized 'e/S' character - Larger and more prominent */}
+            {/* Stylized 'e/S' character */}
             <motion.path
-              d="M25 45 C25 28, 75 28, 75 45 C75 62, 25 62, 25 85 C25 102, 75 102, 75 85"
+              d="M25 48 C25 31, 75 31, 75 48 C75 65, 25 65, 25 88 C25 105, 75 105, 75 88"
               stroke="url(#logo-gold)"
-              strokeWidth="12"
+              strokeWidth="11"
               strokeLinecap="round"
               fill="none"
               filter="url(#glow-logo)"
@@ -91,51 +109,61 @@ export function LogoAnimation({ size = 36, className = "" }: LogoAnimationProps)
               }}
             />
             
-            {/* Crown - Positioned better relative to the character */}
+            {/* Crown - More realistic shape and styling */}
             <motion.g
+              filter="url(#crown-shadow)"
               animate={{
-                y: [0, -4, 0],
+                y: [0, -5, 0],
+                rotate: [0, -1, 1, 0]
               }}
               transition={{
-                duration: DURATION,
+                duration: 3,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
             >
               <path
-                d="M28 28 L35 15 L50 22 L65 15 L72 28 Z"
-                fill="url(#logo-gold)"
+                d="M32 32 L68 32 L75 18 L60 25 L50 10 L40 25 L25 18 Z"
+                fill="url(#crown-gold-rich)"
                 stroke="#1A1A1A"
-                strokeWidth="2.5"
+                strokeWidth="2"
                 strokeLinejoin="round"
               />
-              {/* Jewel in Crown */}
+              
+              {/* Jewel with 3D effect */}
               <motion.circle
                 cx="50"
-                cy="18"
-                r="3.5"
-                fill="#FF4B4B"
+                cy="10"
+                r="4.5"
+                fill="url(#jewel-gradient)"
                 stroke="#1A1A1A"
-                strokeWidth="1"
+                strokeWidth="1.5"
                 animate={{
-                  opacity: [0.8, 1, 0.8],
-                  scale: [1, 1.1, 1],
+                  filter: ["brightness(1)", "brightness(1.3)", "brightness(1)"],
                 }}
                 transition={{
-                  duration: 1,
+                  duration: 2,
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
+              />
+              
+              {/* Detail lines on crown for "real life" feel */}
+              <path 
+                d="M40 25 L43 32 M60 25 L57 32 M50 20 L50 32" 
+                stroke="#1A1A1A" 
+                strokeWidth="1" 
+                strokeOpacity="0.2"
               />
             </motion.g>
 
             {/* Inner highlights for depth */}
             <motion.path
-              d="M28 45 C28 32, 72 32, 72 45 C72 60, 28 60, 28 85 C28 98, 72 98, 72 85"
+              d="M28 48 C28 35, 72 35, 72 48 C72 63, 28 63, 28 88 C28 101, 72 101, 72 88"
               stroke="white"
-              strokeWidth="2"
+              strokeWidth="1.5"
               strokeLinecap="round"
-              strokeOpacity="0.4"
+              strokeOpacity="0.3"
               fill="none"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
@@ -150,14 +178,14 @@ export function LogoAnimation({ size = 36, className = "" }: LogoAnimationProps)
 
         {/* Shining light sweep */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent z-20 pointer-events-none"
-          initial={{ x: "-100%" }}
-          animate={{ x: "200%" }}
+          className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent z-20 pointer-events-none"
+          initial={{ x: "-150%" }}
+          animate={{ x: "250%" }}
           transition={{
-            duration: 3.5,
+            duration: 4,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: 1.5
+            delay: 1
           }}
         />
       </div>
