@@ -110,7 +110,7 @@ function LiveContent() {
         <h2 className="text-[36px] font-heading text-[#1A1A1A] leading-tight font-black tracking-tighter">
           LIVE ARENA
         </h2>
-        <p className="text-[10px] font-black text-[#5FD3BC] uppercase tracking-[0.2em] mt-1">
+          <p className="text-[10px] font-black text-[#6EBF8B] uppercase tracking-[0.2em] mt-1">
           Join the Action • Real-time
         </p>
       </section>
@@ -192,7 +192,7 @@ function LiveContent() {
                             <div>
                               <h5 className="text-base font-black text-[#1A1A1A] tracking-tight">{match.title}</h5>
                               <div className="flex items-center gap-2 mt-1">
-                                <span className="w-2 h-2 bg-[#5FD3BC] rounded-full animate-pulse shadow-[0_0_5px_rgba(95,211,188,0.8)]" />
+                                  <span className="w-2 h-2 bg-[#6EBF8B] rounded-full animate-pulse shadow-[0_0_5px_rgba(110,191,139,0.8)]" />
                                 <p className="text-[10px] font-black text-[#1A1A1A]/60 uppercase tracking-widest">{match.viewers_count} VIEWERS</p>
                               </div>
                             </div>
@@ -220,12 +220,12 @@ function LiveContent() {
               </div>
               <div className="space-y-6">
                 {[
-                  { time: "06:00 PM", title: "Duo Battle Royale", status: "upcoming", color: "blue" },
-                  { time: "09:00 PM", title: "Pro League Finals", status: "upcoming", color: "pink" },
+                    { time: "06:00 PM", title: "Duo Battle Royale", status: "upcoming", color: "blue" },
+                    { time: "09:00 PM", title: "Pro League Finals", status: "upcoming", color: "coral" },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center justify-between py-4 border-b border-[#1A1A1A]/10 last:border-0 last:pb-0">
                     <div className="flex items-center gap-5">
-                      <div className={`w-3 h-3 rounded-full ${i === 0 ? 'bg-[#B3E5FC]' : 'bg-[#FFC0CB]'} shadow-sm`} />
+                      <div className={`w-3 h-3 rounded-full ${i === 0 ? 'bg-[#A8D8EA]' : 'bg-[#F5A78E]'} shadow-sm`} />
                       <div>
                         <p className="text-[10px] font-black text-[#1A1A1A]/60 uppercase tracking-widest mb-1">{item.time}</p>
                         <p className="text-base font-black text-[#1A1A1A] tracking-tight">{item.title}</p>
@@ -267,7 +267,7 @@ function LiveContent() {
 
 export default function Live() {
   return (
-    <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
+    <div className="min-h-screen bg-[#F8F6F0] text-[#1A1A1A] relative">
       <Suspense fallback={<LoadingScreen />}>
         <LiveContent />
       </Suspense>

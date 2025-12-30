@@ -53,53 +53,67 @@
   --radius-xl: calc(var(--radius) + 4px);
 
   /* ============================================
-     SMARTKING'S ARENA - COLORFUL DESIGN SYSTEM
-     (Inspired by Mood App Screenshot)
+     SMARTKING'S ARENA - VIBRANT MOOD APP PALETTE
+     Extracted from reference images
      ============================================ */
   
   /* Primary Colors */
-  --color-bg-primary: #F5F5F5;
+  --color-bg-primary: #F8F6F0;
   --color-text-primary: #1A1A1A;
   --color-text-secondary: #6B7280;
-  --color-accent-emerald: #5FD3BC;
-  --color-accent-yellow: #FEF3C7;
+  --color-accent-emerald: #6EBF8B;
+  --color-accent-yellow: #F5E6A3;
   --color-surface-white: #FFFFFF;
   
-  /* Vibrant Colors from Image */
+  /* Vibrant Mood Colors (from reference images) */
   --color-mint-vibrant: #A8E6CF;
-  --color-peach-vibrant: #FFD8B1;
-  --color-purple-vibrant: #DCD3FF;
-  --color-blue-vibrant: #B3E5FC;
-  --color-pink-vibrant: #FFC0CB;
-  --color-yellow-vibrant: #FEF3C7;
+  --color-peach-vibrant: #FFCDB2;
+  --color-purple-vibrant: #C9B6E4;
+  --color-blue-vibrant: #A8D8EA;
+  --color-pink-vibrant: #FFB6C1;
+  --color-yellow-vibrant: #F5E6A3;
+  --color-coral-vibrant: #F5A78E;
+  --color-orange-vibrant: #FFB347;
+  --color-teal-vibrant: #7FDBCA;
+  --color-lavender-vibrant: #E8D4F0;
   
-  /* Light Pastel Colors from Image */
-  --color-mint-light: #D9F9E6;
-  --color-peach-light: #FFF1E6;
-  --color-purple-light: #F3E8FF;
-  --color-blue-light: #E0F2FE;
-  --color-pink-light: #FFE4E6;
-  --color-yellow-light: #FFFBEB;
+  /* Light/Soft Pastel Colors */
+  --color-mint-light: #D4F5E4;
+  --color-peach-light: #FFE5D9;
+  --color-purple-light: #E8D4F0;
+  --color-blue-light: #D4EDFC;
+  --color-pink-light: #FFE0E6;
+  --color-yellow-light: #FFF8DC;
+  --color-coral-light: #FFD6C4;
+  --color-orange-light: #FFE4B5;
+  --color-teal-light: #C5F0E8;
+  --color-lavender-light: #F3E8FF;
+
+  /* Accent Colors for UI Elements */
+  --color-success: #6EBF8B;
+  --color-warning: #FFB347;
+  --color-error: #E8918A;
+  --color-info: #A8D8EA;
 
   /* Legacy Mappings updated to new palette */
-  --color-pastel-yellow: #FEF3C7;
-  --color-pastel-mint: #D9F9E6;
-  --color-pastel-coral: #FFE4E6;
-  --color-pastel-lavender: #F3E8FF;
-  --color-pastel-peach: #FFF1E6;
-  --color-pastel-sky: #E0F2FE;
-  --color-pastel-rose: #FFE4E6;
-  --color-pastel-indigo: #E0E7FF;
-  --color-pastel-sage: #D9F9E6;
-  --color-pastel-salmon: #FFE4E6;
-  --color-pastel-lilac: #F3E8FF;
+  --color-pastel-yellow: #F5E6A3;
+  --color-pastel-mint: #D4F5E4;
+  --color-pastel-coral: #FFD6C4;
+  --color-pastel-lavender: #E8D4F0;
+  --color-pastel-peach: #FFE5D9;
+  --color-pastel-sky: #D4EDFC;
+  --color-pastel-rose: #FFE0E6;
+  --color-pastel-indigo: #C9B6E4;
+  --color-pastel-sage: #D4F5E4;
+  --color-pastel-salmon: #F5A78E;
+  --color-pastel-lilac: #E8D4F0;
 }
 
 :root {
   --radius: 12px; /* Smoother rounded corners like the image */
   
   /* Backgrounds */
-  --background: #F5F5F5;
+  --background: #F8F6F0;
   --foreground: #1A1A1A;
 
   /* Surfaces */
@@ -119,7 +133,7 @@
   --muted: #F3F4F6;
   --muted-foreground: #6B7280;
   
-  --accent: #A8E6CF;
+  --accent: #6EBF8B;
   --accent-foreground: #1A1A1A;
   
   --destructive: #EF4444;
@@ -135,7 +149,7 @@
   --sidebar-foreground: #1A1A1A;
   --sidebar-primary: #1A1A1A;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #A8E6CF;
+  --sidebar-accent: #6EBF8B;
   --sidebar-accent-foreground: #1A1A1A;
   --sidebar-border: #E5E7EB;
   --sidebar-ring: #1A1A1A;
@@ -206,12 +220,16 @@
   @apply rounded-[24px] p-6 shadow-sm border-none transition-all duration-200;
 }
 
-.bento-mint { background: #D9F9E6; color: #1A1A1A; }
-.bento-peach { background: #FFD8B1; color: #1A1A1A; }
-.bento-purple { background: #DCD3FF; color: #1A1A1A; }
-.bento-blue { background: #B3E5FC; color: #1A1A1A; }
-.bento-pink { background: #FFC0CB; color: #1A1A1A; }
-.bento-yellow { background: #FEF3C7; color: #1A1A1A; }
+.bento-mint { background: #A8E6CF; color: #1A1A1A; }
+.bento-peach { background: #FFCDB2; color: #1A1A1A; }
+.bento-purple { background: #C9B6E4; color: #1A1A1A; }
+.bento-blue { background: #A8D8EA; color: #1A1A1A; }
+.bento-pink { background: #FFB6C1; color: #1A1A1A; }
+.bento-yellow { background: #F5E6A3; color: #1A1A1A; }
+.bento-coral { background: #F5A78E; color: #1A1A1A; }
+.bento-orange { background: #FFB347; color: #1A1A1A; }
+.bento-teal { background: #7FDBCA; color: #1A1A1A; }
+.bento-lavender { background: #E8D4F0; color: #1A1A1A; }
 .bento-white { background: #FFFFFF; color: #1A1A1A; }
 .bento-dark { background: #1A1A1A; color: #FFFFFF; }
 
@@ -225,7 +243,7 @@
 }
 
 .badge-live {
-  @apply bg-[#A8E6CF] text-[#1A1A1A] px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider;
+  @apply bg-[#6EBF8B] text-[#1A1A1A] px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider;
 }
 
 /* ============================================

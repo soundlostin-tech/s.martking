@@ -174,7 +174,7 @@ export default function AdminLive() {
   }
 
   return (
-    <main className="min-h-screen pb-32 bg-[#F5F5F5] text-[#1A1A1A]">
+      <main className="min-h-screen pb-32 bg-[#F8F6F0] text-[#1A1A1A]">
       <div className="px-8 pt-24 space-y-12 max-w-7xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div>
@@ -198,7 +198,7 @@ export default function AdminLive() {
                 <h3 className="text-5xl font-heading font-black">{summary.liveTournaments}</h3>
               </div>
               <div className="w-14 h-14 rounded-2xl bg-[#1A1A1A] flex items-center justify-center shadow-lg">
-                <Radio size={28} className="text-[#A8E6CF]" />
+                <Radio size={28} className="text-[#6EBF8B]" />
               </div>
             </div>
             <div className="absolute right-[-20px] bottom-[-20px] opacity-[0.05] rotate-12">
@@ -213,7 +213,7 @@ export default function AdminLive() {
                 <h3 className="text-5xl font-heading font-black">{summary.totalPlayers}</h3>
               </div>
               <div className="w-14 h-14 rounded-2xl bg-[#1A1A1A] flex items-center justify-center shadow-lg">
-                <Users size={28} className="text-[#B3E5FC]" />
+                <Users size={28} className="text-[#A8D8EA]" />
               </div>
             </div>
             <div className="absolute right-[-20px] bottom-[-20px] opacity-[0.05] -rotate-12">
@@ -230,7 +230,7 @@ export default function AdminLive() {
           
           <div className="flex gap-6 overflow-x-auto pb-8 no-scrollbar -mx-2 px-2">
             {tournaments.map((t, idx) => {
-              const colors = ["peach", "purple", "pink", "yellow"];
+                  const colors = ["peach", "purple", "pink", "yellow", "coral", "teal"];
               const color = colors[idx % colors.length] as any;
               return (
                 <motion.div
@@ -327,15 +327,15 @@ export default function AdminLive() {
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {[
-                      { label: "CONFIRMED KILLS", value: statsSummary?.totalKills || 0, icon: Target, color: "peach" },
-                      { label: "WARRIORS ALIVE", value: statsSummary?.playersAlive || 0, icon: Activity, color: "mint" },
-                      { label: "INTEL VIEWERS", value: statsSummary?.totalViewers.toLocaleString() || 0, icon: Eye, color: "blue" },
-                    ].map((stat, i) => (
-                      <div key={i} className="p-8 bg-[#F9FAFB] rounded-[32px] border-2 border-[#E5E7EB] flex items-center gap-8 shadow-sm">
-                        <div className={`w-16 h-16 rounded-[20px] flex items-center justify-center shadow-md ${
-                          stat.color === 'peach' ? 'bg-[#FFD8B1]' : 
-                          stat.color === 'mint' ? 'bg-[#D9F9E6]' : 'bg-[#B3E5FC]'
-                        }`}>
+                        { label: "CONFIRMED KILLS", value: statsSummary?.totalKills || 0, icon: Target, color: "peach" },
+                        { label: "WARRIORS ALIVE", value: statsSummary?.playersAlive || 0, icon: Activity, color: "mint" },
+                        { label: "INTEL VIEWERS", value: statsSummary?.totalViewers.toLocaleString() || 0, icon: Eye, color: "blue" },
+                      ].map((stat, i) => (
+                        <div key={i} className="p-8 bg-[#F9FAFB] rounded-[32px] border-2 border-[#E5E7EB] flex items-center gap-8 shadow-sm">
+                          <div className={`w-16 h-16 rounded-[20px] flex items-center justify-center shadow-md ${
+                            stat.color === 'peach' ? 'bg-[#FFCDB2]' : 
+                            stat.color === 'mint' ? 'bg-[#A8E6CF]' : 'bg-[#A8D8EA]'
+                          }`}>
                           <stat.icon size={28} className="text-[#1A1A1A]" />
                         </div>
                         <div>

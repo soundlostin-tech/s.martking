@@ -111,7 +111,7 @@ export default function AdminStories() {
   }, [stories]);
 
   return (
-    <main className="min-h-screen pb-32 bg-[#F5F5F5] text-[#1A1A1A]">
+      <main className="min-h-screen pb-32 bg-[#F8F6F0] text-[#1A1A1A]">
       <div className="px-8 pt-24 relative z-10 space-y-12 max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">

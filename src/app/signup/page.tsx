@@ -118,10 +118,10 @@ export default function Signup() {
   };
 
   return (
-    <main className="min-h-screen bg-[#F5F5F5] flex flex-col items-center justify-center p-5 selection:bg-[#5FD3BC]/30">
+      <main className="min-h-screen bg-[#F8F6F0] flex flex-col items-center justify-center p-5 selection:bg-[#6EBF8B]/30">
       <div className="w-full max-w-md space-y-8">
         <section className="text-center">
-          <div className="w-20 h-20 bg-[#FEF3C7] rounded-[32px] flex items-center justify-center mx-auto mb-6 shadow-xl rotate-6 group hover:rotate-0 transition-transform">
+          <div className="w-20 h-20 bg-[#F5E6A3] rounded-[32px] flex items-center justify-center mx-auto mb-6 shadow-xl rotate-6 group hover:rotate-0 transition-transform">
             <UserPlus size={40} className="text-[#1A1A1A]" strokeWidth={2.5} />
           </div>
           <h1 className="text-[44px] font-heading text-[#1A1A1A] leading-[0.9] font-black tracking-tighter">
@@ -139,7 +139,7 @@ export default function Signup() {
               <Input 
                 ref={nameInputRef}
                 placeholder="Operative Name"
-                className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 focus:border-[#5FD3BC] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
+                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 focus:border-[#6EBF8B] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
                 value={formData.fullname}
                 onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
                 required
@@ -151,7 +151,7 @@ export default function Signup() {
               <Input 
                 type="email"
                 placeholder="intel@arena.com"
-                className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 focus:border-[#5FD3BC] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
+                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 focus:border-[#6EBF8B] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 required
@@ -188,7 +188,7 @@ export default function Signup() {
                 <Input 
                   type={showPassword ? "text" : "password"}
                   placeholder="Secret Code"
-                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 pr-14 focus:border-[#5FD3BC] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
+                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 pr-14 focus:border-[#6EBF8B] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   required
@@ -213,7 +213,7 @@ export default function Signup() {
                 checked={formData.terms}
               />
               <label className="text-[11px] font-black text-[#6B7280] leading-relaxed cursor-pointer group-hover/terms:text-[#1A1A1A] transition-colors uppercase tracking-tight">
-                I accept the <span className="text-[#1A1A1A] underline decoration-[#5FD3BC] decoration-4 underline-offset-4">ARENA PROTOCOLS</span> and the data privacy directives
+                I accept the <span className="text-[#1A1A1A] underline decoration-[#6EBF8B] decoration-4 underline-offset-4">ARENA PROTOCOLS</span> and the data privacy directives
               </label>
             </div>
 
@@ -229,7 +229,7 @@ export default function Signup() {
             <div className="pt-4 text-center">
               <p className="text-[11px] font-black text-[#6B7280] uppercase tracking-widest">
                 ALREADY ENLISTED?{" "}
-                <Link href="/signin" className="text-[#1A1A1A] underline decoration-[#FEF3C7] decoration-4 underline-offset-4 hover:decoration-[#5FD3BC] transition-all">
+                <Link href="/signin" className="text-[#1A1A1A] underline decoration-[#F5E6A3] decoration-4 underline-offset-4 hover:decoration-[#6EBF8B] transition-all">
                   AUTHORIZE ACCESS
                 </Link>
               </p>

@@ -63,10 +63,10 @@ export default function Signin() {
   };
 
   return (
-    <main className="min-h-screen bg-[#F5F5F5] flex flex-col items-center justify-center p-5 selection:bg-[#5FD3BC]/30">
+      <main className="min-h-screen bg-[#F8F6F0] flex flex-col items-center justify-center p-5 selection:bg-[#6EBF8B]/30">
       <div className="w-full max-w-md space-y-8">
         <section className="text-center">
-          <div className="w-20 h-20 bg-[#DCD3FF] rounded-[32px] flex items-center justify-center mx-auto mb-6 shadow-xl rotate-[-6deg] group hover:rotate-0 transition-transform">
+          <div className="w-20 h-20 bg-[#C9B6E4] rounded-[32px] flex items-center justify-center mx-auto mb-6 shadow-xl rotate-[-6deg] group hover:rotate-0 transition-transform">
             <LogIn size={40} className="text-[#1A1A1A]" strokeWidth={2.5} />
           </div>
           <h1 className="text-[44px] font-heading text-[#1A1A1A] leading-[0.9] font-black tracking-tighter">
@@ -85,7 +85,7 @@ export default function Signin() {
                 ref={emailInputRef}
                 type="email"
                 placeholder="intel@arena.com"
-                className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 focus:border-[#5FD3BC] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
+                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 focus:border-[#6EBF8B] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 required
@@ -103,7 +103,7 @@ export default function Signin() {
                 <Input 
                   type={showPassword ? "text" : "password"}
                   placeholder="Secret Code"
-                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 pr-14 focus:border-[#5FD3BC] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
+                  className="h-16 rounded-[20px] border-4 border-[#F5F5F5] bg-white text-base font-black px-6 pr-14 focus:border-[#6EBF8B] focus:ring-0 transition-all placeholder:text-[#9CA3AF]"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   required
@@ -130,7 +130,7 @@ export default function Signin() {
             <div className="pt-4 text-center">
               <p className="text-[11px] font-black text-[#6B7280] uppercase tracking-widest">
                 NEW OPERATIVE?{" "}
-                <Link href="/signup" className="text-[#1A1A1A] underline decoration-[#5FD3BC] decoration-4 underline-offset-4 hover:decoration-[#FEF3C7] transition-all">
+                <Link href="/signup" className="text-[#1A1A1A] underline decoration-[#6EBF8B] decoration-4 underline-offset-4 hover:decoration-[#F5E6A3] transition-all">
                   ENLIST TODAY
                 </Link>
               </p>

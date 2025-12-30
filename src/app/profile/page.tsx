@@ -280,7 +280,7 @@ function ProfileContent() {
   if (authLoading || loading) return null;
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
+    <div className="min-h-screen bg-[#F8F6F0] text-[#1A1A1A] relative">
       <main className="pb-[80px] relative z-10">
         <section className="px-5 pt-8 pb-4">
           <p className="text-[12px] font-black text-[#6B7280] uppercase tracking-widest mb-2">
@@ -352,7 +352,7 @@ function ProfileContent() {
                 <h2 className="text-3xl font-heading font-black tracking-tighter text-[#1A1A1A]">{profile?.full_name || "Arena Agent"}</h2>
                 <p className="text-sm text-[#6B7280] font-black uppercase tracking-widest">@{profile?.username || "identity_unknown"}</p>
               </div>
-              <div className="mt-4 inline-flex items-center gap-2 bg-[#A8E6CF] text-[#1A1A1A] px-4 py-1.5 rounded-full shadow-md">
+              <div className="mt-4 inline-flex items-center gap-2 bg-[#6EBF8B] text-[#1A1A1A] px-4 py-1.5 rounded-full shadow-md">
                 <span className="text-[10px] font-black uppercase tracking-[0.2em]">{profile?.role || "Player"}</span>
               </div>
             </div>
@@ -473,13 +473,13 @@ function ProfileContent() {
                 className="hidden" 
                 accept="image/*,video/*"
               />
-              <motion.button 
-                whileTap={{ scale: 0.92 }}
-                onClick={() => clipInputRef.current?.click()}
-                disabled={isUploadingClip}
-                className="w-20 h-20 rounded-[32px] border-4 border-dashed border-[#D1D5DB] flex items-center justify-center group hover:border-[#A8E6CF] transition-all cursor-pointer bg-white shadow-sm"
-              >
-                {isUploadingClip ? <Loader2 size={28} className="animate-spin text-[#5FD3BC]" /> : <Plus size={28} strokeWidth={4} className="text-[#9CA3AF] group-hover:text-[#5FD3BC] transition-all" />}
+                <motion.button 
+                  whileTap={{ scale: 0.92 }}
+                  onClick={() => clipInputRef.current?.click()}
+                  disabled={isUploadingClip}
+                  className="w-20 h-20 rounded-[32px] border-4 border-dashed border-[#D1D5DB] flex items-center justify-center group hover:border-[#6EBF8B] transition-all cursor-pointer bg-white shadow-sm"
+                >
+                  {isUploadingClip ? <Loader2 size={28} className="animate-spin text-[#6EBF8B]" /> : <Plus size={28} strokeWidth={4} className="text-[#9CA3AF] group-hover:text-[#6EBF8B] transition-all" />}
               </motion.button>
               <span className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest">ADD LOG</span>
             </div>
@@ -533,7 +533,7 @@ function ProfileContent() {
             <TabsContent value="grid" className="m-0 focus-visible:ring-0">
               <div className="grid grid-cols-3 gap-1 bg-[#E5E7EB] p-1">
                 {matches.length > 0 ? matches.map((match, i) => {
-                   const colors = ["mint", "blue", "pink", "yellow"];
+                   const colors = ["mint", "blue", "pink", "yellow", "coral", "teal"];
                    const color = colors[i % colors.length] as any;
                    return (
                     <motion.div 

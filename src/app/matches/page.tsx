@@ -193,7 +193,7 @@ function MatchesContent() {
   if (!mounted) return <LoadingScreen />;
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
+    <div className="min-h-screen bg-[#F8F6F0] text-[#1A1A1A] relative">
       <main className="pb-[80px] relative z-10">
         <section className="px-5 pt-8 pb-4">
           <p className="text-[12px] font-black text-[#6B7280] uppercase tracking-widest mb-2">
@@ -247,7 +247,7 @@ function MatchesContent() {
                       onClick={() => setActiveSort(opt.value)}
                       className={`px-4 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
                         activeSort === opt.value
-                          ? "bg-[#D9F9E6] text-[#1A1A1A] border-2 border-[#1A1A1A]"
+                          ? "bg-[#A8E6CF] text-[#1A1A1A] border-2 border-[#1A1A1A]"
                           : "bg-white text-[#6B7280] border-2 border-[#E5E7EB]"
                       }`}
                     >
@@ -310,7 +310,7 @@ function MatchesContent() {
               const isFull = filledSlots >= totalSlots;
               const isJoined = myEntries.some(e => e.id === match.id);
               
-              const colors = ["mint", "blue", "pink", "yellow"];
+                const colors = ["mint", "blue", "pink", "yellow", "coral", "teal"];
               const color = colors[idx % colors.length] as any;
               
               return (
@@ -379,7 +379,7 @@ function MatchesContent() {
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed inset-0 z-[60] bg-[#F5F5F5] flex flex-col"
+            className="fixed inset-0 z-[60] bg-[#F8F6F0] flex flex-col"
           >
             <header className="relative z-10 px-5 py-8 flex items-center justify-between">
               <motion.button 
@@ -418,28 +418,28 @@ function MatchesContent() {
 
               <div className="grid grid-cols-2 gap-4 mb-8">
                 <BentoCard className="p-6 bg-white shadow-xl border-none">
-                  <div className="w-10 h-10 rounded-xl bg-[#B3E5FC]/30 flex items-center justify-center mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-[#A8D8EA]/30 flex items-center justify-center mb-4">
                     <Calendar size={20} className="text-[#1A1A1A]" strokeWidth={2.5} />
                   </div>
                   <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-1">SCHEDULE</p>
                   <p className="text-sm font-black text-[#1A1A1A] tracking-tight">{new Date(selectedMatch.start_time).toLocaleDateString([], { month: 'short', day: 'numeric' })} • {new Date(selectedMatch.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                 </BentoCard>
                 <BentoCard className="p-6 bg-white shadow-xl border-none">
-                  <div className="w-10 h-10 rounded-xl bg-[#D9F9E6]/30 flex items-center justify-center mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-[#A8E6CF]/30 flex items-center justify-center mb-4">
                     <MapIcon size={20} className="text-[#1A1A1A]" strokeWidth={2.5} />
                   </div>
                   <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-1">ARENA MAP</p>
                   <p className="text-sm font-black text-[#1A1A1A] tracking-tight">{selectedMatch.map || 'Bermuda'}</p>
                 </BentoCard>
                 <BentoCard className="p-6 bg-white shadow-xl border-none">
-                  <div className="w-10 h-10 rounded-xl bg-[#FFD8B1]/30 flex items-center justify-center mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-[#FFCDB2]/30 flex items-center justify-center mb-4">
                     <Target size={20} className="text-[#1A1A1A]" strokeWidth={2.5} />
                   </div>
                   <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-1">BATTLE MODE</p>
                   <p className="text-sm font-black text-[#1A1A1A] tracking-tight">{selectedMatch.mode}</p>
                 </BentoCard>
                 <BentoCard className="p-6 bg-white shadow-xl border-none">
-                  <div className="w-10 h-10 rounded-xl bg-[#FFC0CB]/30 flex items-center justify-center mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-[#FFB6C1]/30 flex items-center justify-center mb-4">
                     <Users size={20} className="text-[#1A1A1A]" strokeWidth={2.5} />
                   </div>
                   <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-1">POPULATION</p>
@@ -479,7 +479,7 @@ function MatchesContent() {
                 </div>
                 {myEntries.some(e => e.id === selectedMatch.id) ? (
                    <div className="text-right">
-                    <span className="bg-[#D9F9E6] text-[#1A1A1A] border-2 border-[#1A1A1A] px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-md">PASS SECURED</span>
+                     <span className="bg-[#A8E6CF] text-[#1A1A1A] border-2 border-[#1A1A1A] px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-md">PASS SECURED</span>
                    </div>
                 ) : (
                   <div className="text-right">
@@ -504,7 +504,7 @@ function MatchesContent() {
                 <Link href={`/live?match=${selectedMatch.id}`} className="w-full">
                   <motion.button 
                     whileTap={{ scale: 0.95 }}
-                    className="w-full py-5 bg-[#5FD3BC] text-[#1A1A1A] rounded-[24px] text-sm font-black uppercase tracking-[0.2em] shadow-xl flex items-center justify-center gap-3"
+                    className="w-full py-5 bg-[#6EBF8B] text-[#1A1A1A] rounded-[24px] text-sm font-black uppercase tracking-[0.2em] shadow-xl flex items-center justify-center gap-3"
                   >
                     WATCH LIVE
                     <Play size={20} fill="#1A1A1A" />

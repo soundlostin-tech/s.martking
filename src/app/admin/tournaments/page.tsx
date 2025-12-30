@@ -202,7 +202,7 @@ export default function AdminTournaments() {
   }, [tournaments, search, statusFilter]);
 
   return (
-    <main className="min-h-screen p-8 lg:p-12 space-y-12 bg-[#F5F5F5]">
+      <main className="min-h-screen p-8 lg:p-12 space-y-12 bg-[#F8F6F0]">
       <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 relative z-10">
         <div>
           <p className="text-[10px] font-black text-[#1A1A1A]/40 uppercase tracking-[0.3em] mb-2">Resource Management</p>
@@ -221,7 +221,7 @@ export default function AdminTournaments() {
           }}
           className="h-16 px-10 bg-[#1A1A1A] text-white rounded-[24px] font-black text-[12px] uppercase tracking-[0.2em] shadow-2xl flex items-center gap-3 active:scale-95 transition-all"
         >
-          <Plus size={20} strokeWidth={4} className="text-[#A8E6CF]" /> INITIALIZE NEW
+            <Plus size={20} strokeWidth={4} className="text-[#6EBF8B]" /> INITIALIZE NEW
         </motion.button>
       </section>
 
@@ -262,7 +262,7 @@ export default function AdminTournaments() {
         ) : filteredTournaments.length > 0 ? (
           <AnimatePresence mode="popLayout">
             {filteredTournaments.map((t, idx) => {
-              const colors = ["mint", "blue", "pink", "peach", "purple", "yellow"];
+              const colors = ["mint", "blue", "pink", "peach", "purple", "yellow", "coral", "teal"];
               const color = colors[idx % colors.length] as any;
               return (
                 <motion.div
@@ -374,7 +374,7 @@ export default function AdminTournaments() {
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-[95vw] sm:max-w-2xl rounded-t-[40px] sm:rounded-[40px] p-0 overflow-hidden border-none shadow-2xl bg-white fixed bottom-0 sm:bottom-auto sm:top-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 m-0 z-[100]">
-          <div className="bg-[#FEF3C7] p-10 relative overflow-hidden">
+          <div className="bg-[#F5E6A3] p-10 relative overflow-hidden">
             <div className="relative z-10">
               <div className="w-14 h-14 rounded-[20px] bg-[#1A1A1A] flex items-center justify-center text-[#FEF3C7] mb-6 shadow-xl rotate-6 hover:rotate-0 transition-transform">
                 <Settings size={28} strokeWidth={3} />

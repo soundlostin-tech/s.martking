@@ -80,10 +80,10 @@ export default function Home() {
 
   const featured = featuredMatches[0];
   const isLoading = loading || authLoading;
-  const storyColors = ['#A8E6CF', '#FFD8B1', '#DCD3FF', '#B3E5FC', '#FFC0CB', '#FEF3C7'];
+  const storyColors = ['#6EBF8B', '#FFCDB2', '#C9B6E4', '#A8D8EA', '#FFB6C1', '#F5E6A3'];
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
+    <div className="min-h-screen bg-[#F8F6F0] text-[#1A1A1A] relative">
       <main className="pb-[80px] relative z-10">
         <TopHeader />
         
@@ -250,8 +250,8 @@ export default function Home() {
             <Link key={action.label} href={action.href} className="flex-shrink-0">
               <div className="bg-white shadow-md flex items-center gap-4 px-6 py-4 rounded-2xl border border-[#E5E7EB]">
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                  action.color === 'mint' ? 'bg-[#D9F9E6]' :
-                  action.color === 'blue' ? 'bg-[#B3E5FC]' : 'bg-[#FFC0CB]'
+                  action.color === 'mint' ? 'bg-[#A8E6CF]' :
+                  action.color === 'blue' ? 'bg-[#A8D8EA]' : 'bg-[#FFB6C1]'
                 }`}>
                   <action.icon size={20} className="text-[#1A1A1A]" />
                 </div>
@@ -274,7 +274,7 @@ export default function Home() {
               ))
             ) : (
               featuredMatches.slice(1, 5).map((match, idx) => {
-                const colors = ["mint", "blue", "pink", "yellow"];
+                const colors = ["mint", "blue", "pink", "yellow", "coral", "teal"];
                 const color = colors[idx % colors.length] as any;
                 return (
                   <Link key={match.id} href={`/matches/${match.id}`}>

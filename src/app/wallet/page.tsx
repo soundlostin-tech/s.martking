@@ -209,7 +209,7 @@ function WalletContent() {
   if (authLoading) return null;
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
+    <div className="min-h-screen bg-[#F8F6F0] text-[#1A1A1A] relative">
       <main className="pb-[80px] relative z-10">
           <section className="px-5 pt-8 pb-4">
             <p className="text-[12px] font-black text-[#6B7280] uppercase tracking-widest mb-2">
@@ -234,7 +234,7 @@ function WalletContent() {
                   </div>
 
                 <div className="w-14 h-14 rounded-2xl bg-[#1A1A1A] flex items-center justify-center shadow-xl">
-                  <WalletIcon size={28} className="text-[#A8E6CF]" strokeWidth={2.5} />
+                  <WalletIcon size={28} className="text-[#6EBF8B]" strokeWidth={2.5} />
                 </div>
               </div>
 
@@ -263,7 +263,7 @@ function WalletContent() {
               className="bg-[#1A1A1A] text-white rounded-[24px] py-8 flex flex-col items-center gap-3 shadow-xl hover:bg-black transition-all"
             >
               <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center shadow-inner">
-                <Plus size={28} strokeWidth={4} className="text-[#A8E6CF]" />
+                  <Plus size={28} strokeWidth={4} className="text-[#6EBF8B]" />
               </div>
               <span className="text-[11px] font-black uppercase tracking-widest">Add Loot</span>
             </motion.button>
@@ -331,7 +331,7 @@ function WalletContent() {
                 </div>
               ) : filteredTransactions.length > 0 ? (
                 filteredTransactions.map((tx, i) => {
-                  const colors = ["mint", "blue", "pink", "yellow"];
+                  const colors = ["mint", "blue", "pink", "yellow", "coral", "teal"];
                   const color = colors[i % colors.length] as any;
                   return (
                     <motion.div 
@@ -383,7 +383,7 @@ function WalletContent() {
 
       <Dialog open={isDepositOpen} onOpenChange={setIsDepositOpen}>
         <DialogContent className="p-0 border-none bg-white rounded-t-[40px] sm:rounded-[40px] overflow-hidden max-w-[100vw] sm:max-w-[420px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0 z-[100]">
-          <div className="bg-[#A8E6CF] p-10 relative">
+          <div className="bg-[#6EBF8B] p-10 relative">
             <div className="w-16 h-16 rounded-[24px] bg-white flex items-center justify-center mb-6 shadow-xl rotate-6">
               <Plus size={32} className="text-[#1A1A1A]" strokeWidth={4} />
             </div>
@@ -397,12 +397,12 @@ function WalletContent() {
                 <Input 
                   type="number" 
                   placeholder="0" 
-                  className="h-20 rounded-[24px] border-4 border-[#F5F5F5] bg-white text-4xl font-heading font-black px-8 focus:border-[#A8E6CF] focus:ring-0 text-[#1A1A1A] placeholder:text-[#9CA3AF] shadow-inner transition-all"
+                  className="h-20 rounded-[24px] border-4 border-[#F5F5F5] bg-white text-4xl font-heading font-black px-8 focus:border-[#6EBF8B] focus:ring-0 text-[#1A1A1A] placeholder:text-[#9CA3AF] shadow-inner transition-all"
                   value={depositAmount}
                   onChange={(e) => setDepositAmount(e.target.value)}
                 />
                 <div className="absolute right-6 top-1/2 -translate-y-1/2">
-                   <Zap size={24} className="text-[#A8E6CF]" />
+                   <Zap size={24} className="text-[#6EBF8B]" />
                 </div>
               </div>
             </div>

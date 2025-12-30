@@ -161,7 +161,7 @@ export default function AdminLeaderboard() {
   const topPlayer = leaderboard[0];
 
   return (
-    <main className="min-h-screen pb-32 bg-[#F5F5F5] text-[#1A1A1A]">
+      <main className="min-h-screen pb-32 bg-[#F8F6F0] text-[#1A1A1A]">
       <div className="px-8 pt-24 space-y-12 max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
@@ -198,7 +198,7 @@ export default function AdminLeaderboard() {
                     </div>
                   </div>
                   <div className="absolute -bottom-2 -right-2 bg-[#1A1A1A] text-white p-4 rounded-2xl shadow-xl z-20 border-4 border-white rotate-[-6deg] group-hover:rotate-0 transition-transform">
-                    <Crown size={28} strokeWidth={3} className="text-[#FEF3C7]" />
+                    <Crown size={28} strokeWidth={3} className="text-[#F5E6A3]" />
                   </div>
                 </div>
 

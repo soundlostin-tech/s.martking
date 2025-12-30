@@ -6,11 +6,11 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
-  { label: "Home", icon: Home, href: "/", color: "#A8E6CF" },
-  { label: "Live", icon: Play, href: "/live", color: "#FFD8B1" },
-  { label: "Matches", icon: Swords, href: "/matches", color: "#DCD3FF" },
-  { label: "Wallet", icon: Wallet, href: "/wallet", color: "#B3E5FC" },
-  { label: "Profile", icon: User, href: "/profile", color: "#FFC0CB" },
+  { label: "Home", icon: Home, href: "/", color: "#6EBF8B" },
+  { label: "Live", icon: Play, href: "/live", color: "#F5A78E" },
+  { label: "Matches", icon: Swords, href: "/matches", color: "#C9B6E4" },
+  { label: "Wallet", icon: Wallet, href: "/wallet", color: "#A8D8EA" },
+  { label: "Profile", icon: User, href: "/profile", color: "#FFB6C1" },
 ];
 
 export function BottomNav() {

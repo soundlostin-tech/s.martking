@@ -171,10 +171,10 @@ export default function AdminTransactions() {
   const getTypeBadge = (type: string) => {
     const baseClass = "text-[9px] font-black px-3 py-1 rounded-full border-none shadow-sm";
     switch (type) {
-      case 'deposit': return <Badge className={`${baseClass} bg-[#D9F9E6] text-[#1A1A1A]`}>DEPOSIT</Badge>;
-      case 'withdrawal': return <Badge className={`${baseClass} bg-[#FFD8B1] text-[#1A1A1A]`}>WITHDRAWAL</Badge>;
-      case 'prize': return <Badge className={`${baseClass} bg-[#B3E5FC] text-[#1A1A1A]`}>PRIZE</Badge>;
-      case 'entry_fee': return <Badge className={`${baseClass} bg-[#FFC0CB] text-[#1A1A1A]`}>ENTRY FEE</Badge>;
+        case 'deposit': return <Badge className={`${baseClass} bg-[#A8E6CF] text-[#1A1A1A]`}>DEPOSIT</Badge>;
+        case 'withdrawal': return <Badge className={`${baseClass} bg-[#FFCDB2] text-[#1A1A1A]`}>WITHDRAWAL</Badge>;
+        case 'prize': return <Badge className={`${baseClass} bg-[#A8D8EA] text-[#1A1A1A]`}>PRIZE</Badge>;
+        case 'entry_fee': return <Badge className={`${baseClass} bg-[#FFB6C1] text-[#1A1A1A]`}>ENTRY FEE</Badge>;
       default: return <Badge className={`${baseClass} bg-[#F5F5F5] text-[#1A1A1A]/40`}>{type.replace('_', ' ').toUpperCase()}</Badge>;
     }
   };
@@ -183,14 +183,14 @@ export default function AdminTransactions() {
     const baseClass = "text-[9px] font-black px-3 py-1 rounded-full border-none shadow-sm";
     switch (status) {
       case 'completed': return <Badge className={`${baseClass} bg-[#1A1A1A] text-white`}>COMPLETED</Badge>;
-      case 'pending': return <Badge className={`${baseClass} bg-[#FEF3C7] text-[#1A1A1A]`}>PENDING</Badge>;
+        case 'pending': return <Badge className={`${baseClass} bg-[#F5E6A3] text-[#1A1A1A]`}>PENDING</Badge>;
       case 'failed': return <Badge className={`${baseClass} bg-red-500 text-white`}>FAILED</Badge>;
       default: return <Badge className={`${baseClass} bg-[#F5F5F5] text-[#1A1A1A]/40`}>{status.toUpperCase()}</Badge>;
     }
   };
 
   return (
-    <main className="min-h-screen pb-32 bg-[#F5F5F5] text-[#1A1A1A]">
+      <main className="min-h-screen pb-32 bg-[#F8F6F0] text-[#1A1A1A]">
       <div className="px-8 pt-24 relative z-10 space-y-12 max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
@@ -299,7 +299,7 @@ export default function AdminTransactions() {
               <AnimatePresence mode="popLayout">
                 {filteredTransactions.length > 0 ? (
                   filteredTransactions.map((tx, idx) => {
-                    const colors = ["mint", "blue", "pink", "yellow"];
+                    const colors = ["mint", "blue", "pink", "yellow", "coral", "teal"];
                     const color = colors[idx % colors.length] as any;
                     return (
                       <motion.div 
