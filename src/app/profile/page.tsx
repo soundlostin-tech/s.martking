@@ -109,8 +109,10 @@ export default function Profile() {
         team_site: profile?.team_site || "",
         tournament_stats_url: profile?.tournament_stats_url || ""
       });
+    } else if (!authLoading) {
+      setLoading(false);
     }
-  }, [user, profile?.id]);
+  }, [user, profile?.id, authLoading]);
 
   const fetchData = async () => {
     try {
