@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Bell } from "lucide-react";
 
 export function TopHeader() {
   return (
@@ -23,15 +22,6 @@ export function TopHeader() {
             Smartking's <span className="text-[#6B7280]">Arena</span>
           </h1>
         </div>
-      </div>
-      
-      <div className="flex items-center gap-2">
-        <motion.button 
-          whileTap={{ scale: 0.9 }}
-          className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-[#1A1A1A] shadow border border-black/[0.05]"
-        >
-          <Bell size={16} strokeWidth={3} />
-        </motion.button>
       </div>
     </header>
 
