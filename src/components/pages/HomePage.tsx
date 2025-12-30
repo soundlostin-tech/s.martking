@@ -62,14 +62,10 @@ export function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#F8F6F0] text-[#1A1A1A] relative">
-      <main className="pb-20 relative z-10">
-        <TopHeader />
-
-        <section className="px-4 pt-2 pb-4">
-          <GlobalSearch />
-        </section>
-        
-        <section className="py-2">
+        <main className="pb-20 relative z-10">
+          <TopHeader />
+          
+          <section className="py-2">
           <div className="flex gap-3 overflow-x-auto no-scrollbar px-4 items-start">
             <div className="flex gap-3 items-start pr-6">
               {isLoading ? (

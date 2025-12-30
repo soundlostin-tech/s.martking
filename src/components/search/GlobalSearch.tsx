@@ -8,17 +8,29 @@ import type { SearchResult } from "@/app/api/search/route";
 
 interface GlobalSearchProps {
   placeholder?: string;
+  autoFocus?: boolean;
+  onClose?: () => void;
 }
 
-export function GlobalSearch({ placeholder = "Search players, posts, videos..." }: GlobalSearchProps) {
+export function GlobalSearch({ 
+  placeholder = "Search players, posts, videos...",
+  autoFocus = false,
+  onClose
+}: GlobalSearchProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(autoFocus);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout>();
+
+  useEffect(() => {
+    if (autoFocus) {
+      inputRef.current?.focus();
+    }
+  }, [autoFocus]);
 
   const performSearch = useCallback(async (searchQuery: string, type?: string | null) => {
     if (searchQuery.length < 2) {
@@ -160,13 +172,16 @@ export function GlobalSearch({ placeholder = "Search players, posts, videos..." 
               </div>
             ) : results.length > 0 ? (
               <div className="divide-y divide-[#E5E7EB]">
-                {results.map((result) => (
-                  <Link
-                    key={`${result.type}-${result.id}`}
-                    href={getResultUrl(result)}
-                    onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 p-3 hover:bg-[#F9FAFB] transition-colors"
-                  >
+                  {results.map((result) => (
+                    <Link
+                      key={`${result.type}-${result.id}`}
+                      href={getResultUrl(result)}
+                      onClick={() => {
+                        setIsOpen(false);
+                        onClose?.();
+                      }}
+                      className="flex items-center gap-3 p-3 hover:bg-[#F9FAFB] transition-colors"
+                    >
                     <div className="w-10 h-10 rounded-xl bg-[#F3F4F6] flex items-center justify-center overflow-hidden flex-shrink-0 border border-[#E5E7EB]">
                       {result.type === "profile" && result.avatar_url ? (
                         <img src={result.avatar_url} alt="" className="w-full h-full object-cover" />
