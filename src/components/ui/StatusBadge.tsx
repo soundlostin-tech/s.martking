@@ -11,11 +11,11 @@ interface StatusBadgeProps {
 }
 
 const variantClasses: Record<StatusBadgeVariant, string> = {
-  live: "bg-[#5FD3BC] text-[#1A1A1A]",
-  pending: "bg-[#FEF3C7] text-[#1A1A1A]",
-  completed: "bg-[#D1FAE5] text-[#1A1A1A]",
-  failed: "bg-[#FEE2E2] text-[#1A1A1A]",
-  upcoming: "bg-[#FCD34D] text-[#1A1A1A]",
+  live: "bg-[#C6F6D5] text-[#1A1A1A]",
+  pending: "bg-[#FEF08A] text-[#1A1A1A]",
+  completed: "bg-[#DCFCE7] text-[#1A1A1A]",
+  failed: "bg-[#FECACA] text-[#1A1A1A]",
+  upcoming: "bg-[#BAE6FD] text-[#1A1A1A]",
 };
 
 const variantLabels: Record<StatusBadgeVariant, string> = {

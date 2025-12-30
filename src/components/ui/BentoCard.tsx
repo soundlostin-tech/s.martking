@@ -6,37 +6,40 @@ import { cn } from "@/lib/utils";
 interface BentoCardProps {
   children: React.ReactNode;
   className?: string;
-  variant?: "default" | "hero" | "pastel" | "dark" | "vibrant";
-  pastelColor?: "yellow" | "mint" | "coral" | "lavender" | "peach" | "sky" | "rose" | "indigo" | "sage";
-  onClick?: () => void;
-}
-
-export function BentoCard({ 
-  children, 
-  className, 
-  variant = "default",
-  pastelColor = "yellow",
-  onClick 
-}: BentoCardProps) {
-  const pastelVariants = {
-    yellow: "bg-[#FEF3C7]",
-    mint: "bg-[#D1FAE5]",
-    coral: "bg-[#FEE2E2]",
-    lavender: "bg-[#EDE9FE]",
-    peach: "bg-[#FFEDD5]",
-    sky: "bg-[#E0F2FE]",
-    rose: "bg-[#FCE7F3]",
-    indigo: "bg-[#E0E7FF]",
-    sage: "bg-[#DCFCE7]",
-  };
-
-  const variantClasses = {
-    default: "bg-white text-[#1A1A1A]",
-    dark: "bg-[#1A1A1A] text-white",
-    vibrant: "bg-[#5FD3BC] text-[#1A1A1A]",
-    hero: `${pastelVariants[pastelColor]} text-[#1A1A1A]`,
-    pastel: `${pastelVariants[pastelColor]} text-[#1A1A1A]`,
-  };
+    variant?: "default" | "hero" | "pastel" | "dark" | "vibrant" | "glass";
+    pastelColor?: "yellow" | "mint" | "coral" | "lavender" | "peach" | "sky" | "rose" | "indigo" | "sage" | "salmon" | "lilac";
+    onClick?: () => void;
+  }
+  
+  export function BentoCard({ 
+    children, 
+    className, 
+    variant = "default",
+    pastelColor = "yellow",
+    onClick 
+  }: BentoCardProps) {
+    const pastelVariants = {
+      yellow: "bg-[#FEF08A]",
+      mint: "bg-[#C6F6D5]",
+      coral: "bg-[#FEE2E2]",
+      lavender: "bg-[#E9D5FF]",
+      peach: "bg-[#FED7AA]",
+      sky: "bg-[#BAE6FD]",
+      rose: "bg-[#FCE7F3]",
+      indigo: "bg-[#E0E7FF]",
+      sage: "bg-[#DCFCE7]",
+      salmon: "bg-[#FECACA]",
+      lilac: "bg-[#D8B4FE]",
+    };
+  
+    const variantClasses = {
+      default: "bg-white text-[#1A1A1A]",
+      dark: "bg-[#1A1A1A] text-white",
+      vibrant: "bg-[#5FD3BC] text-[#1A1A1A]",
+      glass: "bg-white/40 backdrop-blur-xl border border-white/40 text-[#1A1A1A]",
+      hero: `${pastelVariants[pastelColor]} text-[#1A1A1A]`,
+      pastel: `${pastelVariants[pastelColor]} text-[#1A1A1A]`,
+    };
 
   return (
     <motion.div

@@ -82,8 +82,10 @@ export default function Home() {
 
   const isLoading = loading || authLoading;
 
+  const storyColors = ['#C6F6D5', '#FED7AA', '#E9D5FF', '#BAE6FD', '#FEF08A', '#FCE7F3'];
+
   return (
-    <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
+    <div className="min-h-screen bg-[#F3F4F6] text-[#1A1A1A] relative">
       {/* Background is now global in layout via AnimatedBackground component */}
       
       <main className="pb-[80px] relative z-10">
@@ -97,7 +99,7 @@ export default function Home() {
                 onClick={() => setIsUploadOpen(true)}
                 className="relative w-16 h-16 rounded-full p-[2px] bg-white shadow-[2px_8px_16px_rgba(0,0,0,0.06)] border-2 border-dashed border-[#E5E7EB]"
               >
-                <div className="w-full h-full rounded-full bg-[#F5F5F5] flex items-center justify-center overflow-hidden">
+                <div className="w-full h-full rounded-full bg-[#F3F4F6] flex items-center justify-center overflow-hidden">
                   {profile?.avatar_url ? (
                     <img src={profile.avatar_url} alt="" className="w-full h-full object-cover opacity-40" />
                   ) : (
@@ -119,16 +121,20 @@ export default function Home() {
                 </div>
               ))
             ) : (
-              profiles.filter(p => p.id !== profile?.id).map((p) => {
+              profiles.filter(p => p.id !== profile?.id).map((p, index) => {
                 const hasStories = stories.some(s => s.user_id === p.id);
+                const color = storyColors[index % storyColors.length];
                 return (
                   <div key={p.id} className="flex-shrink-0 flex flex-col items-center gap-2">
                     <motion.div 
                       whileTap={{ scale: 0.92 }}
                       onClick={() => hasStories && openStory(p.id)}
-                      className={`w-16 h-16 rounded-full p-[2px] bg-white shadow-[2px_8px_16px_rgba(0,0,0,0.06)] border-2 ${
-                        hasStories ? 'border-[#5FD3BC] cursor-pointer' : 'border-[#E5E7EB] cursor-default opacity-60'
-                      }`}
+                      className="w-16 h-16 rounded-full p-[2px] bg-white shadow-[2px_8px_16px_rgba(0,0,0,0.06)] border-2 transition-colors duration-300"
+                      style={{ 
+                        borderColor: hasStories ? color : '#E5E7EB',
+                        cursor: hasStories ? 'pointer' : 'default',
+                        opacity: hasStories ? 1 : 0.6
+                      }}
                     >
                       <div className="w-full h-full rounded-full bg-[#E5E7EB] flex items-center justify-center overflow-hidden">
                         {p.avatar_url ? (
@@ -150,11 +156,11 @@ export default function Home() {
           {isLoading ? (
             <Skeleton className="h-[260px] w-full rounded-3xl" />
           ) : featured ? (
-            <BentoCard variant="vibrant" className="p-6 relative overflow-hidden min-h-[260px] flex flex-col">
+            <BentoCard variant="pastel" pastelColor="sky" className="p-6 relative overflow-hidden min-h-[260px] flex flex-col">
               <div className="relative z-10 flex flex-col h-full flex-grow">
                 <div className="flex justify-between items-start mb-4">
                   <StatusBadge variant={featured.status as any} className="bg-[#1A1A1A] text-white" />
-                  <div className="px-3 py-1 bg-white/30 backdrop-blur-md rounded-full text-[10px] font-bold text-[#1A1A1A] flex items-center gap-1.5 border border-white/20">
+                  <div className="px-3 py-1 bg-white/40 backdrop-blur-md rounded-full text-[10px] font-bold text-[#1A1A1A] flex items-center gap-1.5 border border-white/20">
                     <Clock size={12} strokeWidth={3} />
                     {featured.status === 'live' ? 'Live — elapsed 02:45:12' : 'Starts in 02:45:12'}
                   </div>
@@ -167,7 +173,7 @@ export default function Home() {
                   <div className="px-3 py-1 bg-[#1A1A1A] text-white rounded-lg text-[10px] font-bold uppercase tracking-wider">SOLO MATCH</div>
                 </div>
                 
-                  <div className="flex items-center justify-between mt-auto bg-white/50 backdrop-blur-sm p-4 rounded-2xl border border-white/50">
+                  <div className="flex items-center justify-between mt-auto bg-white/60 backdrop-blur-sm p-4 rounded-2xl border border-white/50">
                     <div className="flex flex-col">
                       <span className="text-[11px] font-bold text-[#1A1A1A]/70 uppercase tracking-widest mb-1">Entry Fee</span>
                       <span className="text-3xl font-heading text-[#1A1A1A] font-black">₹{featured?.tournament?.entry_fee}</span>
@@ -175,7 +181,7 @@ export default function Home() {
                     <Link href={`/matches/${featured.id}`}>
                       <motion.button 
                         whileTap={{ scale: 0.95 }}
-                        className="bg-[#1A1A1A] text-white px-10 py-5 rounded-xl font-bold text-base shadow-[0_10px_20px_rgba(0,0,0,0.2)] flex items-center gap-2 hover:bg-[#2A2A2A] transition-colors focus:outline-none focus:ring-2 focus:ring-[#5FD3BC] focus:ring-offset-2"
+                        className="bg-[#1A1A1A] text-white px-10 py-5 rounded-xl font-bold text-base shadow-[0_10px_20px_rgba(0,0,0,0.15)] flex items-center gap-2 hover:bg-[#2A2A2A] transition-colors focus:outline-none focus:ring-2 focus:ring-[#5FD3BC] focus:ring-offset-2"
                         aria-label="Join this match now"
                       >
                         Join Now
@@ -206,7 +212,7 @@ export default function Home() {
                 </div>
               </div>
               
-              <div className="absolute right-[-30px] top-[-30px] scale-[1.4] opacity-[0.03] pointer-events-none">
+              <div className="absolute right-[-30px] top-[-30px] scale-[1.4] opacity-[0.05] pointer-events-none">
                 <Trophy size={200} strokeWidth={1} />
               </div>
             </BentoCard>
@@ -222,25 +228,25 @@ export default function Home() {
               </>
             ) : (
               <>
-                <BentoCard variant="dark" className="p-4 h-36 flex flex-col justify-between overflow-hidden relative">
+                <BentoCard variant="pastel" pastelColor="mint" className="p-4 h-36 flex flex-col justify-between overflow-hidden relative">
                   <div className="relative z-10">
                     <div className="flex items-center gap-2 mb-2">
-                      <Target size={14} className="text-[#5FD3BC]" />
-                      <span className="text-[10px] font-bold text-white/60 uppercase tracking-wide">Win Rate</span>
+                      <Target size={14} className="text-[#1A1A1A]/60" />
+                      <span className="text-[10px] font-bold text-[#1A1A1A]/60 uppercase tracking-wide">Win Rate</span>
                     </div>
-                    <p className="text-2xl font-heading text-white font-bold">{userStats.winRate}</p>
+                    <p className="text-2xl font-heading text-[#1A1A1A] font-bold">{userStats.winRate}</p>
                   </div>
                   <div className="h-8 flex items-end gap-1 relative z-10">
                     {[40, 70, 45, 90, 60, 80, 55].map((h, i) => (
-                      <div key={i} className="flex-1 bg-[#5FD3BC]/30 rounded-t-sm" style={{ height: `${h}%` }} />
+                      <div key={i} className="flex-1 bg-white/40 rounded-t-sm" style={{ height: `${h}%` }} />
                     ))}
                   </div>
-                  <div className="absolute -right-4 -top-4 opacity-5">
+                  <div className="absolute -right-4 -top-4 opacity-[0.05]">
                     <Swords size={100} />
                   </div>
                 </BentoCard>
                 
-                <BentoCard variant="pastel" pastelColor="lavender" className="p-4 h-36 flex flex-col justify-between overflow-hidden relative">
+                <BentoCard variant="pastel" pastelColor="peach" className="p-4 h-36 flex flex-col justify-between overflow-hidden relative">
                   <div className="relative z-10">
                     <div className="flex items-center gap-2 mb-2">
                       <Crown size={14} className="text-[#1A1A1A]/60" />
@@ -248,11 +254,11 @@ export default function Home() {
                     </div>
                     <p className="text-2xl font-heading text-[#1A1A1A] font-bold">{userStats.rank}</p>
                     <div className="mt-1 flex items-center gap-1">
-                      <TrendingUp size={12} className="text-[#5FD3BC]" />
-                      <span className="text-[10px] font-bold text-[#5FD3BC] uppercase">{userStats.growth} this week</span>
+                      <TrendingUp size={12} className="text-[#059669]" />
+                      <span className="text-[10px] font-bold text-[#059669] uppercase">{userStats.growth} this week</span>
                     </div>
                   </div>
-                  <div className="absolute -right-4 -bottom-4 opacity-10">
+                  <div className="absolute -right-4 -bottom-4 opacity-[0.08]">
                     <Award size={80} />
                   </div>
                 </BentoCard>
@@ -268,10 +274,10 @@ export default function Home() {
             { label: "Leaderboard", icon: Trophy, href: "/leaderboard", color: "sky" }
           ].map((action) => (
             <Link key={action.label} href={action.href} className="flex-shrink-0">
-              <div className="bg-white shadow-[2px_8px_16px_rgba(0,0,0,0.06)] flex items-center gap-3 px-4 py-3 rounded-lg touch-target">
+              <div className="bg-white shadow-[2px_8px_16px_rgba(0,0,0,0.06)] flex items-center gap-3 px-4 py-3 rounded-xl touch-target">
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                  action.color === 'mint' ? 'bg-[#D1FAE5]' :
-                  action.color === 'peach' ? 'bg-[#FFEDD5]' : 'bg-[#E0F2FE]'
+                  action.color === 'mint' ? 'bg-[#C6F6D5]' :
+                  action.color === 'peach' ? 'bg-[#FED7AA]' : 'bg-[#BAE6FD]'
                 }`}>
                   <action.icon size={16} className="text-[#1A1A1A]" />
                 </div>
@@ -283,7 +289,7 @@ export default function Home() {
 
         <section className="px-4 mb-6">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-heading text-[#1A1A1A] font-bold">Upcoming</h3>
+            <h3 className="text-xl font-heading text-[#1A1A1A] font-bold">Upcoming Matches</h3>
             <Link href="/matches" className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide">See All</Link>
           </div>
           
@@ -293,22 +299,28 @@ export default function Home() {
                 <Skeleton key={i} className="h-16 w-full rounded-2xl" />
               ))
             ) : (
-              featuredMatches.slice(1, 4).map((match) => (
-                <Link key={match.id} href={`/matches/${match.id}`}>
-                  <BentoCard className="p-4 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-[#D1FAE5] flex items-center justify-center">
-                        <Zap size={18} className="text-[#1A1A1A]" />
+              featuredMatches.slice(1, 4).map((match, idx) => {
+                const colors = ["mint", "peach", "sky", "lavender", "rose"];
+                const color = colors[idx % colors.length] as any;
+                return (
+                  <Link key={match.id} href={`/matches/${match.id}`}>
+                    <BentoCard variant="pastel" pastelColor={color} className="p-4 flex items-center justify-between border-none">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-white/40 flex items-center justify-center">
+                          <Zap size={18} className="text-[#1A1A1A]" />
+                        </div>
+                        <div>
+                          <h4 className="font-heading text-[#1A1A1A] font-bold leading-tight text-sm">{match.tournament?.title || "Standard Match"}</h4>
+                          <p className="text-[10px] font-bold text-[#1A1A1A]/60 uppercase tracking-wide mt-0.5">₹{match.tournament?.entry_fee} Entry</p>
+                        </div>
                       </div>
-                      <div>
-                        <h4 className="font-heading text-[#1A1A1A] font-bold leading-tight text-sm">{match.tournament?.title || "Standard Match"}</h4>
-                        <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide mt-0.5">₹{match.tournament?.entry_fee} Entry</p>
+                      <div className="px-3 py-1 bg-[#1A1A1A] text-white rounded-full text-[9px] font-bold uppercase tracking-wider">
+                        JOIN
                       </div>
-                    </div>
-                    <StatusBadge variant="upcoming" className="text-[9px] px-2 py-0.5" />
-                  </BentoCard>
-                </Link>
-              ))
+                    </BentoCard>
+                  </Link>
+                );
+              })
             )}
           </div>
         </section>

@@ -77,24 +77,26 @@
   --color-electric-blue: #5FD3BC;
   --color-electric-blue-vibrant: #5FD3BC;
   
-  /* Pastel Accent Colors */
-  --color-pastel-yellow: #FEF3C7;
-  --color-pastel-mint: #D1FAE5;
-  --color-pastel-coral: #FEE2E2;
-  --color-pastel-lavender: #EDE9FE;
-  --color-pastel-peach: #FFEDD5;
-  --color-pastel-sky: #E0F2FE;
-  --color-pastel-rose: #FCE7F3;
-  --color-pastel-indigo: #E0E7FF;
-  --color-pastel-sage: #DCFCE7;
-}
-
-:root {
-  --radius: 8px;
+    /* Pastel Accent Colors */
+    --color-pastel-yellow: #FEF08A;
+    --color-pastel-mint: #C6F6D5;
+    --color-pastel-coral: #FEE2E2;
+    --color-pastel-lavender: #E9D5FF;
+    --color-pastel-peach: #FED7AA;
+    --color-pastel-sky: #BAE6FD;
+    --color-pastel-rose: #FCE7F3;
+    --color-pastel-indigo: #E0E7FF;
+    --color-pastel-sage: #DCFCE7;
+    --color-pastel-salmon: #FECACA;
+    --color-pastel-lilac: #D8B4FE;
+  }
   
-  /* Backgrounds */
-  --background: #F5F5F5;
-  --foreground: #1A1A1A;
+  :root {
+    --radius: 8px;
+    
+    /* Backgrounds */
+    --background: #F3F4F6;
+    --foreground: #1A1A1A;
   
   /* Surfaces */
   --card: #FFFFFF;

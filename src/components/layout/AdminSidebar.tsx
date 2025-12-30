@@ -25,74 +25,74 @@ export function AdminSidebar() {
     window.location.href = "/signin";
   };
 
-  return (
-    <aside className="fixed left-0 top-0 bottom-0 w-72 bg-white text-onyx hidden lg:flex flex-col z-50 border-r border-black/[0.03] shadow-sm">
-      {/* Brand Header */}
-        <div className="p-8">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-electric-blue rounded-2xl flex items-center justify-center text-onyx shadow-lg shadow-electric-blue/20">
-              <Zap size={28} strokeWidth={3} />
-            </div>
-            <div className="flex flex-col">
-              <h1 className="text-xl font-heading font-black leading-none tracking-tight">SK Arena</h1>
-              <p className="text-[10px] font-bold text-charcoal/40 uppercase tracking-[0.2em] mt-1.5">Control Panel</p>
+    return (
+      <aside className="fixed left-0 top-0 bottom-0 w-72 bg-white text-[#1A1A1A] hidden lg:flex flex-col z-50 border-r border-black/[0.03] shadow-sm">
+        {/* Brand Header */}
+          <div className="p-8">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-[#5FD3BC] rounded-2xl flex items-center justify-center text-[#1A1A1A] shadow-lg shadow-[#5FD3BC]/20">
+                <Zap size={28} strokeWidth={3} />
+              </div>
+              <div className="flex flex-col">
+                <h1 className="text-xl font-heading font-black leading-none tracking-tight">SK Arena</h1>
+                <p className="text-[10px] font-bold text-[#6B7280]/40 uppercase tracking-[0.2em] mt-1.5">Control Panel</p>
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Navigation */}
-        <nav className="flex-1 px-6 space-y-2 overflow-y-auto no-scrollbar pt-4">
-          <p className="text-[10px] font-black text-charcoal/30 uppercase tracking-[0.3em] ml-4 mb-6">Operations Hub</p>
-          {navItems.map((item) => {
-            const isActive = pathname === item.href;
-            const Icon = item.icon;
-            
-            return (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="block"
-              >
-                <motion.div
-                  whileTap={{ scale: 0.98 }}
-                  className={`flex items-center gap-4 px-4 py-4 rounded-2xl transition-all duration-300 group ${
-                    isActive 
-                      ? "bg-onyx text-white shadow-xl shadow-onyx/10" 
-                      : "text-charcoal/60 hover:text-onyx hover:bg-black/[0.02]"
-                  }`}
+  
+          {/* Navigation */}
+          <nav className="flex-1 px-6 space-y-2 overflow-y-auto no-scrollbar pt-4">
+            <p className="text-[10px] font-black text-[#6B7280]/30 uppercase tracking-[0.3em] ml-4 mb-6">Operations Hub</p>
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              const Icon = item.icon;
+              
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="block"
                 >
-                  <div className={`p-2 rounded-xl transition-colors ${
-                    isActive ? "bg-white/10 text-electric-blue" : "bg-black/[0.03] group-hover:bg-black/[0.05]"
-                  }`}>
-                    <Icon size={20} strokeWidth={isActive ? 3 : 2} />
-                  </div>
-                  <span className="text-[13px] font-black tracking-tight">
-                    {item.label}
-                  </span>
-                  {isActive && (
-                    <motion.div 
-                      layoutId="admin-active-dot"
-                      className="ml-auto w-1.5 h-1.5 rounded-full bg-electric-blue shadow-[0_0_8px_rgba(168,230,207,0.8)]"
-                    />
-                  )}
-                </motion.div>
-              </Link>
-            );
-          })}
-        </nav>
-
-      {/* Footer */}
-      <div className="p-6 border-t border-black/[0.03]">
-        <button 
-          onClick={handleLogout}
-          className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-charcoal/40 hover:text-onyx hover:bg-black/[0.02] transition-all group"
-        >
-          <div className="p-2 rounded-xl bg-black/[0.03] group-hover:bg-black/[0.05]">
-            <LogOut size={20} strokeWidth={2.5} />
-          </div>
-          <span className="text-[13px] font-black tracking-tight uppercase tracking-widest">Sign Out</span>
-        </button>
-      </div>
-    </aside>
-  );
+                  <motion.div
+                    whileTap={{ scale: 0.98 }}
+                    className={`flex items-center gap-4 px-4 py-4 rounded-2xl transition-all duration-300 group ${
+                      isActive 
+                        ? "bg-[#1A1A1A] text-white shadow-xl shadow-[#1A1A1A]/10" 
+                        : "text-[#6B7280]/60 hover:text-[#1A1A1A] hover:bg-black/[0.02]"
+                    }`}
+                  >
+                    <div className={`p-2 rounded-xl transition-colors ${
+                      isActive ? "bg-white/10 text-[#5FD3BC]" : "bg-black/[0.03] group-hover:bg-black/[0.05]"
+                    }`}>
+                      <Icon size={20} strokeWidth={isActive ? 3 : 2} />
+                    </div>
+                    <span className="text-[13px] font-black tracking-tight">
+                      {item.label}
+                    </span>
+                    {isActive && (
+                      <motion.div 
+                        layoutId="admin-active-dot"
+                        className="ml-auto w-1.5 h-1.5 rounded-full bg-[#5FD3BC] shadow-[0_0_8px_rgba(95,211,188,0.8)]"
+                      />
+                    )}
+                  </motion.div>
+                </Link>
+              );
+            })}
+          </nav>
+  
+        {/* Footer */}
+        <div className="p-6 border-t border-black/[0.03]">
+          <button 
+            onClick={handleLogout}
+            className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-[#6B7280]/40 hover:text-[#1A1A1A] hover:bg-black/[0.02] transition-all group"
+          >
+            <div className="p-2 rounded-xl bg-black/[0.03] group-hover:bg-black/[0.05]">
+              <LogOut size={20} strokeWidth={2.5} />
+            </div>
+            <span className="text-[13px] font-black tracking-tight uppercase tracking-widest">Sign Out</span>
+          </button>
+        </div>
+      </aside>
+    );
 }
