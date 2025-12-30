@@ -169,8 +169,19 @@
     background-attachment: fixed;
     touch-action: manipulation;
     overscroll-behavior-y: none;
+    overscroll-behavior-x: none;
     -webkit-user-select: none;
     user-select: none;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    position: relative;
+  }
+  
+  /* Prevent horizontal scroll on mobile */
+  #root, .min-h-screen {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
   }
   
   /* Hide ALL scrollbars */

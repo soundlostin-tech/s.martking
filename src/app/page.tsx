@@ -148,44 +148,44 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="px-5 mb-8">
-          {isLoading ? (
-            <Skeleton className="h-[280px] w-full rounded-[32px]" />
-          ) : featured ? (
-            <BentoCard variant="purple" className="p-8 relative overflow-hidden min-h-[280px] flex flex-col group shadow-xl">
-              <div className="relative z-10 flex flex-col h-full flex-grow">
-                <div className="flex justify-between items-start mb-6">
-                  <StatusBadge variant={featured.status as any} className="bg-[#1A1A1A] text-white px-4 py-1.5 rounded-full font-black text-[10px]" />
-                  <div className="px-3 py-1 bg-white/50 backdrop-blur-md rounded-xl text-[10px] font-black text-[#1A1A1A] flex items-center gap-1.5 border border-white/20">
-                    <Clock size={12} strokeWidth={3} />
-                    {featured.status === 'live' ? 'LIVE NOW' : 'SOON'}
+          <section className="px-5 mb-8">
+            {isLoading ? (
+              <Skeleton className="h-[280px] w-full rounded-[32px]" />
+            ) : featured ? (
+              <BentoCard variant="purple" className="p-6 sm:p-8 relative overflow-hidden min-h-[300px] flex flex-col group shadow-xl rounded-[40px]">
+                <div className="relative z-10 flex flex-col h-full flex-grow">
+                  <div className="flex justify-between items-start mb-6">
+                    <StatusBadge variant={featured.status as any} className="bg-[#1A1A1A] text-white px-4 py-2 rounded-full font-black text-[10px] tracking-widest" />
+                    <div className="px-3 py-1.5 bg-white/50 backdrop-blur-md rounded-xl text-[10px] font-black text-[#1A1A1A] flex items-center gap-2 border border-white/20">
+                      <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                      {featured.status === 'live' ? 'LIVE NOW' : 'SOON'}
+                    </div>
                   </div>
-                </div>
 
-                <h3 className="text-[32px] font-heading text-[#1A1A1A] leading-tight font-black mb-2 tracking-tighter">
-                  {featured?.tournament?.title || "Pro League Season 4"}
-                </h3>
-                <div className="flex gap-2 mb-8">
-                  <div className="px-3 py-1 bg-[#1A1A1A] text-white rounded-lg text-[10px] font-black uppercase tracking-widest">PRO ARENA</div>
-                  <div className="px-3 py-1 bg-white/40 text-[#1A1A1A] rounded-lg text-[10px] font-black uppercase tracking-widest">SOLO</div>
-                </div>
-                
-                <div className="flex items-center justify-between mt-auto bg-white/40 backdrop-blur-md p-5 rounded-[24px] border border-white/40 shadow-sm">
-                  <div className="flex flex-col">
-                    <span className="text-[10px] font-black text-[#1A1A1A]/60 uppercase tracking-widest mb-1">ENTRY FEE</span>
-                    <span className="text-3xl font-heading text-[#1A1A1A] font-black">₹{featured?.tournament?.entry_fee}</span>
+                  <h3 className="text-4xl font-heading text-[#1A1A1A] leading-[1.1] font-black mb-3 tracking-tighter sm:text-5xl">
+                    {featured?.tournament?.title || "Pro League Season 4"}
+                  </h3>
+                  <div className="flex gap-2 mb-8">
+                    <div className="px-3 py-1.5 bg-[#1A1A1A] text-white rounded-lg text-[9px] font-black uppercase tracking-[0.2em]">PRO ARENA</div>
+                    <div className="px-3 py-1.5 bg-white/40 text-[#1A1A1A] rounded-lg text-[9px] font-black uppercase tracking-[0.2em]">SOLO</div>
                   </div>
-                  <Link href={`/matches/${featured.id}`}>
-                    <motion.button 
-                      whileTap={{ scale: 0.95 }}
-                      className="bg-[#1A1A1A] text-white px-8 py-4 rounded-2xl font-black text-sm shadow-xl flex items-center gap-2 hover:bg-black transition-all"
-                    >
-                      JOIN
-                      <ChevronRight size={18} strokeWidth={3} />
-                    </motion.button>
-                  </Link>
+                  
+                  <div className="flex items-center justify-between mt-auto bg-white/40 backdrop-blur-md p-6 rounded-[32px] border border-white/40 shadow-sm gap-4">
+                    <div className="flex flex-col min-w-0">
+                      <span className="text-[10px] font-black text-[#1A1A1A]/60 uppercase tracking-widest mb-1 truncate">ENTRY FEE</span>
+                      <span className="text-3xl font-heading text-[#1A1A1A] font-black leading-none">₹{featured?.tournament?.entry_fee}</span>
+                    </div>
+                    <Link href={`/matches/${featured.id}`}>
+                      <motion.button 
+                        whileTap={{ scale: 0.95 }}
+                        className="bg-[#1A1A1A] text-white h-16 px-8 rounded-2xl font-black text-sm shadow-xl flex items-center gap-3 hover:bg-black transition-all border-b-4 border-black/30"
+                      >
+                        JOIN
+                        <ChevronRight size={20} strokeWidth={4} />
+                      </motion.button>
+                    </Link>
+                  </div>
                 </div>
-              </div>
               
               <div className="absolute right-[-20px] top-[-20px] scale-[1.2] opacity-[0.03] group-hover:opacity-[0.06] transition-opacity pointer-events-none">
                 <Trophy size={240} strokeWidth={1} />

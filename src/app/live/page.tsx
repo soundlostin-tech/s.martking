@@ -115,48 +115,48 @@ function LiveContent() {
         </p>
       </section>
 
-      <div className="px-5 space-y-8">
-        <div className="rounded-[32px] overflow-hidden shadow-2xl border-4 border-white bg-black">
-          <VintageTV 
-            streamUrl={activeMatch?.stream_url}
-            isOn={tvOn && !!activeMatch}
-            onToggle={(on) => setTvOn(on)}
-            title={activeMatch?.title}
-          />
-        </div>
+        <div className="px-5 space-y-8">
+          <div className="rounded-[32px] overflow-hidden shadow-2xl border-4 border-white bg-black w-full max-w-full">
+            <VintageTV 
+              streamUrl={activeMatch?.stream_url}
+              isOn={tvOn && !!activeMatch}
+              onToggle={(on) => setTvOn(on)}
+              title={activeMatch?.title}
+            />
+          </div>
 
-        {activeMatch ? (
-          <>
-            <BentoCard variant="mint" className="p-8 relative overflow-hidden shadow-xl border-none">
-              <div className="relative z-10">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-2 bg-[#1A1A1A] text-white px-4 py-1.5 rounded-full shadow-lg">
-                    <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.8)]" />
-                    <span className="text-[10px] font-black tracking-widest uppercase">LIVE</span>
+          {activeMatch ? (
+            <>
+              <BentoCard variant="mint" className="p-6 sm:p-8 relative overflow-hidden shadow-xl border-none rounded-[40px]">
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-2 bg-[#1A1A1A] text-white px-4 py-1.5 rounded-full shadow-lg">
+                      <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.8)]" />
+                      <span className="text-[9px] sm:text-[10px] font-black tracking-widest uppercase">LIVE</span>
+                    </div>
+                    <div className="flex items-center gap-2 bg-white/40 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20">
+                      <Eye size={14} className="text-[#1A1A1A]" />
+                      <span className="text-[10px] font-black text-[#1A1A1A] tracking-tight">{activeMatch.viewers_count?.toLocaleString() || 0}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 bg-white/40 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20">
-                    <Eye size={16} className="text-[#1A1A1A]" />
-                    <span className="text-xs font-black text-[#1A1A1A] tracking-tight">{activeMatch.viewers_count?.toLocaleString() || 0}</span>
+                  <h3 className="text-xl sm:text-2xl font-heading text-[#1A1A1A] font-black leading-tight tracking-tight mb-1">{activeMatch.title}</h3>
+                  <p className="text-[9px] text-[#1A1A1A]/60 font-black uppercase tracking-widest mb-8">{activeMatch.tournament?.title}</p>
+                  
+                  <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                    <div className="bg-white/40 backdrop-blur-md rounded-2xl p-3 sm:p-4 flex-1 text-center border border-white/40 shadow-sm min-w-0">
+                      <p className="text-[8px] font-black text-[#1A1A1A]/60 uppercase tracking-widest mb-1 truncate">Mode</p>
+                      <p className="text-xs sm:text-sm font-black text-[#1A1A1A] truncate">{activeMatch.mode}</p>
+                    </div>
+                    <div className="bg-white/40 backdrop-blur-md rounded-2xl p-3 sm:p-4 flex-1 text-center border border-white/40 shadow-sm min-w-0">
+                      <p className="text-[8px] font-black text-[#1A1A1A]/60 uppercase tracking-widest mb-1 truncate">Map</p>
+                      <p className="text-xs sm:text-sm font-black text-[#1A1A1A] truncate">{activeMatch.map || 'Bermuda'}</p>
+                    </div>
+                    <div className="bg-white/40 backdrop-blur-md rounded-2xl p-3 sm:p-4 flex-1 text-center border border-white/40 shadow-sm min-w-0">
+                      <p className="text-[8px] font-black text-[#1A1A1A]/60 uppercase tracking-widest mb-1 truncate">Teams</p>
+                      <p className="text-xs sm:text-sm font-black text-[#1A1A1A] truncate">{activeMatch.live_stats?.teams_alive || 12}</p>
+                    </div>
                   </div>
                 </div>
-                <h3 className="text-2xl font-heading text-[#1A1A1A] font-black leading-tight tracking-tight mb-1">{activeMatch.title}</h3>
-                <p className="text-[10px] text-[#1A1A1A]/60 font-black uppercase tracking-widest mb-8">{activeMatch.tournament?.title}</p>
-                
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-white/40 backdrop-blur-md rounded-2xl p-4 flex-1 text-center border border-white/40 shadow-sm">
-                    <p className="text-[9px] font-black text-[#1A1A1A]/60 uppercase tracking-widest mb-1">Mode</p>
-                    <p className="text-sm font-black text-[#1A1A1A]">{activeMatch.mode}</p>
-                  </div>
-                  <div className="bg-white/40 backdrop-blur-md rounded-2xl p-4 flex-1 text-center border border-white/40 shadow-sm">
-                    <p className="text-[9px] font-black text-[#1A1A1A]/60 uppercase tracking-widest mb-1">Map</p>
-                    <p className="text-sm font-black text-[#1A1A1A]">{activeMatch.map || 'Bermuda'}</p>
-                  </div>
-                  <div className="bg-white/40 backdrop-blur-md rounded-2xl p-4 flex-1 text-center border border-white/40 shadow-sm">
-                    <p className="text-[9px] font-black text-[#1A1A1A]/60 uppercase tracking-widest mb-1">Teams</p>
-                    <p className="text-sm font-black text-[#1A1A1A]">{activeMatch.live_stats?.teams_alive || 12}</p>
-                  </div>
-                </div>
-              </div>
               
               <div className="absolute right-[-30px] bottom-[-30px] scale-[1.5] opacity-[0.03] rotate-12 pointer-events-none">
                 <Swords size={180} />

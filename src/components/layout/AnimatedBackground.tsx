@@ -12,9 +12,13 @@ export function AnimatedBackground() {
   useEffect(() => {
     setMounted(true);
     // Generate particles only on the client
-    const newParticles = Array.from({ length: 30 }).map((_, i) => ({
+    const isMobile = window.innerWidth < 768;
+    const particleCount = isMobile ? 12 : 30;
+    const streakCount = isMobile ? 2 : 5;
+
+    const newParticles = Array.from({ length: particleCount }).map((_, i) => ({
       id: i,
-      size: Math.random() * 3 + 1,
+      size: Math.random() * (isMobile ? 2 : 3) + 1,
       x: Math.random() * 100,
       y: Math.random() * 100,
       targetX: Math.random() * 20 - 10,
@@ -26,7 +30,7 @@ export function AnimatedBackground() {
     setParticles(newParticles);
 
     // Generate light streaks
-    const newStreaks = Array.from({ length: 5 }).map((_, i) => ({
+    const newStreaks = Array.from({ length: streakCount }).map((_, i) => ({
       id: i,
       y: Math.random() * 100,
       width: Math.random() * 40 + 20,

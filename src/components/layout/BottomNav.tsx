@@ -18,10 +18,13 @@ export function BottomNav() {
 
   return (
     <nav 
-      className="fixed bottom-0 left-0 right-0 z-[1000] bg-[#1A1A1A] border-t border-white/5 rounded-t-[24px] shadow-[0_-8px_32px_rgba(0,0,0,0.4)]"
-      style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+      className="fixed bottom-0 left-0 right-0 z-[1000] bg-[#1A1A1A] border-t border-white/5 rounded-t-[32px] shadow-[0_-12px_40px_rgba(0,0,0,0.5)]"
+      style={{ 
+        paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.5rem)',
+        paddingTop: '0.75rem'
+      }}
     >
-      <div className="flex justify-around items-center h-16 px-4">
+      <div className="flex justify-around items-center h-16 px-6">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;

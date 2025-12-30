@@ -296,70 +296,70 @@ function MatchesContent() {
           </section>
         )}
 
-        <section className="px-5 pt-8 space-y-4">
-          {loading ? (
-            <div className="space-y-4">
-              {[1, 2, 3, 4].map((i) => (
-                <Skeleton key={i} className="h-[100px] w-full rounded-[24px]" />
-              ))}
-            </div>
-          ) : filteredAndSortedMatches.length > 0 ? (
-            filteredAndSortedMatches.map((match, idx) => {
-              const totalSlots = match.tournament?.slots || 48;
-              const filledSlots = match.current_slots;
-              const isFull = filledSlots >= totalSlots;
-              const isJoined = myEntries.some(e => e.id === match.id);
-              
+          <section className="px-5 pt-8 space-y-4">
+            {loading ? (
+              <div className="space-y-4">
+                {[1, 2, 3, 4].map((i) => (
+                  <Skeleton key={i} className="h-[120px] w-full rounded-[24px]" />
+                ))}
+              </div>
+            ) : filteredAndSortedMatches.length > 0 ? (
+              filteredAndSortedMatches.map((match, idx) => {
+                const totalSlots = match.tournament?.slots || 48;
+                const filledSlots = match.current_slots;
+                const isFull = filledSlots >= totalSlots;
+                const isJoined = myEntries.some(e => e.id === match.id);
+                
                 const colors = ["mint", "blue", "pink", "yellow", "coral", "teal"];
-              const color = colors[idx % colors.length] as any;
-              
-              return (
-                <motion.div 
-                  key={match.id}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setSelectedMatch(match)}
-                >
-                  <BentoCard 
-                    variant={color}
-                    className={`p-6 flex items-center justify-between border-none shadow-xl group relative overflow-hidden ${isJoined ? 'ring-4 ring-[#1A1A1A]' : ''}`}
+                const color = colors[idx % colors.length] as any;
+                
+                return (
+                  <motion.div 
+                    key={match.id}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setSelectedMatch(match)}
                   >
-                    <div className="flex items-center gap-5 relative z-10">
-                      <div className="w-16 h-16 rounded-[24px] bg-white/40 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
-                        <Swords size={28} className="text-[#1A1A1A]" />
-                      </div>
-                      <div>
-                        <h4 className="text-lg font-heading text-[#1A1A1A] font-black leading-tight mb-1 tracking-tight">{match.title}</h4>
-                        <div className="flex items-center gap-3">
-                          <span className="text-[10px] font-black text-[#1A1A1A]/60 uppercase tracking-widest">₹{match.tournament?.entry_fee} ENTRY</span>
-                          <span className="text-[10px] text-[#1A1A1A]/20 font-black">•</span>
-                          <span className="text-[10px] font-black text-[#1A1A1A]/60 uppercase tracking-widest">{match.mode}</span>
+                    <BentoCard 
+                      variant={color}
+                      className={`p-5 sm:p-6 flex items-center justify-between border-none shadow-xl group relative overflow-hidden ${isJoined ? 'ring-4 ring-[#1A1A1A]' : ''}`}
+                    >
+                      <div className="flex items-center gap-4 sm:gap-5 relative z-10 flex-1 min-w-0">
+                        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-[20px] sm:rounded-[24px] bg-white/40 flex-shrink-0 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
+                          <Swords size={24} className="text-[#1A1A1A]" />
                         </div>
-                        <div className="flex items-center gap-3 mt-3">
-                          <div className="w-28 h-2 bg-white/30 rounded-full overflow-hidden border border-white/20">
-                            <motion.div 
-                              initial={{ width: 0 }}
-                              animate={{ width: `${(filledSlots / totalSlots) * 100}%` }}
-                              className={`h-full ${isFull ? 'bg-red-500' : 'bg-[#1A1A1A]'} rounded-full`} 
-                            />
+                        <div className="min-w-0">
+                          <h4 className="text-base sm:text-lg font-heading text-[#1A1A1A] font-black leading-tight mb-1 tracking-tight truncate">{match.title}</h4>
+                          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                            <span className="text-[9px] sm:text-[10px] font-black text-[#1A1A1A]/60 uppercase tracking-widest whitespace-nowrap">₹{match.tournament?.entry_fee} ENTRY</span>
+                            <span className="text-[9px] text-[#1A1A1A]/20 font-black">•</span>
+                            <span className="text-[9px] sm:text-[10px] font-black text-[#1A1A1A]/60 uppercase tracking-widest">{match.mode}</span>
                           </div>
-                          <span className="text-[10px] font-black text-[#1A1A1A]/80 uppercase tracking-widest">
-                            {isFull || match.status === 'live' ? "CLOSED" : `${filledSlots}/${totalSlots}`}
-                          </span>
+                          <div className="flex items-center gap-3 mt-3">
+                            <div className="w-20 sm:w-28 h-2 bg-white/30 rounded-full overflow-hidden border border-white/20">
+                              <motion.div 
+                                initial={{ width: 0 }}
+                                animate={{ width: `${(filledSlots / totalSlots) * 100}%` }}
+                                className={`h-full ${isFull ? 'bg-red-500' : 'bg-[#1A1A1A]'} rounded-full`} 
+                              />
+                            </div>
+                            <span className="text-[9px] sm:text-[10px] font-black text-[#1A1A1A]/80 uppercase tracking-widest whitespace-nowrap">
+                              {isFull || match.status === 'live' ? "CLOSED" : `${filledSlots}/${totalSlots}`}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="w-12 h-12 rounded-2xl bg-[#1A1A1A] text-white flex items-center justify-center shadow-xl group-hover:translate-x-1 transition-transform relative z-10">
-                      <ChevronRight size={22} strokeWidth={3} />
-                    </div>
-                    {isJoined && (
-                      <div className="absolute top-2 right-2 w-6 h-6 bg-[#1A1A1A] rounded-full flex items-center justify-center border-2 border-white shadow-lg z-20">
-                        <CheckCircle2 size={12} className="text-[#5FD3BC]" />
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-[#1A1A1A] text-white flex-shrink-0 flex items-center justify-center shadow-xl group-hover:translate-x-1 transition-transform relative z-10 ml-4">
+                        <ChevronRight size={20} strokeWidth={3} />
                       </div>
-                    )}
-                  </BentoCard>
-                </motion.div>
-              );
-            })
+                      {isJoined && (
+                        <div className="absolute top-2 right-2 w-6 h-6 bg-[#1A1A1A] rounded-full flex items-center justify-center border-2 border-white shadow-lg z-20">
+                          <CheckCircle2 size={12} className="text-[#5FD3BC]" />
+                        </div>
+                      )}
+                    </BentoCard>
+                  </motion.div>
+                );
+              })
           ) : (
             <div className="py-20 text-center bg-white rounded-[40px] shadow-2xl border-none mx-2">
               <div className="w-20 h-20 bg-[#F3F4F6] rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-xl">
