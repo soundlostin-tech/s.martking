@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 interface LogoAnimationProps {
   size?: number;
@@ -8,7 +9,21 @@ interface LogoAnimationProps {
 }
 
 export function LogoAnimation({ size = 36, className = "" }: LogoAnimationProps) {
+  const [isMounted, setIsMounted] = useState(false);
   const DURATION = 2;
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return (
+      <div 
+        className={`relative flex items-center justify-center overflow-hidden rounded-xl bg-[#1A1A1A] shadow-lg ${className}`}
+        style={{ width: size, height: size }}
+      />
+    );
+  }
 
   return (
     <motion.div 
@@ -73,26 +88,11 @@ export function LogoAnimation({ size = 36, className = "" }: LogoAnimationProps)
             transition={{ duration: DURATION, repeat: Infinity, delay: 0.4 }}
           />
         </motion.g>
-
-        {/* Shining light effect */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent"
-          animate={{
-            x: ["-100%", "200%"],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1,
-          }}
-          style={{ pointerEvents: 'none' }}
-        />
       </svg>
       
-      {/* Absolute overlay for the shine effect since SVG paths can't easily contain div animations */}
+      {/* Absolute overlay for the shine effect */}
       <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12"
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
         animate={{
           left: ["-100%", "200%"],
         }}
@@ -100,7 +100,9 @@ export function LogoAnimation({ size = 36, className = "" }: LogoAnimationProps)
           duration: 2.5,
           repeat: Infinity,
           ease: "easeInOut",
+          delay: 0.5
         }}
+        style={{ pointerEvents: 'none' }}
       />
     </motion.div>
   );
