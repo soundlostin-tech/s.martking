@@ -314,6 +314,12 @@ function ProfileContent() {
   return (
     <div className="min-h-screen bg-[#F8F6F0] text-[#1A1A1A] relative">
       <main className="pt-8 pb-[100px] relative z-10">
+        {/* Page Title Header */}
+        <header className="px-5 mb-8">
+          <p className="text-[11px] font-black text-[#6B7280] uppercase tracking-[0.2em] mb-1">OPERATIVE IDENTITY</p>
+          <h1 className="text-4xl font-heading font-black text-[#1A1A1A] tracking-tighter uppercase">MY PROFILE</h1>
+        </header>
+
         {/* Profile Header */}
         <section className="px-5 pt-4 pb-8">
           <div className="flex items-center gap-8">
