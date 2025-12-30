@@ -18,14 +18,15 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, Suspense } from "react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useSearchParams } from "next/navigation";
 
-export default function WalletPage() {
+function WalletContent() {
   const { user, loading: authLoading } = useAuth(true);
   const [wallet, setWallet] = useState<any>(null);
   const [transactions, setTransactions] = useState<any[]>([]);
@@ -468,5 +469,13 @@ export default function WalletPage() {
 
       <BottomNav />
     </div>
+  );
+}
+
+export default function WalletPage() {
+  return (
+    <Suspense fallback={<LoadingScreen />}>
+      <WalletContent />
+    </Suspense>
   );
 }
