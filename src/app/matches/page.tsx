@@ -9,13 +9,14 @@ import {
   Search, Trophy, Calendar, Users, 
   ChevronRight, AlertCircle, Swords, Zap, 
   Map as MapIcon, ShieldCheck, Target, Loader2,
-  Filter, ArrowUpDown
+  Filter, ArrowUpDown, CheckCircle2
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const filters = ["All", "Upcoming", "Live", "Completed"];
 const sortOptions = [
@@ -39,14 +40,6 @@ export default function MatchesPage() {
     return "start_time";
   });
 
-  useEffect(() => {
-    localStorage.setItem('matches_filter', activeFilter);
-  }, [activeFilter]);
-
-  useEffect(() => {
-    localStorage.setItem('matches_sort', activeSort);
-  }, [activeSort]);
-
   const [searchQuery, setSearchQuery] = useState("");
   const [matches, setMatches] = useState<any[]>([]);
   const [myEntries, setMyEntries] = useState<any[]>([]);
@@ -55,34 +48,23 @@ export default function MatchesPage() {
   const [selectedMatch, setSelectedMatch] = useState<any>(null);
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
   const [isInsufficientFundsOpen, setIsInsufficientFundsOpen] = useState(false);
+  const [showProcessingOverlay, setShowProcessingOverlay] = useState(false);
+  const [transactionId, setTransactionId] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchBalance = async () => {
-      if (user) {
-        const { data } = await supabase.from('wallets').select('balance').eq('user_id', user.id).single();
-        if (data) setWalletBalance(data.balance);
-      }
-    };
-    fetchBalance();
+  const fetchBalance = useCallback(async () => {
+    if (user) {
+      const { data } = await supabase.from('wallets').select('balance').eq('user_id', user.id).single();
+      if (data) setWalletBalance(data.balance);
+    }
   }, [user]);
 
-  const handleJoinMatch = async (tournamentId: string, matchId: string, entryFee: number) => {
-    if (!user) {
-      toast.error("Please sign in to join");
-      return;
-    }
-
-    if (walletBalance !== null && walletBalance < entryFee) {
-      setIsInsufficientFundsOpen(true);
-      return;
-    }
-
-    setJoining(matchId);
+  const fetchMatches = useCallback(async () => {
+    setLoading(true);
     try {
-      const { data, error } = await supabase.rpc('join_tournament', {
-        p_tournament_id: tournamentId,
-        p_match_id: matchId
-      });
+      const { data, error } = await supabase
+        .from("matches")
+        .select(`*, tournament:tournaments(*)`)
+        .order('start_time', { ascending: true });
       
       if (error) throw error;
 
@@ -117,16 +99,74 @@ export default function MatchesPage() {
 
   useEffect(() => {
     fetchMatches();
-  }, [fetchMatches]);
+    fetchBalance();
+  }, [fetchMatches, fetchBalance]);
 
-    const filteredAndSortedMatches = useMemo(() => {
-      let result = matches.filter(m => {
-        const matchesSearch = m.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                             m.tournament?.title.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchesFilter = activeFilter === "All" || m.status.toLowerCase() === activeFilter.toLowerCase();
-        return matchesSearch && matchesFilter;
+  useEffect(() => {
+    localStorage.setItem('matches_filter', activeFilter);
+  }, [activeFilter]);
+
+  useEffect(() => {
+    localStorage.setItem('matches_sort', activeSort);
+  }, [activeSort]);
+
+  const handleJoinMatch = async (tournamentId: string, matchId: string) => {
+    if (!user) {
+      toast.error("Please sign in to join");
+      return;
+    }
+
+    setJoining(matchId);
+    
+    const processingTimer = setTimeout(() => {
+      setShowProcessingOverlay(true);
+    }, 800);
+
+    try {
+      const { data, error } = await supabase.rpc('join_tournament', {
+        p_tournament_id: tournamentId,
+        p_match_id: matchId
       });
 
+      if (error) throw error;
+
+      const result = typeof data === 'string' ? JSON.parse(data) : data;
+
+      if (result.success) {
+        setTransactionId(result.transaction_id);
+        toast.success("Joined Successfully!", {
+          description: `Transaction ID: ${result.transaction_id.slice(0, 8)}...`
+        });
+        fetchMatches();
+        fetchBalance();
+        setTimeout(() => {
+          setSelectedMatch(null);
+          setTransactionId(null);
+        }, 2000);
+      } else {
+        if (result.message?.toLowerCase().includes("balance")) {
+          setIsInsufficientFundsOpen(true);
+        } else {
+          toast.error(result.message || "Entry failed. Please try again.");
+        }
+      }
+    } catch (error: any) {
+      console.error("Error joining match:", error);
+      toast.error(error.message || "Failed to join");
+    } finally {
+      clearTimeout(processingTimer);
+      setJoining(null);
+      setTimeout(() => setShowProcessingOverlay(false), 250);
+    }
+  };
+
+  const filteredAndSortedMatches = useMemo(() => {
+    let result = matches.filter(m => {
+      const matchesSearch = m.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                           m.tournament?.title.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesFilter = activeFilter === "All" || m.status.toLowerCase() === activeFilter.toLowerCase();
+      return matchesSearch && matchesFilter;
+    });
 
     result.sort((a, b) => {
       if (activeSort === "start_time") {
@@ -144,48 +184,6 @@ export default function MatchesPage() {
     return result;
   }, [matches, searchQuery, activeFilter, activeSort]);
 
-  const handleJoinMatch = async (tournamentId: string, matchId: string) => {
-    if (!user) {
-      toast.error("Please sign in to join");
-      return;
-    }
-
-    setJoining(matchId);
-    try {
-      const { data, error } = await supabase.rpc('join_tournament', {
-        p_tournament_id: tournamentId,
-        p_match_id: matchId
-      });
-
-      if (error) throw error;
-
-      const result = typeof data === 'string' ? JSON.parse(data) : data;
-
-      if (result.success) {
-        toast.success(result.message);
-        fetchMatches();
-        setSelectedMatch(null);
-      } else {
-        if (result.message?.toLowerCase().includes("balance")) {
-          toast.error("Insufficient Funds", {
-            description: "Please top up your wallet to join this tournament.",
-            action: {
-              label: "Add Funds",
-              onClick: () => window.location.href = "/wallet"
-            }
-          });
-        } else {
-          toast.error(result.message || "Entry failed. Please try again.");
-        }
-      }
-    } catch (error: any) {
-      console.error("Error joining match:", error);
-      toast.error(error.message || "Failed to join");
-    } finally {
-      setJoining(null);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] relative">
       <div className="unified-bg" />
@@ -198,9 +196,6 @@ export default function MatchesPage() {
           <h2 className="text-[32px] font-heading text-[#1A1A1A] leading-tight font-bold">
             Arena
           </h2>
-          <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mt-1">
-            Ready to Win?
-          </p>
         </section>
 
         <section className="px-4 space-y-4 pt-2">
@@ -209,7 +204,7 @@ export default function MatchesPage() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={18} />
               <input 
                 type="text" 
-                placeholder="Search..." 
+                placeholder="Search matches..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-white border border-[#E5E7EB] rounded-lg py-3 pl-12 pr-4 text-sm font-medium shadow-[2px_8px_16px_rgba(0,0,0,0.06)] placeholder:text-[#9CA3AF] focus:border-[#5FD3BC] focus:ring-2 focus:ring-[#5FD3BC]/20 focus:outline-none"
@@ -233,17 +228,15 @@ export default function MatchesPage() {
                 </button>
               ))}
             </div>
-            <div className="flex gap-2">
-              <select 
-                value={activeSort}
-                onChange={(e) => setActiveSort(e.target.value)}
-                className="bg-white border border-[#E5E7EB] rounded-lg px-3 py-2 text-[10px] font-bold uppercase tracking-wide focus:outline-none"
-              >
-                {sortOptions.map(opt => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
-                ))}
-              </select>
-            </div>
+            <select 
+              value={activeSort}
+              onChange={(e) => setActiveSort(e.target.value)}
+              className="bg-white border border-[#E5E7EB] rounded-lg px-3 py-2 text-[10px] font-bold uppercase tracking-wide focus:outline-none"
+            >
+              {sortOptions.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
           </div>
         </section>
 
@@ -283,13 +276,14 @@ export default function MatchesPage() {
         <section className="px-4 pt-6 space-y-3">
           {loading ? (
             <div className="space-y-4">
-              {[1, 2, 3].map((i) => (
+              {[1, 2, 3, 4].map((i) => (
                 <div key={i} className="bg-white rounded-2xl p-4 flex items-center justify-between border border-[#E5E7EB]">
-                  <div className="flex items-center gap-4">
-                    <Skeleton className="w-12 h-12 rounded-xl" />
-                    <div className="space-y-2">
-                      <Skeleton className="h-4 w-32" />
-                      <Skeleton className="h-3 w-20" />
+                  <div className="flex items-center gap-4 flex-1">
+                    <Skeleton className="w-14 h-14 rounded-xl" />
+                    <div className="space-y-2 flex-1">
+                      <Skeleton className="h-5 w-3/4" />
+                      <Skeleton className="h-3 w-1/2" />
+                      <Skeleton className="h-2 w-1/4 mt-2" />
                     </div>
                   </div>
                   <Skeleton className="w-10 h-10 rounded-full" />
@@ -301,16 +295,22 @@ export default function MatchesPage() {
               const totalSlots = match.tournament?.slots || 48;
               const filledSlots = match.current_slots;
               const isFull = filledSlots >= totalSlots;
+              const isJoined = myEntries.some(e => e.id === match.id);
               
               return (
                 <BentoCard 
                   key={match.id} 
-                  className="p-4 flex items-center justify-between cursor-pointer hover:border-[#5FD3BC] transition-colors group"
+                  className={`p-4 flex items-center justify-between cursor-pointer transition-all group ${isJoined ? 'border-l-4 border-l-[#5FD3BC]' : 'hover:border-[#5FD3BC]'}`}
                   onClick={() => setSelectedMatch(match)}
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-[#F0FDF4] flex items-center justify-center group-hover:bg-[#5FD3BC] transition-colors">
+                    <div className="w-14 h-14 rounded-xl bg-[#F0FDF4] flex items-center justify-center group-hover:bg-[#5FD3BC] transition-colors relative">
                       <Swords size={24} className="text-[#1A1A1A]" />
+                      {isJoined && (
+                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-[#1A1A1A] rounded-full flex items-center justify-center border-2 border-white">
+                          <CheckCircle2 size={12} className="text-[#5FD3BC]" />
+                        </div>
+                      )}
                     </div>
                     <div>
                       <h4 className="text-[15px] font-heading text-[#1A1A1A] font-bold leading-tight mb-1">{match.title}</h4>
@@ -326,10 +326,9 @@ export default function MatchesPage() {
                             className={`h-full ${isFull ? 'bg-[#EF4444]' : 'bg-[#5FD3BC]'} rounded-full`} 
                           />
                         </div>
-                          <span className="text-[9px] font-bold text-[#6B7280]">
-                            {isFull || match.status === 'live' ? "REGISTRATION CLOSED" : `${filledSlots}/${totalSlots} SLOTS`}
-                          </span>
-
+                        <span className="text-[9px] font-bold text-[#6B7280]">
+                          {isFull || match.status === 'live' ? "CLOSED" : `${filledSlots}/${totalSlots}`}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -345,7 +344,6 @@ export default function MatchesPage() {
                 <AlertCircle size={24} className="text-[#9CA3AF]" />
               </div>
               <h3 className="text-lg font-heading text-[#1A1A1A] font-bold">No Matches Found</h3>
-              <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide mt-1">Try a different filter</p>
             </div>
           )}
         </section>
@@ -433,21 +431,6 @@ export default function MatchesPage() {
                   </div>
                 </div>
               </BentoCard>
-
-              <BentoCard variant="pastel" pastelColor="mint" className="p-6 mb-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <ShieldCheck size={22} className="text-[#1A1A1A]" />
-                  <h4 className="text-lg font-heading text-[#1A1A1A] font-bold">Rules</h4>
-                </div>
-                <ul className="space-y-2">
-                  {['No emulators allowed', 'Mobile only', 'Team up = Ban'].map((rule, i) => (
-                    <li key={i} className="flex items-center gap-2 text-xs font-bold text-[#1A1A1A]/70">
-                      <div className="w-1.5 h-1.5 bg-[#1A1A1A]/30 rounded-full" />
-                      {rule}
-                    </li>
-                  ))}
-                </ul>
-              </BentoCard>
             </div>
 
             <div className="relative z-[70] px-4 py-6 bg-white shadow-[0_-4px_24px_rgba(0,0,0,0.08)] rounded-t-2xl">
@@ -456,83 +439,118 @@ export default function MatchesPage() {
                   <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide mb-1">Entry Fee</p>
                   <p className="text-2xl font-heading text-[#1A1A1A] font-bold">₹{selectedMatch.tournament?.entry_fee}</p>
                 </div>
-                <div className="text-right">
-                  <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide mb-1">Remaining Slots</p>
-                  <p className="text-lg font-heading text-[#1A1A1A] font-bold">{Math.max(0, (selectedMatch.tournament?.slots || 48) - selectedMatch.current_slots)}</p>
-                </div>
+                {myEntries.some(e => e.id === selectedMatch.id) ? (
+                   <div className="text-right">
+                    <span className="bg-[#D1FAE5] text-[#065F46] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide">Already Joined</span>
+                   </div>
+                ) : (
+                  <div className="text-right">
+                    <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wide mb-1">Remaining Slots</p>
+                    <p className="text-lg font-heading text-[#1A1A1A] font-bold">{Math.max(0, (selectedMatch.tournament?.slots || 48) - selectedMatch.current_slots)}</p>
+                  </div>
+                )}
               </div>
               
               {selectedMatch.status === 'upcoming' ? (
                 <motion.button 
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleJoinMatch(selectedMatch.tournament_id, selectedMatch.id)}
-                  disabled={joining === selectedMatch.id || (selectedMatch.current_slots >= (selectedMatch.tournament?.slots || 48))}
-                  className="w-full py-4 bg-[#5FD3BC] text-[#1A1A1A] rounded-lg text-[12px] font-bold uppercase tracking-wide shadow-lg flex items-center justify-center gap-2 disabled:bg-[#D1D5DB]"
+                  disabled={joining === selectedMatch.id || (selectedMatch.current_slots >= (selectedMatch.tournament?.slots || 48)) || myEntries.some(e => e.id === selectedMatch.id)}
+                  className="w-full py-4 bg-[#1A1A1A] text-white rounded-xl text-[12px] font-bold uppercase tracking-wide shadow-xl flex items-center justify-center gap-2 disabled:bg-[#E5E7EB] disabled:text-[#9CA3AF] transition-colors"
                 >
                   {joining === selectedMatch.id ? <Loader2 size={20} className="animate-spin" /> : 
+                   myEntries.some(e => e.id === selectedMatch.id) ? "You're in the Battle" :
                    (selectedMatch.current_slots >= (selectedMatch.tournament?.slots || 48)) ? "Registration Closed" : "Confirm Entry"}
                 </motion.button>
-              ) : selectedMatch.status === 'live' ? (
+              ) : (
                 <Link href={`/live?match=${selectedMatch.id}`} className="w-full">
                   <motion.button 
                     whileTap={{ scale: 0.95 }}
-                    className="w-full py-4 bg-[#5FD3BC] text-[#1A1A1A] rounded-lg text-[12px] font-bold uppercase tracking-wide shadow-lg flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-[#5FD3BC] text-[#1A1A1A] rounded-xl text-[12px] font-bold uppercase tracking-wide shadow-lg flex items-center justify-center gap-2"
                   >
                     Watch Now
                   </motion.button>
                 </Link>
-              ) : (
-                <motion.button 
-                  disabled
-                  className="w-full py-4 bg-[#E5E7EB] text-[#9CA3AF] rounded-lg text-[12px] font-bold uppercase tracking-wide flex items-center justify-center gap-2"
-                >
-                  Match Completed
-                </motion.button>
               )}
             </div>
           </motion.div>
         )}
-        </AnimatePresence>
-  
-        <Dialog open={isInsufficientFundsOpen} onOpenChange={setIsInsufficientFundsOpen}>
-          <DialogContent className="p-0 border-none bg-white rounded-t-2xl sm:rounded-2xl overflow-hidden max-w-[100vw] sm:max-w-[400px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0 z-[100]">
-            <div className="bg-[#FEF2F2] p-8 relative">
-              <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center mb-4 shadow-sm">
-                <AlertCircle size={24} className="text-[#EF4444]" />
-              </div>
-              <DialogTitle className="text-[28px] font-heading text-[#1A1A1A] leading-none font-bold mb-2">Insufficient Funds</DialogTitle>
-              <DialogDescription className="text-[#1A1A1A]/60 text-[10px] font-bold uppercase tracking-wide">Top up to join the battle</DialogDescription>
+      </AnimatePresence>
+
+      <Dialog open={isInsufficientFundsOpen} onOpenChange={setIsInsufficientFundsOpen}>
+        <DialogContent className="p-0 border-none bg-white rounded-t-2xl sm:rounded-2xl overflow-hidden max-w-[100vw] sm:max-w-[400px] shadow-2xl fixed bottom-0 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 m-0 z-[100]">
+          <div className="bg-[#FEF2F2] p-8 relative">
+            <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center mb-4 shadow-sm">
+              <AlertCircle size={24} className="text-[#EF4444]" />
             </div>
-            <div className="p-6 space-y-6">
-              <p className="text-sm font-medium text-[#6B7280]">Your current balance (₹{walletBalance?.toLocaleString()}) is lower than the entry fee. Add funds to continue.</p>
-              
-              <div className="grid grid-cols-2 gap-3">
-                {[50, 100, 200, 500].map(amt => (
-                  <Link key={amt} href={`/wallet?deposit=${amt}`} className="block">
-                    <motion.button
-                      whileTap={{ scale: 0.95 }}
-                      className="w-full py-4 rounded-lg bg-[#F5F5F5] border border-[#E5E7EB] text-[12px] font-bold uppercase tracking-wide text-[#1A1A1A]"
-                    >
-                      + ₹{amt}
-                    </motion.button>
-                  </Link>
-                ))}
-              </div>
-
-              <Link href="/wallet" className="block">
-                <motion.button 
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full h-14 bg-[#1A1A1A] text-white rounded-lg text-[12px] font-bold uppercase tracking-wide shadow-lg flex items-center justify-center gap-2"
-                >
-                  Go to Wallet
-                </motion.button>
-              </Link>
+            <DialogTitle className="text-[28px] font-heading text-[#1A1A1A] leading-none font-bold mb-2">Insufficient Funds</DialogTitle>
+            <DialogDescription className="text-[#1A1A1A]/60 text-[10px] font-bold uppercase tracking-wide">Top up to join the battle</DialogDescription>
+          </div>
+          <div className="p-6 space-y-6">
+            <p className="text-sm font-medium text-[#6B7280]">Your balance (₹{walletBalance?.toLocaleString()}) is lower than the entry fee. Add funds to continue.</p>
+            
+            <div className="grid grid-cols-2 gap-3">
+              {[50, 100, 200, 500].map(amt => (
+                <Link key={amt} href={`/wallet?deposit=${amt}`} className="block">
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    className="w-full py-4 rounded-lg bg-[#F5F5F5] border border-[#E5E7EB] text-[12px] font-bold uppercase tracking-wide text-[#1A1A1A]"
+                  >
+                    + ₹{amt}
+                  </motion.button>
+                </Link>
+              ))}
             </div>
-          </DialogContent>
-        </Dialog>
 
-        <BottomNav />
-      </div>
-    );
-  }
+            <Link href="/wallet" className="block">
+              <motion.button 
+                whileTap={{ scale: 0.98 }}
+                className="w-full h-14 bg-[#1A1A1A] text-white rounded-lg text-[12px] font-bold uppercase tracking-wide shadow-lg flex items-center justify-center gap-2"
+              >
+                Go to Wallet
+              </motion.button>
+            </Link>
+          </div>
+        </DialogContent>
+      </Dialog>
 
+      <AnimatePresence>
+        {showProcessingOverlay && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-md flex items-center justify-center p-6"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              className="bg-white rounded-3xl p-8 max-w-xs w-full text-center shadow-2xl"
+            >
+              <div className="relative w-20 h-20 mx-auto mb-6">
+                <div className="absolute inset-0 border-4 border-[#5FD3BC]/20 rounded-full" />
+                <motion.div 
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-0 border-4 border-t-[#5FD3BC] rounded-full"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Zap size={32} className="text-[#5FD3BC] animate-pulse" />
+                </div>
+              </div>
+              <h3 className="text-xl font-heading text-[#1A1A1A] font-bold mb-2">Processing Battle Entry</h3>
+              <p className="text-sm text-[#6B7280]">Verifying transaction and reserving your slot. Do not close this page.</p>
+              {transactionId && (
+                <div className="mt-4 p-2 bg-[#F0FDF4] rounded-lg border border-[#DCFCE7]">
+                  <p className="text-[10px] font-bold text-[#166534] uppercase tracking-wider">TX ID: {transactionId.slice(0, 12)}...</p>
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <BottomNav />
+    </div>
+  );
+}

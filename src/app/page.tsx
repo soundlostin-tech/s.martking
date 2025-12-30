@@ -193,18 +193,18 @@ export default function Home() {
                   <div className="px-3 py-1 bg-[#1A1A1A] text-white rounded-lg text-[10px] font-bold uppercase tracking-wider">SOLO MATCH</div>
                 </div>
                 
-                <div className="flex items-center justify-between mt-auto">
+                <div className="flex items-center justify-between mt-auto bg-white/40 backdrop-blur-sm p-4 rounded-2xl border border-white/40">
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-bold text-[#1A1A1A]/60 uppercase tracking-wide mb-1">Entry Fee</span>
-                    <span className="text-2xl font-heading text-[#1A1A1A] font-black">₹{featured?.tournament?.entry_fee}</span>
+                    <span className="text-[11px] font-bold text-[#1A1A1A]/70 uppercase tracking-widest mb-1">Entry Fee</span>
+                    <span className="text-3xl font-heading text-[#1A1A1A] font-black">₹{featured?.tournament?.entry_fee}</span>
                   </div>
                   <Link href={`/matches/${featured.id}`}>
                     <motion.button 
                       whileTap={{ scale: 0.95 }}
-                      className="bg-[#1A1A1A] text-white px-8 py-4 rounded-2xl font-bold text-base shadow-xl flex items-center gap-2"
+                      className="bg-[#1A1A1A] text-white px-10 py-5 rounded-xl font-bold text-base shadow-[0_10px_20px_rgba(0,0,0,0.15)] flex items-center gap-2 hover:bg-[#2A2A2A] transition-colors"
                     >
                       Join Now
-                      <ChevronRight size={20} />
+                      <ChevronRight size={20} strokeWidth={3} />
                     </motion.button>
                   </Link>
                 </div>
