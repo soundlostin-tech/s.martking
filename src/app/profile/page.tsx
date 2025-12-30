@@ -196,8 +196,21 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A] font-sans selection:bg-[#5FD3BC]/30">
       <main className="pb-[80px]">
+        {/* New Style Header Section */}
+        <section className="px-5 pt-8 pb-4">
+          <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mb-2">
+            Arena Identity
+          </p>
+          <h2 className="text-[32px] font-heading text-[#1A1A1A] leading-tight font-bold">
+            My Profile
+          </h2>
+          <p className="text-[12px] font-bold text-[#6B7280] uppercase tracking-wide mt-1">
+            Statistics & Reputation
+          </p>
+        </section>
+
         {/* Profile Header Section */}
-        <section className="px-5 pt-8 pb-6">
+        <section className="px-5 pt-4 pb-6">
           <div className="flex items-center gap-6">
             <div className="relative">
               <div className="w-24 h-24 rounded-3xl p-[3px] bg-gradient-to-tr from-[#5FD3BC] via-emerald-400 to-teal-400 shadow-[0_10px_20px_rgba(95,211,188,0.2)]">
