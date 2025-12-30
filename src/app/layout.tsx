@@ -3,6 +3,9 @@ import "./globals.css";
 import { ClientLayout } from "@/components/layout/ClientLayout";
 import { Metadata, Viewport } from "next";
 
+import { constructMetadata } from "@/lib/metadata";
+import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/SEO/JsonLd";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -29,15 +32,7 @@ const berkshire = Berkshire_Swash({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Smartking's Arena",
-  description: "The ultimate competitive gaming arena",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "black-translucent",
-    title: "Smartking's Arena",
-  },
-};
+export const metadata: Metadata = constructMetadata();
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -59,6 +54,8 @@ export default function RootLayout({
           suppressHydrationWarning
           className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${berkshire.variable} ${outfit.variable} font-sans antialiased bg-background text-foreground`}
         >
+          <OrganizationJsonLd />
+          <WebSiteJsonLd />
           <ClientLayout>{children}</ClientLayout>
         </body>
     </html>
