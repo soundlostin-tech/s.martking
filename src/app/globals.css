@@ -56,104 +56,104 @@
      SMARTKING'S ARENA - VIBRANT MOOD APP PALETTE
      Extracted from reference images
      ============================================ */
-  
-  /* Primary Colors */
-  --color-bg-primary: #F8F6F0;
-  --color-text-primary: #1A1A1A;
-  --color-text-secondary: #6B7280;
-  --color-accent-emerald: #6EBF8B;
-  --color-accent-yellow: #F5E6A3;
-  --color-surface-white: #FFFFFF;
-  
-  /* Vibrant Mood Colors (from reference images) */
-  --color-mint-vibrant: #A8E6CF;
-  --color-peach-vibrant: #FFCDB2;
-  --color-purple-vibrant: #C9B6E4;
-  --color-blue-vibrant: #A8D8EA;
-  --color-pink-vibrant: #FFB6C1;
-  --color-yellow-vibrant: #F5E6A3;
-  --color-coral-vibrant: #F5A78E;
-  --color-orange-vibrant: #FFB347;
-  --color-teal-vibrant: #7FDBCA;
-  --color-lavender-vibrant: #E8D4F0;
-  
-  /* Light/Soft Pastel Colors */
-  --color-mint-light: #D4F5E4;
-  --color-peach-light: #FFE5D9;
-  --color-purple-light: #E8D4F0;
-  --color-blue-light: #D4EDFC;
-  --color-pink-light: #FFE0E6;
-  --color-yellow-light: #FFF8DC;
-  --color-coral-light: #FFD6C4;
-  --color-orange-light: #FFE4B5;
-  --color-teal-light: #C5F0E8;
-  --color-lavender-light: #F3E8FF;
+    
+    /* Primary Colors */
+    --color-bg-primary: #FFFDF5;
+    --color-text-primary: #1A1A1A;
+    --color-text-secondary: #6B7280;
+    --color-accent-emerald: #4F9B8B;
+    --color-accent-yellow: #FFF9ED;
+    --color-surface-white: #FFFFFF;
+    
+    /* Vibrant Mood Colors (from reference image) */
+    --color-mint-vibrant: #4F9B8B;
+    --color-peach-vibrant: #FDAB6D;
+    --color-purple-vibrant: #A4A4FF;
+    --color-blue-vibrant: #A8D8EA;
+    --color-pink-vibrant: #F988A2;
+    --color-yellow-vibrant: #F9E79F;
+    --color-coral-vibrant: #F1948A;
+    --color-orange-vibrant: #FDAB6D;
+    --color-teal-vibrant: #4F9B8B;
+    --color-lavender-vibrant: #A4A4FF;
+    
+    /* Light/Soft Pastel Colors */
+    --color-mint-light: #D5F5E3;
+    --color-peach-light: #FFF5F0;
+    --color-purple-light: #EBF5FB;
+    --color-blue-light: #E8F8F5;
+    --color-pink-light: #FDEDEC;
+    --color-yellow-light: #FFF9ED;
+    --color-coral-light: #FDEDEC;
+    --color-orange-light: #FEF5E7;
+    --color-teal-light: #E8F6F3;
+    --color-lavender-light: #F4ECF7;
 
-  /* Accent Colors for UI Elements */
-  --color-success: #6EBF8B;
-  --color-warning: #FFB347;
-  --color-error: #E8918A;
-  --color-info: #A8D8EA;
+    /* Accent Colors for UI Elements */
+    --color-success: #4F9B8B;
+    --color-warning: #FDAB6D;
+    --color-error: #F988A2;
+    --color-info: #A4A4FF;
 
-  /* Legacy Mappings updated to new palette */
-  --color-pastel-yellow: #F5E6A3;
-  --color-pastel-mint: #D4F5E4;
-  --color-pastel-coral: #FFD6C4;
-  --color-pastel-lavender: #E8D4F0;
-  --color-pastel-peach: #FFE5D9;
-  --color-pastel-sky: #D4EDFC;
-  --color-pastel-rose: #FFE0E6;
-  --color-pastel-indigo: #C9B6E4;
-  --color-pastel-sage: #D4F5E4;
-  --color-pastel-salmon: #F5A78E;
-  --color-pastel-lilac: #E8D4F0;
-}
+    /* Legacy Mappings updated to new palette */
+    --color-pastel-yellow: #FFF9ED;
+    --color-pastel-mint: #D5F5E3;
+    --color-pastel-coral: #FDEDEC;
+    --color-pastel-lavender: #F4ECF7;
+    --color-pastel-peach: #FFF5F0;
+    --color-pastel-sky: #EBF5FB;
+    --color-pastel-rose: #FDEDEC;
+    --color-pastel-indigo: #A4A4FF;
+    --color-pastel-sage: #E8F6F3;
+    --color-pastel-salmon: #F1948A;
+    --color-pastel-lilac: #F4ECF7;
+  }
+  
+  :root {
+    --radius: 24px; /* Matches the rounded cards in the image */
+    
+    /* Backgrounds */
+    --background: #FFFDF5;
+    --foreground: #1A1A1A;
 
-:root {
-  --radius: 12px; /* Smoother rounded corners like the image */
-  
-  /* Backgrounds */
-  --background: #F8F6F0;
-  --foreground: #1A1A1A;
+    /* Surfaces */
+    --card: #FFFFFF;
+    --card-foreground: #1A1A1A;
+    
+    --popover: #FFFFFF;
+    --popover-foreground: #1A1A1A;
+    
+    /* Actions */
+    --primary: #1A1A1A;
+    --primary-foreground: #FFFFFF;
+    
+    --secondary: #FFFFFF;
+    --secondary-foreground: #1A1A1A;
+    
+    --muted: #F3F4F6;
+    --muted-foreground: #6B7280;
+    
+    --accent: #4F9B8B;
+    --accent-foreground: #FFFFFF;
+    
+    --destructive: #F988A2;
+    --destructive-foreground: #FFFFFF;
+    
+    /* Borders */
+    --border: #E5E7EB;
+    --input: #FFFFFF;
+    --ring: #1A1A1A;
 
-  /* Surfaces */
-  --card: #FFFFFF;
-  --card-foreground: #1A1A1A;
-  
-  --popover: #FFFFFF;
-  --popover-foreground: #1A1A1A;
-  
-  /* Actions */
-  --primary: #1A1A1A;
-  --primary-foreground: #FFFFFF;
-  
-  --secondary: #FFFFFF;
-  --secondary-foreground: #1A1A1A;
-  
-  --muted: #F3F4F6;
-  --muted-foreground: #6B7280;
-  
-  --accent: #6EBF8B;
-  --accent-foreground: #1A1A1A;
-  
-  --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
-  
-  /* Borders */
-  --border: #E5E7EB;
-  --input: #FFFFFF;
-  --ring: #1A1A1A;
-
-  /* Sidebar */
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #1A1A1A;
-  --sidebar-primary: #1A1A1A;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #6EBF8B;
-  --sidebar-accent-foreground: #1A1A1A;
-  --sidebar-border: #E5E7EB;
-  --sidebar-ring: #1A1A1A;
-}
+    /* Sidebar */
+    --sidebar: #FFFFFF;
+    --sidebar-foreground: #1A1A1A;
+    --sidebar-primary: #1A1A1A;
+    --sidebar-primary-foreground: #FFFFFF;
+    --sidebar-accent: #4F9B8B;
+    --sidebar-accent-foreground: #FFFFFF;
+    --sidebar-border: #E5E7EB;
+    --sidebar-ring: #1A1A1A;
+  }
 
 /* ============================================
    MOBILE-FIRST DESIGN TOKENS
@@ -297,18 +297,23 @@
   @apply rounded-[24px] p-6 shadow-sm border-none transition-all duration-200;
 }
 
-.bento-mint { background: #A8E6CF; color: #1A1A1A; }
-.bento-peach { background: #FFCDB2; color: #1A1A1A; }
-.bento-purple { background: #C9B6E4; color: #1A1A1A; }
+.bento-mint { background: #4F9B8B; color: #FFFFFF; }
+.bento-peach { background: #FDAB6D; color: #1A1A1A; }
+.bento-purple { background: #A4A4FF; color: #FFFFFF; }
 .bento-blue { background: #A8D8EA; color: #1A1A1A; }
-.bento-pink { background: #FFB6C1; color: #1A1A1A; }
-.bento-yellow { background: #F5E6A3; color: #1A1A1A; }
-.bento-coral { background: #F5A78E; color: #1A1A1A; }
-.bento-orange { background: #FFB347; color: #1A1A1A; }
-.bento-teal { background: #7FDBCA; color: #1A1A1A; }
-.bento-lavender { background: #E8D4F0; color: #1A1A1A; }
+.bento-pink { background: #F988A2; color: #FFFFFF; }
+.bento-yellow { background: #F9E79F; color: #1A1A1A; }
+.bento-coral { background: #F1948A; color: #FFFFFF; }
+.bento-orange { background: #FDAB6D; color: #1A1A1A; }
+.bento-teal { background: #4F9B8B; color: #FFFFFF; }
+.bento-lavender { background: #A4A4FF; color: #FFFFFF; }
+.bento-cream { background: #FFF9ED; color: #1A1A1A; }
 .bento-white { background: #FFFFFF; color: #1A1A1A; }
 .bento-dark { background: #1A1A1A; color: #FFFFFF; }
+.bento-success { background: #4F9B8B; color: #FFFFFF; }
+.bento-warning { background: #FDAB6D; color: #1A1A1A; }
+.bento-error { background: #F988A2; color: #FFFFFF; }
+.bento-info { background: #A4A4FF; color: #FFFFFF; }
 
 /* Chip & Badge Styles */
 .chip {

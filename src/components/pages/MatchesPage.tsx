@@ -193,7 +193,7 @@ function MatchesContent() {
   if (!mounted) return <LoadingScreen />;
 
   return (
-    <div className="min-h-screen bg-[#F8F6F0] text-[#1A1A1A] relative">
+    <div className="min-h-screen bg-[#FFFDF5] text-[#1A1A1A] relative">
         <main className="pb-20 relative z-10">
           <section className="px-4 pt-4 pb-3">
             <p className="text-[9px] font-black text-[#6B7280] uppercase tracking-widest mb-1">
@@ -214,7 +214,7 @@ function MatchesContent() {
                     aria-label="Search for matches"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-white border-2 border-[#E5E7EB] rounded-xl py-3 pl-11 pr-4 text-xs font-bold shadow placeholder:text-[#9CA3AF] focus:border-[#1A1A1A] focus:outline-none transition-all"
+                    className="w-full bg-white border-2 border-[#E5E7EB] rounded-xl py-3 pl-11 pr-4 text-xs font-bold shadow-sm placeholder:text-[#9CA3AF] focus:border-[#1A1A1A] focus:outline-none transition-all"
                   />
                 </div>
               </div>
@@ -230,7 +230,7 @@ function MatchesContent() {
                       onClick={() => setActiveFilter(f)}
                       className={`px-4 py-2 rounded-lg text-[8px] font-black uppercase tracking-wide transition-all whitespace-nowrap ${
                         activeFilter === f 
-                          ? "bg-[#1A1A1A] text-white shadow" 
+                          ? "bg-[#1A1A1A] text-white shadow-md" 
                           : "bg-white text-[#6B7280] border border-[#E5E7EB]"
                       }`}
                     >
@@ -247,7 +247,7 @@ function MatchesContent() {
                         onClick={() => setActiveSort(opt.value)}
                         className={`px-3 py-1 rounded text-[8px] font-black uppercase tracking-wide transition-all whitespace-nowrap ${
                           activeSort === opt.value
-                            ? "bg-[#A8E6CF] text-[#1A1A1A] border border-[#1A1A1A]"
+                            ? "bg-[#4F9B8B] text-white border border-[#1A1A1A]"
                             : "bg-white text-[#6B7280] border border-[#E5E7EB]"
                         }`}
                       >
@@ -262,7 +262,7 @@ function MatchesContent() {
         {myEntries.length > 0 && activeFilter === "Upcoming" && (
           <section className="px-4 pt-6">
             <h3 className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-3 flex items-center gap-2">
-              MY BATTLES <span className="w-5 h-5 rounded bg-[#1A1A1A] text-white text-[8px] flex items-center justify-center font-black shadow">{myEntries.length}</span>
+              MY BATTLES <span className="w-5 h-5 rounded bg-[#1A1A1A] text-white text-[8px] flex items-center justify-center font-black shadow-lg">{myEntries.length}</span>
             </h3>
             <div className="flex gap-3 overflow-x-auto no-scrollbar pb-3">
               {myEntries.map((match) => (
@@ -270,7 +270,7 @@ function MatchesContent() {
                   key={match.id} 
                   variant="dark" 
                   size="compact"
-                  className="w-[200px] flex-shrink-0 shadow-lg relative overflow-hidden group"
+                  className="w-[200px] flex-shrink-0 shadow-xl relative overflow-hidden group border-none"
                   onClick={() => setSelectedMatch(match)}
                 >
                   <div className="relative z-10">
@@ -286,7 +286,7 @@ function MatchesContent() {
                       <p className="text-xs font-black text-white">{new Date(match.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                     </div>
                   </div>
-                  <div className="absolute right-[-10px] bottom-[-10px] opacity-[0.05]">
+                  <div className="absolute right-[-10px] bottom-[-10px] opacity-[0.1]">
                     <Zap size={60} />
                   </div>
                 </BentoCard>
@@ -309,8 +309,9 @@ function MatchesContent() {
                 const isFull = filledSlots >= totalSlots;
                 const isJoined = myEntries.some(e => e.id === match.id);
                 
-                const colors = ["mint", "blue", "pink", "yellow", "coral", "teal"];
+                const colors = ["mint", "blue", "pink", "yellow", "coral", "teal", "lavender", "peach"];
                 const color = colors[idx % colors.length] as any;
+                const isDarkText = ["blue", "yellow", "peach"].includes(color);
                 
                 return (
                   <motion.div 
@@ -321,39 +322,42 @@ function MatchesContent() {
                     <BentoCard 
                       variant={color}
                       size="compact"
-                      className={`flex items-center justify-between border-none shadow group relative overflow-hidden ${isJoined ? 'ring-2 ring-[#1A1A1A]' : ''}`}
+                      className={cn(
+                        "flex items-center justify-between border-none shadow-lg group relative overflow-hidden transition-all",
+                        isJoined && "ring-4 ring-[#1A1A1A]/20"
+                      )}
                     >
                       <div className="flex items-center gap-3 relative z-10 flex-1 min-w-0">
-                        <div className="w-10 h-10 rounded-xl bg-white/40 flex-shrink-0 flex items-center justify-center">
-                          <Swords size={16} className="text-[#1A1A1A]" />
+                        <div className="w-10 h-10 rounded-xl bg-white/20 flex-shrink-0 flex items-center justify-center shadow-sm">
+                          <Swords size={16} className={isDarkText ? "text-[#1A1A1A]" : "text-white"} />
                         </div>
                         <div className="min-w-0">
-                          <h4 className="text-sm font-heading text-[#1A1A1A] font-black leading-tight mb-0.5 tracking-tight truncate">{match.title}</h4>
+                          <h4 className={cn("text-sm font-heading font-black leading-tight mb-0.5 tracking-tight truncate", isDarkText ? "text-[#1A1A1A]" : "text-white")}>{match.title}</h4>
                           <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-[8px] font-black text-[#1A1A1A]/60 uppercase tracking-wide whitespace-nowrap">₹{match.tournament?.entry_fee}</span>
-                            <span className="text-[8px] text-[#1A1A1A]/20 font-black">•</span>
-                            <span className="text-[8px] font-black text-[#1A1A1A]/60 uppercase tracking-wide">{match.mode}</span>
+                            <span className={cn("text-[8px] font-black uppercase tracking-wide whitespace-nowrap", isDarkText ? "text-[#1A1A1A]/60" : "text-white/60")}>₹{match.tournament?.entry_fee}</span>
+                            <span className={cn("text-[8px] font-black", isDarkText ? "text-[#1A1A1A]/20" : "text-white/20")}>•</span>
+                            <span className={cn("text-[8px] font-black uppercase tracking-wide", isDarkText ? "text-[#1A1A1A]/60" : "text-white/60")}>{match.mode}</span>
                           </div>
                           <div className="flex items-center gap-2 mt-1.5">
-                            <div className="w-16 h-1.5 bg-white/30 rounded-full overflow-hidden">
+                            <div className="w-16 h-1.5 bg-black/10 rounded-full overflow-hidden">
                               <motion.div 
                                 initial={{ width: 0 }}
                                 animate={{ width: `${(filledSlots / totalSlots) * 100}%` }}
-                                className={`h-full ${isFull ? 'bg-red-500' : 'bg-[#1A1A1A]'} rounded-full`} 
+                                className={`h-full ${isFull ? 'bg-red-500' : isDarkText ? 'bg-[#1A1A1A]' : 'bg-white'} rounded-full`} 
                               />
                             </div>
-                            <span className="text-[7px] font-black text-[#1A1A1A]/80 uppercase tracking-wide whitespace-nowrap">
+                            <span className={cn("text-[7px] font-black uppercase tracking-wide whitespace-nowrap", isDarkText ? "text-[#1A1A1A]/80" : "text-white/80")}>
                               {isFull || match.status === 'live' ? "CLOSED" : `${filledSlots}/${totalSlots}`}
                             </span>
                           </div>
                         </div>
                       </div>
-                      <div className="w-8 h-8 rounded-lg bg-[#1A1A1A] text-white flex-shrink-0 flex items-center justify-center shadow relative z-10 ml-2">
-                        <ChevronRight size={14} strokeWidth={3} />
+                      <div className={cn("w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center shadow-md relative z-10 ml-2 transition-transform group-hover:translate-x-1", isDarkText ? "bg-[#1A1A1A] text-white" : "bg-white text-[#1A1A1A]")}>
+                        <ChevronRight size={14} strokeWidth={4} />
                       </div>
                       {isJoined && (
-                        <div className="absolute top-1.5 right-1.5 w-5 h-5 bg-[#1A1A1A] rounded-full flex items-center justify-center border-2 border-white shadow z-20">
-                          <CheckCircle2 size={10} className="text-[#5FD3BC]" />
+                        <div className="absolute top-1.5 right-1.5 w-5 h-5 bg-white rounded-full flex items-center justify-center border-2 border-[#1A1A1A] shadow z-20">
+                          <CheckCircle2 size={10} className="text-[#4F9B8B]" strokeWidth={3} />
                         </div>
                       )}
                     </BentoCard>
@@ -361,9 +365,9 @@ function MatchesContent() {
                 );
               })
           ) : (
-            <div className="py-12 text-center bg-white rounded-2xl shadow border-none mx-1">
-              <div className="w-14 h-14 bg-[#F3F4F6] rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <AlertCircle size={24} className="text-[#9CA3AF]" />
+            <div className="py-12 text-center bg-white rounded-3xl shadow-xl border-none mx-1">
+              <div className="w-14 h-14 bg-[#FFF9ED] rounded-2xl flex items-center justify-center mx-auto mb-4 rotate-12 shadow-md">
+                <AlertCircle size={24} className="text-[#FDAB6D]" />
               </div>
               <h3 className="text-base font-heading text-[#1A1A1A] font-black tracking-tight mb-1">ARENA EMPTY</h3>
               <p className="text-[8px] text-[#6B7280] font-black uppercase tracking-wide">Try adjusting your filters</p>
@@ -379,16 +383,16 @@ function MatchesContent() {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="fixed inset-0 z-[60] bg-[#F8F6F0] flex flex-col"
+              className="fixed inset-0 z-[60] bg-[#FFFDF5] flex flex-col"
               style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
             >
               <header className="relative z-10 px-5 py-6 flex items-center justify-between">
                 <motion.button 
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setSelectedMatch(null)}
-                  className="w-12 h-12 bg-white border-2 border-[#E5E7EB] rounded-2xl flex items-center justify-center shadow-lg"
+                  className="w-12 h-12 bg-white border-2 border-[#E5E7EB] rounded-2xl flex items-center justify-center shadow-xl"
                 >
-                  <ChevronRight className="rotate-180 text-[#1A1A1A]" size={24} strokeWidth={3} />
+                  <ChevronRight className="rotate-180 text-[#1A1A1A]" size={24} strokeWidth={4} />
                 </motion.button>
                 <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6B7280]">Match Intelligence</h2>
                 <div className="w-12" />
@@ -398,9 +402,9 @@ function MatchesContent() {
 
               <div className="mb-8">
                 <div className="flex items-center gap-3 mb-4">
-                  <StatusBadge variant={selectedMatch.status} className="bg-[#1A1A1A] text-white px-4 py-1.5 rounded-full font-black text-[10px]" />
+                  <StatusBadge variant={selectedMatch.status} className="bg-[#1A1A1A] text-white px-4 py-1.5 rounded-full font-black text-[10px] shadow-lg" />
                   <div className="px-3 py-1 bg-white border-2 border-[#E5E7EB] rounded-xl text-[10px] font-black text-[#1A1A1A] flex items-center gap-1.5 shadow-sm">
-                    <Clock size={12} strokeWidth={3} />
+                    <Clock size={12} strokeWidth={4} />
                     {selectedMatch.status === 'live' ? 'LIVE' : 'SOON'}
                   </div>
                 </div>
@@ -410,70 +414,70 @@ function MatchesContent() {
                 <p className="text-[11px] font-black text-[#6B7280] uppercase tracking-widest">{selectedMatch.tournament?.title}</p>
               </div>
 
-              <BentoCard variant="purple" className="p-8 mb-8 text-center relative overflow-hidden shadow-2xl">
-                <p className="text-[11px] font-black text-[#1A1A1A]/40 uppercase tracking-[0.2em] mb-3">GRAND PRIZE POOL</p>
-                <p className="text-[56px] font-heading text-[#1A1A1A] font-black leading-none mb-2 tracking-tighter">₹{selectedMatch.tournament?.prize_pool?.toLocaleString()}</p>
-                <div className="absolute right-[-30px] bottom-[-30px] rotate-[-15deg] opacity-[0.03] pointer-events-none">
-                  <Trophy size={180} />
+              <BentoCard variant="purple" className="p-8 mb-8 text-center relative overflow-hidden shadow-2xl border-none">
+                <p className="text-[11px] font-black text-white/40 uppercase tracking-[0.2em] mb-3">GRAND PRIZE POOL</p>
+                <p className="text-[56px] font-heading text-white font-black leading-none mb-2 tracking-tighter">₹{selectedMatch.tournament?.prize_pool?.toLocaleString()}</p>
+                <div className="absolute right-[-30px] bottom-[-30px] rotate-[-15deg] opacity-[0.1] pointer-events-none">
+                  <Trophy size={180} color="white" />
                 </div>
               </BentoCard>
 
               <div className="grid grid-cols-2 gap-4 mb-8">
-                <BentoCard className="p-6 bg-white shadow-xl border-none">
-                    <div className="w-10 h-10 rounded-xl bg-[#A8D8EA]/30 flex items-center justify-center mb-4">
+                <BentoCard className="p-6 bg-white shadow-xl border-none group transition-transform hover:-translate-y-1">
+                    <div className="w-10 h-10 rounded-xl bg-[#A8D8EA] flex items-center justify-center mb-4 shadow-sm group-hover:rotate-6 transition-transform">
                     <Calendar size={20} className="text-[#1A1A1A]" strokeWidth={2.5} />
                   </div>
                   <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-1">SCHEDULE</p>
                   <p className="text-sm font-black text-[#1A1A1A] tracking-tight">{new Date(selectedMatch.start_time).toLocaleDateString([], { month: 'short', day: 'numeric' })} • {new Date(selectedMatch.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                 </BentoCard>
-                <BentoCard className="p-6 bg-white shadow-xl border-none">
-                    <div className="w-10 h-10 rounded-xl bg-[#A8E6CF]/30 flex items-center justify-center mb-4">
-                    <MapIcon size={20} className="text-[#1A1A1A]" strokeWidth={2.5} />
+                <BentoCard className="p-6 bg-white shadow-xl border-none group transition-transform hover:-translate-y-1">
+                    <div className="w-10 h-10 rounded-xl bg-[#4F9B8B] flex items-center justify-center mb-4 shadow-sm group-hover:rotate-6 transition-transform">
+                    <MapIcon size={20} className="text-white" strokeWidth={2.5} />
                   </div>
                   <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-1">ARENA MAP</p>
                   <p className="text-sm font-black text-[#1A1A1A] tracking-tight">{selectedMatch.map || 'Bermuda'}</p>
                 </BentoCard>
-                <BentoCard className="p-6 bg-white shadow-xl border-none">
-                  <div className="w-10 h-10 rounded-xl bg-[#FFCDB2]/30 flex items-center justify-center mb-4">
+                <BentoCard className="p-6 bg-white shadow-xl border-none group transition-transform hover:-translate-y-1">
+                  <div className="w-10 h-10 rounded-xl bg-[#FDAB6D] flex items-center justify-center mb-4 shadow-sm group-hover:rotate-6 transition-transform">
                     <Target size={20} className="text-[#1A1A1A]" strokeWidth={2.5} />
                   </div>
                   <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-1">BATTLE MODE</p>
                   <p className="text-sm font-black text-[#1A1A1A] tracking-tight">{selectedMatch.mode}</p>
                 </BentoCard>
-                <BentoCard className="p-6 bg-white shadow-xl border-none">
-                  <div className="w-10 h-10 rounded-xl bg-[#FFB6C1]/30 flex items-center justify-center mb-4">
-                    <Users size={20} className="text-[#1A1A1A]" strokeWidth={2.5} />
+                <BentoCard className="p-6 bg-white shadow-xl border-none group transition-transform hover:-translate-y-1">
+                  <div className="w-10 h-10 rounded-xl bg-[#F988A2] flex items-center justify-center mb-4 shadow-sm group-hover:rotate-6 transition-transform">
+                    <Users size={20} className="text-white" strokeWidth={2.5} />
                   </div>
                   <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-1">POPULATION</p>
                   <p className="text-sm font-black text-[#1A1A1A] tracking-tight">{selectedMatch.current_slots} / {selectedMatch.tournament?.slots || 48}</p>
                 </BentoCard>
               </div>
 
-              <BentoCard variant="mint" className="p-8 mb-8 shadow-2xl relative overflow-hidden group">
-                <h4 className="text-xl font-heading text-[#1A1A1A] font-black tracking-tight mb-6">BATTLE REWARDS</h4>
+              <BentoCard variant="mint" className="p-8 mb-8 shadow-2xl relative overflow-hidden group border-none">
+                <h4 className="text-xl font-heading text-white font-black tracking-tight mb-6">BATTLE REWARDS</h4>
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center py-3 border-b-2 border-white/40">
+                  <div className="flex justify-between items-center py-3 border-b-2 border-white/20">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-[#1A1A1A] text-white flex items-center justify-center font-black text-sm shadow-lg">1st</div>
-                      <span className="text-base font-black text-[#1A1A1A] tracking-tight">Champion</span>
+                      <div className="w-10 h-10 rounded-xl bg-[#1A1A1A] text-white flex items-center justify-center font-black text-sm shadow-xl">1st</div>
+                      <span className="text-base font-black text-white tracking-tight">Champion</span>
                     </div>
-                    <span className="text-xl font-black text-[#1A1A1A]">₹2,500</span>
+                    <span className="text-xl font-black text-white">₹2,500</span>
                   </div>
                   <div className="flex justify-between items-center py-3">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-white/60 flex items-center justify-center font-black text-sm shadow-sm">K</div>
-                      <span className="text-base font-black text-[#1A1A1A] tracking-tight">Per Kill</span>
+                      <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center font-black text-sm shadow-md">K</div>
+                      <span className="text-base font-black text-white tracking-tight">Per Kill</span>
                     </div>
-                    <span className="text-xl font-black text-[#1A1A1A]">₹10</span>
+                    <span className="text-xl font-black text-white">₹10</span>
                   </div>
                 </div>
-                <div className="absolute right-[-10px] top-[-10px] opacity-[0.05] group-hover:rotate-12 transition-transform">
-                  <Award size={100} />
+                <div className="absolute right-[-10px] top-[-10px] opacity-[0.1] group-hover:rotate-12 transition-transform">
+                  <Award size={100} color="white" />
                 </div>
               </BentoCard>
             </div>
 
-            <div className="relative z-[70] px-5 py-8 bg-white shadow-[0_-15px_40px_rgba(0,0,0,0.1)] rounded-t-[40px] border-t-2 border-[#E5E7EB]">
+            <div className="relative z-[70] px-5 py-8 bg-white shadow-[0_-15px_40px_rgba(0,0,0,0.1)] rounded-t-[48px] border-t-2 border-[#E5E7EB]">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-1">ENTRY PASS</p>
@@ -481,7 +485,7 @@ function MatchesContent() {
                 </div>
                 {myEntries.some(e => e.id === selectedMatch.id) ? (
                    <div className="text-right">
-                     <span className="bg-[#A8E6CF] text-[#1A1A1A] border-2 border-[#1A1A1A] px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-md">PASS SECURED</span>
+                     <span className="bg-[#4F9B8B] text-white border-2 border-[#1A1A1A] px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl">PASS SECURED</span>
                    </div>
                 ) : (
                   <div className="text-right">
@@ -506,10 +510,10 @@ function MatchesContent() {
                 <Link href={`/live?match=${selectedMatch.id}`} className="w-full">
                   <motion.button 
                     whileTap={{ scale: 0.95 }}
-                    className="w-full py-5 bg-[#6EBF8B] text-[#1A1A1A] rounded-[24px] text-sm font-black uppercase tracking-[0.2em] shadow-xl flex items-center justify-center gap-3"
+                    className="w-full py-5 bg-[#4F9B8B] text-white rounded-[24px] text-sm font-black uppercase tracking-[0.2em] shadow-2xl flex items-center justify-center gap-3"
                   >
                     WATCH LIVE
-                    <Play size={20} fill="#1A1A1A" />
+                    <Play size={20} fill="white" stroke="white" />
                   </motion.button>
                 </Link>
               )}
