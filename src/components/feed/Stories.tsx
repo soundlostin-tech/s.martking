@@ -5,9 +5,10 @@ import { supabase } from "@/lib/supabase";
 import { motion, AnimatePresence } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
-import { Plus, X, ChevronLeft, ChevronRight, Heart, Send, MessageCircle, MoreHorizontal } from "lucide-react";
+import { Plus, X, ChevronLeft, ChevronRight, Heart, Send, MessageCircle, MoreHorizontal, Eye } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import { StoryInsights } from "./StoryInsights";
 
 interface Story {
   id: string;
@@ -56,6 +57,27 @@ export function Stories() {
   const [uploading, setUploading] = useState(false);
   const [replyText, setReplyText] = useState("");
   const [isLiked, setIsLiked] = useState(false);
+  const [isInsightsOpen, setIsInsightsOpen] = useState(false);
+
+  useEffect(() => {
+    if (selectedUserIndex !== null && user) {
+      const currentStory = userStories[selectedUserIndex].stories[currentStoryIndex];
+      if (currentStory && currentStory.user_id !== user.id) {
+        recordView(currentStory.id);
+      }
+    }
+  }, [selectedUserIndex, currentStoryIndex]);
+
+  const recordView = async (storyId: string) => {
+    if (!user) return;
+    try {
+      await supabase
+        .from("story_views")
+        .upsert({ story_id: storyId, viewer_id: user.id }, { onConflict: "story_id,viewer_id" });
+    } catch (error) {
+      console.error("Error recording view:", error);
+    }
+  };
 
   useEffect(() => {
     fetchStories();
@@ -385,37 +407,52 @@ export function Stories() {
                 </div>
               </div>
 
-              {/* Bottom Interaction Bar */}
-              <div className="p-4 bg-gradient-to-t from-black/60 to-transparent flex items-center gap-3 z-30">
-                <div className="flex-1 relative">
-                  <input 
-                    type="text" 
-                    placeholder="Send message" 
-                    value={replyText}
-                    onChange={(e) => setReplyText(e.target.value)}
-                    className="w-full bg-transparent border border-white/40 rounded-full py-2.5 px-5 text-sm text-white placeholder:text-white/60 focus:outline-none focus:border-white transition-colors"
-                    onKeyDown={(e) => e.key === 'Enter' && handleSendReply()}
-                  />
-                  {replyText && (
+                {/* Bottom Interaction Bar */}
+                <div className="p-4 bg-gradient-to-t from-black/60 to-transparent flex items-center gap-3 z-30">
+                  {userStories[selectedUserIndex].user.id === user?.id ? (
                     <button 
-                      onClick={handleSendReply}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-white font-bold text-xs"
+                      onClick={() => setIsInsightsOpen(true)}
+                      className="flex-1 flex flex-col items-center justify-center py-2"
                     >
-                      Send
+                      <div className="flex items-center gap-2 text-white">
+                        <Eye size={18} />
+                        <span className="text-xs font-bold">Activity</span>
+                      </div>
                     </button>
+                  ) : (
+                    <>
+                      <div className="flex-1 relative">
+                        <input 
+                          type="text" 
+                          placeholder="Send message" 
+                          value={replyText}
+                          onChange={(e) => setReplyText(e.target.value)}
+                          className="w-full bg-transparent border border-white/40 rounded-full py-2.5 px-5 text-sm text-white placeholder:text-white/60 focus:outline-none focus:border-white transition-colors"
+                          onKeyDown={(e) => e.key === 'Enter' && handleSendReply()}
+                        />
+                        {replyText && (
+                          <button 
+                            onClick={handleSendReply}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-white font-bold text-xs"
+                          >
+                            Send
+                          </button>
+                        )}
+                      </div>
+                      <motion.button 
+                        whileTap={{ scale: 0.8 }}
+                        onClick={() => setIsLiked(!isLiked)}
+                        className={`p-1 ${isLiked ? 'text-red-500' : 'text-white'}`}
+                      >
+                        <Heart size={24} fill={isLiked ? "currentColor" : "none"} strokeWidth={2} />
+                      </motion.button>
+                      <button className="text-white p-1">
+                        <Send size={24} strokeWidth={2} />
+                      </button>
+                    </>
                   )}
                 </div>
-                <motion.button 
-                  whileTap={{ scale: 0.8 }}
-                  onClick={() => setIsLiked(!isLiked)}
-                  className={`p-1 ${isLiked ? 'text-red-500' : 'text-white'}`}
-                >
-                  <Heart size={24} fill={isLiked ? "currentColor" : "none"} strokeWidth={2} />
-                </motion.button>
-                <button className="text-white p-1">
-                  <Send size={24} strokeWidth={2} />
-                </button>
-              </div>
+
 
               {/* Reactions Overlay */}
               {!replyText && (
@@ -437,6 +474,22 @@ export function Stories() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {selectedUserIndex !== null && (
+        <StoryInsights 
+          isOpen={isInsightsOpen}
+          onClose={() => setIsInsightsOpen(false)}
+          storyId={userStories[selectedUserIndex].stories[currentStoryIndex].id}
+          allStories={userStories[selectedUserIndex].stories}
+          onSelectStory={(id) => {
+            const index = userStories[selectedUserIndex].stories.findIndex(s => s.id === id);
+            if (index !== -1) {
+              setCurrentStoryIndex(index);
+              setIsLiked(false);
+            }
+          }}
+        />
+      )}
     </>
   );
 }
