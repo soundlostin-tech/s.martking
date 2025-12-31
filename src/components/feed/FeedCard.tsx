@@ -6,6 +6,7 @@ import { useState, useRef } from "react";
 import { Heart, MessageCircle, Share2, Play, Eye, UserPlus, UserCheck, Gamepad2 } from "lucide-react";
 import { toast } from "sonner";
 import type { FeedItem } from "@/app/api/feed/route";
+import { ShareSheet } from "./ShareSheet";
 
 interface FeedCardProps {
   item: FeedItem;
@@ -21,6 +22,7 @@ export function FeedCard({ item, userId, onLikeChange, onFollowChange }: FeedCar
   const [isPlaying, setIsPlaying] = useState(false);
   const [likePending, setLikePending] = useState(false);
   const [followPending, setFollowPending] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleLike = async (e: React.MouseEvent) => {
@@ -106,26 +108,11 @@ export function FeedCard({ item, userId, onLikeChange, onFollowChange }: FeedCar
     }
   };
 
-  const handleShare = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const url = `${window.location.origin}/${item.type === "video" ? "v" : "p"}/${item.slug}`;
-
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: item.title,
-          text: item.description || undefined,
-          url,
-        });
-      } catch {
-      }
-    } else {
-      await navigator.clipboard.writeText(url);
-      toast.success("Link copied!");
-    }
-  };
+    const handleShare = async (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsShareOpen(true);
+    };
 
   const handleVideoClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -304,6 +291,11 @@ export function FeedCard({ item, userId, onLikeChange, onFollowChange }: FeedCar
           )}
         </Link>
       </div>
+      <ShareSheet
+        item={item}
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+      />
     </motion.div>
   );
 }

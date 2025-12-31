@@ -15,6 +15,7 @@ interface Story {
   media_url: string;
   media_type: string;
   caption?: string;
+  post_id?: string;
   created_at: string;
   expires_at: string;
   user: {
@@ -22,6 +23,15 @@ interface Story {
     full_name: string;
     avatar_url: string;
     username: string;
+  };
+  post?: {
+    id: string;
+    title: string;
+    thumbnail_url: string;
+    user: {
+      username: string;
+      avatar_url: string;
+    };
   };
 }
 
@@ -49,18 +59,28 @@ export function Stories() {
 
   useEffect(() => {
     fetchStories();
+
+    const handleRefresh = () => fetchStories();
+    window.addEventListener("refresh-stories", handleRefresh);
+    return () => window.removeEventListener("refresh-stories", handleRefresh);
   }, []);
 
-  const fetchStories = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("stories")
-        .select(`
-          *,
-          user:profiles(id, full_name, avatar_url, username)
-        `)
-        .gt("expires_at", new Date().toISOString())
-        .order("created_at", { ascending: true });
+    const fetchStories = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("stories")
+          .select(`
+            *,
+            user:profiles(id, full_name, avatar_url, username),
+            post:posts(
+              id,
+              title,
+              thumbnail_url,
+              user:profiles(username, avatar_url)
+            )
+          `)
+          .gt("expires_at", new Date().toISOString())
+          .order("created_at", { ascending: true });
 
       if (error) throw error;
 
@@ -300,24 +320,60 @@ export function Stories() {
                 </div>
               </div>
 
-              {/* Content */}
-              <div className="flex-1 flex items-center justify-center relative bg-[#121212]">
-                {userStories[selectedUserIndex].stories[currentStoryIndex].media_type === 'video' ? (
-                  <video
-                    src={userStories[selectedUserIndex].stories[currentStoryIndex].media_url}
-                    className="w-full h-full object-cover sm:object-contain"
-                    autoPlay
-                    playsInline
-                  />
-                ) : (
-                  <img
-                    src={userStories[selectedUserIndex].stories[currentStoryIndex].media_url}
-                    className="w-full h-full object-cover sm:object-contain"
-                    alt=""
-                  />
-                )}
+                {/* Content */}
+                <div className="flex-1 flex items-center justify-center relative bg-[#121212]">
+                  {userStories[selectedUserIndex].stories[currentStoryIndex].post ? (
+                    <div className="w-full h-full relative flex items-center justify-center p-8">
+                      {/* Blurred Background */}
+                      <div 
+                        className="absolute inset-0 opacity-40 blur-3xl scale-110"
+                        style={{ 
+                          backgroundImage: `url(${userStories[selectedUserIndex].stories[currentStoryIndex].post.thumbnail_url})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center'
+                        }}
+                      />
+                      
+                      {/* Post Card */}
+                      <motion.div 
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="relative w-full max-w-[280px] aspect-[4/5] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col z-10"
+                      >
+                        <div className="p-3 flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full overflow-hidden border border-gray-100">
+                            <img src={userStories[selectedUserIndex].stories[currentStoryIndex].post.user.avatar_url} alt="" className="w-full h-full object-cover" />
+                          </div>
+                          <span className="text-[10px] font-black text-[#1A1A1A]">
+                            {userStories[selectedUserIndex].stories[currentStoryIndex].post.user.username}
+                          </span>
+                        </div>
+                        <div className="flex-1 bg-gray-100 overflow-hidden">
+                          <img src={userStories[selectedUserIndex].stories[currentStoryIndex].post.thumbnail_url} alt="" className="w-full h-full object-cover" />
+                        </div>
+                        <div className="p-3">
+                          <p className="text-[10px] font-bold text-[#1A1A1A] line-clamp-1">
+                            {userStories[selectedUserIndex].stories[currentStoryIndex].post.title}
+                          </p>
+                        </div>
+                      </motion.div>
+                    </div>
+                  ) : userStories[selectedUserIndex].stories[currentStoryIndex].media_type === 'video' ? (
+                    <video
+                      src={userStories[selectedUserIndex].stories[currentStoryIndex].media_url}
+                      className="w-full h-full object-cover sm:object-contain"
+                      autoPlay
+                      playsInline
+                    />
+                  ) : (
+                    <img
+                      src={userStories[selectedUserIndex].stories[currentStoryIndex].media_url}
+                      className="w-full h-full object-cover sm:object-contain"
+                      alt=""
+                    />
+                  )}
 
-                {/* Navigation Controls */}
+                  {/* Navigation Controls */}
                 <div className="absolute inset-0 flex">
                   <div className="w-[30%] cursor-pointer" onClick={prevStory} />
                   <div className="flex-1 cursor-pointer" onClick={nextStory} />
